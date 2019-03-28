@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://code.alibabatech.com/schema/dubbo
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-autowire="byName">
+
+    <context:component-scan base-package="hello"/>
+    <context:property-placeholder location="classpath:prop.properties,classpath:dubbo.properties"/>
+
+    <!--
+    <bean id="serviceLocator" class="hello.web.DefaultServiceLocator"/>
+    <bean id="greeting3" factory-bean="serviceLocator" factory-method="getGreeting"/>
+
+    <bean id="hello" class="hello.web.Hello" scope="prototype">
+        <property name="name" value="a"/>
+        <property name="md" ref="setMethod"/>
+    </bean>
+    <bean id="hello2" class="hello.web.Hello" lazy-init="true">
+        <property name="name" value="b"/>
+    </bean>
+    <bean id="greeting" class="hello.web.Greeting" factory-method="getInstance"/>
+    <bean id="greeting2" class="hello.web.Greeting" factory-method="getInstance2"/>
+    <bean id="greeting4" class="hello.web.Greeting" factory-method="getInstance"/>
+    <bean id="greeting5" class="hello.web.Greeting">
+        <constructor-arg name="id" value="1"/>
+        <constructor-arg name="content" value="ccc"/>
+        <property name="hello" ref="hello"/>
+    </bean>
+    <bean id="setMethod" class="hello.web.SetMethod">
+        &lt;!&ndash;<constructor-arg name="name" value="123"/>&ndash;&gt;
+        <property name="name" value="sss"/>
+        &lt;!&ndash;<aop:scoped-proxy/>&ndash;&gt;
+    </bean>
+
+    <alias name="hello" alias="helloFuck"/>
+    <alias name="helloFuck" alias="helloFuckTo"/>
+
+    <bean id="ga"
+          class="hello.web.Greeting"
+          p:id="1"
+          p:content="abc"/>
+
+    <bean id="gb" class="hello.web.Greeting"
+          c:id="1"
+          c:content="abc"/>
+
+    <bean id="myManger" class="hello.bean.MyManger"/>
+    <bean id="myManger2" class="hello.bean.MyManger2"/>
+    -->
+
+    <!--<bean id="simpleMovieLister" class="hello.annotation.SimpleMovieLister" scope="prototype"/>-->
+    <!--<bean id="simpleMovieLister2" class="hello.annotation.SimpleMovieLister" scope="prototype"/>-->
+    <!--<bean id="movieRecommender" class="hello.annotation.MovieRecommender" scope="prototype"/>-->
+    <!--<bean id="movieRecommender2" class="hello.annotation.MovieRecommender" scope="prototype"/>-->
+
+    <!--<bean id="myBeanFactoryPostProcessor" class="hello.lifecycle.MyBeanFactoryPostProcessor"/>-->
+    <!--<bean id="myInstantiationAwareBeanPostProcessor" class="hello.lifecycle.MyInstantiationAwareBeanPostProcessor"/>-->
+    <!--<bean id="myBeanPostProcessor" class="hello.lifecycle.MyBeanPostProcessor"/>-->
+    <!--<bean id="beanLevel" class="hello.lifecycle.BeanLevel" init-method="initMethod" destroy-method="destroyMethod" p:name="张三" p:address="广州" p:phone="${tea.beanLevel_phone}"/>-->
+    <!--<bean id="myFactoryBean" class="hello.lifecycle.MyFactoryBean"/>-->
+
+    <!--redis-->
+    <bean id="throttlingJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="100"/>
+        <property name="minIdle" value="10"/>
+        <property name="maxWaitMillis" value="1000"/>
+        <property name="maxIdle" value="100"/>
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+
+    <bean id="throttlingJedisSentinelConfiguration"
+          class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+        <constructor-arg name="propertySource">
+            <bean class="org.springframework.core.io.support.ResourcePropertySource">
+                <constructor-arg name="location" value="${throttling.redis.sentinel.cluster.config_location}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="throttlingJedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="sentinelConfig" ref="throttlingJedisSentinelConfiguration"/>
+        <constructor-arg name="poolConfig" ref="throttlingJedisPoolConfig"/>
+        <property name="password" value="kdniao2017"/>
+    </bean>
+
+    <bean id="throttlingRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="throttlingJedisConnectionFactory"/>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+        </property>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+    </bean>
+
+    <!--dubbo-->
+    <!--消费者-->
+    <!--应用名-->
+    <!--<dubbo:application name="${dubbo.application.name}"/>-->
+    <!--注册中心地址-->
+    <dubbo:registry address="${dubbo.registry.address}"/> <!--file="H:/dubbo.cache"-->
+    <!--生成远程服务代理 作为可调用的bean-->
+    <dubbo:reference id="doWithAnnotation" interface="hello.service.DoWithAnnotation" group="${dubbo.group}"
+                     cache="true"/>
+
+    <dubbo:reference id="doHSomething" interface="hello.service.DoHSomething" group="${dubbo.group}"
+                     filter="myFilter,default">
+        <dubbo:method name="sayHello" async="true" return="true"/>
+        <!--<dubbo:method name="sayFuck"/>-->
+    </dubbo:reference>
+
+    <dubbo:consumer check="false" timeout="10000" group="${dubbo.default.group}"/>
+    <!--
+    consumer://192.168.1.48/hello.service.DoHSomething?application=consumer-of-helloworld-app&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoHSomething&methods=sayHello,sayFuck&owner=zhangj&pid=15128&reference.filter=myFilter,default&revision=1.0-SNAPSHOT&sayHello.async=true&sayHello.return=true&side=consumer&timestamp=1552631668248
+    consumer://192.168.1.48/hello.service.DoWithAnnotation?application=consumer-of-helloworld-app&cache=true&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoWithAnnotation&methods=sayFuck&owner=zhangj&pid=15128&revision=1.0-SNAPSHOT&side=consumer&timestamp=1552631673393
+    -->
+
+    <!--kafka-->
+    <!--消费者-->
+    <bean id="kafkaConsumerFactory" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                <entry key="group.id" value="group-0"/>
+                <entry key="enable.auto.commit" value="false"/>
+                <entry key="auto.commit.interval.ms" value="1000"/>
+                <entry key="session.timeout.ms" value="15000"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.ByteArrayDeserializer"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    <bean id="kafkaConsumerFactory2" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                <entry key="group.id" value="group-1"/>
+                <entry key="enable.auto.commit" value="false"/>
+                <entry key="auto.commit.interval.ms" value="1000"/>
+                <entry key="session.timeout.ms" value="15000"/>
+                <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                <entry key="value.deserializer" value="org.apache.kafka.common.serialization.ByteArrayDeserializer"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!--<bean id="concurrentKafkaListenerContainerFactory" class="org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory"></bean>-->
+
+    <!--消费者容器配置信息-->
+    <bean id="containerProperties" class="org.springframework.kafka.listener.config.ContainerProperties">
+        <constructor-arg>
+            <array>
+                <value>kfk-to-topic-zj</value>
+                <value>kfk-to-topic-zj-05</value>
+                <value>defaultTopic-zj</value>
+            </array>
+        </constructor-arg>  <!--topics-->
+
+        <!--执行消息消费的类-->
+        <property name="messageListener" ref="getSomething"/> <!--MessageListener 监听方法-->
+        <!--<property name="ackMode" value=""/>-->
+    </bean>
+
+    <!-- 创建kafkatemplate bean，使用的时候，只需要注入这个bean，即可使用template的send消息方法 -->
+    <!--单线程消费-->
+    <!--<bean id="messageListenerContainer" class="org.springframework.kafka.listener.KafkaMessageListenerContainer"
+          init-method="doStart">
+        <constructor-arg ref="kafkaConsumerFactory"/>
+        <constructor-arg ref="containerProperties"/>
+    </bean>-->
+    <!--多线程消费 并发-->
+    <bean id="concurrentMessageListenerContainer-000"
+          class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer"
+          init-method="doStart">
+        <constructor-arg ref="kafkaConsumerFactory"/>
+        <constructor-arg ref="containerProperties"/>
+        <property name="concurrency" value="10"/> <!--创建10个KafkaMessageListenerContainer线程 -->
+        <!-- 线程多于partition则多于部分没有可消费,少于则一个线程消费多个partition-->
+        <!--一个partition中，对于一个consumer group只能有一个线程消费，所以不存在多线程并发的问题-->
+    </bean>
+
+    <!--另一个分组的消费者,消费同一个topic-->
+    <bean id="concurrentMessageListenerContainer-001"
+          class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer" init-method="doStart">
+        <constructor-arg ref="kafkaConsumerFactory2"/>
+        <constructor-arg>
+            <bean class="org.springframework.kafka.listener.config.ContainerProperties">
+                <constructor-arg>
+                    <array>
+                        <value>kfk-to-topic-zj</value>
+                        <value>kfk-to-topic-zj-05</value>
+                    </array>
+                </constructor-arg>
+
+                <property name="messageListener" ref="getSomething2"/>
+            </bean>
+        </constructor-arg>
+        <property name="concurrency" value="1"/>
+    </bean>
+
+    <!--新加的消费者,从头消费同一个topic-->
+    <!--<bean id="concurrentMessageListenerContainer-002"
+          class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer" init-method="doStart">
+        <constructor-arg>
+            <bean class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+                <constructor-arg>
+                    <map>
+                        <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                        <entry key="group.id" value="group-earliest"/>
+                        &lt;!&ndash;从头消费&ndash;&gt;
+                        <entry key="auto.offset.reset" value="earliest"/>
+                        <entry key="enable.auto.commit" value="false"/>
+                        <entry key="auto.commit.interval.ms" value="1000"/>
+                        <entry key="session.timeout.ms" value="15000"/>
+                        <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
+                        <entry key="value.deserializer"
+                               value="org.apache.kafka.common.serialization.ByteArrayDeserializer"/>
+                    </map>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="org.springframework.kafka.listener.config.ContainerProperties">
+                <constructor-arg>
+                    <array>
+                        <value>kfk-to-topic-zj-05</value>
+                    </array>
+                </constructor-arg>
+
+                <property name="messageListener" ref="getSomething3"/>
+            </bean>
+        </constructor-arg>
+        <property name="concurrency" value="5"/>
+    </bean>-->
+</beans>

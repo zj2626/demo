@@ -1,0 +1,2 @@
+myFilter=hello.control.filter.JarVersionAttachFilter
+annotationFilter=hello.control.filter.AnnotationFilter

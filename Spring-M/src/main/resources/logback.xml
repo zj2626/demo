@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="logDir" value="H:/logs/sprint-m"/>
+    <property resource="prop.properties" />
+    <contextName>SPRING-M</contextName>
+
+    <appender name="SM-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="SM-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append><!--默认true-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/${application.name}/%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern> <!--每分钟一个文件 下面5表示文件只保存5分钟-->
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="SM-TEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${application.name}/test.log</File>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${logDir}/${application.name}/test.log.%i</FileNamePattern>
+            <MinIndex>1</MinIndex> <!--窗口索引最小值-->
+            <MaxIndex>5</MaxIndex> <!--窗口索引最大值-->
+        </rollingPolicy>
+        <!--当test.log文件大于MaxFileSize时候会把其内容写入test.log.%i文件,并且随着i从小到大,时间是从前到后的-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>1MB</MaxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="SM-ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${application.name}/err.log</File>
+        <append>true</append>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>5MB</MaxFileSize>
+        </triggeringPolicy>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${logDir}/${application.name}/err.log.%i</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>2</MaxIndex>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="SM-WEB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${application.name}/web.log</File>
+        <append>true</append>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>5MB</MaxFileSize>
+        </triggeringPolicy>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${logDir}/${application.name}/web.log.%i</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>2</MaxIndex>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="SM-STDOUT"/>
+        <appender-ref ref="SM-FILE"/>
+    </root>
+
+    <logger name="sm.test">
+        <level value="INFO"/>
+        <appender-ref ref="SM-TEST"/>
+    </logger>
+
+    <logger name="sm.err" level="ERROR">
+        <appender-ref ref="SM-ERR"/>
+    </logger>
+
+    <logger name="sm.web" level="DEBUG">
+        <appender-ref ref="SM-WEB"/>
+    </logger>
+
+    <!--
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERR"/>
+    </root>
+    <logger name="rpc.digest">
+        <level value="INFO"/>
+        <appender-ref ref="RPC-DIGEST"/>
+    </logger>
+    <logger name="remote.digest">
+        <level value="INFO"/>
+        <appender-ref ref="REMOTE-DIGEST"/>
+    </logger>
+    <logger name="pulling.monitor">
+        <level value="INFO"/>
+        <appender-ref ref="PULLING-MONITOR"/>
+    </logger>
+    <logger name="web.digest">
+        <level value="INFO"/>
+        <appender-ref ref="WEB-DIGEST"/>
+    </logger>-->
+</configuration>

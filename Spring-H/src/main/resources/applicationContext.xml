@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://code.alibabatech.com/schema/dubbo
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-autowire="byName">
+
+    <context:component-scan base-package="hello"/>
+    <context:property-placeholder location="classpath:prop.properties"/>
+
+    <!--dubbo-->
+    <!--生产者-->
+    <!--应用名-->
+    <dubbo:application name="hello-world-app" logger="log4j"/>
+    <!--注册中心地址-->
+    <dubbo:registry address="${dubbo.registry.address}"/> <!--register="false"-->
+
+    <!--使用dubbo协议暴露的当前服务端口-->
+    <dubbo:protocol name="dubbo" port="28080"/>
+    <!--声明暴露的服务接口-->
+    <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="zj.hello-app"
+                    proxy="javassist"> <!-- filter="mySecondFilter,myOtherFilter" -->
+        <!--<dubbo:method name="sayHello" async="true" return="true"/>-->
+        <!--<dubbo:method name="sayFuck"/>-->
+    </dubbo:service>
+    <dubbo:provider retries="3" protocol="dubbo" timeout="5000" group="zj.hello-world-app" cache="false" async="false" accesslog="true"/>
+    <!--
+    dubbo://192.168.1.48:28080/hello.service.DoHSomething?anyhost=true&application=hello-world-app&default.accesslog=true&default.cache=false&default.group=zj.hello-world-app&default.timeout=5000&dubbo=2.8.2.1&generic=false&group=zj.hello-app&interface=hello.service.DoHSomething&logger=log4j&methods=sayHello,sayFuck&pid=14440&proxy=javassist&side=provider&timestamp=1552631681634
+    dubbo://192.168.1.48:28080/hello.service.DoWithAnnotation?anyhost=true&application=hello-world-app&default.accesslog=true&default.cache=false&default.group=zj.hello-world-app&default.timeout=5000&dubbo=2.8.2.1&generic=false&group=zj.hello-app&interface=hello.service.DoWithAnnotation&logger=log4j&methods=sayFuck&pid=14440&service.filter=mySecondFilter,myOtherFilter&side=provider&timestamp=1552631676372
+    -->
+
+    <dubbo:annotation package="hello.service"/>
+
+    <!--kafka-->
+    <!--生产者-->
+    <bean id="kafkaProducerFactory" class="org.springframework.kafka.core.DefaultKafkaProducerFactory">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                <entry key="group.id" value="zj.hello-app"/>
+                <entry key="retries" value="3" />
+                <entry key="batch.size" value="16384" />
+                <entry key="linger.ms" value="1" />
+                <entry key="buffer.memory" value="33554432" />
+                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer" />
+                <entry key="value.serializer" value="org.apache.kafka.common.serialization.ByteArraySerializer" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="kafkaTemplate" class="org.springframework.kafka.core.KafkaTemplate">
+        <constructor-arg ref="kafkaProducerFactory"/>
+        <constructor-arg name="autoFlush" value="true"/>
+        <property name="defaultTopic" value="defaultTopic-zj"/>
+    </bean>
+</beans>
