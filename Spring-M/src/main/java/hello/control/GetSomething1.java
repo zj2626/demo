@@ -8,24 +8,23 @@ import org.springframework.kafka.listener.MessageListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GetSomething implements MessageListener<String, byte[]> {
-    private static final Logger logger = LoggerFactory.getLogger("remote.degggggg");
+public class GetSomething1 implements MessageListener<String, byte[]> {
+    private static final Logger logger = LoggerFactory.getLogger(GetSomething1.class);
 
     @Override
     public void onMessage(ConsumerRecord<String, byte[]> data) {
-        logger.info("\n[第一个消费方法] 消息开始消费 " +
-                "\nthread name:[" + Thread.currentThread().getName() + "] " +
-                "\ntopic      :[" + data.topic() + "]" +
-                "\npartition  :[" + data.partition() + "]" +
-                "\nprev offset:[" + data.offset() + "]" +
+        logger.info("[第一个消费方法] 消息开始消费 " +
+                "\t[" + Thread.currentThread().getName() + "] " +
+                "\t[" + data.topic() + "]" +
+                "\t[" + data.offset() + "]" +
+                "\t[" + data.partition() + "]" +
                 "");
-        logger.info("收到消息: " + Change.byteArrayToStr(data.value()));
+        logger.info(" [第一个消费方法] 收到消息: " + Change.byteArrayToStr(data.value()));
 //        try {
 //            Thread.sleep(999000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        logger.info("[第一个消费方法] 消息消费完成 ");
     }
 
     /*

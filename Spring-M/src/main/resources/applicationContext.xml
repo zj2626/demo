@@ -148,9 +148,9 @@
         <constructor-arg>
             <map>
                 <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
-                <entry key="group.id" value="group-1"/>
-                <entry key="enable.auto.commit" value="false"/>
-                <entry key="auto.commit.interval.ms" value="1000"/>
+                <entry key="group.id" value="group-10"/>
+                <entry key="enable.auto.commit" value="true"/>
+                <entry key="auto.commit.interval.ms" value="60000"/> <!--consumer offset会在60s之后一次性提交到kafka-->
                 <entry key="session.timeout.ms" value="15000"/>
                 <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
                 <entry key="value.deserializer" value="org.apache.kafka.common.serialization.ByteArrayDeserializer"/>
@@ -171,7 +171,7 @@
         </constructor-arg>  <!--topics-->
 
         <!--执行消息消费的类-->
-        <property name="messageListener" ref="getSomething"/> <!--MessageListener 监听方法-->
+        <property name="messageListener" ref="getSomething1"/> <!--MessageListener 监听方法-->
         <!--<property name="ackMode" value=""/>-->
     </bean>
 
@@ -182,8 +182,10 @@
         <constructor-arg ref="kafkaConsumerFactory"/>
         <constructor-arg ref="containerProperties"/>
     </bean>-->
+
     <!--多线程消费 并发-->
-    <bean id="concurrentMessageListenerContainer-000"
+    <!--concurrency==partition数量:高级消费; concurrency!=partition数量:低级消费-->
+    <bean id="concurrentMessageListenerContainer-001"
           class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer"
           init-method="doStart">
         <constructor-arg ref="kafkaConsumerFactory"/>
@@ -194,7 +196,7 @@
     </bean>
 
     <!--另一个分组的消费者,消费同一个topic-->
-    <bean id="concurrentMessageListenerContainer-001"
+    <bean id="concurrentMessageListenerContainer-002"
           class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer" init-method="doStart">
         <constructor-arg ref="kafkaConsumerFactory2"/>
         <constructor-arg>
@@ -209,18 +211,18 @@
                 <property name="messageListener" ref="getSomething2"/>
             </bean>
         </constructor-arg>
-        <property name="concurrency" value="1"/>
+        <property name="concurrency" value="5"/>
     </bean>
 
     <!--新加的消费者,从头消费同一个topic-->
-    <!--<bean id="concurrentMessageListenerContainer-002"
+    <!--<bean id="concurrentMessageListenerContainer-003"
           class="org.springframework.kafka.listener.ConcurrentMessageListenerContainer" init-method="doStart">
         <constructor-arg>
             <bean class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
                 <constructor-arg>
                     <map>
                         <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
-                        <entry key="group.id" value="group-earliest"/>
+                        <entry key="group.id" value="gp-test"/>
                         &lt;!&ndash;从头消费&ndash;&gt;
                         <entry key="auto.offset.reset" value="earliest"/>
                         <entry key="enable.auto.commit" value="false"/>

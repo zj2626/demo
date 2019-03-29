@@ -6,12 +6,14 @@ import org.apache.kafka.common.PartitionInfo;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
 @Service("doHSomethingImpl")
 public class DoHSomethingImpl implements DoHSomething {
+    // private String topicName = "kfk-to-topic-zj";
     private String topicName = "kfk-to-topic-zj-05";
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
@@ -43,7 +45,7 @@ public class DoHSomethingImpl implements DoHSomething {
             System.out.println(">>>");
             List<PartitionInfo> partitionInfos = kafkaTemplate.partitionsFor(topicName);
             System.out.println("topic[" + topicName + "]的partition: " + partitionInfos.size() + "\t" + partitionInfos);
-            kafkaTemplate.send(topicName, Change.strToByteArray("this is first message " + UUID.randomUUID()));
+            kafkaTemplate.send(topicName, Change.strToByteArray(new Date() + " - " + UUID.randomUUID()));
             System.out.println(">>>>>>>>>");
         }
 
