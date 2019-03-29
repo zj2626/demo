@@ -149,8 +149,8 @@
             <map>
                 <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
                 <entry key="group.id" value="group-10"/>
-                <entry key="enable.auto.commit" value="true"/>
-                <entry key="auto.commit.interval.ms" value="60000"/> <!--consumer offset会在60s之后一次性提交到kafka-->
+                <entry key="enable.auto.commit" value="true"/>       <!--consumer定期地往Kafka写入每个分区的offset-->
+                <entry key="auto.commit.interval.ms" value="60000"/> <!--往Kafka上写offset的频率(consumer-offset每60s一次提交)-->
                 <entry key="session.timeout.ms" value="15000"/>
                 <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>
                 <entry key="value.deserializer" value="org.apache.kafka.common.serialization.ByteArrayDeserializer"/>
