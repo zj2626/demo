@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 import java.util.Random;
@@ -34,6 +35,12 @@ public class DoSomething {
 
     private SimpleMovieLister simpleMovieLister;
     private MovieRecommender movieRecommender2;
+
+    private TransactionTemplate transactionTemplate;
+
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
 
     public DoSomething() {
         System.out.println("构造造 DoSomething");
@@ -60,6 +67,8 @@ public class DoSomething {
     }
 
     public boolean dosome(Boolean same) {
+        doMakeLog();
+
         System.out.println("do redis throttlingRedisTemplate: " + (throttlingRedisTemplate != null));
         System.out.println("do redis simpleMovieLister: " + (simpleMovieLister != null));
         System.out.println("do redis movieRecommender2: " + (movieRecommender2 != null));
@@ -182,6 +191,23 @@ public class DoSomething {
 //                }
 //            }).start();
 
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean dotransaction() {
+        doMakeLog();
+
+        try {
+            System.out.println(transactionTemplate != null);
+            System.out.println(transactionTemplate.getName());
+            System.out.println(transactionTemplate.getIsolationLevel());
+            System.out.println(transactionTemplate.getPropagationBehavior());
+            System.out.println(transactionTemplate.getTimeout());
 
             return true;
         } catch (Exception e) {

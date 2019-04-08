@@ -79,6 +79,25 @@ public class MyController {
         return result;
     }
 
+    @RequestMapping("/transaction")
+    public BaseResult transaction(String same) {
+        final BaseResult result = new BaseResult();
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+
+            }
+
+
+            @Override
+            public void doInvoke() {
+                result.setSuccess(doSomething.dotransaction());
+            }
+        });
+
+        return result;
+    }
+
     @RequestMapping("/fuck")
     public String fuck(String name) {
         System.out.println("fuck " + name);

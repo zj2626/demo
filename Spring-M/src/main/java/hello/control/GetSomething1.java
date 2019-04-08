@@ -12,12 +12,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class GetSomething1 implements MessageListener<String, byte[]> {
     private static final Logger logger = LoggerFactory.getLogger(GetSomething1.class);
 
-    private TransactionTemplate transactionTemplate;
-
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
-    }
-
     @Override
     public void onMessage(ConsumerRecord<String, byte[]> data) {
         logger.info("[第一个消费方法] 消息开始消费 " +
@@ -32,8 +26,6 @@ public class GetSomething1 implements MessageListener<String, byte[]> {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
-        System.out.println(transactionTemplate != null);
     }
 
     /*
