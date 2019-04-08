@@ -25,6 +25,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springversion>4.2.6.RELEASE</springversion>
         <slf4j_version>1.6.2</slf4j_version>
+        <druid_version>1.0.9</druid_version>
+        <mysql_version>5.1.33</mysql_version>
         <logback_version>1.0.6</logback_version>
         <jackson.version>2.6.6</jackson.version>
         <tomcatservletversion>8.5.4</tomcatservletversion>
@@ -117,9 +119,25 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${springversion}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${springversion}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql_version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>

@@ -6,10 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.listener.MessageListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class GetSomething1 implements MessageListener<String, byte[]> {
     private static final Logger logger = LoggerFactory.getLogger(GetSomething1.class);
+
+    private TransactionTemplate transactionTemplate;
+
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
 
     @Override
     public void onMessage(ConsumerRecord<String, byte[]> data) {
@@ -25,6 +32,8 @@ public class GetSomething1 implements MessageListener<String, byte[]> {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+
+        System.out.println(transactionTemplate != null);
     }
 
     /*

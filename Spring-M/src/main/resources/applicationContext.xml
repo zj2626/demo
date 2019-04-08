@@ -248,4 +248,56 @@
         </constructor-arg>
         <property name="concurrency" value="5"/>
     </bean>-->
+
+    <!--mysql事务-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${zj.database.url}"/>
+        <property name="username" value="${zj.database.username}"/>
+        <property name="password" value="${zj.database.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="5"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxActive" value="1000"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <!-- c3p0 checkoutTimeout default 0 -->
+        <property name="maxWait" value="${zj.database.pool.maxWait}"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <!-- c3p0 idleConnectionTestPeriod our config is 300s -->
+        <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <!-- c3p0 maxIdleTime out config is 30s -->
+        <property name="minEvictableIdleTimeMillis" value="30000"/>
+
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+        <!-- property name="testWhileIdle" value="false" / -->
+        <property name="testOnBorrow" value="true"/>
+        <!-- property name="testOnReturn" value="false" / -->
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <!-- property name="maxPoolPreparedStatementPerConnectionSize" value="20" / -->
+
+        <!-- 配置监控统计拦截的filters -->
+        <!-- property name="filters" value="stat" / -->
+        <property name="proxyFilters">
+            <list>
+                <bean class="com.alibaba.druid.filter.stat.StatFilter">
+                    <property name="mergeSql" value="true"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <!-- jdbc事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--事务模板 -->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <constructor-arg name="transactionManager" ref="transactionManager"/>
+    </bean>
 </beans>
