@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
@@ -205,9 +206,12 @@ public class DoSomething {
         try {
             System.out.println(transactionTemplate != null);
             System.out.println(transactionTemplate.getName());
-            System.out.println(transactionTemplate.getIsolationLevel());
-            System.out.println(transactionTemplate.getPropagationBehavior());
             System.out.println(transactionTemplate.getTimeout());
+            System.out.println(transactionTemplate.isReadOnly());
+            System.out.println(transactionTemplate.getPropagationBehavior());
+            System.out.println(transactionTemplate.getIsolationLevel());
+            System.out.println(TransactionDefinition.ISOLATION_DEFAULT);
+
 
             return true;
         } catch (Exception e) {
