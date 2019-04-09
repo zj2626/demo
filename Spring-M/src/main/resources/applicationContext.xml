@@ -296,7 +296,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
-    <!--事务模板 -->
+    <!--编程式事务管理 事务模板 -->
     <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
         <constructor-arg name="transactionManager" ref="transactionManager"/>
     </bean>

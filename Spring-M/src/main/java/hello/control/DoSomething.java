@@ -211,34 +211,29 @@ public class DoSomething {
     public boolean dotransaction(String codes) {
         doMakeLog();
 
+        System.out.println(transactionTemplate != null);
+        System.out.println("getName " + transactionTemplate.getName());
+        System.out.println("getTimeout " + transactionTemplate.getTimeout());
+        System.out.println("isReadOnly " + transactionTemplate.isReadOnly());
+        System.out.println("getPropagationBehavior " + transactionTemplate.getPropagationBehavior());
+        System.out.println("getIsolationLevel " + transactionTemplate.getIsolationLevel());
+        System.out.println("ISOLATION_DEFAULT " + TransactionDefinition.ISOLATION_DEFAULT);
+
+        String areaName = "北京";
+        System.out.println(areaName + ">>" + areaCodeService.queryCodeByName(areaName, 2, null));
+        final String[] codeList = codes.split(",");
+
         try {
-            System.out.println(transactionTemplate != null);
-            System.out.println("getName " + transactionTemplate.getName());
-            System.out.println("getTimeout " + transactionTemplate.getTimeout());
-            System.out.println("isReadOnly " + transactionTemplate.isReadOnly());
-            System.out.println("getPropagationBehavior " + transactionTemplate.getPropagationBehavior());
-            System.out.println("getIsolationLevel " + transactionTemplate.getIsolationLevel());
-            System.out.println("ISOLATION_DEFAULT " + TransactionDefinition.ISOLATION_DEFAULT);
-
-            String areaName = "北京";
-            System.out.println(areaName + ">>" + areaCodeService.queryCodeByName(areaName, 2, null));
-            final String[] codeList = codes.split(",");
-
             transactionTemplate.execute(new TransactionCallback<String>() {
 
                 @Override
                 public String doInTransaction(TransactionStatus transactionStatus) {
-                    try {
-                        Integer sum;
-                        for (String code : codeList) {
-                            sum = areaCodeService.removeArea(code);
-                            if (sum <= 0) {
-                                throw new RuntimeException("未删除");
-                            }
+                    Integer sum;
+                    for (String code : codeList) {
+                        sum = areaCodeService.removeArea(code);
+                        if (sum <= 0) {
+                            throw new RuntimeException("未删除");
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-//                    transactionStatus.setRollbackOnly();
                     }
 
                     return null;
@@ -247,8 +242,9 @@ public class DoSomething {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+//                    transactionStatus.setRollbackOnly();
         }
+        return false;
     }
 
     public void doMakeLog() {
