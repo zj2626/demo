@@ -92,6 +92,36 @@ public class MyController {
         return result;
     }
 
+    @RequestMapping("/transactionTX")
+    public BaseResult transactionTX(String code) {
+        BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        if(StringUtils.isNotEmpty(code)) {
+            try{
+                result.setSuccess(doSomething.dotransactionTX(code));
+            }catch (Exception e){
+                e.printStackTrace();
+                result.setSuccess(false);
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionAnnotation")
+    public BaseResult transactionAnnotation(String code) {
+        BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        if(StringUtils.isNotEmpty(code)) {
+            try{
+                result.setSuccess(doSomething.dotransactionAnnotation(code));
+            }catch (Exception e){
+                e.printStackTrace();
+                result.setSuccess(false);
+            }
+        }
+        return result;
+    }
+
     @RequestMapping("/fuck")
     public String fuck(String name) {
         System.out.println("fuck " + name);

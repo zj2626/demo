@@ -10,14 +10,14 @@ import hello.data.mapper.UCAreaDOMapper;
 import hello.data.model.UCAreaDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class AreaCodeService {
-    private static final Logger logger = LoggerFactory.getLogger(AreaCodeService.class);
+@Component
+public class AreaCodeDao {
+    private static final Logger logger = LoggerFactory.getLogger(AreaCodeDao.class);
     private static String[] provinceUnits = {"省", "自治区", "市", "特别行政区"}; // "新疆生产建设兵团"
     private static String[] cityUnits = {"市", "县", "自治县", "自治州", "地区"};
     private static String[] countyUnits = {"市", "辖区", "区", "县", "自治县"};

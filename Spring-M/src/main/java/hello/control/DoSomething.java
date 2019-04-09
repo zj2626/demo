@@ -4,7 +4,7 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
-import hello.data.service.AreaCodeService;
+import hello.data.service.AreaCodeDao;
 import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
 import org.slf4j.Logger;
@@ -16,8 +16,9 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -41,14 +42,14 @@ public class DoSomething {
     private MovieRecommender movieRecommender2;
 
     private TransactionTemplate transactionTemplate;
-    private AreaCodeService areaCodeService;
+    private AreaCodeDao areaCodeDao;
 
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         this.transactionTemplate = transactionTemplate;
     }
 
-    public void setAreaCodeService(AreaCodeService areaCodeService) {
-        this.areaCodeService = areaCodeService;
+    public void setAreaCodeDao(AreaCodeDao areaCodeDao) {
+        this.areaCodeDao = areaCodeDao;
     }
 
     public DoSomething() {
@@ -208,29 +209,22 @@ public class DoSomething {
         }
     }
 
+    /*编程式事务管理*/
     public boolean dotransaction(String codes) {
         doMakeLog();
 
-        System.out.println(transactionTemplate != null);
-        System.out.println("getName " + transactionTemplate.getName());
-        System.out.println("getTimeout " + transactionTemplate.getTimeout());
-        System.out.println("isReadOnly " + transactionTemplate.isReadOnly());
-        System.out.println("getPropagationBehavior " + transactionTemplate.getPropagationBehavior());
-        System.out.println("getIsolationLevel " + transactionTemplate.getIsolationLevel());
-        System.out.println("ISOLATION_DEFAULT " + TransactionDefinition.ISOLATION_DEFAULT);
-
         String areaName = "北京";
-        System.out.println(areaName + ">>" + areaCodeService.queryCodeByName(areaName, 2, null));
-        final String[] codeList = codes.split(",");
+        System.out.println(areaName + ">>" + areaCodeDao.queryCodeByName(areaName, 2, null));
 
+
+        final String[] codeList = codes.split(",");
         try {
             transactionTemplate.execute(new TransactionCallback<String>() {
 
                 @Override
                 public String doInTransaction(TransactionStatus transactionStatus) {
-                    Integer sum;
                     for (String code : codeList) {
-                        sum = areaCodeService.removeArea(code);
+                        Integer sum = areaCodeDao.removeArea(code);
                         if (sum <= 0) {
                             throw new RuntimeException("未删除");
                         }
@@ -245,6 +239,35 @@ public class DoSomething {
 //                    transactionStatus.setRollbackOnly();
         }
         return false;
+    }
+
+    /*声明式事务管理*/
+    public boolean dotransactionTX(String codes) {
+        doMakeLog();
+
+        String[] codeList = codes.split(",");
+        for (String code : codeList) {
+            Integer sum = areaCodeDao.removeArea(code);
+            if (sum <= 0) {
+                throw new RuntimeException("未删除");
+            }
+        }
+        return true;
+    }
+
+    /*声明式事务管理*/
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean dotransactionAnnotation(String codes) {
+        doMakeLog();
+
+        String[] codeList = codes.split(",");
+        for (String code : codeList) {
+            Integer sum = areaCodeDao.removeArea(code);
+            if (sum <= 0) {
+                throw new RuntimeException("未删除");
+            }
+        }
+        return true;
     }
 
     public void doMakeLog() {
