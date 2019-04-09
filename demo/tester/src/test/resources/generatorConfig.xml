@@ -7,7 +7,7 @@
 <generatorConfiguration>
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <plugin type="com.kdniao.mybatis.generator.plugin.mybatis.MysqlPaginationPlugin"></plugin>
+        <!--<plugin type="com.kdniao.mybatis.generator.plugin.mybatis.MysqlPaginationPlugin"></plugin>-->
 
         <!-- jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:xe" userId="wechatgateway"
             password="wechatgateway"> </jdbcConnection -->
@@ -27,7 +27,7 @@
         </javaModelGenerator>
 
         <!-- generate xml -->
-        <sqlMapGenerator targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal" targetProject="src\test\resources\META-INF\mybatis">
+        <sqlMapGenerator targetPackage="xml" targetProject="src\test\resources\META-INF\mybatis">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
@@ -37,7 +37,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="" tableName="uc_area" domainObjectName="ucAreaDO">
+        <table schema="" tableName="uc_area" domainObjectName="UcAreaDO">
             <property name="useActualColumnNames" value="false" />
         </table>
     </context>
