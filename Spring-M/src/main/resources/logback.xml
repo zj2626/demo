@@ -75,6 +75,9 @@
         <appender-ref ref="SM-FILE"/>
     </root>
 
+    <!--关闭某个包的日志-->
+    <logger name="o.a.k.c.c.i.AbstractCoordinator" level="OFF"/>
+
     <logger name="sm.test">
         <level value="INFO"/>
         <appender-ref ref="SM-TEST"/>

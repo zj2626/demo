@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class AreaCodeDao {
@@ -123,6 +124,45 @@ public class AreaCodeDao {
             return null;
         }
         return areaDOS.get(0).getAreaCode();
+    }
+
+    public List<UCAreaDO> getArea(String code) {
+        UCAreaDO areaDO = new UCAreaDO();
+        areaDO.setAreaCode(code);
+
+        try {
+            return areaDOMapper.findByEntity(areaDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Integer updateNameArea(String code, String name) {
+        UCAreaDO areaDO = new UCAreaDO();
+        areaDO.setAreaCode(code);
+        areaDO.setAreaName(name);
+
+        try {
+            return areaDOMapper.updateUCArea(areaDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Integer insertArea(String code, String name) {
+        UCAreaDO areaDO = new UCAreaDO();
+        areaDO.setId(UUID.randomUUID().toString());
+        areaDO.setAreaCode(code);
+        areaDO.setAreaName(name);
+
+        try {
+            return areaDOMapper.insertUCArea(areaDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Integer removeArea(String code) {

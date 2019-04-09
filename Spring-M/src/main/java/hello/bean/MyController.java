@@ -1,10 +1,7 @@
 package hello.bean;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
-import hello.control.BaseResult;
-import hello.control.DoSomething;
-import hello.control.InvokeCallback;
-import hello.control.InvokeTemplate;
+import hello.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
     @Autowired
     private DoSomething doSomething;
+    @Autowired
+    private DoSomethingForTransaction doSomethingForTransaction;
 
     private InvokeTemplate template = new InvokeTemplate();
 
@@ -82,11 +81,19 @@ public class MyController {
         return result;
     }
 
+    @RequestMapping("/fuck")
+    public String fuck(String name) {
+        System.out.println("fuck " + name);
+        System.out.println("fuck action");
+        System.out.println("fuck action action");
+        return "fff createCommand";
+    }
+
     @RequestMapping("/transaction")
     public BaseResult transaction(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
-        if(StringUtils.isNotEmpty(code)) {
+        if (StringUtils.isNotEmpty(code)) {
             result.setSuccess(doSomething.dotransaction(code));
         }
         return result;
@@ -96,10 +103,10 @@ public class MyController {
     public BaseResult transactionTX(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
-        if(StringUtils.isNotEmpty(code)) {
-            try{
+        if (StringUtils.isNotEmpty(code)) {
+            try {
                 result.setSuccess(doSomething.dotransactionTX(code));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 result.setSuccess(false);
             }
@@ -111,10 +118,10 @@ public class MyController {
     public BaseResult transactionAnnotation(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
-        if(StringUtils.isNotEmpty(code)) {
-            try{
+        if (StringUtils.isNotEmpty(code)) {
+            try {
                 result.setSuccess(doSomething.dotransactionAnnotation(code));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 result.setSuccess(false);
             }
@@ -122,11 +129,42 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/fuck")
-    public String fuck(String name) {
-        System.out.println("fuck " + name);
-        System.out.println("fuck action");
-        System.out.println("fuck action action");
-        return "fff createCommand";
+    /*先调用transactionB再调用transactionA,观察控制台输出结果中transactionB接口的打印数据的变化*/
+    @RequestMapping("/transactionA")
+    public BaseResult transactionA(String name) {
+        BaseResult result = new BaseResult();
+        try {
+            result.setSuccess(false);
+            result.setSuccess(doSomethingForTransaction.dotransactionTXA(name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionB")
+    public BaseResult transactionC() {
+        BaseResult result = new BaseResult();
+        try {
+            for (int i = 0; i < 28; i++) {
+                doSomethingForTransaction.dotransactionTXB();
+                Thread.sleep(500);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionC")
+    public BaseResult transactionB() {
+        BaseResult result = new BaseResult();
+        try {
+            result.setSuccess(true);
+            doSomethingForTransaction.dotransactionTXC();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

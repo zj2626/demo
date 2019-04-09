@@ -330,8 +330,12 @@
     <!--基于 <tx> 命名空间的声明式事务管理-->
     <tx:advice id="zjAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <!--<tx:method name="dotransaction" propagation="NOT_SUPPORTED"/>-->
-            <tx:method name="dotransactionTX" propagation="REQUIRED"/>
+            <!--<tx:method name="dotransactionTX" propagation="REQUIRED"/>-->
+            <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="DEFAULT"/>-->
+            <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="READ_UNCOMMITTED"/> &lt;!&ndash;读未提交,但会导致脏读&ndash;&gt;-->
+            <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="READ_COMMITTED"/>  &lt;!&ndash;读提交,但会导致不可重复读(多次读数据不一致)&ndash;&gt;-->
+            <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="REPEATABLE_READ"/> &lt;!&ndash;可重复读,但会导致幻读&ndash;&gt;-->
+            <tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="SERIALIZABLE"/>
         </tx:attributes>
     </tx:advice>
     <aop:config>

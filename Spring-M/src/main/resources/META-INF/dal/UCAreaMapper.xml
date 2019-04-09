@@ -32,7 +32,7 @@
                 area_name,
             </if>
             <if test="level != null">
-                level,
+                level
             </if>
 
         </trim>
@@ -67,11 +67,10 @@
     <update id="updateUCArea" parameterType="hello.data.model.UCAreaDO">
         update uc_area
         <set>
-            area_code=#{areaCode,jdbcType=VARCHAR},
             area_name=#{areaName,jdbcType=VARCHAR},
             level=#{level,jdbcType=INTEGER}
         </set>
-        where ID = #{id,jdbcType=BIGINT}
+        where area_code = #{areaCode,jdbcType=VARCHAR}
     </update>
 
     <!-- 批量更新 -->
