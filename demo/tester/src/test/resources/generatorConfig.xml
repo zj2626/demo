@@ -12,7 +12,7 @@
         <!-- jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:xe" userId="wechatgateway"
             password="wechatgateway"> </jdbcConnection -->
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.233:3306/settlementcenter_part1"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.233:3306/test"
                         userId="root" password="sql@kdn!123">
         </jdbcConnection>
 
@@ -21,23 +21,23 @@
         </javaTypeResolver>
 
         <!-- generate Model -->
-        <javaModelGenerator targetPackage="com.kdniao.settlementcenter.common.dal.model" targetProject="src\main\java">
+        <javaModelGenerator targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model" targetProject="src\test\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
         <!-- generate xml -->
-        <sqlMapGenerator targetPackage="com.kdniao.settlementcenter.common.dal" targetProject="src\main\resources\META-INF\mybatis">
+        <sqlMapGenerator targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal" targetProject="src\test\resources\META-INF\mybatis">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
         <!-- generate Mapper -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kdniao.settlementcenter.common.dal.mapper"
-                             targetProject="src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper"
+                             targetProject="src\test\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="" tableName="sc_stipple" domainObjectName="StippleDO">
+        <table schema="" tableName="uc_area" domainObjectName="ucAreaDO">
             <property name="useActualColumnNames" value="false" />
         </table>
     </context>
