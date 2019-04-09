@@ -4,6 +4,7 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
+import hello.data.service.AreaCodeService;
 import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
@@ -38,9 +41,14 @@ public class DoSomething {
     private MovieRecommender movieRecommender2;
 
     private TransactionTemplate transactionTemplate;
+    private AreaCodeService areaCodeService;
 
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         this.transactionTemplate = transactionTemplate;
+    }
+
+    public void setAreaCodeService(AreaCodeService areaCodeService) {
+        this.areaCodeService = areaCodeService;
     }
 
     public DoSomething() {
@@ -200,19 +208,42 @@ public class DoSomething {
         }
     }
 
-    public boolean dotransaction() {
+    public boolean dotransaction(String codes) {
         doMakeLog();
 
         try {
             System.out.println(transactionTemplate != null);
-            System.out.println(transactionTemplate.getName());
-            System.out.println(transactionTemplate.getTimeout());
-            System.out.println(transactionTemplate.isReadOnly());
-            System.out.println(transactionTemplate.getPropagationBehavior());
-            System.out.println(transactionTemplate.getIsolationLevel());
-            System.out.println(TransactionDefinition.ISOLATION_DEFAULT);
+            System.out.println("getName " + transactionTemplate.getName());
+            System.out.println("getTimeout " + transactionTemplate.getTimeout());
+            System.out.println("isReadOnly " + transactionTemplate.isReadOnly());
+            System.out.println("getPropagationBehavior " + transactionTemplate.getPropagationBehavior());
+            System.out.println("getIsolationLevel " + transactionTemplate.getIsolationLevel());
+            System.out.println("ISOLATION_DEFAULT " + TransactionDefinition.ISOLATION_DEFAULT);
 
+            String areaName = "北京";
+            System.out.println(areaName + ">>" + areaCodeService.queryCodeByName(areaName, 2, null));
+            final String[] codeList = codes.split(",");
 
+            transactionTemplate.execute(new TransactionCallback<String>() {
+
+                @Override
+                public String doInTransaction(TransactionStatus transactionStatus) {
+                    try {
+                        Integer sum;
+                        for (String code : codeList) {
+                            sum = areaCodeService.removeArea(code);
+                            if (sum <= 0) {
+                                throw new RuntimeException("未删除");
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+//                    transactionStatus.setRollbackOnly();
+                    }
+
+                    return null;
+                }
+            });
             return true;
         } catch (Exception e) {
             e.printStackTrace();

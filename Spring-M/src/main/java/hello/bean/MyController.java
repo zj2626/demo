@@ -1,5 +1,6 @@
 package hello.bean;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.BaseResult;
 import hello.control.DoSomething;
 import hello.control.InvokeCallback;
@@ -43,6 +44,7 @@ public class MyController {
         System.out.println("into control");
 
         final BaseResult result = new BaseResult();
+        result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
             @Override
             public void checkParameters() {
@@ -63,6 +65,7 @@ public class MyController {
     @RequestMapping("/kafka")
     public BaseResult kafka(String same) {
         final BaseResult result = new BaseResult();
+        result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
             @Override
             public void checkParameters() {
@@ -80,21 +83,12 @@ public class MyController {
     }
 
     @RequestMapping("/transaction")
-    public BaseResult transaction(String same) {
-        final BaseResult result = new BaseResult();
-        this.template.invoke(result, new InvokeCallback() {
-            @Override
-            public void checkParameters() {
-
-            }
-
-
-            @Override
-            public void doInvoke() {
-                result.setSuccess(doSomething.dotransaction());
-            }
-        });
-
+    public BaseResult transaction(String code) {
+        BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        if(StringUtils.isNotEmpty(code)) {
+            result.setSuccess(doSomething.dotransaction(code));
+        }
         return result;
     }
 
