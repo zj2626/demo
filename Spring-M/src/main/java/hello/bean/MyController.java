@@ -3,6 +3,8 @@ package hello.bean;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +14,8 @@ public class MyController {
     private DoSomething doSomething;
     @Autowired
     private DoSomethingForTransaction doSomethingForTransaction;
+    @Autowired
+    private DoSomethingProxy doSomethingProxy;
 
     private InvokeTemplate template = new InvokeTemplate();
 
@@ -143,7 +147,7 @@ public class MyController {
     }
 
     @RequestMapping("/transactionB")
-    public BaseResult transactionC() {
+    public BaseResult transactionB() {
         BaseResult result = new BaseResult();
         try {
             for (int i = 0; i < 28; i++) {
@@ -157,11 +161,25 @@ public class MyController {
     }
 
     @RequestMapping("/transactionC")
-    public BaseResult transactionB() {
+    public BaseResult transactionC() {
         BaseResult result = new BaseResult();
         try {
             result.setSuccess(true);
             doSomethingForTransaction.dotransactionTXC();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionD")
+    public BaseResult transactionD(String name) {
+        BaseResult result = new BaseResult();
+        try {
+            result.setSuccess(true);
+            doSomethingProxy.tranA(name);
+//            doSomethingProxy.tranB(name);
+//            doSomethingProxy.tranC(name);
         } catch (Exception e) {
             e.printStackTrace();
         }
