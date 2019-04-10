@@ -61,7 +61,8 @@ public class DoSomethingForTransaction {
     public String dotransactionTXC() {
         try {
             for (int i = 0; i < 28; i++) {
-                System.out.println(areaCodeDao.getArea("231282022").get(0).getAreaName());
+                List<UCAreaDO>  list = areaCodeDao.getArea("231282022");
+                System.out.println(list.get(0).getAreaName() + " | " + list.size());
                 Thread.sleep(500);
             }
         } catch (Exception e) {
