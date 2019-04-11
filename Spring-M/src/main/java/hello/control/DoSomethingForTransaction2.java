@@ -14,17 +14,15 @@ public class DoSomethingForTransaction2 {
     }
 
     public DoSomethingForTransaction2() {
-        System.out.println("DoSomethingForTransaction FFF");
+        System.out.println("DoSomethingForTransaction2");
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void doTranTXY(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XY---- " + i);
-                areaCodeDao.updateNameArea("310105005", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -35,11 +33,9 @@ public class DoSomethingForTransaction2 {
     @Transactional(propagation = Propagation.REQUIRED)
     public void doTranTXY_New(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XY---- " + i);
-                areaCodeDao.updateNameArea("310105005", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -50,15 +46,65 @@ public class DoSomethingForTransaction2 {
     @Transactional(propagation = Propagation.NESTED)
     public void doTranTXY_Nested(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XY---- " + i);
-                areaCodeDao.updateNameArea("310105005", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         throw new RuntimeException("FFFFFF");
     }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void doTranTXY_Mandatory(String name) {
+        try {
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void doTranTXY_Supports(String name) {
+        try {
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void doTranTXY_NotSupport(String name) {
+        try {
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+    @Transactional(propagation = Propagation.NEVER)
+    public void doTranTXY_Never(String name) {
+        try {
+            System.out.println("XY---- ");
+            areaCodeDao.updateNameArea("310105005", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+
 }

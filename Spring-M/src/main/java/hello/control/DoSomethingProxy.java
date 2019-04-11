@@ -19,6 +19,7 @@ public class DoSomethingProxy {
     }
 
     //  UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only
+    //  IllegalTransactionStateException: No existing transaction found for transaction marked with propagation 'mandatory'
 
     /**
      * Propagation.REQUIRED: 如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。
@@ -71,6 +72,80 @@ public class DoSomethingProxy {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    /**
+     * Propagation.MANDATORY: 如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。
+     * <p>
+     * 必须外围方法开启事务,并且
+     * 在外围方法开启事务的情况下Propagation.MANDATORY修饰的内部方法会加入到外围方法的事务中，所有Propagation.MANDATORY修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚
+     */
+    @Transactional
+    public void tranD(String name) {
+        doSomethingForTransaction.doTranTXX_Mandatory(name);
+
+//        try {
+        doSomethingForTransaction2.doTranTXY_Mandatory(name);
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    /**
+     * Propagation.SUPPORTS: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
+     * <p>
+     * 外围没有开启事务情况下,Propagation.SUPPORTS修饰的内部方法以非事务的方式运行
+     * 在外围方法开启事务的情况下Propagation.SUPPORTS修饰的内部方法会加入到外围方法的事务中，所有Propagation.SUPPORTS修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚
+     */
+//    @Transactional
+    public void tranE(String name) {
+        doSomethingForTransaction.doTranTXX_Supports(name);
+
+//        try {
+        doSomethingForTransaction2.doTranTXY_Supports(name);
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+
+    /**
+     * Propagation.NOT_SUPPORTED: 以非事务方式运行，如果当前存在事务，则把当前事务挂起。
+     * <p>
+     * 等于不开事务
+     */
+    @Transactional
+    public void tranF(String name) {
+        doSomethingForTransaction.doTranTXX_NotSupport(name);
+
+//        try {
+        doSomethingForTransaction2.doTranTXY_NotSupport(name);
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
+
+        throw new RuntimeException("FFFFFF");
+    }
+
+    /**
+     * Propagation.NEVER: 以非事务方式运行，如果当前存在事务，则抛出异常。
+     * <p>
+     * 禁止开事务, 如果外围有事务则抛异常
+     */
+    @Transactional
+    public void tranG(String name) {
+        doSomethingForTransaction.doTranTXX_Never(name);
+
+//        try {
+//            doSomethingForTransaction2.doTranTXY_Never(name);
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
 
 //        throw new RuntimeException("FFFFFF");
     }

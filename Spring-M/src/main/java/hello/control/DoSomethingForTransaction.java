@@ -18,7 +18,7 @@ public class DoSomethingForTransaction {
     }
 
     public DoSomethingForTransaction() {
-        System.out.println("DoSomethingForTransaction FFF");
+        System.out.println("DoSomethingForTransaction");
     }
 
     /*先调用transactionB再调用transactionA,观察控制台输出结果中transactionB接口的打印数据的变化*/
@@ -71,14 +71,14 @@ public class DoSomethingForTransaction {
         return null;
     }
 
+    /*******************************************************/
+
     @Transactional(propagation = Propagation.REQUIRED)
     public void doTranTXX(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XX++++ " + i);
-                areaCodeDao.updateNameArea("232723004", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -89,11 +89,9 @@ public class DoSomethingForTransaction {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void doTranTXX_New(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XX++++ " + i);
-                areaCodeDao.updateNameArea("232723004", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -104,11 +102,61 @@ public class DoSomethingForTransaction {
     @Transactional(propagation = Propagation.NESTED)
     public void doTranTXX_Nested(String name) {
         try {
-            for (int i = 0; i < 2; i++) {
-                System.out.println("XX++++ " + i);
-                areaCodeDao.updateNameArea("232723004", name + "---" + i);
-                Thread.sleep(200);
-            }
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void doTranTXX_Mandatory(String name) {
+        try {
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void doTranTXX_Supports(String name) {
+        try {
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void doTranTXX_NotSupport(String name) {
+        try {
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public void doTranTXX_Never(String name) {
+        try {
+            System.out.println("XX---- ");
+            areaCodeDao.updateNameArea("232723004", name + "---");
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
