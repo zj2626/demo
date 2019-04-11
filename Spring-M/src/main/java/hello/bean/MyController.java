@@ -2,12 +2,15 @@ package hello.bean;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.*;
+import hello.spring.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Scope("prototype")
 @RestController
 public class MyController {
     @Autowired
@@ -16,6 +19,9 @@ public class MyController {
     private DoSomethingForTransaction doSomethingForTransaction;
     @Autowired
     private DoSomethingProxy doSomethingProxy;
+
+    @Autowired
+    private DemoService demoService;
 
     private InvokeTemplate template = new InvokeTemplate();
 
@@ -202,5 +208,20 @@ public class MyController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /***********************************/
+
+    @RequestMapping("/setN")
+    public String seta(int n) {
+        System.out.println(demoService.hashCode());
+        demoService.setNum(n);
+        return "";
+    }
+
+    @RequestMapping("/getN")
+    public String geta() {
+        System.out.println(demoService.hashCode());
+        return "" + demoService.getNum();
     }
 }
