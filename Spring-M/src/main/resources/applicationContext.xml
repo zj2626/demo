@@ -330,7 +330,15 @@
     <!--基于 <tx> 命名空间的声明式事务管理-->
     <tx:advice id="zjAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <!--<tx:method name="dotransactionTX" propagation="REQUIRED"/>-->
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+
             <tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="DEFAULT"/> <!--DEFAULT == REPEATABLE_READ-->
             <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="READ_UNCOMMITTED"/> &lt;!&ndash;读未提交,但会导致脏读&ndash;&gt;-->
             <!--<tx:method name="dotransactionTX*" propagation="REQUIRED" isolation="READ_COMMITTED"/>  &lt;!&ndash;读提交,但会导致不可重复读(多次读数据不一致)&ndash;&gt;-->
@@ -347,4 +355,6 @@
     <!--Spring 使用 BeanPostProcessor 来处理 Bean 中的标注-->
     <!--@Transactional 注解只能被应用到 public 方法上-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--<aop:aspectj-autoproxy proxy-target-class="true" /> &lt;!&ndash;expose-proxy="true"&ndash;&gt;-->
 </beans>

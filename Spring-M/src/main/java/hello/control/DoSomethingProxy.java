@@ -149,4 +149,34 @@ public class DoSomethingProxy {
 
 //        throw new RuntimeException("FFFFFF");
     }
+
+    /*****************************/
+
+//     @Transactional  // 有效 和其他事务方法相同
+    public void transactionFunctionA(String name) {
+        doSomethingForTransaction.doTranTXW(name);
+
+        transactionFunctionB(name);
+
+//        throw new RuntimeException("FFFFFF");
+    }
+
+    /**
+     * 我们知道，Spring之所以可以对开启@Transactional的方法进行事务管理，是因为Spring为当前类生成了一个代理类，
+     * 然后在执行相关方法时，会判断这个方法有没有@Transactional注解，如果有的话，则会开启一个事务。
+     * 但是，上面这种调用方式时，在调用baz()时，使用的并不是代理对象，从而导致this.bar()时也不是代码对象，
+     * 从而导致@Transactional失败。
+     */
+    @Transactional
+    public void transactionFunctionB(String name) {
+        doSomethingForTransaction.doTranTXX(name);
+
+//        try {
+        doSomethingForTransaction2.doTranTXY(name);
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//        }
+
+//        throw new RuntimeException("FFFFFF");
+    }
 }

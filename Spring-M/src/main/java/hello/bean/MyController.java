@@ -177,14 +177,27 @@ public class MyController {
         BaseResult result = new BaseResult();
         try {
             result.setSuccess(true);
-//            doSomethingProxy.tranA(name);
+            doSomethingProxy.tranA(name);
 //            doSomethingProxy.tranB(name);
 //            doSomethingProxy.tranC(name);
 //            doSomethingProxy.tranD(name);
 //            doSomethingProxy.tranE(name);
 //            doSomethingProxy.tranF(name);
-            doSomethingProxy.tranG(name);
+//            doSomethingProxy.tranG(name);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionE")
+    public BaseResult transactionE(String name) {
+        BaseResult result = new BaseResult();
+        try {
+            result.setSuccess(true);
+            doSomethingProxy.transactionFunctionA(name);
+//            doSomethingProxy.transactionFunctionB(name);
         } catch (Exception e) {
             e.printStackTrace();
         }

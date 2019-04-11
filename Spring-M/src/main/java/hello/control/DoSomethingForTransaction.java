@@ -71,6 +71,11 @@ public class DoSomethingForTransaction {
         return null;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void doTranTXW(String name) {
+        areaCodeDao.updateNameArea("430104002", name + "---");
+    }
+
     /*******************************************************/
 
     @Transactional(propagation = Propagation.REQUIRED)
