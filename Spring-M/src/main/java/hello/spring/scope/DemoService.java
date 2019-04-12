@@ -1,4 +1,4 @@
-package hello.spring;
+package hello.spring.scope;
 
 
 import org.springframework.context.annotation.Scope;

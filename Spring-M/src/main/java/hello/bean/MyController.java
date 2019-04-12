@@ -2,15 +2,13 @@ package hello.bean;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.*;
-import hello.spring.DemoService;
+import hello.spring.scope.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Scope("prototype")
+//@Scope("prototype")
 @RestController
 public class MyController {
     @Autowired
