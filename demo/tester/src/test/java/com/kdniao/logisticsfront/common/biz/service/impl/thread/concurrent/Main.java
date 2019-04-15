@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

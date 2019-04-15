@@ -17,7 +17,7 @@ public class ThreadPool {
      */
     @Test
     public void test1() {
-        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+        ExecutorService executor = Executors.newCachedThreadPool();
         for (int i = 0; i < 10; i++) {
             final String info = "first for";
             final int index = i;
@@ -27,7 +27,7 @@ public class ThreadPool {
                 e.printStackTrace();
             }
 
-            cachedThreadPool.execute(new Runnable() {
+            executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     System.out.println(info + " >>> " + index);
@@ -46,10 +46,10 @@ public class ThreadPool {
      */
     @Test
     public void test2() {
-        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
         for (int i = 0; i < 10; i++) {
             final int index = i;
-            fixedThreadPool.execute(new Runnable() {
+            executor.execute(new Runnable() {
 
                 @Override
                 public void run() {
@@ -77,10 +77,10 @@ public class ThreadPool {
      */
     @Test
     public void test3() {
-        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
 
         // 延迟4秒执行
-        scheduledThreadPool.schedule(new Runnable() {
+        executor.schedule(new Runnable() {
             @Override
             public void run() {
                 System.out.println("delay 4 seconds");
@@ -88,7 +88,7 @@ public class ThreadPool {
         }, 4, TimeUnit.SECONDS);
 
         // 延迟5秒开始 定期执行,每1秒一次
-        scheduledThreadPool.scheduleAtFixedRate(new Runnable() {
+        executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 System.out.println("delay 5 seconds, and excute every 1 seconds");
@@ -109,10 +109,10 @@ public class ThreadPool {
      */
     @Test
     public void test4() {
-        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         for (int i = 0; i < 10; i++) {
             final int index = i;
-            singleThreadExecutor.execute(new Runnable() {
+            executor.execute(new Runnable() {
 
                 @Override
                 public void run() {

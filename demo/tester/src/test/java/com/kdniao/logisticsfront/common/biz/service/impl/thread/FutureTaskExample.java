@@ -41,7 +41,7 @@ public class FutureTaskExample {
 
                 System.out.println("得到FutureTask2结果: " + futureTask2.get(1L, TimeUnit.SECONDS));
             } catch (Exception e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
     }

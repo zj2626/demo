@@ -1,41 +1,33 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.thread;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 public class CallDemo {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        CallableImpl callableImpl = new CallableImpl();
+        ExecutorService executor = Executors.newCachedThreadPool();
 
         /**
          * 第一种方式:Future + ExecutorService
-         * Task task = new Task();
-         * ExecutorService service = Executors.newCachedThreadPool();
-         * Future<Integer> future = service.submit(task1);
-         * service.shutdown();
          */
-
+//        Future<Integer> futureTask = executor.submit(callableImpl);
 
         /**
          * 第二种方式: FutureTask + ExecutorService
-         * ExecutorService executor = Executors.newCachedThreadPool();
-         * Task task = new Task();
-         * FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
-         * executor.submit(futureTask);
-         * executor.shutdown();
          */
+        FutureTask<Integer> futureTask = new FutureTask<>(callableImpl);
+        executor.submit(futureTask);
 
         /**
          * 第三种方式:FutureTask + Thread
          */
+//        FutureTask<Integer> futureTask = new FutureTask<Integer>(callableImpl);
+//        Thread thread = new Thread(futureTask);
+//        thread.setName("CallableImpl thread");
+//        thread.start();
 
-        // 2. 新建FutureTask,需要一个实现了Callable接口的类的实例作为构造函数参数
-        FutureTask<Integer> futureTask = new FutureTask<Integer>(new Task());
-        // 3. 新建Thread对象并启动
-        Thread thread = new Thread(futureTask);
-        thread.setName("Task thread");
-        thread.start();
+        executor.shutdown();
 
         try {
             Thread.sleep(1000);
@@ -47,7 +39,7 @@ public class CallDemo {
 
         // 4. 调用isDone()判断任务是否结束
         if (!futureTask.isDone()) {
-            System.out.println("Task is not done");
+            System.out.println("CallableImpl is not done");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -66,8 +58,8 @@ public class CallDemo {
 
     }
 
-    // 1. 继承Callable接口,实现call()方法,泛型参数为要返回的类型
-    static class Task implements Callable<Integer> {
+    // 继承Callable接口,实现call()方法,泛型参数为要返回的类型
+    static class CallableImpl implements Callable<Integer> {
 
         @Override
         public Integer call() throws Exception {
