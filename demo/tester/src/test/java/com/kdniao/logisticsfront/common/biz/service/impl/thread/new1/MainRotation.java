@@ -78,7 +78,6 @@ class PrintWay {
             while (true) {
                 Thread.sleep(500);
 
-                System.out.println(flag);
                 if (flag == 0) {
                     System.out.println("A");
                     flag = 1;
@@ -94,7 +93,6 @@ class PrintWay {
             while (true) {
                 Thread.sleep(500);
 
-                System.out.println(flag);
                 if (flag == 1) {
                     System.out.println("B");
                     flag = 2;
@@ -110,7 +108,6 @@ class PrintWay {
             while (true) {
                 Thread.sleep(500);
 
-                System.out.println(flag);
                 if (flag == 2) {
                     System.out.println("C");
                     flag = 0;
