@@ -52,7 +52,6 @@ class RunClass6 implements Runnable {
                     e.printStackTrace();
                 }
 
-                System.out.println("RunClass6 " + printerNum.num);
                 if (printerNum.num % 3 == 0) {
                     System.out.println("RunClass6 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
                     printerNum.notifyAll();
@@ -93,7 +92,6 @@ class RunClass7 implements Runnable {
                     e.printStackTrace();
                 }
 
-                System.out.println("RunClass7 " + printerNum.num);
                 if (printerNum.num % 3 == 1) {
                     System.out.println("RunClass7 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
                     printerNum.notifyAll();
@@ -134,7 +132,6 @@ class RunClass8 implements Runnable {
                     e.printStackTrace();
                 }
 
-                System.out.println("RunClass8 " + printerNum.num);
                 if (printerNum.num % 3 == 2) {
                     System.out.println("RunClass8 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
                     printerNum.notifyAll();
@@ -160,7 +157,6 @@ class PrinterNum {
 //                    e.printStackTrace();
 //                }
 //
-//                System.out.println(num);
 //                if (num % 3 == 0) {
 //                    System.out.println(Thread.currentThread().getName() + " <> " + num++);
 //                    notifyAll();
@@ -180,7 +176,6 @@ class PrinterNum {
 //                    e.printStackTrace();
 //                }
 //
-//                System.out.println(num);
 //                if (num % 3 == 1) {
 //                    System.out.println(Thread.currentThread().getName() + " <> " + num++);
 //                    notifyAll();
@@ -200,7 +195,6 @@ class PrinterNum {
 //                    e.printStackTrace();
 //                }
 //
-//                System.out.println(num);
 //                if (num % 3 == 2) {
 //                    System.out.println(Thread.currentThread().getName() + " <> " + num++);
 //                    notifyAll();
