@@ -6,7 +6,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class LockWays {
+/**
+ * 重入锁: 三种实现方式
+ */
+public class LockWaysCompare {
 
     /**
      * lock
@@ -16,7 +19,7 @@ public class LockWays {
     public void test() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWays.Job(reentrantLock));
+            Thread thread = new Thread(new LockWaysCompare.Job(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
@@ -62,7 +65,7 @@ public class LockWays {
     public void test2() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWays.Job2(reentrantLock));
+            Thread thread = new Thread(new LockWaysCompare.Job2(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
@@ -108,7 +111,7 @@ public class LockWays {
     public void test3() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWays.Job3(reentrantLock));
+            Thread thread = new Thread(new LockWaysCompare.Job3(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
@@ -132,6 +135,7 @@ public class LockWays {
             for (int i = 0; i < 2; i++) {
                 try {
                     boolean tryLock = lock.tryLock(500, TimeUnit.MILLISECONDS);
+//                    boolean tryLock = lock.tryLock(0, TimeUnit.MILLISECONDS);
 //                    boolean tryLock = lock.tryLock();
                     System.out.println(i + "**" + Thread.currentThread().getName() + "**" + tryLock);
 

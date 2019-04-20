@@ -5,16 +5,20 @@ import org.junit.Test;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockTest {
+/**
+ * 重入锁: 公平锁 非公平锁
+ */
+public class ReentrantLockDemoFairAndNotFair {
 
     @Test
     public void testFair() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock(true);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 50; i++) {
             Thread thread = new Thread(new Job(reentrantLock));
             thread.setName("" + i);
             thread.start();
-//            Thread.sleep(50);
+
+            Thread.sleep(10);
         }
 
         Thread.sleep(5000);
@@ -23,11 +27,12 @@ public class ReentrantLockTest {
     @Test
     public void testNotFair() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 50; i++) {
             Thread thread = new Thread(new Job(reentrantLock));
             thread.setName("" + i);
             thread.start();
-//            Thread.sleep(50);
+
+            Thread.sleep(10);
         }
 
         Thread.sleep(10000);
@@ -42,11 +47,12 @@ public class ReentrantLockTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 1; i++) {
                 try {
-//                    Thread.sleep(50);
 
                     lock.lock();
+
+                    Thread.sleep(50);
 
                     System.out.println("Lock by:" + i + " -> " + Thread.currentThread().getName());
 

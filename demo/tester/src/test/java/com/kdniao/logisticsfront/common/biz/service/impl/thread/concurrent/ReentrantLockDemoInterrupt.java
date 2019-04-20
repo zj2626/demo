@@ -2,18 +2,21 @@ package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockDemo2 implements Runnable {
+/**
+ * 重入锁 中断 中断机制
+ */
+public class ReentrantLockDemoInterrupt implements Runnable {
     private static ReentrantLock reentrantLock_1 = new ReentrantLock();
     private static ReentrantLock reentrantLock_2 = new ReentrantLock();
     private int lock;
 
-    public ReentrantLockDemo2(int lock) {
+    public ReentrantLockDemoInterrupt(int lock) {
         this.lock = lock;
     }
 
     public static void main(String[] args) throws InterruptedException {
-        ReentrantLockDemo2 rd = new ReentrantLockDemo2(1);
-        ReentrantLockDemo2 rd2 = new ReentrantLockDemo2(2);
+        ReentrantLockDemoInterrupt rd = new ReentrantLockDemoInterrupt(1);
+        ReentrantLockDemoInterrupt rd2 = new ReentrantLockDemoInterrupt(2);
 
         Thread thread = new Thread(rd);
         Thread thread2 = new Thread(rd2);
@@ -23,6 +26,7 @@ public class ReentrantLockDemo2 implements Runnable {
 
         Thread.sleep(2000);
 
+        //ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制
         thread2.interrupt();
 
         thread.join();
@@ -33,8 +37,8 @@ public class ReentrantLockDemo2 implements Runnable {
     public void run() {
         try {
             if (lock == 1) {
-                // rd 进入
-                reentrantLock_1.lockInterruptibly();
+                System.out.println("rd 进入");
+                reentrantLock_1.lock();
                 try {
                     Thread.sleep(500);
                 } catch (Exception e) {
@@ -43,7 +47,7 @@ public class ReentrantLockDemo2 implements Runnable {
                 System.out.println("\ndo some 1\n");
 
             } else {
-                // rd2 进入
+                System.out.println("rd2 进入");
                 reentrantLock_2.lockInterruptibly();
                 try {
                     Thread.sleep(500);

@@ -2,12 +2,15 @@ package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockDemo implements Runnable {
+/**
+ * 重入锁 初试
+ */
+public class ReentrantLockDemoLock implements Runnable {
     private ReentrantLock lock = new ReentrantLock();
     private int i = 0;
 
     public static void main(String[] args) throws InterruptedException {
-        ReentrantLockDemo rd = new ReentrantLockDemo();
+        ReentrantLockDemoLock rd = new ReentrantLockDemoLock();
 
         Thread thread = new Thread(rd);
         Thread thread2 = new Thread(rd);
