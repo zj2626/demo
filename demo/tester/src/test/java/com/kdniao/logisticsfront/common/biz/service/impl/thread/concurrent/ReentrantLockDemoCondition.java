@@ -8,10 +8,16 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ReentrantLockDemoCondition implements Runnable {
     private static ReentrantLock reentrantLock = new ReentrantLock();
-    private static Condition condition = reentrantLock.newCondition();
+    private static Condition conditionA = reentrantLock.newCondition();
+    private static Condition conditionB = reentrantLock.newCondition();
+    private boolean ifBlock;
+
+    public ReentrantLockDemoCondition(boolean ifBlock) {
+        this.ifBlock = ifBlock;
+    }
 
     public static void main(String[] args) throws InterruptedException {
-        ReentrantLockDemoCondition rd = new ReentrantLockDemoCondition();
+        ReentrantLockDemoCondition rd = new ReentrantLockDemoCondition(true);
 
         Thread thread = new Thread(rd);
         Thread thread2 = new Thread(rd);
@@ -23,36 +29,40 @@ public class ReentrantLockDemoCondition implements Runnable {
         thread3.start();
         thread4.start();
 
-        Thread.sleep(100);
-        reentrantLock.lock();
-        System.out.println("\nF-----------");
-        condition.signal();
-        reentrantLock.unlock();
+        if (rd.ifBlock) {
+            Thread.sleep(5000);
+            System.out.println("\n开始激活block的线程...");
+            reentrantLock.lock();
+            System.out.println("\nF-----------");
+            conditionA.signal();
+            reentrantLock.unlock();
 
-        Thread.sleep(100);
-        reentrantLock.lock();
-        System.out.println("\nF-----------");
-        condition.signal();
-        reentrantLock.unlock();
+            Thread.sleep(1000);
+            reentrantLock.lock();
+            System.out.println("\nF-----------");
+            conditionA.signal();
+            reentrantLock.unlock();
 
-        Thread.sleep(100);
-        reentrantLock.lock();
-        System.out.println("\nF-----------");
-        condition.signal();
-        reentrantLock.unlock();
+            Thread.sleep(1000);
+            reentrantLock.lock();
+            System.out.println("\nF-----------");
+            conditionA.signal();
+            reentrantLock.unlock();
 
-        Thread.sleep(100);
-        reentrantLock.lock();
-        System.out.println("\nF-----------");
-        condition.signal();
-        reentrantLock.unlock();
+            Thread.sleep(1000);
+            reentrantLock.lock();
+            System.out.println("\nF-----------");
+            conditionA.signal();
+            reentrantLock.unlock();
 
-        // 可以使用signalAll唤醒所有的线程[相当于notifyAll()]
-//        Thread.sleep(100);
-//        reentrantLock.lock();
-//        System.out.println("\nF-----------");
-//        condition.signalAll();
-//        reentrantLock.unlock();
+            // 可以使用signalAll唤醒所有的线程[相当于notifyAll()]
+//            Thread.sleep(3000);
+//            reentrantLock.lock();
+//            System.out.println("\nF--22222222222222222222222222---------");
+//            conditionB.signalAll();
+//            reentrantLock.unlock();
+
+        }
 
         thread.join();
         thread2.join();
@@ -64,16 +74,22 @@ public class ReentrantLockDemoCondition implements Runnable {
     public void run() {
         try {
             reentrantLock.lock();
-            for (int i = 0; i < 3; i++) {
-                Thread.sleep(200);
 
+            // System.out.println(reentrantLock.hashCode()); 除了semaphore,都是同时只允许一个线程获得锁
+
+            for (int i = 0; i < 4; i++) {
+                Thread.sleep(100);
 
                 System.out.println(Thread.currentThread().getName() + " A " + i);
-                if (i == 1) {
+                Thread.sleep(200);
+                if (ifBlock && i == 2) {
                     // 当线程使用condition.await()的时候，要求线程持有相关的锁，当线程调用condition.await()之后，这个线程会释放持有的锁，并进入等待状态[相当于wait()[相当于notify()]]; 需要执行signal()进行唤醒
-                    condition.await();
-//                    wait();
+                    conditionA.await();
                 }
+//                if (ifBlock && i == 3) {
+//                    conditionB.await();
+//                }
+
                 System.out.println(Thread.currentThread().getName() + " B " + i);
 
                 System.out.println(Thread.currentThread().getName() + " do some " + i);
@@ -81,6 +97,7 @@ public class ReentrantLockDemoCondition implements Runnable {
         } catch (Exception ignored) {
         } finally {
             System.out.println(Thread.currentThread().getName() + " release " + "\n");
+
             reentrantLock.unlock();
         }
     }
