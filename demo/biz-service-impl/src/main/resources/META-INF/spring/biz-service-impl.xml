@@ -15,4 +15,6 @@
 	<dubbo:service interface="com.kdniao.logisticsgw.common.service.gateway.OnlineOrderExterfaceInvoker" ref="onlineOrderExterfaceInvoker" group="${dubbo.integration_group.logisticsfront:logisticsfront}.DEMO-0" />
 	<dubbo:service interface="com.kdniao.logisticsgw.common.service.gateway.CancelOrderExterfaceInvoker" ref="cancelOrderExterfaceInvoker" group="${dubbo.integration_group.logisticsfront:logisticsfront}.DEMO-1004" />
 	<dubbo:service interface="com.kdniao.logisticsgw.common.service.gateway.CancelOrderExterfaceInvoker" ref="cancelOrderExterfaceInvoker" group="${dubbo.integration_group.logisticsfront:logisticsfront}.DEMO-1147" />
+
+	<dubbo:service interface="com.kdniao.logisticsgw.common.service.gateway.ElectronOrderExterfaceInvoker" ref="electronOrderExterfaceInvoker" group="${dubbo.integration_group.logisticsfront:logisticsfront}.LB-1007" />
 </beans>
