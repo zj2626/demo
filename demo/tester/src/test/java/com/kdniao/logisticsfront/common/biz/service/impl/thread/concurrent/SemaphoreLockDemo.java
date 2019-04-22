@@ -1,12 +1,12 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 信号量：Semaphore  :信号量允许多个线程同时访问同一个资源
  */
 public class SemaphoreLockDemo implements Runnable {
+    private Integer i = 0;
     private boolean ifBlock;
 
     public SemaphoreLockDemo(boolean ifBlock) {
@@ -37,10 +37,13 @@ public class SemaphoreLockDemo implements Runnable {
         thread2.join();
         thread3.join();
         thread4.join();
+
+        System.out.println(rd.i);
     }
 
     @Override
     public void run() {
+        // option one
         try {
             semaphore.acquire();
 
@@ -58,11 +61,24 @@ public class SemaphoreLockDemo implements Runnable {
 
                 System.out.println(Thread.currentThread().getName() + " do some " + i);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             System.out.println(Thread.currentThread().getName() + " release " + "\n");
 
             semaphore.release();
         }
+
+        // option two
+        /*for (int j = 0; j < 100000; j++) {
+            try {
+                semaphore.acquire();
+                i++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                semaphore.release();
+            }
+        }*/
     }
 }
