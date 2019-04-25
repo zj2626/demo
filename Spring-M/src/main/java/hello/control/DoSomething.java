@@ -270,7 +270,7 @@ public class DoSomething {
         return true;
     }
 
-    public void doMakeLog() {
+    private void doMakeLog() {
         /*测试logback*/
 
 //        long len = 1024;

@@ -2,9 +2,13 @@ package hello.bean;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.*;
+import hello.lock.LockServiceA;
+import hello.lock.LockServiceB;
 import hello.spring.scope.DemoService;
+import hello.transaction.DoSomethingForTransaction;
+import hello.transaction.DoSomethingProxy;
+import hello.transaction.DoTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +21,14 @@ public class MyController {
     private DoSomethingForTransaction doSomethingForTransaction;
     @Autowired
     private DoSomethingProxy doSomethingProxy;
-
+    @Autowired
+    private DoTransaction doTransaction;
     @Autowired
     private DemoService demoService;
+    @Autowired
+    private LockServiceA lockServiceA;
+    @Autowired
+    private LockServiceB lockServiceB;
 
     private InvokeTemplate template = new InvokeTemplate();
 
@@ -102,7 +111,7 @@ public class MyController {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
         if (StringUtils.isNotEmpty(code)) {
-            result.setSuccess(doSomething.dotransaction(code));
+            result.setSuccess(doTransaction.dotransaction(code));
         }
         return result;
     }
@@ -113,7 +122,7 @@ public class MyController {
         result.setSuccess(false);
         if (StringUtils.isNotEmpty(code)) {
             try {
-                result.setSuccess(doSomething.dotransactionTX(code));
+                result.setSuccess(doTransaction.dotransactionTX(code));
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setSuccess(false);
@@ -128,7 +137,7 @@ public class MyController {
         result.setSuccess(false);
         if (StringUtils.isNotEmpty(code)) {
             try {
-                result.setSuccess(doSomething.dotransactionAnnotation(code));
+                result.setSuccess(doTransaction.dotransactionAnnotation(code));
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setSuccess(false);
@@ -221,5 +230,23 @@ public class MyController {
     public String geta() {
         System.out.println(demoService.hashCode());
         return "" + demoService.getNum();
+    }
+
+    /***********************************/
+
+    @RequestMapping("/testLockA")
+    public String testLockA() {
+        lockServiceA.invokeF();
+//        lockServiceA.invokeS();
+        return "";
+    }
+
+    @RequestMapping("/testLockB")
+    public String testLockB() {
+        lockServiceB.invokeF();
+//        lockServiceB.invokeS();
+//        lockServiceA.invokeF();
+//        lockServiceA.invokeS2();
+        return "";
     }
 }

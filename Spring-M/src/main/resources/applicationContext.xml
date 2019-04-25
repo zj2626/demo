@@ -15,6 +15,8 @@
     <context:component-scan base-package="hello"/>
     <context:property-placeholder location="classpath:prop.properties,classpath:dubbo.properties"/>
 
+    <!--******************************************************************************************************************-->
+
     <!--
     <bean id="serviceLocator" class="hello.web.DefaultServiceLocator"/>
     <bean id="greeting3" factory-bean="serviceLocator" factory-method="getGreeting"/>
@@ -67,6 +69,8 @@
     <!--<bean id="beanLevel" class="hello.lifecycle.BeanLevel" init-method="initMethod" destroy-method="destroyMethod" p:name="张三" p:address="广州" p:phone="${tea.beanLevel_phone}"/>-->
     <!--<bean id="myFactoryBean" class="hello.lifecycle.MyFactoryBean"/>-->
 
+    <!--******************************************************************************************************************-->
+
     <!--redis-->
     <bean id="throttlingJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="100"/>
@@ -108,6 +112,8 @@
         </property>
     </bean>
 
+    <!--******************************************************************************************************************-->
+
     <!--dubbo-->
     <!--消费者-->
     <!--应用名-->
@@ -129,6 +135,8 @@
     consumer://192.168.1.48/hello.service.DoHSomething?application=consumer-of-helloworld-app&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoHSomething&methods=sayHello,sayFuck&owner=zhangj&pid=15128&reference.filter=myFilter,default&revision=1.0-SNAPSHOT&sayHello.async=true&sayHello.return=true&side=consumer&timestamp=1552631668248
     consumer://192.168.1.48/hello.service.DoWithAnnotation?application=consumer-of-helloworld-app&cache=true&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoWithAnnotation&methods=sayFuck&owner=zhangj&pid=15128&revision=1.0-SNAPSHOT&side=consumer&timestamp=1552631673393
     -->
+
+    <!--******************************************************************************************************************-->
 
     <!--kafka-->
     <!--消费者-->
@@ -250,6 +258,8 @@
         <property name="concurrency" value="5"/>
     </bean>-->
 
+    <!--******************************************************************************************************************-->
+
     <!--mybatis-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
@@ -304,6 +314,8 @@
         <property name="sqlSessionFactory" ref="zjSqlSessionFactory"/>
     </bean>
 
+    <!--******************************************************************************************************************-->
+
     <!-- jdbc事务管理器 id命名为transactionManager时,声明式事务引用到的地方可省略-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <constructor-arg name="dataSource" ref="dataSource"/>
@@ -357,4 +369,22 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!--<aop:aspectj-autoproxy proxy-target-class="true" /> &lt;!&ndash;expose-proxy="true"&ndash;&gt;-->
+
+    <!--******************************************************************************************************************-->
+
+    <bean id="curatorRetryPolicy" class="org.apache.curator.retry.ExponentialBackoffRetry">
+        <constructor-arg name="maxRetries" value="3" />
+        <constructor-arg name="baseSleepTimeMs" value="1000" />
+    </bean>
+
+    <bean id="curatorFrameworkFactory" class="org.apache.curator.framework.CuratorFrameworkFactory" factory-method="newClient">
+        <constructor-arg name="connectString" value="${dubbo.registry.address}"/>
+        <constructor-arg name="retryPolicy" ref="curatorRetryPolicy"/>
+        <constructor-arg name="sessionTimeoutMs" value="30000"/>
+        <constructor-arg name="connectionTimeoutMs" value="60000"/>
+    </bean>
+
+    <bean name="lockUtils" class="hello.lock.LockUtils">
+        <property name="curatorFramework" ref="curatorFrameworkFactory"/>
+    </bean>
 </beans>

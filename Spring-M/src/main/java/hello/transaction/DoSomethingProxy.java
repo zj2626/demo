@@ -1,4 +1,4 @@
-package hello.control;
+package hello.transaction;
 
 import hello.data.service.AreaCodeDao;
 import org.springframework.beans.factory.annotation.Autowired;

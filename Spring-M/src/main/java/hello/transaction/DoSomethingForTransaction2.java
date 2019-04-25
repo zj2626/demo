@@ -1,4 +1,4 @@
-package hello.control;
+package hello.transaction;
 
 import hello.data.service.AreaCodeDao;
 import org.springframework.stereotype.Service;
@@ -94,6 +94,7 @@ public class DoSomethingForTransaction2 {
 
         throw new RuntimeException("FFFFFF");
     }
+
     @Transactional(propagation = Propagation.NEVER)
     public void doTranTXY_Never(String name) {
         try {
