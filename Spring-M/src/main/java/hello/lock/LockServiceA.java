@@ -24,6 +24,7 @@ public class LockServiceA {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
+            System.out.println("LockServiceA out " + lockFStr);
             lockUtils.release(lock);
         }
     }
@@ -40,6 +41,7 @@ public class LockServiceA {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
+            System.out.println("LockServiceA out " + lockSStr);
             lockUtils.release(lock);
         }
     }
@@ -54,6 +56,7 @@ public class LockServiceA {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
+            System.out.println("LockServiceA out S2" + lockSStr);
             lockUtils.release(lock);
         }
     }

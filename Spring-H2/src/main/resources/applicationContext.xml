@@ -19,7 +19,7 @@
     <!--应用名-->
     <dubbo:application name="hello-world-app" logger="log4j"/>
     <!--注册中心地址-->
-    <dubbo:registry address="${dubbo.registry.address}"/> <!--register="false"-->
+    <dubbo:registry address="zookeeper://${dubbo.registry.address}"/> <!--register="false"-->
 
     <!--使用dubbo协议暴露的当前服务端口-->
     <dubbo:protocol name="dubbo" port="28081"/>

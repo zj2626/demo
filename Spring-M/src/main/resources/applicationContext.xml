@@ -119,7 +119,7 @@
     <!--应用名-->
     <!--<dubbo:application name="${dubbo.application.name}"/>-->
     <!--注册中心地址-->
-    <dubbo:registry address="${dubbo.registry.address}"/> <!--file="H:/dubbo.cache"-->
+    <dubbo:registry address="zookeeper://${dubbo.registry.address}"/> <!--file="H:/dubbo.cache"-->
     <!--生成远程服务代理 作为可调用的bean-->
     <dubbo:reference id="doWithAnnotation" interface="hello.service.DoWithAnnotation" group="${dubbo.group}"
                      cache="true"/>

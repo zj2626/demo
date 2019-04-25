@@ -243,8 +243,8 @@ public class MyController {
 
     @RequestMapping("/testLockB")
     public String testLockB() {
-        lockServiceB.invokeF();
-//        lockServiceB.invokeS();
+//        lockServiceB.invokeF();
+        lockServiceB.invokeS();
 //        lockServiceA.invokeF();
 //        lockServiceA.invokeS2();
         return "";
