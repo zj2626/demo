@@ -27,7 +27,7 @@ public class SemaphoreLockDemo implements Runnable {
         // way one
         ExecutorService service = Executors.newFixedThreadPool(10);
         List<Future<?>> futureTasks = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             futureTasks.add(service.submit(rd));
             Thread.sleep(1);
         }

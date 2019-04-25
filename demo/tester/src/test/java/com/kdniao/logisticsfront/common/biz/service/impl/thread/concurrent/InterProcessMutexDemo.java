@@ -1,5 +1,6 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 信号量：Semaphore  :信号量允许多个线程同时访问同一个资源
@@ -25,16 +27,21 @@ public class InterProcessMutexDemo implements Runnable {
 
     public static CuratorFramework client;
 
-    public static CuratorFrameworkFactory.Builder builder;
-
     public InterProcessMutexDemo(boolean ifBlock) {
         this.ifBlock = ifBlock;
     }
 
     static {
-        client = CuratorFrameworkFactory.newClient("192.168.1.230:2181", new ExponentialBackoffRetry(1000, 3));
-        builder = CuratorFrameworkFactory.builder().connectString("192.168.1.230:2181")
-                .retryPolicy(new ExponentialBackoffRetry(1000, 3));
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+
+        client = CuratorFrameworkFactory.builder()
+                .connectString("192.168.1.230:2181")    // zk的server地址，多个server之间使用英文逗号分隔开
+                .connectionTimeoutMs(30000)             // 连接超时时间 默认是15s
+                .sessionTimeoutMs(60000)                // 会话超时时间 默认是60s
+                .retryPolicy(retryPolicy)               // 重试
+                .build();
+
+        client.start();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -42,7 +49,7 @@ public class InterProcessMutexDemo implements Runnable {
 
         ExecutorService service = Executors.newFixedThreadPool(5);
         List<Future<?>> futureTasks = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             futureTasks.add(service.submit(rd));
             Thread.sleep(1);
         }
@@ -56,6 +63,9 @@ public class InterProcessMutexDemo implements Runnable {
         service.shutdown();
 
         System.out.println(rd.sum);
+
+//        client.close();
+        CloseableUtils.closeQuietly(client);
     }
 
     @Override
@@ -65,8 +75,6 @@ public class InterProcessMutexDemo implements Runnable {
 //        lockStr = LOCK_ZNODE_FUCK;
         System.out.println(lockStr);
 
-        CuratorFramework client = builder.build();
-        client.start();
         // 锁对象 client 锁节点
         InterProcessMutex lock = new InterProcessMutex(client, lockStr);
 
@@ -100,41 +108,41 @@ public class InterProcessMutexDemo implements Runnable {
 //        }
 
         // option two
-        try {
-            lock.acquire();
-            System.out.println("2---" + Thread.currentThread().getName() + " begin");
-            for (int j = 0; j < 100000; j++) {
-                sum++;
-            }
-            System.out.println("2---" + Thread.currentThread().getName() + " done " + sum);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                lock.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        // option three  ?????
-//        System.out.println("3---" + Thread.currentThread().getName() + " begin");
-//        for (int j = 0; j < 100000; j++) {
-//            try {
-//                lock.acquire();
+//        try {
+//            lock.acquire();
+////                boolean ifAcquire = lock.acquire(0, TimeUnit.MILLISECONDS);
+//            System.out.println("2---" + Thread.currentThread().getName() + " begin");
+//            for (int j = 0; j < 100000; j++) {
 //                sum++;
+//            }
+//            System.out.println("2---" + Thread.currentThread().getName() + " done " + sum);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                lock.release();
 //            } catch (Exception e) {
 //                e.printStackTrace();
-//            } finally {
-//                try {
-//                    lock.release();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
 //            }
 //        }
-//        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
 
-        CloseableUtils.closeQuietly(client);
+        // option three
+        System.out.println("3---" + Thread.currentThread().getName() + " begin");
+        for (int j = 0; j < 200; j++) {
+            try {
+                lock.acquire();
+//                boolean ifAcquire = lock.acquire(0, TimeUnit.MILLISECONDS);
+                sum++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    lock.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
     }
 }
