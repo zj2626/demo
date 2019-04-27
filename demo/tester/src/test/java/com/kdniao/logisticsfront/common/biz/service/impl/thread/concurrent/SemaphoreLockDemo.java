@@ -19,7 +19,7 @@ public class SemaphoreLockDemo implements Runnable {
     }
 
     // permits表示一次允许多少个线程， fair表示是否公平锁
-    private static Semaphore semaphore = new Semaphore(1, true);
+    private static Semaphore semaphore = new Semaphore(2, true);
 
     public static void main(String[] args) throws InterruptedException {
         SemaphoreLockDemo rd = new SemaphoreLockDemo(true);
@@ -76,8 +76,9 @@ public class SemaphoreLockDemo implements Runnable {
 
             for (int i = 0; i < 5; i++) {
                 System.out.println(Thread.currentThread().getName() + " A " + i);
+                Integer nt = sum;
                 Thread.sleep(300);
-                sum++;
+                sum = nt + 1;
                 System.out.println(Thread.currentThread().getName() + " B " + i);
                 Thread.sleep(600);
                 if (ifBlock && i == 2) {

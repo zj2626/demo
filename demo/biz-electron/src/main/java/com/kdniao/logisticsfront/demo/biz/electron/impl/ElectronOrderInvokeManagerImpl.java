@@ -4,8 +4,8 @@ package com.kdniao.logisticsfront.demo.biz.electron.impl;
 import com.alibaba.fastjson.JSON;
 import com.kdniao.demo.common.util.Print;
 import com.kdniao.logisticsfront.biz.shared.electron.impl.AbstractElectronOrderManagerImpl;
+import com.kdniao.logisticsfront.common.util.http.ExterfaceInvokeHttpSender;
 import com.kdniao.logisticsgw.common.service.model.order.ExpElectronOrder;
-import com.kdniao.logisticsgw.common.service.model.privacy.PhoneBindResult;
 import com.kdniao.logisticsgw.common.service.order.ElectronOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +17,12 @@ import java.util.*;
 public class ElectronOrderInvokeManagerImpl extends AbstractElectronOrderManagerImpl {
     private static final Logger logger = LoggerFactory.getLogger(ElectronOrderInvokeManagerImpl.class);
     private static final String ENCODE = "utf-8";
+    private ExterfaceInvokeHttpSender electronOrderHttpSender; // 错误写法
+    private static ThreadLocal<ExterfaceInvokeHttpSender> httpThreadLocal = new ThreadLocal<ExterfaceInvokeHttpSender>();
+
+    public void setElectronOrderHttpSender(ExterfaceInvokeHttpSender electronOrderHttpSender) {
+        this.electronOrderHttpSender = electronOrderHttpSender;
+    }
 
     @Override
     protected ExpElectronOrder doInvoke(ElectronOrder order) {
@@ -24,6 +30,23 @@ public class ElectronOrderInvokeManagerImpl extends AbstractElectronOrderManager
 //        PhoneBindResult result = privacy(order, order.getReceiverTel());
 //        System.out.println(JSON.toJSONString(result));
         // #################
+
+        try {
+            httpThreadLocal.set(electronOrderHttpSender); // 错误写法
+            ExterfaceInvokeHttpSender httpSender = httpThreadLocal.get();
+
+            if (!"1".equals(order.getIsReturnPrintTemplate())) {
+                httpSender.setHostname("AAAAA");
+            } else {
+                httpSender.setHostname("BBBBB");
+                Thread.sleep(10000);
+            }
+
+            logger.info(">>>>>>>>>>>>>>>>>>>>>" + JSON.toJSONString(httpSender));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         Print.out("电子面单demo ", order.getOrderCode());
@@ -118,8 +141,13 @@ public class ElectronOrderInvokeManagerImpl extends AbstractElectronOrderManager
         return expElectronOrder;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        ExterfaceInvokeHttpSender electronOrderHttpSender = new ExterfaceInvokeHttpSender();
+        electronOrderHttpSender.setHostname("BBBBBBBBBB");
+        electronOrderHttpSender.afterPropertiesSet();
+
         ElectronOrderInvokeManagerImpl eomi = new ElectronOrderInvokeManagerImpl();
+        eomi.setElectronOrderHttpSender(electronOrderHttpSender);
 
         String data = "{\"addServiceList\":" +
                 "[" +
@@ -132,7 +160,7 @@ public class ElectronOrderInvokeManagerImpl extends AbstractElectronOrderManager
                 "{\"goodsCode\":\"0011\",\"goodsCodeDesc\":\"葛瑞格2\",\"goodsName\":\"玫瑰花飞2\",\"goodsPrice\":9}" +
                 "]," +
                 "\"expType\":13," +
-                "\"isReturnPrintTemplate\":\"1\"," +
+                "\"isReturnPrintTemplate\":\"0\"," +
                 "\"kdnOrderCode\":\"" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + getFixLenthString(4) + "\"," +
                 "\"logisticCodeType\":false," +
 //                "\"monthCode\":\"7555025135\"," +

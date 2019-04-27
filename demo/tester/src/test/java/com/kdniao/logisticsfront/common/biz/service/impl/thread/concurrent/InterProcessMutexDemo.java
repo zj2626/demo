@@ -71,41 +71,42 @@ public class InterProcessMutexDemo implements Runnable {
     @Override
     public void run() {
         String lockStr = (Thread.currentThread().getName().contains("2") || Thread.currentThread().getName().contains("4"))
-                ? LOCK_ZNODE_SHIT : LOCK_ZNODE_FUCK;
-//        lockStr = LOCK_ZNODE_FUCK;
+                ? LOCK_ZNODE_SHIT : LOCK_ZNODE_FUCK;    // 两个path
+//        lockStr = LOCK_ZNODE_FUCK;                    // 一个path
         System.out.println(lockStr);
 
         // 锁对象 client 锁节点
         InterProcessMutex lock = new InterProcessMutex(client, lockStr);
 
         // option one
-//        try {
-//            lock.acquire();
-//
-//            for (int i = 0; i < 5; i++) {
-//                System.out.println(Thread.currentThread().getName() + " A " + i);
-//                Thread.sleep(300);
-//                sum++;
-//                System.out.println(Thread.currentThread().getName() + " B " + i);
-//                Thread.sleep(600);
-//                if (ifBlock && i == 2) {
-//
-//                }
-//                System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            System.out.println(Thread.currentThread().getName() + " release " + "\n");
-//
-//            try {
-//                if (lock.isAcquiredInThisProcess()) {
-//                    lock.release();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
+        try {
+            lock.acquire();
+
+            for (int i = 0; i < 5; i++) {
+                System.out.println(Thread.currentThread().getName() + " A " + i);
+                Integer nt = sum;
+                Thread.sleep(300);
+                sum = nt + 1;
+                System.out.println(Thread.currentThread().getName() + " B " + i);
+                Thread.sleep(600);
+                if (ifBlock && i == 2) {
+
+                }
+                System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println(Thread.currentThread().getName() + " release " + "\n");
+
+            try {
+                if (lock.isAcquiredInThisProcess()) {
+                    lock.release();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         // option two
 //        try {
@@ -127,22 +128,22 @@ public class InterProcessMutexDemo implements Runnable {
 //        }
 
         // option three
-        System.out.println("3---" + Thread.currentThread().getName() + " begin");
-        for (int j = 0; j < 200; j++) {
-            try {
-                lock.acquire();
-//                boolean ifAcquire = lock.acquire(0, TimeUnit.MILLISECONDS);
-                sum++;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    lock.release();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
+//        System.out.println("3---" + Thread.currentThread().getName() + " begin");
+//        for (int j = 0; j < 200; j++) {
+//            try {
+//                lock.acquire();
+////                boolean ifAcquire = lock.acquire(0, TimeUnit.MILLISECONDS);
+//                sum++;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    lock.release();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
     }
 }
