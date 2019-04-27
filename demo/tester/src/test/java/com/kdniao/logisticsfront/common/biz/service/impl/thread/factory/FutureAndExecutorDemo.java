@@ -1,8 +1,8 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.factory;
 
 import java.util.concurrent.*;
 
-public class CallDemo {
+public class FutureAndExecutorDemo {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         CallableImpl callableImpl = new CallableImpl();

@@ -1,10 +1,7 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.factory;
 
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class FutureTaskExample {
     public static void main(String[] args) {
@@ -43,6 +40,23 @@ public class FutureTaskExample {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static class MyCallable implements Callable<String> {
+        private long waitTime;
+
+        public MyCallable(int timeInMillis) {
+            this.waitTime = timeInMillis;
+        }
+
+        @Override
+        public String call() throws Exception {
+            for (int i = 0; i < 5; i++) {
+                System.out.println(Thread.currentThread().getName() + " -#######- " + i);
+                Thread.sleep(waitTime);
+            }
+            return Thread.currentThread().getName();
         }
     }
 }

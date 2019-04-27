@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.factory;
 
 import org.junit.Test;
 
@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ThreadPool {
+public class ThreadPoolDemo {
 
     /**
      * newCachedThreadPool
