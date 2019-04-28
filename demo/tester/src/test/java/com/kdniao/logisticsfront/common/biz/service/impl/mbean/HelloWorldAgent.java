@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.mbean;
+package com.kdniao.logisticsfront.common.biz.service.impl.mbean;
 
 
 import javax.management.MBeanServer;
