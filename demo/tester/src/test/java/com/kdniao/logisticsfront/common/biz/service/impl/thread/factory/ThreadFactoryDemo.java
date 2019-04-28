@@ -71,7 +71,14 @@ public class ThreadFactoryDemo {
     @Test
     public void example2() throws InterruptedException {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("zj-example-pool-%d").build();
-        ExecutorService executorService = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1024), threadFactory, new ThreadPoolExecutor.AbortPolicy());
+        ExecutorService executorService = new ThreadPoolExecutor(
+                5,
+                200,
+                0L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(1024),
+                threadFactory,
+                new ThreadPoolExecutor.AbortPolicy());
 
         System.out.println(executorService);
 
