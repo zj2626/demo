@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
- * 信号量：Semaphore  :信号量允许多个线程同时访问同一个资源
+ * 分布式锁:
+ * <p>
+ * 基于数据库实现分布式锁；
+ * 基于缓存（Redis等）实现分布式锁；
+ * 基于Zookeeper实现分布式锁； ! star !
  */
 public class InterProcessMutexDemo implements Runnable {
     private Integer sum = 0;

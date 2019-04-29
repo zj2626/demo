@@ -28,10 +28,10 @@ class Provider implements Runnable {
         try {
             queue.put("1");
             System.out.println("put" + 1);
-            Thread.sleep(10000);
+            Thread.sleep(1000);
             queue.put("2");
             System.out.println("put" + 2);
-            Thread.sleep(20000);
+            Thread.sleep(2000);
             queue.put("3");
             System.out.println("put" + 3);
         } catch (InterruptedException e) {
