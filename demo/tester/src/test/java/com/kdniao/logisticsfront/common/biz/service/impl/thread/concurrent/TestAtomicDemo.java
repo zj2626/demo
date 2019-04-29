@@ -3,72 +3,100 @@ package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestAtomicDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         AtomicDemo ad = new AtomicDemo();
         for (int i = 0; i < 500; i++) {
             new Thread(ad).start();
         }
-//
-//        NotAtomicDemo nad = new NotAtomicDemo();
-//        for (int i = 0; i < 500; i++) {
-//            new Thread(nad).start();
-//        }
 
-//        NormalAtomicDemo mad = new NormalAtomicDemo();
-//        for (int i = 0; i < 500; i++) {
-//            new Thread(mad).start();
-//        }
-    }
-
-}
-
-class NormalAtomicDemo implements Runnable {
-
-    private int serialNumber = 0;
-
-    @Override
-    public void run() {
-
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
+        VolatileAtomicDemo nad = new VolatileAtomicDemo();
+        for (int i = 0; i < 500; i++) {
+            new Thread(nad).start();
         }
 
-        System.out.println("NormalAtomicDemo " + serialNumber++);
-    }
-
-}
-
-class NotAtomicDemo implements Runnable {
-
-    private volatile int serialNumber = 0;
-
-    @Override
-    public void run() {
-
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
+        NormalAtomicDemo mad = new NormalAtomicDemo();
+        for (int i = 0; i < 500; i++) {
+            new Thread(mad).start();
         }
 
-        System.out.println("NotAtomicDemo " + serialNumber++);
+        Thread.sleep(3000);
+
+        System.out.println(ad.serialNumber);
+        System.out.println(nad.serialNumber);
+        System.out.println(mad.serialNumber);
     }
 
-}
+    static class NormalAtomicDemo implements Runnable {
 
-class AtomicDemo implements Runnable {
+        private int serialNumber = 0;
 
-    private AtomicInteger serialNumber = new AtomicInteger(0);
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
 
-    @Override
-    public void run() {
+            synchronized (this) { // 必须有
+                serialNumber++;
+            }
 
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
         }
 
-        //i++ 实际是int temp=i;i=i+1;i=temp; 需要原子性操作
-        System.out.println("AtomicDemo " + serialNumber.getAndIncrement());
+    }
+
+    static class VolatileAtomicDemo implements Runnable {
+
+        private volatile int serialNumber = 0;
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+
+            synchronized (this) { // 必须有
+                serialNumber++;
+            }
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+    }
+
+    static class AtomicDemo implements Runnable {
+
+        private AtomicInteger serialNumber = new AtomicInteger(0);
+
+        @Override
+        public void run() {
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+
+            /*way one*/
+            serialNumber.getAndIncrement();
+
+            /*way two*/
+//            synchronized (this) { // 必须有
+//                serialNumber.set(serialNumber.get() + 1);
+//            }
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ignored) {
+            }
+        }
     }
 }
+
