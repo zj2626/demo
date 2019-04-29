@@ -41,6 +41,10 @@ public class TestAtomicDemo {
                 serialNumber++;
             }
 
+            synchronized (this) { // 必须有
+                serialNumber++;
+            }
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ignored) {
@@ -58,6 +62,10 @@ public class TestAtomicDemo {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ignored) {
+            }
+
+            synchronized (this) { // 必须有
+                serialNumber++;
             }
 
             synchronized (this) { // 必须有
@@ -85,7 +93,8 @@ public class TestAtomicDemo {
             }
 
             /*way one*/
-            serialNumber.getAndIncrement();
+            serialNumber.getAndIncrement(); // 方法是返回旧值（即加1前的原始值）
+            serialNumber.incrementAndGet(); // 方法是返回的是新值（即加1后的值）
 
             /*way two*/
 //            synchronized (this) { // 必须有
