@@ -38,16 +38,16 @@ public class TestVolatileDemo implements Runnable {
         // way one
         ExecutorService service = Executors.newFixedThreadPool(5);
         List<Future<?>> futureTasks = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            futureTasks.add(service.submit(rd));
-//        }
-//        try {
-//            for (Future<?> futureTask : futureTasks) {
-//                futureTask.get();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        for (int i = 0; i < 10; i++) {
+            futureTasks.add(service.submit(rd));
+        }
+        try {
+            for (Future<?> futureTask : futureTasks) {
+                futureTask.get();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         service.shutdown();
 
         System.out.println(rd.sum);
