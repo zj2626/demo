@@ -1,21 +1,16 @@
 package hello.service.impl;
 
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import hello.service.util.Change;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.PartitionInfo;
-import org.apache.kafka.common.TopicPartition;
-import org.junit.Test;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service("doHSomethingImpl")
 public class DoHSomethingImpl implements DoHSomething {
@@ -34,7 +29,51 @@ public class DoHSomethingImpl implements DoHSomething {
 
     @Override
     public String sayHello(String name) {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Hello****************************** " + name);
+
+        RpcContext rpcContext = RpcContext.getContext();
+        System.out.println("RpcContext > " + rpcContext.get("aa"));
+        System.out.println("RpcContext > " + rpcContext.get("cc"));
+        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+        System.out.println("**********");
+        System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
+        System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
+        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+
+        // set requestId
+        System.out.println("**************");
+        rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
+        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+
         return ">Dubbo " + name;
+    }
+
+    @Override
+    public String sayShit(String name) {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("SHIT****************************** " + name);
+
+        RpcContext rpcContext = RpcContext.getContext();
+        System.out.println("RpcContext > " + rpcContext.get("aa"));
+        System.out.println("RpcContext > " + rpcContext.get("cc"));
+        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+        System.out.println("**********");
+        System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
+        System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
+        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+
+        return "shit u " + name;
     }
 
     @Override
@@ -56,12 +95,6 @@ public class DoHSomethingImpl implements DoHSomething {
         }
 
         return ">Dubbo fuck u " + name;
-    }
-
-    @Override
-    public String sayShit(String name) {
-        System.out.println("SHIT****************************** " + name);
-        return "shit u " + name;
     }
 
 

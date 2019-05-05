@@ -54,10 +54,33 @@ public class MyController {
         return "shit createCommand";
     }
 
-    @RequestMapping("/control")
-    public BaseResult control(String same) {
+    @RequestMapping("/dubbo")
+    public BaseResult dubbo() {
+        final BaseResult result = new BaseResult();
+        System.out.println("into dubbo");
+
+        result.setSuccess(false);
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+                System.out.println("do checkParameters");
+            }
+
+
+            @Override
+            public void doInvoke() {
+                System.out.println("do invoke");
+                result.setSuccess(doSomething.dodubbo());
+            }
+        });
+
+        return result;
+    }
+
+    @RequestMapping("/dubbo2")
+    public BaseResult dubbo2(String same) {
         final Boolean sameBoolean = Boolean.valueOf(same);
-        System.out.println("into control");
+        System.out.println("into dubbo2");
 
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -71,7 +94,30 @@ public class MyController {
             @Override
             public void doInvoke() {
                 System.out.println("do invoke");
-                result.setSuccess(doSomething.dosome(sameBoolean));
+                result.setSuccess(doSomething.dodubbo2(sameBoolean));
+            }
+        });
+
+        return result;
+    }
+
+    @RequestMapping("/redis")
+    public BaseResult redis() {
+        System.out.println("into redis");
+
+        final BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+                System.out.println("do checkParameters");
+            }
+
+
+            @Override
+            public void doInvoke() {
+                System.out.println("do invoke");
+                result.setSuccess(doSomething.doredis());
             }
         });
 
