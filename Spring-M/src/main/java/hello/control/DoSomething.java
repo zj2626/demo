@@ -6,8 +6,11 @@ import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
 import hello.data.service.AreaCodeDao;
+import hello.hystrix.HystrixUtil;
+import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -23,9 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Future;
 
 @Service
@@ -46,6 +47,8 @@ public class DoSomething {
     private TransactionTemplate transactionTemplate;
     private AreaCodeDao areaCodeDao;
 
+    private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
+
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         this.transactionTemplate = transactionTemplate;
     }
@@ -64,6 +67,10 @@ public class DoSomething {
 
     public void setSimpleMovieLister(SimpleMovieLister simpleMovieLister) {
         this.simpleMovieLister = simpleMovieLister;
+    }
+
+    public void setExterfaceInvokeIOHttpSender(ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender) {
+        this.exterfaceInvokeIOHttpSender = exterfaceInvokeIOHttpSender;
     }
 
     public void setDoHSomething(DoHSomething doHSomething) {
@@ -314,6 +321,28 @@ public class DoSomething {
             }
         }
         return true;
+    }
+
+    /*httpRequest*/
+    public String doHttpRequest(String message) {
+        message = StringUtils.isNotEmpty(message) ? message : "defultFuck";
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("message", message);
+        String response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
+        System.out.println(response);
+
+        return response;
+    }
+
+    /*hystrix httpRequest*/
+    public String doHystrixHttpRequest(String message) {
+        message = StringUtils.isNotEmpty(message) ? message : "defultFuck";
+
+        String response = HystrixUtil.send(message);
+        System.out.println(response);
+
+        return response;
     }
 
     private void doMakeLog() {

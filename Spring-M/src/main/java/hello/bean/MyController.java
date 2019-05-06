@@ -295,4 +295,14 @@ public class MyController {
 //        lockServiceA.invokeS2();
         return "";
     }
+
+    @RequestMapping("/request")
+    public String doRequest(String name) {
+        return doSomething.doHttpRequest(name);
+    }
+
+    @RequestMapping("/hystrix")
+    public String hystrix(String name) {
+        return doSomething.doHystrixHttpRequest(name);
+    }
 }
