@@ -329,7 +329,12 @@ public class DoSomething {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("message", message);
-        String response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
+        String response = null;
+        try {
+            response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println(response);
 
         return response;
@@ -340,7 +345,8 @@ public class DoSomething {
         message = StringUtils.isNotEmpty(message) ? message : "defultFuck";
 
         String response = HystrixUtil.send(message);
-        System.out.println(response);
+        System.out.println("HystrixThread > " + response);
+        System.out.println("MainThread    > " + Thread.currentThread().getName());
 
         return response;
     }

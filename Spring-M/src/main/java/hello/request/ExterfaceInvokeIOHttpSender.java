@@ -15,11 +15,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -96,7 +94,7 @@ public class ExterfaceInvokeIOHttpSender implements InitializingBean {
         httpClient = HttpClients.custom().setRetryHandler(retryHandler).setConnectionManager(cm).setDefaultRequestConfig(requestConfig).build();
     }
 
-    public String sendGet(Map<String, Object> params, String urlAdd) {
+    public String sendGet(Map<String, Object> params, String urlAdd) throws Exception {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         if (params != null) {
             for (Entry<String, Object> entry : params.entrySet()) {
@@ -110,12 +108,7 @@ public class ExterfaceInvokeIOHttpSender implements InitializingBean {
         }
 
         String response = "";
-        try {
-            response = send(urlAdd, paramMap, "", HttpGet.METHOD_NAME);
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
+        response = send(urlAdd, paramMap, "", HttpGet.METHOD_NAME);
 
         return response;
     }
@@ -126,11 +119,11 @@ public class ExterfaceInvokeIOHttpSender implements InitializingBean {
      * @param params
      * @return
      */
-    public String sendPost(Map<String, Object> params, String urlAdd) {
+    public String sendPost(Map<String, Object> params, String urlAdd) throws Exception {
         return send(urlAdd, params, "", HttpPost.METHOD_NAME);
     }
 
-    public String send(String path, Map<String, Object> paramMap, String body, String method) {
+    public String send(String path, Map<String, Object> paramMap, String body, String method) throws Exception {
 
         HttpRequestBase request = null;
         URIBuilder uriBuilder = null;
@@ -175,20 +168,12 @@ public class ExterfaceInvokeIOHttpSender implements InitializingBean {
             }
         }
         String responseString = null;
-        long startTime = System.currentTimeMillis();
-        boolean success = false;
-        Exception ioe = null;
         try {
             CloseableHttpResponse response = httpClient.execute(request);
             responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-            success = true;
             return responseString;
-        } catch (IOException e) {
-            ioe = e;
-            e.printStackTrace();
-        } catch (Exception e1) {
-            ioe = e1;
-            e1.printStackTrace();
+        } catch (Exception e) {
+            throw new Exception(e);
         } finally {
             Map<String, String> paramMapTemp = new HashMap<String, String>();
             if (paramMap != null) {
@@ -199,8 +184,6 @@ public class ExterfaceInvokeIOHttpSender implements InitializingBean {
             request.releaseConnection();
             request.abort();
         }
-
-        return null;
     }
 
     public static void main(String[] args) {

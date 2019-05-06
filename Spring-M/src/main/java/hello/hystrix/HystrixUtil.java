@@ -53,16 +53,16 @@ public class HystrixUtil {
         protected String run() throws Exception {
             System.out.println("RUN---> " + Thread.currentThread().getName() + " * " + groupName);
 
-            System.out.println(null != exterfaceInvokeIOHttpSender);
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("message", message);
-
-            String response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
-            System.out.println("RUN---> " + response);
-
-            if(null == response){
-                throw new Exception("请求异常");
+            String response = null;
+            try {
+                response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
+            } catch (Exception e) {
+                System.err.println("RUN--->ER " + response);
+                throw e;
             }
+            System.out.println("RUN---> " + response);
 
             return response;
         }
@@ -70,7 +70,7 @@ public class HystrixUtil {
         // 使用Fallback() 提供降级策略
         @Override
         protected String getFallback() {
-            System.out.println("jump to getFallback >>>>>> E");
+            System.out.println("jump to getFallback");
 
             return "Fallback";
         }
