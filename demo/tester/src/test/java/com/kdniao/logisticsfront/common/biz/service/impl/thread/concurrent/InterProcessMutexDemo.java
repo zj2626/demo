@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁:
  * <p>
  * 基于数据库实现分布式锁；
  * 基于缓存（Redis等）实现分布式锁；
- * 基于Zookeeper实现分布式锁； ! star !
+ * 基于Zookeeper实现分布式锁； ! ***star*** !
  */
 public class InterProcessMutexDemo implements Runnable {
     private Integer sum = 0;
@@ -75,43 +76,92 @@ public class InterProcessMutexDemo implements Runnable {
     public void run() {
         String lockStr = (Thread.currentThread().getName().contains("2") || Thread.currentThread().getName().contains("4"))
                 ? LOCK_ZNODE_SHIT : LOCK_ZNODE_FUCK;    // 两个path
-//        lockStr = LOCK_ZNODE_FUCK;                    // 一个path
+        lockStr = LOCK_ZNODE_FUCK;                    // 一个path
         System.out.println(lockStr);
 
         // 锁对象 client 锁节点
         InterProcessMutex lock = new InterProcessMutex(client, lockStr);
 
         // option one
-        try {
-            lock.acquire();
+//        try {
+//            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+////            lock.acquire();
+//
+//            for (int i = 0; i < 5; i++) {
+//                System.out.println(Thread.currentThread().getName() + " A " + i);
+//                Integer nt = sum;
+//                Thread.sleep(300);
+//                sum = nt + 1;
+//                System.out.println(Thread.currentThread().getName() + " B " + i);
+//                Thread.sleep(600);
+//                if (ifBlock && i == 2) {
+//
+//                }
+//                System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//
+//            try {
+//                if (lock.isAcquiredInThisProcess()) {
+//                    System.out.println(Thread.currentThread().getName() + " release " + "\n");
+//                    lock.release();
+////                    lock.release();
+////                    lock.release();
+////                    lock.release();
+////                    lock.release();
+////                    lock.release();
+////                    lock.release();
+////                    lock.release();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
-            for (int i = 0; i < 5; i++) {
-                System.out.println(Thread.currentThread().getName() + " A " + i);
-                Integer nt = sum;
-                Thread.sleep(300);
-                sum = nt + 1;
-                System.out.println(Thread.currentThread().getName() + " B " + i);
-                Thread.sleep(600);
-                if (ifBlock && i == 2) {
-
-                }
-                System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println(Thread.currentThread().getName() + " release " + "\n");
-
+        // option two
+        for (int i = 0; i < 5; i++) {
             try {
-                if (lock.isAcquiredInThisProcess()) {
-                    lock.release();
+                while (true) {
+                    boolean ifLock = lock.acquire(0, TimeUnit.MILLISECONDS);
+                    if (ifLock) {
+                        System.out.println(Thread.currentThread().getName() + " A " + i);
+                        Integer nt = sum;
+                        Thread.sleep(300);
+                        sum = nt + 1;
+                        System.out.println(Thread.currentThread().getName() + " B " + i);
+                        Thread.sleep(600);
+                        if (ifBlock && i == 2) {
+
+                        }
+                        System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
+
+                        break;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (lock.isAcquiredInThisProcess()) {
+                        System.out.println(Thread.currentThread().getName() + " release " + "\n");
+                        lock.release();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-        // option two
+        // option three
 //        try {
 //            lock.acquire();
 ////                boolean ifAcquire = lock.acquire(0, TimeUnit.MILLISECONDS);
@@ -130,7 +180,7 @@ public class InterProcessMutexDemo implements Runnable {
 //            }
 //        }
 
-        // option three
+        // option four
 //        System.out.println("3---" + Thread.currentThread().getName() + " begin");
 //        for (int j = 0; j < 200; j++) {
 //            try {
