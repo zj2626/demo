@@ -7,6 +7,7 @@ public class DemoB {
     private Integer age;
     private int age2;
     private Double money;
+    private Float moneyF;
     private java.util.Date uDate;
     private java.sql.Date sDate;
 
@@ -57,4 +58,13 @@ public class DemoB {
     public void setsDate(java.sql.Date sDate) {
         this.sDate = sDate;
     }
+
+    public Float getMoneyF() {
+        return moneyF;
+    }
+
+    public void setMoneyF(Float moneyF) {
+        this.moneyF = moneyF;
+    }
+
 }
