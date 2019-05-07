@@ -3,8 +3,6 @@ package com.kdniao.logisticsfront.common.biz.service.impl.redis;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
@@ -152,8 +150,7 @@ public class RedisTest {
 
         List<String> hash = Arrays.asList(
                 "route_subscription_01",
-                "route_subscription_04",
-                "route_subscription_05"
+                "route_subscription_04"
         );
 
         List result = null;
@@ -161,63 +158,116 @@ public class RedisTest {
         /**
          * execute RedisCallback
          * */
-        redisTemplate.execute(new RedisCallback() {
-            @Override
-            public Object doInRedis(RedisConnection connection) throws DataAccessException {
-                connection.openPipeline();
-
-                // dataType == null -> true
-                zSet.forEach(s -> System.out.println((null == connection.type(s.getBytes()))));
-
-                zSet.forEach(s -> connection.zCount(s.getBytes(), 0, 100000));
-
-                zSet.forEach(s -> connection.zCard(s.getBytes()));
-
-                hash.forEach(s -> connection.hLen(s.getBytes()));
-
-                List<Object> result = connection.closePipeline();
-                System.out.println("result>>>>>>>>>>");
-                System.out.println(result);
-
-                return null;
-
-            }
-        });
+//        redisTemplate.execute(new RedisCallback() {
+//            @Override
+//            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+//                connection.openPipeline();
+//
+//                // dataType == null -> true
+//                zSet.forEach(s -> System.out.println((null == connection.type(s.getBytes()))));
+//
+//                zSet.forEach(s -> connection.zCount(s.getBytes(), 0, 100000));
+//
+//                zSet.forEach(s -> connection.zCard(s.getBytes()));
+//
+//                hash.forEach(s -> connection.hLen(s.getBytes()));
+//
+//                List<Object> result = connection.closePipeline();
+//                System.out.println("result>>>>>>>>>>");
+//                System.out.println(result);
+//
+//                return null;
+//
+//            }
+//        });
 
         /**
          * executePipelined RedisCallback
          * */
-        result = redisTemplate.executePipelined(new RedisCallback<List<String>>() {
-            @Override
-            public List<String> doInRedis(RedisConnection connection) throws DataAccessException {
-
-                zSet.forEach(s -> connection.zCard(s.getBytes()));
-
-                hash.forEach(s -> connection.hLen(s.getBytes()));
-
-                return null;
-            }
-        });
-
-        System.out.println("result>>>>>>>>>>");
-        System.out.println(result);
+//        result = redisTemplate.executePipelined(new RedisCallback<List<String>>() {
+//            @Override
+//            public List<String> doInRedis(RedisConnection connection) throws DataAccessException {
+//
+//                zSet.forEach(s -> connection.zCard(s.getBytes()));
+//
+//                hash.forEach(s -> connection.hLen(s.getBytes()));
+//
+//                return null;
+//            }
+//        });
+//
+//        System.out.println("result>>>>>>>>>>");
+//        System.out.println(result);
 
         /**
-         * executePipelined SessionCallback
+         * execute SessionCallback
          * */
-        result = redisTemplate.executePipelined(new SessionCallback<Object>() {
-            @Override
-            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
-                RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
-                zSet.forEach(s -> redisOperations.opsForZSet().zCard(s));
+//        redisTemplate.execute(new SessionCallback<Object>() {
+//            @Override
+//            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+//                RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
+//                zSet.forEach(s -> redisOperations.opsForZSet().zCard(s));
+//
+//                hash.forEach(s -> redisOperations.opsForHash().size(s));
+//
+//                return null;
+//            }
+//        });
+//        System.out.println("result>>>>>>>>>>");
+//
+//        result = redisTemplate.executePipelined(new SessionCallback<Object>() {
+//            @Override
+//            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+//                RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
+//                zSet.forEach(s -> redisOperations.opsForZSet().zCard(s));
+//
+//                hash.forEach(s -> redisOperations.opsForHash().size(s));
+//
+//                return null;
+//            }
+//        });
+//
+//        System.out.println(result);
+//        System.out.println("result>>>>>>>>>>");
 
-                hash.forEach(s -> redisOperations.opsForHash().size(s));
+        /*test transaction*/
+//        try {
+//            redisTemplate.execute(new SessionCallback<Object>() {
+//                @Override
+//                public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+//                    RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
+//                    redisOperations.opsForValue().set("aaaa", "a");
+//                    redisOperations.opsForValue().set("aaaa", "b");
+//
+//                    System.out.println(2 / 0);
+//
+//                    redisOperations.opsForValue().set("aaaa", "c");
+//
+//                    return null;
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-                return null;
-            }
-        });
-
-        System.out.println("result>>>>>>>>>>");
-        System.out.println(result);
+        /*test transaction*/
+//        try {
+//            redisTemplate.executePipelined(new SessionCallback<Object>() {
+//                @Override
+//                public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+//                    RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
+//                    redisOperations.opsForValue().set("bbb", "a");
+//                    redisOperations.opsForValue().set("bbb", "b");
+//
+//                    System.out.println(2 / 0);
+//
+//                    redisOperations.opsForValue().set("bbb", "c");
+//
+//                    return null;
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }
