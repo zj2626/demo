@@ -70,7 +70,7 @@ public class RedisLockDemo implements Runnable {
         boolean ifLock = false;
 
         /* 方法一 (由于不是原子操作, 当删除不成功且在expire之前报错可能导致死锁)*/
-        if (false) {
+        if (true) {
             ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, String.valueOf(System.currentTimeMillis()));
             if (ifLock) {
                 redisTemplate.expire(lockStr, 2000, TimeUnit.MILLISECONDS);
@@ -102,7 +102,7 @@ public class RedisLockDemo implements Runnable {
         }
 
         /* 方法三  */
-        if (true) {
+        if (false) {
             RedisCallback<Object> callback = connection -> {
                 RedisConnection redisConnection = connection;
 
@@ -128,52 +128,27 @@ public class RedisLockDemo implements Runnable {
 
     @Override
     public void run() {
-        String lockStr = "lockStr006";
+        String lockStr = "lockStr007";
         System.out.println(lockStr);
 
         RedisTemplate<String, Object> redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
 
         // option one
-//        for (int i = 0; i < 5; i++) {
-//            try {
-//                while (true) {
-//                    boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr);
-//                    if (ifLock) {
-//                        System.out.println(Thread.currentThread().getName() + " A " + i);
-//                        Integer nt = sum;
-//                        Thread.sleep(100);
-//                        sum = nt + 1;
-//                        System.out.println(Thread.currentThread().getName() + " B " + i);
-//                        Thread.sleep(200);
-//                        if (ifBlock && i == 2) {
-//
-//                        }
-//                        System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
-//
-//                        break;
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    System.out.println(Thread.currentThread().getName() + " release " + "\n");
-//                    redisTemplate.delete(lockStr);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-
-        // option two
-        System.out.println("3---" + Thread.currentThread().getName() + " begin");
-        for (int j = 0; j < 200; j++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 while (true) {
                     boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr);
                     if (ifLock) {
-                        System.out.println(Thread.currentThread().getName() + " - " + sum);
-                        sum++;
+                        System.out.println(Thread.currentThread().getName() + " A " + i);
+                        Integer nt = sum;
+                        Thread.sleep(100);
+                        sum = nt + 1;
+                        System.out.println(Thread.currentThread().getName() + " B " + i);
+                        Thread.sleep(200);
+                        if (ifBlock && i == 2) {
+
+                        }
+                        System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
 
                         break;
                     }
@@ -182,12 +157,37 @@ public class RedisLockDemo implements Runnable {
                 e.printStackTrace();
             } finally {
                 try {
+                    System.out.println(Thread.currentThread().getName() + " release " + "\n");
                     redisTemplate.delete(lockStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
+
+        // option two
+//        System.out.println("3---" + Thread.currentThread().getName() + " begin");
+//        for (int j = 0; j < 200; j++) {
+//            try {
+//                while (true) {
+//                    boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr);
+//                    if (ifLock) {
+//                        System.out.println(Thread.currentThread().getName() + " - " + sum);
+//                        sum++;
+//
+//                        break;
+//                    }
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    redisTemplate.delete(lockStr);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        System.out.println("3---" + Thread.currentThread().getName() + " done " + sum);
     }
 }
