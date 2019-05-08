@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Protocol;
 import redis.clients.util.SafeEncoder;
 
@@ -66,17 +67,18 @@ public class RedisLockDemo implements Runnable {
         System.out.println((end - start) + " --- " + rd.sum);
 
         /*
-        * 方法一  15105    11577   11691   11585   11148   10201
-        * 方法二  36474    14244   7487    6106    5979    5505
-        * 方法三  8298     6744    8550    6968    6949    8149
-        * */
+         * 方法一  15105    11577   11691   11585   11148   10201
+         * 方法二  36474    14244   7487    6106    5979    5505
+         * 方法三  8298     6744    8550    6968    6949    8149
+         * 方法四  13132    10512   10944
+         * */
     }
 
     private static boolean getLock(RedisTemplate<String, Object> redisTemplate, String lockStr) {
         boolean ifLock = false;
 
         /* 方法一 opsForValue (由于不是原子操作, 当删除不成功且在expire之前报错可能导致死锁)*/
-        if (true) {
+        if (false) {
             ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, String.valueOf(System.currentTimeMillis()));
             if (ifLock) {
                 redisTemplate.expire(lockStr, 2000, TimeUnit.MILLISECONDS);
@@ -127,7 +129,28 @@ public class RedisLockDemo implements Runnable {
             }
         }
 
+        /* 方法四 */
+        if (true) {
+            ifLock = lock(redisTemplate, lockStr, String.valueOf(System.currentTimeMillis()));
+        }
+
         return ifLock;
+    }
+
+    public static boolean lock(RedisTemplate<String, Object> redisTemplate, String key, String value) {
+        if (redisTemplate.opsForValue().setIfAbsent(key, value)) {//setNX 返回boolean
+            return true;
+        }
+        //如果锁超时 ***
+        String currentValue = (String) redisTemplate.opsForValue().get(key);
+        if (!StringUtils.isEmpty(currentValue) && Long.parseLong(currentValue) < System.currentTimeMillis()) {
+            //获取上一个锁的时间
+            String oldvalue = (String) redisTemplate.opsForValue().getAndSet(key, value);
+            if (!StringUtils.isEmpty(oldvalue) && oldvalue.equals(currentValue)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -138,7 +161,7 @@ public class RedisLockDemo implements Runnable {
         RedisTemplate<String, Object> redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
 
         // option one
-        if(false){
+        if (false) {
             for (int i = 0; i < 5; i++) {
                 try {
                     while (true) {
@@ -172,7 +195,7 @@ public class RedisLockDemo implements Runnable {
         }
 
         // option two
-        if(true){
+        if (true) {
             System.out.println("3---" + Thread.currentThread().getName() + " begin");
             for (int j = 0; j < 100; j++) {
                 try {
