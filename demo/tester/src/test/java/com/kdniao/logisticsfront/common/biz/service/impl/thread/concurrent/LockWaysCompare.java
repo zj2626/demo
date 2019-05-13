@@ -2,6 +2,8 @@ package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,7 +49,7 @@ public class LockWaysCompare {
                     System.out.println("working... ");
 
                     Thread.sleep(100);
-                    System.out.println("Lock by:" + i + " -> " + Thread.currentThread().getName());
+                    System.out.println("Lock by:" + Thread.currentThread().getName() + " -> " + i);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -63,16 +65,22 @@ public class LockWaysCompare {
 
     @Test
     public void test2() throws InterruptedException {
+        List<Thread> threads = new ArrayList<>();
+
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
             Thread thread = new Thread(new LockWaysCompare.Job2(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
-            Thread.sleep(50);
+            threads.add(thread);
+
+            Thread.sleep(10);
         }
 
-        Thread.sleep(12000);
+        Thread.sleep(1500);
+
+        Thread.sleep(2000);
 
         System.out.println("####");
     }
@@ -84,20 +92,25 @@ public class LockWaysCompare {
             this.lock = lock;
         }
 
+        // lockInterruptibly
         @Override
         public void run() {
             for (int i = 0; i < 2; i++) {
                 try {
                     lock.lockInterruptibly();
 
-                    System.out.println("working... ");
+                    System.out.println("working... " + Thread.currentThread().getName() + " -> " + i);
 
                     Thread.sleep(500);
-                    System.out.println("Lock by:" + i + " -> " + Thread.currentThread().getName());
+                    System.out.println("\nLock by:" + Thread.currentThread().getName() + " -> " + i);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    lock.unlock();
+                    try {
+                        lock.unlock();
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage() + Thread.currentThread().getName());
+                    }
                 }
             }
         }
@@ -142,7 +155,7 @@ public class LockWaysCompare {
                     Thread.sleep(10);
 
                     if (tryLock) {
-                        System.out.println("Lock by:" + i + " -> " + Thread.currentThread().getName());
+                        System.out.println("Lock by:" + Thread.currentThread().getName() + " -> " + i);
                     }
 
                 } catch (Exception e) {
