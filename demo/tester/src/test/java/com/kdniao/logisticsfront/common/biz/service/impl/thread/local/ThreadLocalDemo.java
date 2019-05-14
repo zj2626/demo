@@ -24,12 +24,11 @@ public class ThreadLocalDemo implements Runnable {
     @Test
     public void testA() {
         ThreadLocalDemo rd = new ThreadLocalDemo();
-        ThreadLocalDemo rd2 = new ThreadLocalDemo();
 
         // way one
         ExecutorService service = Executors.newFixedThreadPool(10);
         List<Future<?>> futureTasks = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             futureTasks.add(service.submit(rd));
             try {
                 Thread.sleep(1);
@@ -50,18 +49,18 @@ public class ThreadLocalDemo implements Runnable {
             e.printStackTrace();
         }
         service.shutdown();
-
-        try {
-            System.out.println("________________________");
-            Thread thread = new Thread(rd);
-            Thread thread2 = new Thread(rd);
-            thread.start();
-            thread2.start();
-            thread.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//
+//        try {
+//            System.out.println("________________________");
+//            Thread thread = new Thread(rd);
+//            Thread thread2 = new Thread(rd);
+//            thread.start();
+//            thread2.start();
+//            thread.join();
+//            thread2.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         rd.show();
     }
@@ -99,7 +98,10 @@ public class ThreadLocalDemo implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-//            ThreadLocalDemo.threadLocal.remove();
+//            int a = (int) (1 + Math.random() * (10 - 1 + 1));
+//            if (a % 2 == 0) {
+                ThreadLocalDemo.threadLocal.remove();
+//            }
         }
     }
 
