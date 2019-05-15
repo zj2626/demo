@@ -1,5 +1,8 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.design.creational.simple.factory;
 
+/**
+ * 功能: 根据传入的不同字符串生产不同的产品
+ */
 public class Factory {
 
     public static Product createProduct(String proName) {
