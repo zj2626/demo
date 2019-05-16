@@ -8,7 +8,7 @@ import org.junit.Test;
  * 装饰模式(Decorator Pattern) ：动态地给一个对象增加一些额外的职责(Responsibility)，就增加对象功能来说，装饰模式比生成子类实现更为灵活。
  * 其别名也可以称为包装器(Wrapper)，与适配器模式的别名相同，但它们适用于不同的场合。根据翻译的不同，装饰模式也有人称之为“油漆工模式”，它是一种对象结构型模式
  * <p>
- * 举例: JDBC驱动器
+ * 举例:
  *
  * @author zhangj
  * @version $Id: StructDemoTest.java, v 0.1 2019/5/14 17:00 zhangj Exp $
