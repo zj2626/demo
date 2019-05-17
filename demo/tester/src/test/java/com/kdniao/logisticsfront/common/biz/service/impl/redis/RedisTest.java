@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.SessionCallback;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class RedisTest {
 
@@ -46,6 +47,14 @@ public class RedisTest {
         for (int i = 0; i < 999; i++) {
             redisTemplate.opsForList().rightPush("MailNo_ZJS_0_ZJS", n + i + "");
         }
+
+        System.out.println("#########");
+        System.out.println(System.currentTimeMillis());
+        redisTemplate.opsForZSet().add("kdfafa-subscribe-route-pull-set", "ANE|4565121212112", System.currentTimeMillis() + 30000);
+        Set obj = redisTemplate.opsForZSet().rangeByScore("kdfafa-subscribe-route-pull-set", 0, System.currentTimeMillis(), 0, 10);
+        System.out.println(obj.size());
+        System.out.println(obj);
+        System.out.println("#########");
 
 //        redisTemplate.opsForValue().set("name", "tom23");
 //        redisTemplate.opsForValue().multiSet(new HashMap(){{
