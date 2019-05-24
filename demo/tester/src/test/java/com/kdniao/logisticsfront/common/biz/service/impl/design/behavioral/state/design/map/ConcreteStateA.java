@@ -8,7 +8,9 @@ public class ConcreteStateA implements State {
     }
 
     @Override
-    public void handle() {
+    public void handle(Context context) {
+        System.out.println("a hadle ");
 
+        context.changeState(new ConcreteStateB());
     }
 }

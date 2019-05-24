@@ -8,11 +8,11 @@ public class Client {
     public void test1() {
 
         Context context = new Context(new ConcreteStateA());
-        System.out.println(context.getState().getState());
-
-        context.changeState(new ConcreteStateB());
-        System.out.println(context.getState().getState());
-
+        System.out.println("##");
+        context.request();
+        System.out.println("##");
+        context.request();
+        System.out.println("##");
     }
 
 }

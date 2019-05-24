@@ -12,3 +12,11 @@ public class Context {
         strategy.algorithm();
     }
 }
+
+/*
+策略模式
+
+Strategy: 定义所有支持的算法的公共接口抽象类.
+ConcreteStrategy: 封装了具体的算法或行为，继承于Strategy
+Context: 用一个ConcreteStrategy来配置，维护一个对Strategy对象的引用。
+ */
