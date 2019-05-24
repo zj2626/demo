@@ -305,4 +305,10 @@ public class MyController {
     public String hystrix(String name) {
         return doSomething.doHystrixHttpRequest(name);
     }
+
+    @RequestMapping("/testError")
+    public String testError() {
+        doSomething.testError();
+        return "";
+    }
 }

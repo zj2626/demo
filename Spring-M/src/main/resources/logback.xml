@@ -12,7 +12,7 @@
     <appender name="SM-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append><!--默认true-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logDir}/${application.name}/%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern> <!--每分钟一个文件 下面5表示文件只保存5分钟-->
+            <fileNamePattern>${logDir}/${application.name}/%d{yyyy-MM-dd-HH}.log</fileNamePattern> <!--每小时一个文件 下面5表示文件只保存5份-->
             <maxHistory>5</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -73,6 +73,7 @@
     <root level="INFO">
         <appender-ref ref="SM-STDOUT"/>
         <appender-ref ref="SM-FILE"/>
+<!--        <appender-ref ref="ERR" />-->
     </root>
 
     <!--关闭某个包的日志-->

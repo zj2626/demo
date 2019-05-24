@@ -383,4 +383,12 @@ public class DoSomething {
         logger.warn("Warn Message!");
         logger.error("Error Message!");
     }
+
+    public void testError() {
+        doMakeLog();
+
+        int k = 200 / 0;
+
+        logger.info("DONE");
+    }
 }
