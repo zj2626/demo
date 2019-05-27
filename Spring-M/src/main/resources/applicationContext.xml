@@ -155,6 +155,7 @@
                 <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
                 <entry key="group.id" value="group-0"/>
                 <entry key="enable.auto.commit" value="false"/>
+<!--                <entry key="auto.offset.reset" value="latest"/>-->
                 <entry key="auto.commit.interval.ms" value="1000"/>
                 <entry key="session.timeout.ms" value="15000"/>
                 <entry key="key.deserializer" value="org.apache.kafka.common.serialization.StringDeserializer"/>

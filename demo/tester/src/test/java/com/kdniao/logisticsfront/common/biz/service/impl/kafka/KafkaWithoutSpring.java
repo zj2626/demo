@@ -50,8 +50,8 @@ public class KafkaWithoutSpring {
         properties.put("group.id", "group-3");
         properties.put("enable.auto.commit", "false");
         properties.put("session.timeout.ms", "15000");
-//        properties.put("auto.commit.interval.ms", "60000");
-//        properties.put("auto.offset.reset", "earliest");
+        properties.put("auto.offset.reset", "latest");
+        properties.put("auto.commit.interval.ms", "60000");
         properties.put("max.poll.records", "10");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -63,14 +63,15 @@ public class KafkaWithoutSpring {
             System.out.println(records.count());
             for (ConsumerRecord<String, String> record : records) {
                 total++;
-                System.out.println(total + " === " + record);
-//                System.out.printf("offset = %d, value = %s", record.offset(), record.value());
+                System.out.print(total + " === ");
+                System.out.printf("offset = %d, value = %s", record.offset(), record.value());
+                System.out.println();
 
-//                String value = record.value();
-//                if(Integer.valueOf(value) == 20){
+                String value = record.value();
+                if(Integer.valueOf(value) == 20){
 //                    System.out.println("提交");
 //                    kafkaConsumer.commitSync();
-//                }
+                }
             }
 
             try {
