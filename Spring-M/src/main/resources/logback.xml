@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="logDir" value="H:/logs/sprint-m"/>
+<!--    <property name="logDir" value="H:/logs/sprint-m"/>-->
+    <property name="logDir" value="/data/logs/ay"/>
     <property resource="prop.properties" />
     <contextName>SPRING-M</contextName>
 
