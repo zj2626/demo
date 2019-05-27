@@ -86,7 +86,7 @@ public class DoSomething {
     }
 
     public boolean dodubbo() {
-        doMakeLog();
+//        doMakeLog();
 
         System.out.println("do  doHSomething: " + (doHSomething != null));
         System.out.println("do  doWithAnnotation: " + (doWithAnnotation != null));
@@ -236,7 +236,7 @@ public class DoSomething {
     }
 
     public boolean dokafka() {
-        doMakeLog();
+//        doMakeLog();
 
         try {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
@@ -264,7 +264,7 @@ public class DoSomething {
 
     /*编程式事务管理*/
     public boolean dotransaction(String codes) {
-        doMakeLog();
+//        doMakeLog();
 
         String areaName = "北京";
         System.out.println(areaName + ">>" + areaCodeDao.queryCodeByName(areaName, 2, null));
@@ -296,7 +296,7 @@ public class DoSomething {
 
     /*声明式事务管理*/
     public boolean dotransactionTX(String codes) {
-        doMakeLog();
+//        doMakeLog();
 
         String[] codeList = codes.split(",");
         for (String code : codeList) {
@@ -311,7 +311,7 @@ public class DoSomething {
     /*声明式事务管理*/
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean dotransactionAnnotation(String codes) {
-        doMakeLog();
+//        doMakeLog();
 
         String[] codeList = codes.split(",");
         for (String code : codeList) {
