@@ -7,6 +7,9 @@ import org.junit.Test;
  * <p>
  * 适配器模式(Adapter Pattern) ：将一个接口转换成客户希望的另一个接口，适配器模式使接口不兼容的那些类可以一起工作，其别名为包装器(Wrapper)。
  * 适配器模式既可以作为类结构型模式(demo1)，也可以作为对象结构型模式(demo2)。
+ * <p>
+ * 举例: I/O流中的InputStreamReader
+ * 特点: 适配器类继承适配者类同时实现目标类接口(类适配器);适配器类继承适配者类同时包含目标类接口的成员属性(对象适配器)
  *
  * @author zhangj
  * @version $Id: StructDemoTest.java, v 0.1 2019/5/14 17:00 zhangj Exp $

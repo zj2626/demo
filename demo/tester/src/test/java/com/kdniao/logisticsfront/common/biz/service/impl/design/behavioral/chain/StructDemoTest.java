@@ -9,6 +9,7 @@ import org.junit.Test;
  * <p>
  * 在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
  *
+ * 特点:在客户端设置责任链中每个的处理部分有谁以及其顺序
  * @author zhangj
  * @version $Id: StructDemoTest.java, v 0.1 2019/5/27 16:34 zhangj Exp $
  */

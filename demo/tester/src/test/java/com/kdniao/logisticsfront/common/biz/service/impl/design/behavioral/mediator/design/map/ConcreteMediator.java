@@ -1,6 +1,6 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.design.behavioral.mediator.design.map;
 
-// 具体中介者
+// 具体中介者 具体中介者通过协调各同事对象实现协作行为，了解并维护它的各个同事
 public class ConcreteMediator extends Mediator {
     private ConcreteColleagueA concreteColleagueA;
     private ConcreteColleagueB concreteColleagueB;

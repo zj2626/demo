@@ -13,12 +13,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Main implements Runnable {
+public class OperationMain implements Runnable {
     public static ApplicationContext applicationContext;
     private static Integer sum = 0;
     private boolean ifWrite = false;
 
-    public Main(boolean ifWrite) {
+    public OperationMain(boolean ifWrite) {
         this.ifWrite = ifWrite;
     }
 
@@ -27,8 +27,8 @@ public class Main implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Main readMain = new Main(false);
-        Main writeMain = new Main(true);
+        OperationMain readMain = new OperationMain(false);
+        OperationMain writeMain = new OperationMain(true);
 
         ExecutorService service = Executors.newFixedThreadPool(50);
         List<Future<?>> futureTasks = new ArrayList<>();
