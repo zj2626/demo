@@ -9,7 +9,7 @@ import org.junit.Test;
  * 其别名为状态对象(Objects for States)，状态模式是一种对象行为型模式。
  * <p>
  * 举例:
- * 特点:客户端并不知道每个处理步骤,下一个处理人由上一个处理人指定
+ * 特点:处理步骤是固定的已经写死的,不由客户端控制
  * @author zhangj
  * @version $Id: StructDemoTest.java, v 0.1 2019/5/22 18:30 zhangj Exp $
  */

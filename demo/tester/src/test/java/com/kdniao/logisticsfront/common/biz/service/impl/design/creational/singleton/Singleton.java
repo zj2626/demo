@@ -1,7 +1,7 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.design.creational.singleton;
 
 public class Singleton {
-    private static Singleton singleton = null;
+    private static volatile Singleton singleton = null; // volatile防止指令重排,保证变量修改的可见性
 
     private Singleton() {
     }

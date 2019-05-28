@@ -14,4 +14,6 @@ public abstract class Abstraction {
 
         implementor.operationImpl();
     }
+
+    public abstract void otherOperation();
 }
