@@ -2,11 +2,13 @@ package com.kdniao.logisticsfront.common.biz.service.impl.design.behavioral.temp
 
 public abstract class Game {
     abstract void initialize();
+
     abstract void startPlay();
+
     abstract void endPlay();
 
     //模板
-    public final void play(){
+    public final void play() {
 
         //初始化游戏
         initialize();
