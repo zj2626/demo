@@ -2,5 +2,6 @@ package com.kdniao.logisticsfront.common.biz.service.impl.design.behavioral.visi
 
 // 抽象访问者：为对象结构中的每一个具体元素类声明一个访问操作。
 public interface Visitor {
-    public void visit(Element element);
+    public void visit(ConcreteElement element);
+    public void visit(ConcreteElement2 element);
 }

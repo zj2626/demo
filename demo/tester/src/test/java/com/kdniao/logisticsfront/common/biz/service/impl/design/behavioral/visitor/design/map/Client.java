@@ -8,10 +8,9 @@ public class Client {
         ObjectStrust objectStrust = new ObjectStrust();
 
         objectStrust.add(new ConcreteElement());
-        objectStrust.add(new ConcreteElement());
+        objectStrust.add(new ConcreteElement2());
 
         objectStrust.accept(new ConcreteVisitor());
-
         objectStrust.accept(new ConcreteVisitor2());
     }
 }
