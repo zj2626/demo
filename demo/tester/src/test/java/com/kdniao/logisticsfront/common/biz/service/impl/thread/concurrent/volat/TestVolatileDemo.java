@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.volat;
 
 import java.util.ArrayList;
 import java.util.List;
