@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model;
 
 import java.util.ArrayList;
 import java.util.Date;

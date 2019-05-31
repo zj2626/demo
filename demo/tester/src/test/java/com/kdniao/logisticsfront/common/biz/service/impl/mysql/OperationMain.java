@@ -1,8 +1,8 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper.UcAreaDOMapper;
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.UcAreaDO;
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.UcAreaDOExample;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDO;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDOExample;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,6 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * 通过mybatis操作数据库
+ */
 public class OperationMain implements Runnable {
     public static ApplicationContext applicationContext;
     private static Integer sum = 0;

@@ -21,7 +21,7 @@
         </javaTypeResolver>
 
         <!-- generate Model -->
-        <javaModelGenerator targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model" targetProject="src\test\java">
+        <javaModelGenerator targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model" targetProject="src\test\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -32,7 +32,7 @@
         </sqlMapGenerator>
 
         <!-- generate Mapper -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper"
                              targetProject="src\test\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>

@@ -1,7 +1,7 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql.company;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper.ShipperEntranceSettingMapper;
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSettingExample;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.ShipperEntranceSettingMapper;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSettingExample;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,7 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class DemoTest {
+/**
+ * 公司直接操作数据库和接口使用
+ */
+public class CompanyDemoTest {
     protected String accept = "*/*";
     protected String charsetName = "UTF-8";
     protected String connection = "Keep-Alive";
@@ -41,9 +44,9 @@ public class DemoTest {
                 ShipperEntranceSettingExample.Criteria criteria = example.createCriteria();
                 criteria.andCustomerIdEqualTo(cusomerId);
 
-                List<com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSetting> shipperEntranceSettings = shipperEntranceSettingMapper.selectByExample(example);
+                List<com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSetting> shipperEntranceSettings = shipperEntranceSettingMapper.selectByExample(example);
                 if (CollectionUtils.isEmpty(shipperEntranceSettings)) {
-                    com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSetting setting = new com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSetting();
+                    com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSetting setting = new com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSetting();
                     setting.setId(UUID.randomUUID().toString());
                     setting.setRequestType(requestType);
                     setting.setCustomerId(cusomerId);
@@ -57,7 +60,7 @@ public class DemoTest {
 
                     shipperEntranceSettingMapper.insert(setting);
                 } else {
-                    com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSetting setting = shipperEntranceSettings.get(0);
+                    com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSetting setting = shipperEntranceSettings.get(0);
                     setting.setRequestType(requestType);
                     setting.setCustomerId(cusomerId);
                     setting.setUnpickup(true);

@@ -2,7 +2,7 @@
  * Kdniao.com Inc.
  * Copyright (c) 2014-2017 All Rights Reserved.
  */
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql.company;
 
 import com.kdniao.common.lang.error.ApplicationException;
 import com.kdniao.common.lang.system.SystemUtils;

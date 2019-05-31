@@ -1,7 +1,7 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.UcAreaDO;
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.UcAreaDOExample;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDO;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDOExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

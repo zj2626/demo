@@ -1,7 +1,7 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.mapper;
+package com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSetting;
-import com.kdniao.logisticsfront.common.biz.service.impl.mybatis.dal.model.ShipperEntranceSettingExample;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSetting;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.ShipperEntranceSettingExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
