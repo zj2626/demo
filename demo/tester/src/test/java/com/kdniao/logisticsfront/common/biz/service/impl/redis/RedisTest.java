@@ -3,6 +3,8 @@ package com.kdniao.logisticsfront.common.biz.service.impl.redis;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
@@ -260,23 +262,41 @@ public class RedisTest {
 //        }
 
         /*test transaction*/
-//        try {
-//            redisTemplate.executePipelined(new SessionCallback<Object>() {
-//                @Override
-//                public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
-//                    RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
-//                    redisOperations.opsForValue().set("bbb", "a");
-//                    redisOperations.opsForValue().set("bbb", "b");
-//
-//                    System.out.println(2 / 0);
-//
-//                    redisOperations.opsForValue().set("bbb", "c");
-//
-//                    return null;
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            redisTemplate.executePipelined(new SessionCallback<Object>() {
+                @Override
+                public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+                    RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
+                    redisOperations.opsForValue().set("bbb", "a");
+                    redisOperations.opsForValue().set("bbb", "b");
+
+                    if(true){
+                        throw new RuntimeException();
+                    }
+
+                    redisOperations.opsForValue().set("bbb", "c");
+
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        result = redisTemplate.executePipelined(new RedisCallback<List<String>>() {
+            @Override
+            public List<String> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.set("bbb".getBytes(), "b".getBytes());
+
+                if(true){
+                    throw new RuntimeException();
+                }
+
+                connection.set("bbb".getBytes(), "c".getBytes());
+
+                return null;
+            }
+        });
     }
 }

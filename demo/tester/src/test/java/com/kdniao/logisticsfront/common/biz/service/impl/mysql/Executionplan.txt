@@ -1,0 +1,67 @@
+MySQL执行计划
+
++----+-------------+-------+------------+--------+---------------+---------+---------+---------------+-------+----------+-------------+
+| id | select_type | table | partitions | type   | possible_keys | key     | key_len | ref           | rows  | filtered | Extra       |
++----+-------------+-------+------------+--------+---------------+---------+---------+---------------+-------+----------+-------------+
+
+id: ID列表明了该语句所在的层级
+    如果ID相同从上到下执行
+    如果ID不同则ID越大的越先执行
+    其作用类似于执行计划中缩进
+
+select_type:  指明各“单位select 查询”的查询类型
+    1.SIMPLE:   简单查询不包含子查询与union
+    2.PRIMARY:  复杂查询创建的首要表(也是最外层的表) 这种类型通常与DERIVED 或者union 混合使用见到
+                primary就是SQL在有子查询与union时 最外层的表 第一行(T4 )或者结果集 第二行( <derived2>)
+    3.UNION:    当SELECT之前的关键字为UNION 或 UNION ALL时 会出现UNION 关键字
+    4.DEPENDENT UNION:  当子查询中存在UNION 时 UNION 后的SELECT TYPE 会出现 DEPENDENT UNION 而union 语句的第一行为 DEPENDENT SUBQUERY
+    5.UNION RESULT:     出现在UNION 或UNION ALL 语句中 代表把所有结果集联合起来
+    6.SUBQUERY:         出现在复杂非相关子查询中 ,简单相关子查询MySQL会进行改写
+    7.DEPENDENT SUBQUERY: 出现在相关子查询中 而非相关子查询MySQL可以进行改写
+    8.DERIVED:  衍生表 当查询使用内联视图时 会出现此关键字
+    9.MATERIALIZED:  子查询物化 当表出现在非相关子查询中 并且需要进行物化时会出现MATERIALIZED关键词
+    10.UNCACHEABLE SUBQUERY:  子查询不可被物化 需要逐次运行
+    11.UNCACHEABLE UNION:  同上 子查询中出现union 并且不可被缓存 在union 后的select 语句出现此关键词
+
+table:
+    1.表名: 访问的表, 即使访问的是索引 这里也显示访问的表名
+    2.<union m,n>:
+        1.表示几个行源进行union操作
+        2.表示使用内联视图
+
+type:   表示的访问路径,及数据获取途径
+    优先级:null->system->const->eq-ref->ref->fulltext->ref_or_null->index_merge->unique_subquery->index_subquery->range->index->ALL
+    1.null:     不访问任何表
+    2.system:   一种特殊的const 要求表中只有一条记录
+    3.const:    此种类型查询最多返回一行记录,由于只有一行记录,后续优化器会把它当作常量.
+                基本可以认为表进行了索引唯一性扫描,并且唯一性索引只返回一行记录
+    4.eq_ref:   关联时进行多次索引唯一性扫描(字段数据具有唯一性)
+    5.ref:      索引非唯一性扫描(字段数据不具有唯一性)
+    6.fulltext: 使用全文索引时出现
+    7.ref_or_null: 当谓词出现索引列等于某值或为空时出现(IS NULL)
+    8.index_merge: 当谓词分别用到多个索引的首列,并且谓词连接为或时(OR)
+    9.unique_subquery:
+    10.index_subquery:
+    11.range:   通过范围方式访问索引
+    12.index:   索引全扫描  正常情况下应该在没有过滤谓词时出现
+    13.ALL:     全表扫描
+
+possible_keys:  可能被使用的索引 ,并不是所有的索引
+
+key:            被使用的索引
+
+key_len:        key_len 计算公式为
+                变长字段: 可变长度*字符集位数+(如果可为null+1 否则+0)+2
+                固定字段: eg:[int 4 + (not null +1, else 0 )]
+
+ref:            关联谓词信息或常量
+rows:           如果是驱动行源则为该行源大小 如果是被驱动行源,则是单次操作的行源大小(例如遍历情况下每次一条则显示1)
+Extra:          显示其他重要信息
+    1.Using where           :使用查询条件,先取出数据之后再比对
+    2.Using index           :使用索引来访问数据而避免回表
+    3.Using index condition :
+    4.Using temporary       :使用了临时表
+    5.Using filesort        :无法利用索引来完成的排序
+    6.Using join buffer     :将之前访问的数据存放于join buffer中
+    7.Impossible WHERE      :谓词不成立
+

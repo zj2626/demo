@@ -1,0 +1,39 @@
+分页优化:
+    1.Limit:全表查询, 没有优化, 数据少量可用 (当分页到1kw的时候速度急剧下降)
+        EXPLAIN SELECT
+        	testa.ID,
+        	testa.AGE
+        FROM
+        	testa
+        limit 10000000, 20;
+
+    2.利用主键条件查询, 仅限主键是自增数值且连贯(不好用,实际是利用索引,比1快)
+        SELECT
+        	testa.ID,
+        	testa.AGE
+        FROM
+        	testa
+        WHERE
+        	ID > 10000000
+        ORDER BY
+        	ID ASC
+        	LIMIT 20;
+
+    3.基于索引使用prepare(索引扫描,速度会很快. prepare语句又比一般的查询语句快一点)
+        PREPARE stmt_name
+        FROM
+        	" SELECT
+        	testa.ID,
+        	testa.AGE
+        FROM
+        	testa
+        WHERE
+        	ID > ?
+        ORDER BY
+        	ID ASC
+        	LIMIT ? ";
+
+        SET @p = 2000000;
+
+        SET @q = 20;
+        EXECUTE stmt_name USING @p, @q;

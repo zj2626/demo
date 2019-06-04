@@ -34,10 +34,10 @@ public class MySQLDemo {
             stmt = conn.createStatement();
 
             int rs = 1;
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 100; i++) {
                 StringBuilder stringBuilder = new StringBuilder(sql);
-                for (int j = 0; j < 1000; j++) {
-                    stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 1500)).intValue())).append(",");
+                for (int j = 0; j < 200000; j++) {
+                    stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 500)).intValue())).append(",");
                 }
                 System.out.println(i);
                 stmt.executeUpdate(stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1));
@@ -64,9 +64,9 @@ public class MySQLDemo {
             stmt = conn.createStatement();
 
             int rs = 1;
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 10; i++) {
                 StringBuilder stringBuilder = new StringBuilder(sql2);
-                for (int j = 0; j < 1000; j++) {
+                for (int j = 0; j < 200000; j++) {
                     stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 500)).intValue())).append(",");
                 }
                 System.out.println(i);
