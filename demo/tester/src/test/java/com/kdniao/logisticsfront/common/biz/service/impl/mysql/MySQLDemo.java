@@ -36,7 +36,7 @@ public class MySQLDemo {
             int rs = 1;
             for (int i = 0; i < 100; i++) {
                 StringBuilder stringBuilder = new StringBuilder(sql);
-                for (int j = 0; j < 200000; j++) {
+                for (int j = 0; j < 160000; j++) {
                     stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 500)).intValue())).append(",");
                 }
                 System.out.println(i);

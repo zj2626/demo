@@ -26,28 +26,22 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLockDemo implements Runnable {
     private Integer sum = 0;
-    private boolean ifBlock;
-    private String taskName;
 
     private static final String LOCK_SUCCESS = "OK";
     private static final String SET_IF_NOT_EXIST = "NX";
     private static final String SET_WITH_EXPIRE_TIME = "PX";
     private static final String OPTION = "set";
-    public static final String UNLOCK_LUA = "test";
 
     private static ApplicationContext applicationContext;
-
-    public RedisLockDemo(boolean ifBlock) {
-        this.ifBlock = ifBlock;
-    }
 
     static {
         applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
     }
 
     public static void main(String[] args) throws InterruptedException {
-        RedisLockDemo rd = new RedisLockDemo(true);
+        RedisLockDemo rd = new RedisLockDemo();
         long start = System.currentTimeMillis();
+
         ExecutorService service = Executors.newFixedThreadPool(5);
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -173,9 +167,6 @@ public class RedisLockDemo implements Runnable {
                             sum = nt + 1;
                             System.out.println(Thread.currentThread().getName() + " B " + i);
                             Thread.sleep(200);
-                            if (ifBlock && i == 2) {
-
-                            }
                             System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
 
                             break;
