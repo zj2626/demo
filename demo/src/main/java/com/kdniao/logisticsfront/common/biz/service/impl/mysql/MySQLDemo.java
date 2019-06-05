@@ -5,6 +5,9 @@ import org.junit.Test;
 import java.sql.*;
 import java.util.UUID;
 
+/**
+ * 操作数据库 test库中的testa表和testb表
+ */
 public class MySQLDemo {
     // JDBC 驱动名及数据库 URL
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -36,7 +39,7 @@ public class MySQLDemo {
             int rs = 1;
             for (int i = 0; i < 100; i++) {
                 StringBuilder stringBuilder = new StringBuilder(sql);
-                for (int j = 0; j < 160000; j++) {
+                for (int j = 0; j < 200000; j++) {
                     stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 500)).intValue())).append(",");
                 }
                 System.out.println(i);

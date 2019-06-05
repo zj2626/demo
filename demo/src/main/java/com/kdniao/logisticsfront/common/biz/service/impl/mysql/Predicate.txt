@@ -1,0 +1,24 @@
+等价谓词重写: 把逻辑表达式重写成等价的且效率更高的形式
+
+谓词:
+    1.like:改写为了更好的利用索引
+        1. select ID, NAME, AGE from testb where NAME like '50d%';
+           select ID, NAME, AGE from testb where NAME >= '50d' AND NAME < '50e';
+           上面两个语义相同,当有的数据库不支持like索引的时候就需要重写成第二句写法(mysql是支持like索引的)
+        2. like谓词后面没用通配符(%或_), 则like可直接写成=
+
+    2.between and: 同上(mysql是支持between and索引的)
+
+    3.in转换or: 对于不支持in索引查询的数据库,可转换为or写法,可能效率会高(mysql是支持in索引的)
+
+    4.in转换any: 同上,可能效率会高(mysql是支持in索引的)
+
+    5.or转换any: 转换可以更好的利用max/min操作优化(mysql不支持)
+
+    6.all/any转化聚集函数: 一般情况下聚集函数效率都更高 (测试结果显示,并没有更高)
+        select ID, NAME, AGE from testb where AGE > ANY (select AGE from testa where ID < 100);
+        select ID, NAME, AGE from testb where AGE > (select MIN(AGE) from testa where ID < 100);
+
+    7.not消除: 把not谓词转换成没有not的写法(mysql是支持not索引的)
+
+    8.or重写并集:把or操作替换为union操作,可能效率会高

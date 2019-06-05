@@ -31,7 +31,7 @@ mysql> show warnings;
 ##############################################################################
 
 testa: 数据数量:2000w; 列: ID, Name, AGE; 索引:A_AGE(AGE), A_A(ID,AGE)
-testb: 数据数量:440w ; 列: ID, Name, AGE; 索引:B_AGE(AGE), B_B(ID,AGE)
+testb: 数据数量:440w ; 列: ID, Name, AGE; 索引:B_AGE(AGE), B_B(ID,AGE), B_NAME(NAME)
 
 ##############################################################################
 
