@@ -4,12 +4,6 @@
  */
 package com.kdniao.logisticsfront.common.biz.service.impl.mysql.company;
 
-import com.kdniao.common.lang.error.ApplicationException;
-import com.kdniao.common.lang.system.SystemUtils;
-import com.kdniao.common.profile.digest.DigestContext;
-import com.kdniao.common.profile.digest.DigestContextHolder;
-import com.kdniao.common.profile.digest.support.DefaultDigestLogBuilder;
-import com.kdniao.logisticsgw.common.service.constants.GatewayErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.NoHttpResponseException;
@@ -187,7 +181,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
         try {
             uriBuilder = new URIBuilder(hostname);
         } catch (URISyntaxException urise) {
-            throw new ApplicationException(GatewayErrors.systemError.message("url语法错误"), urise);
+            throw new RuntimeException("url语法错误", urise);
         }
         if (!StringUtils.isEmpty(path)) {
             uriBuilder.setPath(path);
@@ -215,7 +209,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
                 }
                 request = httpPost;
             } else {
-                throw new ApplicationException(GatewayErrors.invalidateArgument.message("不支持的http method[" + method + "]"));
+                throw new RuntimeException("不支持的http method[" + method + "]");
             }
 
             if (!CollectionUtils.isEmpty(headerMap)) {
@@ -224,7 +218,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
                 }
             }
         } catch (Exception e1) {
-            throw new ApplicationException(GatewayErrors.systemError.message("Unsupported  http exception"), e1);
+            throw new RuntimeException("Unsupported  http exception", e1);
         }
         String responseString = null;
         long startTime = System.currentTimeMillis();
@@ -237,32 +231,16 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             return responseString;
         } catch (ConnectTimeoutException cte) {
             ioe = cte;
-            throw new ApplicationException(GatewayErrors.systemError.message("http connect timeout exception"), cte);
+            throw new RuntimeException("http connect timeout exception", cte);
         } catch (SocketTimeoutException ste) {
             ioe = ste;
-            throw new ApplicationException(GatewayErrors.systemError.message("http read timeout exception"), ste);
+            throw new RuntimeException("http read timeout exception", ste);
         } catch (IOException e) {
             ioe = e;
-            throw new ApplicationException(GatewayErrors.systemError.message("http invoke exception"), e);
+            throw new RuntimeException("http invoke exception", e);
         } finally {
             request.releaseConnection();
             request.abort();
-            long endTime = System.currentTimeMillis();
-            DigestContext cxt = DigestContextHolder.getDigestContext();
-            DefaultDigestLogBuilder logBuilder = new DefaultDigestLogBuilder();
-            logBuilder.setRequestId(cxt != null ? cxt.getRequestId() : null);
-            logBuilder.setAppName(appName);
-            logBuilder.setStartTime(new Date(startTime));
-            logBuilder.setUri(url);
-            logBuilder.setLocalIp(SystemUtils.hostInfo.getHostAddress());
-            //logBuilder.setRemoteIp(RpcContext.getContext().getRemoteAddressString());
-            // 只有系统不可用导致的错误为调用失败
-            logBuilder.setSuccess(success);
-            logBuilder.setError(ioe == null ? null : GatewayErrors.invoke3thFailed.message(ioe.getMessage()));
-            logBuilder.setParameters(new Object[]{method, paramMap, body,formMap});
-            logBuilder.setResult(responseString);
-            logBuilder.setElapseTime(endTime - startTime);
-            logger.info(logBuilder.toAccessDigest());
         }
     }
 
@@ -272,7 +250,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
         try {
             uriBuilder = new URIBuilder(hostname);
         } catch (URISyntaxException urise) {
-            throw new ApplicationException(GatewayErrors.systemError.message("url语法错误"), urise);
+            throw new RuntimeException("url语法错误", urise);
         }
         if (!StringUtils.isEmpty(path)) {
             uriBuilder.setPath(path);
@@ -300,7 +278,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
                 }
                 request = httpPost;
             } else {
-                throw new ApplicationException(GatewayErrors.invalidateArgument.message("不支持的http method[" + method + "]"));
+                throw new RuntimeException("不支持的http method[" + method + "]");
             }
 
             if (!CollectionUtils.isEmpty(headerMap)) {
@@ -309,7 +287,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
                 }
             }
         } catch (Exception e1) {
-            throw new ApplicationException(GatewayErrors.systemError.message("Unsupported  http exception"), e1);
+            throw new RuntimeException("Unsupported  http exception", e1);
         }
         String responseString = null;
         long startTime = System.currentTimeMillis();
@@ -321,32 +299,16 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             return EntityUtils.toByteArray(response.getEntity());
         } catch (ConnectTimeoutException cte) {
             ioe = cte;
-            throw new ApplicationException(GatewayErrors.systemError.message("http connect timeout exception"), cte);
+            throw new RuntimeException("http connect timeout exception", cte);
         } catch (SocketTimeoutException ste) {
             ioe = ste;
-            throw new ApplicationException(GatewayErrors.systemError.message("http read timeout exception"), ste);
+            throw new RuntimeException("http read timeout exception", ste);
         } catch (IOException e) {
             ioe = e;
-            throw new ApplicationException(GatewayErrors.systemError.message("http invoke exception"), e);
+            throw new RuntimeException("http invoke exception", e);
         } finally {
             request.releaseConnection();
             request.abort();
-            long endTime = System.currentTimeMillis();
-            DigestContext cxt = DigestContextHolder.getDigestContext();
-            DefaultDigestLogBuilder logBuilder = new DefaultDigestLogBuilder();
-            logBuilder.setRequestId(cxt != null ? cxt.getRequestId() : null);
-            logBuilder.setAppName(appName);
-            logBuilder.setStartTime(new Date(startTime));
-            logBuilder.setUri(url);
-            logBuilder.setLocalIp(SystemUtils.hostInfo.getHostAddress());
-            //logBuilder.setRemoteIp(RpcContext.getContext().getRemoteAddressString());
-            // 只有系统不可用导致的错误为调用失败
-            logBuilder.setSuccess(success);
-            logBuilder.setError(ioe == null ? null : GatewayErrors.invoke3thFailed.message(ioe.getMessage()));
-            logBuilder.setParameters(new Object[]{method, paramMap, body,formMap});
-            logBuilder.setResult(responseString);
-            logBuilder.setElapseTime(endTime - startTime);
-            logger.info(logBuilder.toAccessDigest());
         }
     }
 }

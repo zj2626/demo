@@ -14,17 +14,12 @@
     <packaging>war</packaging>
     <properties>
         <mysql_version>5.1.33</mysql_version>
-        <schedulercenter.version>1.0-SNAPSHOT</schedulercenter.version>
-        <merchant.version>1.0-SNAPSHOT</merchant.version>
-        <logisticsfront-common.version>1.0-SNAPSHOT</logisticsfront-common.version>
-        <logisticsgw.version>1.0-SNAPSHOT</logisticsgw.version>
         <quartz_version>2.2.1</quartz_version>
         <dubbo_version>2.8.2.1</dubbo_version>
         <spring-integration-kafka.version>2.1.0.RELEASE</spring-integration-kafka.version>
         <druid_version>1.0.9</druid_version>
         <json-lib_version>1.0.2</json-lib_version>
         <ezmorph_version>1.0.6</ezmorph_version>
-        <kdniao-common_version>1.0.0.0-SNAPSHOT</kdniao-common_version>
         <spring-kafka.version>1.1.1.RELEASE</spring-kafka.version>
         <fastjson_version>1.2.7</fastjson_version>
         <hystrix.version>1.5.9</hystrix.version>
@@ -52,46 +47,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-biz-service-impl</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-biz-shared</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-biz-task</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-common-util</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-core-model</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-core-service</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsfront-common-web-home</artifactId>
-            <version>${logisticsfront-common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>logisticsgw-common-service-gateway</artifactId>
-            <version>${logisticsgw.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.netflix.hystrix</groupId>
             <artifactId>hystrix-core</artifactId>
             <version>${hystrix.version}</version>
@@ -100,11 +55,6 @@
             <groupId>com.netflix.hystrix</groupId>
             <artifactId>hystrix-metrics-event-stream</artifactId>
             <version>${hystrix.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>schedulercenter-common-toolkit</artifactId>
-            <version>${schedulercenter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
@@ -125,36 +75,6 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common</artifactId>
-            <version>${kdniao-common_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common-lang</artifactId>
-            <version>${kdniao-common_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common-event</artifactId>
-            <version>${kdniao-common_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common-profile</artifactId>
-            <version>${kdniao-common_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common-facade</artifactId>
-            <version>${kdniao-common_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kdniao</groupId>
-            <artifactId>kdniao-common-test</artifactId>
-            <version>${kdniao-common_version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -381,6 +301,24 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.17</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.0.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
