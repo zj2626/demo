@@ -2,10 +2,10 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
-	<!--<context-param>
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:META-INF/spring/common-util.xml</param-value>
-	</context-param>-->
+		<param-value>classpath*:META-INF/spring/*.xml</param-value>
+	</context-param>
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

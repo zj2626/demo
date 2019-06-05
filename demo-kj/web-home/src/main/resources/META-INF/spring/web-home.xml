@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+
+	<import resource="classpath:logisticsfront-common-web-home.xml" />
+
+	<!--<dubbo:protocol name="injvm"  host="192.168.1.48"/>-->
+	<!--<dubbo:protocol name="dubbo" port="${dubbo.protocol.dubbo.port}" heartbeat="${dubbo.protocol.dubbo.heartbeat}" threadpool="${dubbo.protocol.dubbo.threadpool}" threads="${dubbo.protocol.dubbo.threads:6000}"  host="192.168.1.48"/>-->
+
+</beans>
