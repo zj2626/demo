@@ -1,0 +1,23 @@
+条件化简技术:
+
+条件: sql语句中对元组进行过滤和连接的表达式, 出现在where/on/having中
+
+条件化简技术
+    1.条件下推: 把单个表相关的条件放到对单表扫描的过程中执行
+
+    2.条件化简:
+        1. having条件并入where条件中,使用and操作 (只有在语句中不存在聚集函数或groupby条件的时候才能合并) (mysql都不支持, 需要人工优化)
+        2. 去除表达式中冗余的括号,减少cpu消耗 (mysql支持)
+        3. 常量传递  (mysql支持)
+        4. 消除死码:去掉无效的条件  (mysql支持, 返回Impossible WHERE)
+        5. 表达式计算: 对条件中可求值的表达式进行计算 (mysql支持)
+        6. 等式变换: 变换条件中的表达式,使得列名单独处于表达式一边而不是直接计算(能更好的利用索引) (mysql不支持, 需要人工优化)
+            eg: col_1 + 1 = 2 变换为 col_1 = 1;
+        7. 不等式变换: 同上,去掉不必要的重复条件 (mysql不支持, 需要人工优化)
+        8. 布尔表达式变换:
+            1. 谓词传递闭包: 利用传递性,设置必要条件,可以利用更多的索引,提高效率;  (mysql不支持, 需要人工优化)
+                EXPLAIN  select testb.AGE from  testb, testa where  testb.AGE < 5 AND testa.AGE < testb.AGE;
+                EXPLAIN  select testb.AGE from  testb, testa where  testb.AGE < 5 AND testa.AGE < testb.AGE AND testa.AGE < 5;
+            2. 布尔表达式被转化为一个等价的合取范式(CNF); (mysql支持, and操作符的条件是可交换的,并且谁连接在前,则优化之后谁的条件就在前)
+            3. 索引利用: or的子项可以利用索引,优先判断连接表涉及的带有索引的条件; (mysql支持)
+        9. is null: (mysql支持优化)

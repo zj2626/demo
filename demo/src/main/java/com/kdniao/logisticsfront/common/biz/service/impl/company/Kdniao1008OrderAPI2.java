@@ -28,7 +28,7 @@ public class Kdniao1008OrderAPI2 {
         try {
             for (int i = 0; i < rowLength; i++) {
                 System.out.print(resultData[i] + ' ');
-                String result = api.getOrderTracesByJson("YTO", resultData[i]);
+                String result = api.getOrderTracesByJson("HTKY", resultData[i]);
                 System.out.println(result);
             }
         } catch (Exception e) {
@@ -36,8 +36,8 @@ public class Kdniao1008OrderAPI2 {
         }
     }
 
-    private String EBusinessID = "1420123";
-    private String AppKey = "99a85b59-87db-4bd2-b122-4e85b23a4240";
+    private String EBusinessID = "1535263";
+    private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
 
     private String ReqURL = "http://api.kdniao.com/api/dist";
 
@@ -57,25 +57,25 @@ public class Kdniao1008OrderAPI2 {
                 "\t\"MonthCode\": \"\",\n" +
                 "\t\"IsNotice\": \"0\",\n" +
                 "\t\"Sender\": {\n" +
-                "\t\t\"Name\": \"1255760\",\n" +
+                "\t\t\"Name\": \"张健\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
-                "\t\t\"Mobile\": \"13700000000\",\n" +
+                "\t\t\"Mobile\": \"13715276714\",\n" +
                 "\t\t\"ProvinceName\": \"广东省\",\n" +
                 "\t\t\"CityName\": \"深圳市\",\n" +
-                "\t\t\"ExpAreaName\": \" 龙岗区 \",\n" +
-                "\t\t\"Address\": \"平湖街道平龙西路73号305\"\n" +
+                "\t\t\"ExpAreaName\": \" 龙华新区 \",\n" +
+                "\t\t\"Address\": \"广东省深圳市龙华新区龙华新区大浪街道富裕新村65号\"\n" +
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
                 "\t\t\"Mobile\": \"13800000000\",\n" +
-                "\t\t\"ProvinceName\": \"河北\",\n" +
-                "\t\t\"CityName\": \"廊坊市\",\n" +
-                "\t\t\"ExpAreaName\": \"经开区\",\n" +
+                "\t\t\"ProvinceName\": \"广东省\",\n" +
+                "\t\t\"CityName\": \"深圳市\",\n" +
+                "\t\t\"ExpAreaName\": \"龙华新区\",\n" +
                 "\t\t\"Address\": \"测试地址2\"\n" +
                 "\t},\n" +
                 "\t\"Commodity\": [{\n" +
-                "\t\t\"GoodsName\": \"书本\"\n" +
+                "\t\t\"GoodsName\": \"上传\"\n" +
                 "\t}]\n" +
                 "}";
 

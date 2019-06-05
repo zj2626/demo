@@ -15,7 +15,7 @@
 
     5.or转换any: 转换可以更好的利用max/min操作优化(mysql不支持)
 
-    6.all/any转化聚集函数: 一般情况下聚集函数效率都更高 (测试结果显示,并没有更高)
+    6.all/any转化聚集函数: 一般情况下聚集函数效率都更高
         select ID, NAME, AGE from testb where AGE > ANY (select AGE from testa where ID < 100);
         select ID, NAME, AGE from testb where AGE > (select MIN(AGE) from testa where ID < 100);
 
