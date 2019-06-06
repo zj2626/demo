@@ -63,7 +63,7 @@ public class Kdniao1008OrderAPI2 {
                 "\t\t\"ProvinceName\": \"广东省\",\n" +
                 "\t\t\"CityName\": \"深圳市\",\n" +
                 "\t\t\"ExpAreaName\": \" 龙华新区 \",\n" +
-                "\t\t\"Address\": \"广东省深圳市龙华新区龙华新区大浪街道富裕新村65号\"\n" +
+                "\t\t\"Address\": \"大浪街道富裕新村65号\"\n" +
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +

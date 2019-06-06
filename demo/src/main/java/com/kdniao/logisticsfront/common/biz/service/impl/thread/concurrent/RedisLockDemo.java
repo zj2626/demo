@@ -46,7 +46,6 @@ public class RedisLockDemo implements Runnable {
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             futureTasks.add(service.submit(rd));
-            Thread.sleep(1);
         }
         try {
             for (Future<?> futureTask : futureTasks) {
@@ -60,7 +59,7 @@ public class RedisLockDemo implements Runnable {
 
         System.out.println((end - start) + " --- " + rd.sum);
 
-        /*
+        /*  速度对比
          * 方法一  15105    11577   11691   11585   11148   10201
          * 方法二  36474    14244   7487    6106    5979    5505
          * 方法三  8298     6744    8550    6968    6949    8149
@@ -72,10 +71,10 @@ public class RedisLockDemo implements Runnable {
         boolean ifLock = false;
 
         /* 方法一 opsForValue (由于不是原子操作, 当删除不成功且在expire之前报错可能导致死锁)*/
-        if (false) {
+        if (true) {
             ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, String.valueOf(System.currentTimeMillis()));
             if (ifLock) {
-                redisTemplate.expire(lockStr, 2000, TimeUnit.MILLISECONDS);
+                redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
             }
         }
 
@@ -90,7 +89,7 @@ public class RedisLockDemo implements Runnable {
                         valueSerializer.serialize(String.valueOf(System.currentTimeMillis())),
                         SafeEncoder.encode(SET_IF_NOT_EXIST),
                         SafeEncoder.encode(SET_WITH_EXPIRE_TIME), // "EX"
-                        Protocol.toByteArray(2000));
+                        Protocol.toByteArray(3000));
                 return null != object ? new String((byte[]) object) : null;
             };
             String ifLockStr = redisTemplate.execute(callback);
@@ -110,7 +109,7 @@ public class RedisLockDemo implements Runnable {
                         valueSerializer.serialize(String.valueOf(System.currentTimeMillis())),
                         SafeEncoder.encode(SET_IF_NOT_EXIST),
                         SafeEncoder.encode(SET_WITH_EXPIRE_TIME), // "EX"
-                        Protocol.toByteArray(2000));
+                        Protocol.toByteArray(3000));
 
                 return null;
             };
@@ -123,8 +122,8 @@ public class RedisLockDemo implements Runnable {
             }
         }
 
-        /* 方法四 */
-        if (true) {
+        /* 方法四 这方法有问题 bug ?????*/
+        if (false) {
             ifLock = lock(redisTemplate, lockStr, String.valueOf(System.currentTimeMillis()));
         }
 
@@ -147,6 +146,14 @@ public class RedisLockDemo implements Runnable {
         return false;
     }
 
+    // 当第一个线程超时 则第二个线程进入并设置redis, 然后第一个线程结束并删除redis值,会导致第三个等待的线程立即进入,此时第二个线程可能还没超时或结束
+    // 如果超时情况几乎很少发生,则不需要考虑这个问题
+    // bug ?????
+    private static void releaseLock(RedisTemplate<String, Object> redisTemplate, String lockStr) {
+        /*所以这里的删除不能这么简单的执行删除*/
+        // redisTemplate.delete(lockStr);
+    }
+
     @Override
     public void run() {
         String lockStr = "lockStr007";
@@ -155,7 +162,7 @@ public class RedisLockDemo implements Runnable {
         RedisTemplate<String, Object> redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
 
         // option one
-        if (false) {
+        if (true) {
             for (int i = 0; i < 5; i++) {
                 try {
                     while (true) {
@@ -163,11 +170,20 @@ public class RedisLockDemo implements Runnable {
                         if (ifLock) {
                             System.out.println(Thread.currentThread().getName() + " A " + i);
                             Integer nt = sum;
-                            Thread.sleep(100);
+                            Thread.sleep(300);
                             sum = nt + 1;
                             System.out.println(Thread.currentThread().getName() + " B " + i);
                             Thread.sleep(200);
                             System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
+                            System.out.println(Thread.currentThread().getName() + " *-* " + 0);
+                            for (int j = 1; j <= 5; j++) {
+                                Thread.sleep(500);
+                                System.out.println(Thread.currentThread().getName() + " *-* " + j);
+                            }
+
+                            // 当线程等待超时时间设置为3000ms,则上方执行完毕以后在这里等待的10ms处发生超时,此时第二个线程马上获得锁进入
+                            // 所以第二个线程的"thread-A 0"会在第一个线程的"thread-release"日志前打印出来(实际情况可能有微小误差,因为线程执行开始时间不定)
+                            Thread.sleep(10);
 
                             break;
                         }
@@ -177,7 +193,7 @@ public class RedisLockDemo implements Runnable {
                 } finally {
                     try {
                         System.out.println(Thread.currentThread().getName() + " release " + "\n");
-                        redisTemplate.delete(lockStr);
+                        releaseLock(redisTemplate, lockStr);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -186,7 +202,7 @@ public class RedisLockDemo implements Runnable {
         }
 
         // option two
-        if (true) {
+        if (false) {
             System.out.println("3---" + Thread.currentThread().getName() + " begin");
             for (int j = 0; j < 100; j++) {
                 try {
@@ -203,7 +219,7 @@ public class RedisLockDemo implements Runnable {
                     e.printStackTrace();
                 } finally {
                     try {
-                        redisTemplate.delete(lockStr);
+                        releaseLock(redisTemplate, lockStr);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
