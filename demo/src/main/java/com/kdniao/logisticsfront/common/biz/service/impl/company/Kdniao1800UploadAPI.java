@@ -4,27 +4,67 @@
  */
 package com.kdniao.logisticsfront.common.biz.service.impl.company;
 
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.CollectionUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Kdniao1008OrderAPI2 {
+public class Kdniao1800UploadAPI implements InitializingBean {
+    protected CloseableHttpClient httpClient;
+    protected int readTimeout = 2000;
+    protected int connectionTimeout = 2000;
+    protected int maxTotalConnection = 5000;
+    protected int retryCount = 0;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 设置请求和传输超时时间
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(this.readTimeout).setConnectTimeout(this.connectionTimeout).build();
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        // 将最大连接数增加到100
+        cm.setMaxTotal(this.maxTotalConnection);
+        // 也设置为最大连接数
+        cm.setDefaultMaxPerRoute(maxTotalConnection);
+        // 重试次数，retryCount为0表示不执行重试
+        DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retryCount, false);
+        httpClient = HttpClients.custom().setRetryHandler(retryHandler).setConnectionManager(cm).setDefaultRequestConfig(requestConfig).build();
+    }
 
     //DEMO
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         String[] resultData = toArrayByInputStreamReader1("H://订单.txt");
         int rowLength = resultData.length;
-//        for (int i = 0; i < rowLength; i++) {
+//        for (int i = 0; i < 5; i++) {
 //            System.out.println(resultData[i]);
 //        }
 
-        Kdniao1008OrderAPI2 api = new Kdniao1008OrderAPI2();
+        Kdniao1800UploadAPI api = new Kdniao1800UploadAPI();
+        api.afterPropertiesSet();
         try {
             for (int i = 0; i < rowLength; i++) {
                 System.out.print(resultData[i] + ' ');
@@ -38,8 +78,11 @@ public class Kdniao1008OrderAPI2 {
 
     private String EBusinessID = "1535263";
     private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
+    private String ReqURL = "http://api.freight.kdniao.com/settlement/settlementApiInvoke.json";
 
-    private String ReqURL = "http://api.kdniao.com/api/dist";
+//    private String EBusinessID = "1261885";
+//    private String AppKey = "0a6a455f-7413-4c8d-a6bc-ca9a2fe8b530";
+//    private String ReqURL = "http://192.168.1.19:18080/settlementcenter/settlement/settlementApiInvoke.json";
 
     /**
      * Json方式 查询订单物流轨迹
@@ -50,6 +93,8 @@ public class Kdniao1008OrderAPI2 {
         String requestData = "{\n" +
                 "\t\"ShipperCode\": \"" + expCode + "\",\n" +
                 "\t\"LogisticCode\": \"" + expNo + "\",\n" +
+                "\t\"OrderCode\": \"" + "100630658820002" + "\",\n" +
+                "\t\"SenderDate\": \"" + "2019-06-05 17:25:52" + "\",\n" +
                 "\t\"PayType\": \"1\",\n" +
                 "\t\"ExpType\": \"1\",\n" +
                 "\t\"CustomerName\": \"\",\n" +
@@ -79,15 +124,15 @@ public class Kdniao1008OrderAPI2 {
                 "\t}]\n" +
                 "}";
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<>();
         params.put("RequestData", urlEncoder(requestData, "UTF-8"));
         params.put("EBusinessID", EBusinessID);
-        params.put("RequestType", "1008");
+        params.put("RequestType", "1800");
         String dataSign = encrypt(requestData, AppKey, "UTF-8");
         params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
         params.put("DataType", "2");
 
-        String result = sendPost(ReqURL, params);
+        String result = sendGet(params, "");
 
         //根据公司业务处理返回的信息......
 
@@ -149,73 +194,97 @@ public class Kdniao1008OrderAPI2 {
         return base64(MD5(content, charset), charset);
     }
 
-    /**
-     * 向指定 URL 发送POST方法的请求
-     *
-     * @param url    发送请求的 URL
-     * @param params 请求的参数集合
-     * @return 远程资源的响应结果
-     */
-    private String sendPost(String url, Map<String, String> params) {
-        OutputStreamWriter out = null;
-        BufferedReader in = null;
-        StringBuilder result = new StringBuilder();
-        try {
-            URL realUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
-            // 发送POST请求必须设置如下两行
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            // POST方法
-            conn.setRequestMethod("POST");
-            // 设置通用的请求属性
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.connect();
-            // 获取URLConnection对象对应的输出流
-            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-            // 发送请求参数            
-            if (params != null) {
-                StringBuilder param = new StringBuilder();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    if (param.length() > 0) {
-                        param.append("&");
-                    }
-                    param.append(entry.getKey());
-                    param.append("=");
-                    param.append(entry.getValue());
-                    //System.out.println(entry.getKey()+":"+entry.getValue());
+    public String sendGet( Map<String, Object> params,String urlAdd) {
+        Map<String, Object> paramMap = new HashMap<>();
+        if (params != null) {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+
+                if(entry.getValue() != null){
+                    paramMap.put(entry.getKey(), entry.getValue().toString());
+                }else{
+                    paramMap.put(entry.getKey(), "");
                 }
-                //System.out.println("param:"+param.toString());
-                out.write(param.toString());
             }
-            // flush输出流的缓冲
-            out.flush();
-            // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result.append(line);
-            }
-        } catch (Exception e) {
+        }
+
+        String response = "" ;
+        try{
+            response =   send(urlAdd, paramMap, "", HttpGet.METHOD_NAME) ;
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        //使用finally块来关闭输出流、输入流
-        finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+
+        return response;
+    }
+
+    public String send(String path, Map<String, Object> paramMap, String body, String method) {
+
+        HttpRequestBase request = null;
+        URIBuilder uriBuilder = null;
+        try {
+            uriBuilder = new URIBuilder(ReqURL);
+        } catch (URISyntaxException urise) {
+            throw new RuntimeException("url语法错误", urise);
         }
-        return result.toString();
+
+        String url = "" ;
+        if (HttpGet.METHOD_NAME.equals(method)) {
+            if (!StringUtils.isEmpty(path)) {
+                uriBuilder.setPath(path);
+            }
+            if (!CollectionUtils.isEmpty(paramMap)) {
+                for (String paramName : paramMap.keySet()) {
+                    uriBuilder.addParameter(paramName, paramMap.get(paramName).toString());
+                }
+            }
+            url = uriBuilder.toString();
+            HttpGet httpGet = new HttpGet(url);
+            request = httpGet;
+        } else if (HttpPost.METHOD_NAME.equals(method)) {
+            if (!StringUtils.isEmpty(path)) {
+                uriBuilder.setPath(path);
+            }
+
+            url = uriBuilder.toString();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setHeader("Content-type", "application/json; charset=UTF-8");
+            httpPost.setEntity(new StringEntity(JSON.toJSONString(paramMap), Charset.forName("UTF-8")));
+
+
+            request = httpPost;
+        } else {
+            throw new RuntimeException("不支持的http method[" + method + "]");
+        }
+
+//        if (!CollectionUtils.isEmpty(headerMap)) {
+//            for (String headerName : headerMap.keySet()) {
+//                request.addHeader(headerName, headerMap.get(headerName));
+//            }
+//        }
+
+        String responseString = null;
+        long startTime = System.currentTimeMillis();
+        boolean success = false;
+        Exception ioe = null;
+        try {
+            CloseableHttpResponse response = httpClient.execute(request);
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            success = true;
+            return responseString;
+        }catch (Exception e1) {
+            ioe = e1;
+            throw new RuntimeException("http invoke exception", e1);
+        }
+        finally {
+            Map<String, String> paramMapTemp = new HashMap<>();
+            if (paramMap != null) {
+                for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+                    paramMapTemp.put(entry.getKey(), entry.getValue().toString());
+                }
+            }
+            request.releaseConnection();
+            request.abort();
+        }
     }
 
     private static char[] base64EncodeChars = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',

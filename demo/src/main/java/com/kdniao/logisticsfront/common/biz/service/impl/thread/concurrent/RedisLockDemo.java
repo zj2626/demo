@@ -12,6 +12,7 @@ import redis.clients.util.SafeEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -31,6 +32,8 @@ public class RedisLockDemo implements Runnable {
     private static final String SET_IF_NOT_EXIST = "NX";
     private static final String SET_WITH_EXPIRE_TIME = "PX";
     private static final String OPTION = "set";
+
+    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
     private static ApplicationContext applicationContext;
 
@@ -71,7 +74,7 @@ public class RedisLockDemo implements Runnable {
         boolean ifLock = false;
 
         /* 方法一 opsForValue (由于不是原子操作, 当删除不成功且在expire之前报错可能导致死锁)*/
-        if (true) {
+        if (false) {
             ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, String.valueOf(System.currentTimeMillis()));
             if (ifLock) {
                 redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
@@ -127,6 +130,18 @@ public class RedisLockDemo implements Runnable {
             ifLock = lock(redisTemplate, lockStr, String.valueOf(System.currentTimeMillis()));
         }
 
+        /* 方法五 有问题不行 bug ???? */
+        if (true) {
+            if (StringUtils.isEmpty(threadLocal.get())) {
+                threadLocal.set(UUID.randomUUID().toString());
+            }
+
+            ifLock = redisTemplate.opsForHash().putIfAbsent(lockStr, threadLocal.get(), 1);
+            if (ifLock) {
+                redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
+            }
+        }
+
         return ifLock;
     }
 
@@ -152,6 +167,13 @@ public class RedisLockDemo implements Runnable {
     private static void releaseLock(RedisTemplate<String, Object> redisTemplate, String lockStr) {
         /*所以这里的删除不能这么简单的执行删除*/
         // redisTemplate.delete(lockStr);
+
+        //针对方法五
+        String hKey = threadLocal.get();
+        if(!StringUtils.isEmpty(hKey)){
+            redisTemplate.opsForHash().delete(lockStr, hKey);
+            threadLocal.remove();
+        }
     }
 
     @Override
