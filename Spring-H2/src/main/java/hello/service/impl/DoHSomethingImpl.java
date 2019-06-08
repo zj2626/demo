@@ -39,17 +39,17 @@ public class DoHSomethingImpl implements DoHSomething {
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("RpcContext > " + rpcContext.get("aa"));
         System.out.println("RpcContext > " + rpcContext.get("cc"));
-        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+//        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
         System.out.println("**********");
         System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
         System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
-        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
 
         // set requestId
         System.out.println("**************");
-        rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
-        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
-        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+//        rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
+//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
 
         return ">Dubbo " + name;
     }
@@ -67,11 +67,11 @@ public class DoHSomethingImpl implements DoHSomething {
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("RpcContext > " + rpcContext.get("aa"));
         System.out.println("RpcContext > " + rpcContext.get("cc"));
-        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
         System.out.println("**********");
         System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
         System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
-        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
 
         return "shit u " + name;
     }

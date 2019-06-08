@@ -95,12 +95,12 @@ public class DoSomething {
             RpcContext rpcContext = RpcContext.getContext();
 
             rpcContext.set("aa", "bb");
-            rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
+//            rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
             rpcContext.setAttachment("cc", "dd");
 
             boolean isConsumerSide = rpcContext.isConsumerSide();
             String serverIP = rpcContext.getRemoteHost();
-            String requestId = (String) RpcContext.getContext().get(Constants.REQUESTID_KEY);
+            String requestId = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
             String timestamp = "";
             System.out.println("RPC -> " + requestId + " > " + serverIP + " > " + isConsumerSide + " > " + timestamp);
             System.out.println(">>>>>>>>>>> 1");
@@ -111,7 +111,7 @@ public class DoSomething {
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide2 = rpcContext.isConsumerSide();
             String serverIP2 = rpcContext.getRemoteHost();
-            String requestId2 = (String) RpcContext.getContext().get(Constants.REQUESTID_KEY);
+            String requestId2 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
             String timestamp2 = rpcContext.getUrl().getParameter("timestamp");
             System.out.println("RPC -> " + requestId2 + " > " + serverIP2 + " > " + isConsumerSide2 + " > " + timestamp2);
             System.out.println(">>>>>>>>>>> 2");
@@ -122,7 +122,7 @@ public class DoSomething {
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide3 = rpcContext.isConsumerSide();
             String serverIP3 = rpcContext.getRemoteHost();
-            String requestId3 = (String) RpcContext.getContext().get(Constants.REQUESTID_KEY);
+            String requestId3 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
             String timestamp3 = rpcContext.getUrl().getParameter("timestamp");
             System.out.println("RPC -> " + requestId3 + " > " + serverIP3 + " > " + isConsumerSide3 + " > " + timestamp3);
             System.out.println(">>>>>>>>>>> 3");
@@ -136,7 +136,7 @@ public class DoSomething {
 
             boolean isConsumerSide4 = rpcContext.isConsumerSide();
             String serverIP4 = rpcContext.getRemoteHost();
-            String requestId4 = (String) RpcContext.getContext().get(Constants.REQUESTID_KEY);
+            String requestId4 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
             String timestamp4 = rpcContext.getUrl().getParameter("timestamp");
             System.out.println("RPC -> " + requestId4 + " > " + serverIP4 + " > " + isConsumerSide4 + " > " + timestamp);
             System.out.println(">>>>>>>>>>> 4");
