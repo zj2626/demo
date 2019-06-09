@@ -16,7 +16,7 @@
     <properties>
         <mysql_version>5.1.33</mysql_version>
         <quartz_version>2.2.1</quartz_version>
-        <dubbo_version>5.0.10.RELEASE</dubbo_version>
+        <dubbo_version>2.6.6</dubbo_version>
         <spring-integration-kafka.version>2.1.0.RELEASE</spring-integration-kafka.version>
         <druid_version>1.0.9</druid_version>
         <json-lib_version>1.0.2</json-lib_version>
@@ -124,11 +124,6 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-default</artifactId>
-            <version>${dubbo_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
             <artifactId>dubbo-registry-zookeeper</artifactId>
             <version>${dubbo_version}</version>
         </dependency>
@@ -145,11 +140,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-container-api</artifactId>
-            <version>${dubbo_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-container-jetty</artifactId>
             <version>${dubbo_version}</version>
         </dependency>
         <dependency>
