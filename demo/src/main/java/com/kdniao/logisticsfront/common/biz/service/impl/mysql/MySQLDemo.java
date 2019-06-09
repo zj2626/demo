@@ -19,6 +19,8 @@ public class MySQLDemo {
 
     private String sql = "INSERT INTO testa (NAME, AGE) VALUES";
     private String sql2 = "INSERT INTO testb (NAME, AGE) VALUES";
+    private String sql21 = "INSERT INTO testc (NAME, AGE) VALUES";
+    private String sql22 = "INSERT INTO testd (NAME, AGE) VALUES";
     private String sql3 = "SELECT t1.ID, t1.AGE FROM testa t1 JOIN testb t2 ON t1.AGE = t2.AGE WHERE t2.AGE < 35;";
     private String sql4 = "SELECT t1.ID, t1.AGE FROM testa t1 JOIN (SELECT t2.AGE FROM testb t2 WHERE t2.AGE < 35) t2 WHERE t1.AGE = t2.AGE;";
     private String sql5 = "SELECT t1.ID, t1.AGE FROM testa t1 WHERE AGE IN (SELECT t2.AGE FROM testb t2 WHERE t2.AGE < 35);";
@@ -87,6 +89,37 @@ public class MySQLDemo {
             }
         }
     }
+
+    @Test
+    public void test21() {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = getConnection();
+            stmt = conn.createStatement();
+
+            int rs = 1;
+            for (int i = 0; i < 2; i++) {
+                StringBuilder stringBuilder = new StringBuilder(sql21);
+                for (int j = 0; j < 2000; j++) {
+                    stringBuilder.append(String.format(" ('%s', %d) ", UUID.randomUUID().toString().substring(0, 5), Double.valueOf(Math.floor(Math.random() * 500)).intValue())).append(",");
+                }
+                System.out.println(i);
+                stmt.executeUpdate(stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1));
+            }
+
+            System.out.println("rs: " + rs);
+        } catch (Exception se) {
+            se.printStackTrace();
+        } finally {
+            try {
+                closeConnection(conn, stmt);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Test
     public void test3() {
@@ -178,11 +211,15 @@ public class MySQLDemo {
     private void closeConnection(Connection conn, Statement stmt) throws ClassNotFoundException, SQLException {
         // 关闭资源
         try {
-            if (stmt != null) stmt.close();
+            if (stmt != null){
+                stmt.close();
+            }
         } catch (SQLException ignored) {
         }// 什么都不做
         try {
-            if (conn != null) conn.close();
+            if (conn != null) {
+                conn.close();
+            }
         } catch (SQLException se) {
             se.printStackTrace();
         }

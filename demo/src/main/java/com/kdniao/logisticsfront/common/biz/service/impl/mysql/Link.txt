@@ -1,0 +1,62 @@
+连接的优化:
+
+1.外连接: 相当于两个集合的差集/并集(差取决于left/right/full)
+2.内连接: 相当于两个集合的交集(join, 不加join谓词也是内连接)
+3.连接  :
+
+    1.外连接消除: 把外连接变成内连接
+        消除的原因:
+            1.优化器处理外连接的操作和时间大于内连接(多做了很多判断是否为空的判断)
+            2.消除后可以进行更灵活的多表连接顺序,再更好的进行优化
+            3.根据连接算法把小表放在外表位置可以加快执行速度
+        消除的条件:
+            1.where条件满足空值拒绝(reject-NULL) :where条件保证可以排除出外连接右边生成的NULL值时候,可以把外连接变成内连接(和内连接效果相同,注意是where条件不是on中的连接条件)
+
+            eg: (优化前)
+                EXPLAIN SELECT
+                	testb.ID,
+                	testb.AGE
+                FROM
+                	testb
+                	LEFT JOIN testc ON testb.AGE = testc.AGE
+                	LEFT JOIN testd ON testc.AGE = testd.AGE
+                WHERE
+                	testb.ID IS NOT NULL
+                	AND testc.ID IS NOT NULL
+                	AND testd.ID IS NOT NULL;
+                等价于 (优化后)
+                EXPLAIN SELECT
+                	testb.ID,
+                	testb.AGE
+                FROM
+                	testb
+                	JOIN testc ON TRUE
+                	JOIN testd ON TRUE
+                WHERE
+                	testb.AGE = testc.AGE
+                	AND testc.AGE = testd.AGE;
+                同时等价于
+                EXPLAIN SELECT testb.ID, testb.AGE FROM testb JOIN testc ON testb.AGE = testc.AGE JOIN testd ON testc.AGE = testd.AGE;
+                EXPLAIN SELECT testb.ID, testb.AGE FROM testb JOIN testc,testd WHERE testb.AGE = testc.AGE AND testc.AGE = testd.AGE;
+
+            eg: (不会优化掉left join):
+                EXPLAIN SELECT
+                	testc.ID,
+                	testc.AGE
+                FROM
+                	testc
+                	LEFT JOIN testd ON testc.AGE = testd.AGE
+                	WHERE testc.AGE > 0;
+                (会优化掉left join):
+                EXPLAIN SELECT
+                	testc.ID,
+                	testc.AGE
+                FROM
+                	testc
+                	LEFT JOIN testd ON testc.AGE = testd.AGE
+                	WHERE testd.AGE > 0;
+
+    2.连接消除: 去掉不必要的连接对象,减少连接操作 (mysql部分支持 视具体情况而定)
+
+    3.嵌套连接消除: 消除嵌套连接的层次,减少层次使扁平化 (嵌套连接:连接存在多个层次, 用括号标识连接的优先次序)
+
