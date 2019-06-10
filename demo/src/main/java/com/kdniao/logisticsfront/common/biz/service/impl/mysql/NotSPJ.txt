@@ -1,0 +1,26 @@
+非spj的优化:
+
+1.spj:   (select/project/join) 只由查询/投影/连接组成的查询语句
+2.非spj: spj + groupby/orderby/distinct/limit等等语句的语句
+
+非spj的优化:
+    1.GROUP BY:
+        分组转换技术: 对分组操作,聚集操作以及连接操作的位置进行交换
+            1.分组操作下移: 使分组操作提前执行, 尽量先分组再进行连接,尽量靠近子查询
+            2.分组操作上移: 使分组操作推迟执行, 先执行其他操作(where)使数据减少,再进行分组(前提是其他操作能过滤掉大部分数据)
+
+    2.ORDER BY:
+        1.排序消除: 优化器在生成执行计划前,消除没有必要的排序操作(一般利用索引)
+        2.排序下推: 把排序尽量下推到基表中,在连接之前进行排序(一般排序都是最后执行),且保证连接后的结果依然是排序后的结果
+
+    3.DISTINCT:
+        1.DISTINCT消除: 表中存在主键,唯一约束,索引等,可以消除查询语句中的DISTINCT(属于语义优化范围)
+        1.DISTINCT推入: 不知道,用得少
+        1.DISTINCT迁移: 当对连接结果进行DISTINCT时,可能会把DISTINCT移动到子查询中先执行DISTINCT(也叫DISTINCT配置)
+
+MYSQL的支持情况:
+    1.GROUP BY:
+        mysql会扫描整个表放到临时表中再进行分组(出现Using temporary)
+        mysql不支持分组转换技术,但是mysql会尽量使用索引
+    2.ORDER BY:
+    3.DISTINCT:
