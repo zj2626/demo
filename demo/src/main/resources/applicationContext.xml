@@ -2,7 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:cache="http://www.springframework.org/schema/cache"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
 
     <bean id="MyBeanFactoryAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanFactoryAware"
           init-method="init"/>
@@ -10,7 +13,20 @@
     <bean id="MyBeanNameAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanNameAware"
           init-method="init"/>
 
-    <context:component-scan base-package="com.kdniao.logisticsfront.common.biz.service.impl.spring.*"/>
+<!--    <context:component-scan base-package="com.kdniao.logisticsfront.common.biz.service.impl.spring.*"/>-->
+    <bean id="userDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.UserDao"/>
+
+    <bean id="injectUserDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao">
+<!--        <property name="userDao" ref="userDao"/>-->
+    </bean>
+    <bean id="injectUserDao2" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao2">
+<!--        <property name="userDao" ref="userDao"/>-->
+    </bean>
+    <bean id="injectUserDao3" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao3">
+        <constructor-arg name="userDao" ref="userDao"/>
+    </bean>
+
+<!--    <context:annotation-config />-->
 
     <!-- redis属性文件 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

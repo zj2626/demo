@@ -2,7 +2,6 @@ package com.kdniao.logisticsfront.common.biz.service.impl.spring.injection;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class UserDao {
     private String name;
 
