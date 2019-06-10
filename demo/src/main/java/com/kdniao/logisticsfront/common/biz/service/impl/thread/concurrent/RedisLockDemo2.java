@@ -102,7 +102,7 @@ public class RedisLockDemo2 implements Runnable {
                 // lock提供带timeout参数，timeout结束强制解锁，防止死锁
                 // (不是等待锁时间而是最大执行时间, 方法会一直阻塞直到获得锁)
                 // 不设置则默认设置30s;
-                rLock.lock(3000, TimeUnit.MILLISECONDS);
+                rLock.lock(4000, TimeUnit.MILLISECONDS); // 3000
                 ifLock = true;
 
                 long end = System.currentTimeMillis();
