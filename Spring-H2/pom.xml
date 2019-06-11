@@ -7,7 +7,7 @@
     <groupId>service.zj</groupId>
     <artifactId>zj</artifactId>
     <version>0.1</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <build>
         <plugins>
             <plugin>
