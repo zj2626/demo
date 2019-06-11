@@ -68,7 +68,7 @@ public class Kdniao1800UploadAPI implements InitializingBean {
         try {
             for (int i = 0; i < rowLength; i++) {
                 System.out.print(resultData[i] + ' ');
-                String result = api.getOrderTracesByJson("HTKY", resultData[i]);
+                String result = api.getOrderTracesByJson("STO", resultData[i]);
                 System.out.println(result);
             }
         } catch (Exception e) {
@@ -76,8 +76,10 @@ public class Kdniao1800UploadAPI implements InitializingBean {
         }
     }
 
-    private String EBusinessID = "1535263";
-    private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
+//    private String EBusinessID = "1535263";
+//    private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
+    private String EBusinessID = "1529654";
+    private String AppKey = "bc6fd7a5-e0f7-425e-a693-7414b9cc5cdb";
     private String ReqURL = "http://api.freight.kdniao.com/settlement/settlementApiInvoke.json";
 
 //    private String EBusinessID = "1261885";
@@ -102,13 +104,13 @@ public class Kdniao1800UploadAPI implements InitializingBean {
                 "\t\"MonthCode\": \"\",\n" +
                 "\t\"IsNotice\": \"0\",\n" +
                 "\t\"Sender\": {\n" +
-                "\t\t\"Name\": \"张健\",\n" +
+                "\t\t\"Name\": \"郑毅\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
-                "\t\t\"Mobile\": \"13715276714\",\n" +
-                "\t\t\"ProvinceName\": \"广东省\",\n" +
-                "\t\t\"CityName\": \"深圳市\",\n" +
-                "\t\t\"ExpAreaName\": \"龙华新区\",\n" +
-                "\t\t\"Address\": \"龙华新区大浪街道富裕新村65号\"\n" +
+                "\t\t\"Mobile\": \"18968172761\",\n" +
+                "\t\t\"ProvinceName\": \"浙江省\",\n" +
+                "\t\t\"CityName\": \"杭州市\",\n" +
+                "\t\t\"ExpAreaName\": \"桐庐县\",\n" +
+                "\t\t\"Address\": \"阆苑路108号501室\"\n" + /*瑾昕贸易*/
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +

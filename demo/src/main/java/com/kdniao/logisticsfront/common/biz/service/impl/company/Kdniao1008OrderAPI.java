@@ -35,7 +35,7 @@ public class Kdniao1008OrderAPI {
         try {
             for (int i = 0; i < rowLength; i++) {
                 System.out.print(resultData[i][0] + ' ');
-                String result = api.getOrderTracesByJson("YTO", resultData[i][0]);
+                String result = api.getOrderTracesByJson("STO", resultData[i][0]);
                 System.out.println(result);
             }
         } catch (Exception e) {
@@ -43,8 +43,11 @@ public class Kdniao1008OrderAPI {
         }
     }
 
-    private String EBusinessID = "1420123";
-    private String AppKey = "99a85b59-87db-4bd2-b122-4e85b23a4240";
+//    private String EBusinessID = "1420123";
+//    private String AppKey = "99a85b59-87db-4bd2-b122-4e85b23a4240";
+
+    private String EBusinessID = "1529654";
+    private String AppKey = "bc6fd7a5-e0f7-425e-a693-7414b9cc5cdb";
 
     private String ReqURL = "http://api.kdniao.com/api/dist";
 
@@ -64,21 +67,21 @@ public class Kdniao1008OrderAPI {
                 "\t\"MonthCode\": \"\",\n" +
                 "\t\"IsNotice\": \"0\",\n" +
                 "\t\"Sender\": {\n" +
-                "\t\t\"Name\": \"1255760\",\n" +
+                "\t\t\"Name\": \"郑毅\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
-                "\t\t\"Mobile\": \"13700000000\",\n" +
-                "\t\t\"ProvinceName\": \"广东省\",\n" +
-                "\t\t\"CityName\": \"深圳市\",\n" +
-                "\t\t\"ExpAreaName\": \" 龙岗区 \",\n" +
-                "\t\t\"Address\": \"平湖街道平龙西路73号305\"\n" +
+                "\t\t\"Mobile\": \"18968172761\",\n" +
+                "\t\t\"ProvinceName\": \"浙江省\",\n" +
+                "\t\t\"CityName\": \"杭州市\",\n" +
+                "\t\t\"ExpAreaName\": \"桐庐县\",\n" +
+                "\t\t\"Address\": \"阆苑路108号501室瑾昕贸易\"\n" +
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
                 "\t\t\"Mobile\": \"13800000000\",\n" +
-                "\t\t\"ProvinceName\": \"河北\",\n" +
-                "\t\t\"CityName\": \"廊坊市\",\n" +
-                "\t\t\"ExpAreaName\": \"经开区\",\n" +
+                "\t\t\"ProvinceName\": \"广东省\",\n" +
+                "\t\t\"CityName\": \"深圳市\",\n" +
+                "\t\t\"ExpAreaName\": \"龙华新区\",\n" +
                 "\t\t\"Address\": \"测试地址2\"\n" +
                 "\t},\n" +
                 "\t\"Commodity\": [{\n" +

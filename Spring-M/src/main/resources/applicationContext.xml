@@ -135,15 +135,11 @@
 
     <dubbo:reference id="doHSomething" interface="hello.service.DoHSomething" group="${dubbo.group}"
                      filter="myFilter,default">
-        <dubbo:method name="sayHello" async="true" return="true"/>
+        <!--<dubbo:method name="sayHello" async="true" return="true"/>-->
         <!--<dubbo:method name="sayFuck"/>-->
     </dubbo:reference>
 
     <dubbo:consumer check="false" timeout="10000" group="${dubbo.default.group}"/>
-    <!--
-    consumer://192.168.1.48/hello.service.DoHSomething?application=consumer-of-helloworld-app&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoHSomething&methods=sayHello,sayFuck&owner=zhangj&pid=15128&reference.filter=myFilter,default&revision=1.0-SNAPSHOT&sayHello.async=true&sayHello.return=true&side=consumer&timestamp=1552631668248
-    consumer://192.168.1.48/hello.service.DoWithAnnotation?application=consumer-of-helloworld-app&cache=true&category=consumers&check=false&default.check=false&default.group=ay.consumer-of-helloworld-app&default.retries=1&default.timeout=10000&dubbo=2.8.2.1&group=zj.hello-app&interface=hello.service.DoWithAnnotation&methods=sayFuck&owner=zhangj&pid=15128&revision=1.0-SNAPSHOT&side=consumer&timestamp=1552631673393
-    -->
 
     <!--******************************************************************************************************************-->
 
