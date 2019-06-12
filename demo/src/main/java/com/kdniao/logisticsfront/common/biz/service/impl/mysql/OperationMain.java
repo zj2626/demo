@@ -1,8 +1,8 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.mysql;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper;
-import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDO;
-import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDOExample;
+//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper;
+//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDO;
+//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDOExample;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -43,7 +43,7 @@ public class OperationMain implements Runnable {
             } else {
                 futureTasks.add(service.submit(writeMain));
             }
-            Thread.sleep(1);
+            // Thread.sleep(1);
         }
         try {
             for (Future<?> futureTask : futureTasks) {
@@ -60,28 +60,28 @@ public class OperationMain implements Runnable {
 
     @Override
     public void run() {
-        UcAreaDOMapper ucAreaDOMapper = (UcAreaDOMapper) applicationContext.getBean("areaDOMapper");
-
-        System.out.println(Thread.currentThread().getName());
-
-        long start = System.currentTimeMillis();
-        if (!ifWrite) {
-            UcAreaDOExample example = new UcAreaDOExample();
-            UcAreaDOExample.Criteria criteria = example.createCriteria();
-
-            List<UcAreaDO> list = ucAreaDOMapper.selectByExample(example);
-            System.out.println("list.size " + list.size());
-        } else {
-            UcAreaDO record = new UcAreaDO();
-            record.setId("10007.0");
-            record.setAreaCode("231282022");
-            record.setAreaName(UUID.randomUUID().toString());
-
-            int updateInt = ucAreaDOMapper.updateByPrimaryKey(record);
-            System.out.println("updateInt " + updateInt);
-        }
-
-        long end = System.currentTimeMillis();
-        System.out.println(Thread.currentThread().getName() + " --- " + (end - start) + "\n");
+//        UcAreaDOMapper ucAreaDOMapper = (UcAreaDOMapper) applicationContext.getBean("areaDOMapper");
+//
+//        System.out.println(Thread.currentThread().getName());
+//
+//        long start = System.currentTimeMillis();
+//        if (!ifWrite) {
+//            UcAreaDOExample example = new UcAreaDOExample();
+//            UcAreaDOExample.Criteria criteria = example.createCriteria();
+//
+//            List<UcAreaDO> list = ucAreaDOMapper.selectByExample(example);
+//            System.out.println("list.size " + list.size());
+//        } else {
+//            UcAreaDO record = new UcAreaDO();
+//            record.setId("10007.0");
+//            record.setAreaCode("231282022");
+//            record.setAreaName(UUID.randomUUID().toString());
+//
+//            int updateInt = ucAreaDOMapper.updateByPrimaryKey(record);
+//            System.out.println("updateInt " + updateInt);
+//        }
+//
+//        long end = System.currentTimeMillis();
+//        System.out.println(Thread.currentThread().getName() + " --- " + (end - start) + "\n");
     }
 }
