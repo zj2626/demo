@@ -57,9 +57,10 @@ key_len:        key_len 计算公式为
 ref:            关联谓词信息或常量
 rows:           如果是驱动行源则为该行源大小 如果是被驱动行源,则是单次操作的行源大小(例如遍历情况下每次一条则显示1)
 Extra:          显示其他重要信息
-    1.Using where           :使用查询条件,先取出数据之后再比对
-    2.Using index           :使用索引来访问数据而避免回表
-    3.Using index condition :
+    1.Using where           :表示优化器需要通过索引回表查询数据
+    2.Using index           :表示直接访问索引就足够获取到所需要的数据，不需要通过索引回表
+    3.Using index condition :先条件过滤索引，过滤完索引后找到所有符合索引条件的数据行，随后用WHERE子句中的其他条件去过滤这些数据行
+    3.Using where && Using index :
     4.Using temporary       :使用了临时表
     5.Using filesort        :无法利用索引来完成的排序
     6.Using join buffer     :将之前访问的数据存放于join buffer中
