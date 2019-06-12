@@ -13,6 +13,18 @@
     <name>-demo-</name>
     <url>http://maven.apache.org</url>
     <packaging>war</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <properties>
         <mysql_version>5.1.33</mysql_version>
         <quartz_version>2.2.1</quartz_version>

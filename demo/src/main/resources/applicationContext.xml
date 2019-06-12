@@ -181,10 +181,10 @@
         <property name="dataSource" ref="dataSourceTest"/>
     </bean>
 
-    <bean id="areaDOMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactoryTest"/>
-    </bean>
+<!--    <bean id="areaDOMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+<!--        <property name="mapperInterface" value="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper"/>-->
+<!--        <property name="sqlSessionFactory" ref="sqlSessionFactoryTest"/>-->
+<!--    </bean>-->
 
     <bean id="dataSourceMerchant" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
