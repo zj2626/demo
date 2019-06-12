@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -16,16 +17,16 @@ public class ThreadLocalDemo implements Runnable {
     private static ThreadLocal<SqlConnection> threadLocal = new ThreadLocal() {
         @Override
         protected Object initialValue() {
-            System.out.println(Thread.currentThread().getName() + " >>>> initialValue");
-            return super.initialValue();
+            System.out.println('\n' + Thread.currentThread().getName() + " >>>> initialValue");
+            SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
+            return sqlConnection;
         }
     };
 
     @Test
-    public void testA() {
+    public void testA() throws ExecutionException, InterruptedException {
         ThreadLocalDemo rd = new ThreadLocalDemo();
 
-        // way one
         ExecutorService service = Executors.newFixedThreadPool(10);
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -36,32 +37,13 @@ public class ThreadLocalDemo implements Runnable {
                 e.printStackTrace();
             }
         }
-//        for (int i = 0; i < 2; i++) {
-//            futureTasks.add(service.submit(rd2));
-//            Thread.sleep(1);
-//        }
 
-        try {
-            for (Future<?> futureTask : futureTasks) {
-                futureTask.get();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (Future<?> futureTask : futureTasks) {
+            futureTask.get();
         }
         service.shutdown();
-//
-//        try {
-//            System.out.println("________________________");
-//            Thread thread = new Thread(rd);
-//            Thread thread2 = new Thread(rd);
-//            thread.start();
-//            thread2.start();
-//            thread.join();
-//            thread2.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
+        System.out.println("ENNNNNNNNNNNNNNNND");
         rd.show();
     }
 
@@ -69,7 +51,6 @@ public class ThreadLocalDemo implements Runnable {
     public void run() {
 
         optionOne();
-//        optionCompare();
 
         show();
     }
@@ -79,15 +60,14 @@ public class ThreadLocalDemo implements Runnable {
     // 每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来
     private void optionOne() {
         try {
-            System.out.println("start " + threadLocal.hashCode());
-
-            if (null == ThreadLocalDemo.threadLocal.get()) {
-                SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
-                System.out.println(Thread.currentThread().getName() + " -set-" + sqlConnection.toString());
-                ThreadLocalDemo.threadLocal.set(sqlConnection);
-            }
+            // set的部分可以放到initialValue方法中执行
+//            if (null == ThreadLocalDemo.threadLocal.get()) {
+//                SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
+//                ThreadLocalDemo.threadLocal.set(sqlConnection);
+//            }
 
             for (int i = 0; i < 5; i++) {
+                // get得到null的时候会调用setInitialValue方法，从而调用initialValue方法，所以要set的值可以直接在initialValue中返回
                 SqlConnection sqlConnection = ThreadLocalDemo.threadLocal.get();
                 Thread.sleep(100);
                 System.out.println(Thread.currentThread().getName() + " -get--" + sqlConnection.toString());
@@ -100,24 +80,8 @@ public class ThreadLocalDemo implements Runnable {
         } finally {
 //            int a = (int) (1 + Math.random() * (10 - 1 + 1));
 //            if (a % 2 == 0) {
-                ThreadLocalDemo.threadLocal.remove();
+            ThreadLocalDemo.threadLocal.remove();
 //            }
-        }
-    }
-
-    private void optionCompare() {
-        try {
-            SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
-
-            for (int i = 0; i < 5; i++) {
-                Thread.sleep(100);
-                System.out.println(Thread.currentThread().getName() + " -get--" + sqlConnection.toString());
-
-                Thread.sleep(100);
-                System.out.println(Thread.currentThread().getName() + " T " + i + "-" + sqlConnection.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -139,9 +103,7 @@ public class ThreadLocalDemo implements Runnable {
         }
     }
 
-    private class SqlConnection {
-        public SqlConnection() {
-        }
+    private static class SqlConnection {
 
         public SqlConnection(String driverName) {
             this.driverName = driverName;
