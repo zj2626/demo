@@ -56,6 +56,9 @@ public class HystrixRequest extends HystrixCommand<String> {
 
         this.name = name;
         this.groupName = groupName;
+
+        System.out.println("构造 " + groupName + " * " + name);
+
     }
 
     /*
@@ -124,17 +127,17 @@ public class HystrixRequest extends HystrixCommand<String> {
 
     @Override
     protected String run() {
-        System.out.println("RUN---> " + Thread.currentThread().getName() + " * " + groupName);
+        System.out.println("RUN---> " + Thread.currentThread().getName() + " * " + groupName + " * " + name);
 
         // 处理 延迟
-//        for (int i = 1; i <= 3; i++) {
-//            try {
-//                Thread.sleep(1000);
-//                System.out.println("--------RUN-- " + groupName + " " + i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(100);
+                System.out.println("running-- " + groupName + " " + i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         return "thread:" + Thread.currentThread().getName() + ", Hello " + name;
     }
@@ -142,34 +145,13 @@ public class HystrixRequest extends HystrixCommand<String> {
     // 使用Fallback() 提供降级策略
     @Override
     protected String getFallback() {
-        System.out.println("jump to getFallback >>>>>> ");
-        return new FallbackViaNetwork(name, groupName).execute();
+        System.out.println("getFallback");
+        return "jump to getFallback >>>>>> " + Thread.currentThread().getName();
     }
 
     //重写getCacheKey方法,实现区分不同请求的逻辑
 //    @Override
 //    protected String getCacheKey() {
-//        return String.valueOf(groupName);
+//        return groupName + "_" + name;
 //    }
-
-    private static class FallbackViaNetwork extends HystrixCommand<String> {
-        private final String name;
-        private String groupName;
-
-        protected FallbackViaNetwork(String name, String groupName) {
-            super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
-                    .andCommandKey(HystrixCommandKey.Factory.asKey(name))
-                    // 使用不同的线程池做隔离，防止上层线程池跑满，影响降级逻辑.
-                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("FuckWorldPool"))
-            );
-            this.name = name;
-            this.groupName = groupName;
-        }
-
-        @Override
-        protected String run() {
-            System.out.println("FallbackViaNetwork RUN---> " + Thread.currentThread().getName() + " * " + groupName);
-            return "thread:" + Thread.currentThread().getName() + ", Fallback " + name;
-        }
-    }
 }

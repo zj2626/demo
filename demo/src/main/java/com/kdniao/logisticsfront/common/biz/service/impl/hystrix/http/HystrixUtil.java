@@ -1,5 +1,6 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.hystrix;
+package com.kdniao.logisticsfront.common.biz.service.impl.hystrix.http;
 
+import com.kdniao.logisticsfront.common.biz.service.impl.hystrix.http.ExterfaceInvokeIOHttpSender;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
@@ -39,6 +40,7 @@ public class HystrixUtil {
             this.groupName = groupName;
             this.message = message;
 
+            // 初始化exterfaceInvokeIOHttpSender
             try {
                 this.exterfaceInvokeIOHttpSender = new ExterfaceInvokeIOHttpSender();
                 this.exterfaceInvokeIOHttpSender.setHostname("http://127.0.0.1:8073");

@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.hystrix;
+package com.kdniao.logisticsfront.common.biz.service.impl.hystrix.http;
 
 
 import com.alibaba.fastjson.JSON;
