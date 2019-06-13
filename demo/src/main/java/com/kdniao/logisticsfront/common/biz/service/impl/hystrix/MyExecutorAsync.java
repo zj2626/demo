@@ -33,7 +33,7 @@ public class MyExecutorAsync implements Runnable {
 //            }
 //            System.out.println("#######等待线程执行完毕: " + groupName);
             result = future.get();
-            System.out.println("Result > " + Thread.currentThread().getName() + " [" + result + "]\n");
+            System.out.println("Result > " + Thread.currentThread().getName() + " "  + groupName + " * " + name + " [" + result + "]\n");
         } catch (Exception e) {
             e.printStackTrace();
         }

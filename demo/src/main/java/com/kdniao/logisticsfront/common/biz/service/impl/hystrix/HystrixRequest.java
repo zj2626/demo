@@ -42,9 +42,9 @@ public class HystrixRequest extends HystrixCommand<String> {
 //                .andThreadPoolPropertiesDefaults(
 //                        HystrixThreadPoolProperties.Setter()
 //                                /* 线程池大小 默认10*/
-//                                .withCoreSize(200)
+//                                .withCoreSize(20)
 //                                /* 线程池队列大小 默认-1 如果超了就直接执行降级策略:getFallback*/
-//                                .withMaxQueueSize(5)
+//                                .withMaxQueueSize(100)
 //                )
 //                .andCommandPropertiesDefaults(
 //                        HystrixCommandProperties.Setter()
@@ -96,7 +96,7 @@ public class HystrixRequest extends HystrixCommand<String> {
         // 信号量隔离使用用户请求线程，没有格外线程切换开销，使用与执行时间和执行逻辑都比较短的本地计算。比如CPU密集型的任务
 
         /*
-        * groupName : 用来实现依赖隔离, 不同group的请求分配不同的资源,同一group的资源可以使用同一资源(比如线程池)
+        * groupName : 用来实现依赖隔离, 不同group的请求分配不同的资源,同一group的资源可以使用同一资源(比如线程池及其配置)
         * name      : 用来实现熔断器的隔离, 不同name的熔断互不影响(比如namea的请求被熔断不会影响nameb的请求继续)
         * */
 
@@ -220,7 +220,7 @@ public class HystrixRequest extends HystrixCommand<String> {
     // HystrixBadRequestException用在非法参数或非系统故障异常等不应触发回退逻辑的场景。
     @Override
     protected String getFallback() {
-        System.out.println(" getFallback " + Thread.currentThread().getName() + " : " + getTotalTime() + getTime());
+        System.out.println(" getFallback " + groupName + " " + Thread.currentThread().getName() + " : " + getTotalTime() + getTime());
         return "jump into fall >----> " + Thread.currentThread().getName();
     }
 
