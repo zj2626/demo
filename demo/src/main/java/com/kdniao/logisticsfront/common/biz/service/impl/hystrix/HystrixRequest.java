@@ -37,7 +37,7 @@ public class HystrixRequest extends HystrixCommand<String> {
 //        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
 //                .andCommandKey(HystrixCommandKey.Factory.asKey(name))
 //                /* 使用HystrixThreadPoolKey工厂定义线程池名称 如不设置,Hystrix会为每一个CommandGroup建立一个线程池, 如果这里设置固定值, 则所有的CommandGroup都使用同一个线城池*/
-//                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("qwqeqe"))
+//                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(groupName))
 //                /* 线程池属性 */
 //                .andThreadPoolPropertiesDefaults(
 //                        HystrixThreadPoolProperties.Setter()
@@ -94,6 +94,11 @@ public class HystrixRequest extends HystrixCommand<String> {
 
         // 线程池隔离缺点是带来一定的开销，但不会阻塞请求线程，适合于于IO密集型的任务
         // 信号量隔离使用用户请求线程，没有格外线程切换开销，使用与执行时间和执行逻辑都比较短的本地计算。比如CPU密集型的任务
+
+        /*
+        * groupName : 用来实现依赖隔离, 不同group的请求分配不同的资源,同一group的资源可以使用同一资源(比如线程池)
+        * name      : 用来实现熔断器的隔离, 不同name的熔断互不影响(比如namea的请求被熔断不会影响nameb的请求继续)
+        * */
 
         this.name = name;
         this.groupName = groupName;

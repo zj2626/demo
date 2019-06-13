@@ -119,11 +119,7 @@ public class MainTest {
         ExecutorService service = Executors.newFixedThreadPool(100); // 一共100个线程
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if (i < 10) {
-                futureTasks.add(service.submit(new MyExecutorAsync("n0" /*+ String.format("%03d", i)*/, "g0", beginTime)));
-            } else {
-                futureTasks.add(service.submit(new MyExecutorAsync("n1" , "g0", beginTime)));
-            }
+            futureTasks.add(service.submit(new MyExecutorAsync("n" + i, "g" + (i % 2), beginTime)));
             Thread.sleep(1000);
         }
 
