@@ -52,18 +52,14 @@ public class HystrixUtil {
 
         @Override
         protected String run() throws Exception {
-            System.out.println("RUN---> " + Thread.currentThread().getName() + " * " + groupName);
-
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("message", message);
             String response = null;
             try {
                 response = exterfaceInvokeIOHttpSender.sendGet(params, "/message");
             } catch (Exception e) {
-                System.err.println("RUN--->ER " + response);
                 throw e;
             }
-            System.out.println("RUN---> " + response);
 
             return response;
         }
@@ -72,7 +68,6 @@ public class HystrixUtil {
         @Override
         protected String getFallback() {
             System.out.println("jump to getFallback");
-
             return "Fallback";
         }
     }

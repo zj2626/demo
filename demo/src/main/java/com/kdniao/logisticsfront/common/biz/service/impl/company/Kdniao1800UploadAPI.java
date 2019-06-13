@@ -78,8 +78,10 @@ public class Kdniao1800UploadAPI implements InitializingBean {
 
 //    private String EBusinessID = "1535263";
 //    private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
-    private String EBusinessID = "1529654";
-    private String AppKey = "bc6fd7a5-e0f7-425e-a693-7414b9cc5cdb";
+//    private String EBusinessID = "1529654";
+//    private String AppKey = "bc6fd7a5-e0f7-425e-a693-7414b9cc5cdb";
+    private String EBusinessID = "1536679";
+    private String AppKey = "862b1b5a-d9ac-4cfd-89fe-347bd2e51be7";
     private String ReqURL = "http://api.freight.kdniao.com/settlement/settlementApiInvoke.json";
 
 //    private String EBusinessID = "1261885";
@@ -104,13 +106,13 @@ public class Kdniao1800UploadAPI implements InitializingBean {
                 "\t\"MonthCode\": \"\",\n" +
                 "\t\"IsNotice\": \"0\",\n" +
                 "\t\"Sender\": {\n" +
-                "\t\t\"Name\": \"郑毅\",\n" +
+                "\t\t\"Name\": \"王琳\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
-                "\t\t\"Mobile\": \"18968172761\",\n" +
-                "\t\t\"ProvinceName\": \"浙江省\",\n" +
-                "\t\t\"CityName\": \"杭州市\",\n" +
-                "\t\t\"ExpAreaName\": \"桐庐县\",\n" +
-                "\t\t\"Address\": \"阆苑路108号501室\"\n" + /*瑾昕贸易*/
+                "\t\t\"Mobile\": \"13911575870\",\n" +
+                "\t\t\"ProvinceName\": \"北京市\",\n" +
+                "\t\t\"CityName\": \"北京市\",\n" +
+                "\t\t\"ExpAreaName\": \"朝阳区\",\n" +
+                "\t\t\"Address\": \"马各庄圆通院内泽美仓储\"\n" +
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +

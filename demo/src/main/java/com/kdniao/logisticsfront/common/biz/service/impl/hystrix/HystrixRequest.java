@@ -5,8 +5,10 @@ import com.netflix.hystrix.*;
 public class HystrixRequest extends HystrixCommand<String> {
     private final String name;
     private String groupName;
+    private long startTime;
+    private long staticStartTIme;
 
-    public HystrixRequest(String name, String groupName) {
+    public HystrixRequest(String name, String groupName, long beginTime) {
         // 1.最少配置:指定命令组名(CommandGroup)
 //        super(HystrixCommandGroupKey.Factory.asKey(groupName));
 
@@ -14,50 +16,91 @@ public class HystrixRequest extends HystrixCommand<String> {
 //        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
 //                .andCommandPropertiesDefaults(
 //                        HystrixCommandProperties.Setter()
-//                                .withExecutionIsolationThreadTimeoutInMilliseconds(4000))
+//                                .withExecutionIsolationThreadTimeoutInMilliseconds(2000)
+//                )
 //        );
 
-        // 3.依赖命名:CommandKey
-//        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
-//                /*HystrixCommandKey工厂定义依赖名称*/
-//                .andCommandKey(
-//                        HystrixCommandKey.Factory.asKey(name))
-//        );
-
-        // 4.依赖分组:CommandGroup
+        // 3.依赖分组:CommandGroup   CommandGroup是每个命令最少配置的必选参数
 //        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName)));
 
+        // 4.依赖命名:CommandKey
+        // 每个CommandKey代表一个依赖抽象,相同的依赖要使用相同的CommandKey名称。依赖隔离的根本就是对相同CommandKey的依赖做隔离.
+        // Hystrix提供了两种依赖隔离方式：线程池隔离 和 信号量隔离
+//        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
+//                /*HystrixCommandKey工厂定义依赖名称*/
+//                .andCommandKey(HystrixCommandKey.Factory.asKey(name))
+//        );
+
         // 5.线程池/信号:ThreadPoolKey
+        // 当对同一业务依赖做隔离时使用CommandGroup做区分,但是对同一依赖的不同远程调用如(一个是redis 一个是http),可以使用HystrixThreadPoolKey做隔离区分.
+        // 使用线程池的缺点主要是增加了计算的开销。每一个依赖调用都会涉及到队列，调度，上下文切换，而这些操作都有可能在不同的线程中执行。
 //        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
 //                .andCommandKey(HystrixCommandKey.Factory.asKey(name))
-//                /* 使用HystrixThreadPoolKey工厂定义线程池名称*/
-//                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("HelloWorldPool")));
-
-        // 6.信号量隔离:SEMAPHORE
-        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
-                /* 配置信号量隔离方式,默认采用线程池隔离 */
-                .andCommandPropertiesDefaults(
-                        HystrixCommandProperties.Setter()
-                                .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE))
-        );
-
-        // Demo
-//        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
-//                .andCommandKey(HystrixCommandKey.Factory.asKey(name))
+//                /* 使用HystrixThreadPoolKey工厂定义线程池名称 如不设置,Hystrix会为每一个CommandGroup建立一个线程池, 如果这里设置固定值, 则所有的CommandGroup都使用同一个线城池*/
+//                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("qwqeqe"))
+//                /* 线程池属性 */
+//                .andThreadPoolPropertiesDefaults(
+//                        HystrixThreadPoolProperties.Setter()
+//                                /* 线程池大小 默认10*/
+//                                .withCoreSize(200)
+//                                /* 线程池队列大小 默认-1 如果超了就直接执行降级策略:getFallback*/
+//                                .withMaxQueueSize(5)
+//                )
 //                .andCommandPropertiesDefaults(
 //                        HystrixCommandProperties.Setter()
-//                                .withExecutionTimeoutEnabled(false)
-//                                .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
-//                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(10000)
+//                                /* 设置fallback的最大并发数 如果超了就直接抛异常*/
+//                                .withFallbackIsolationSemaphoreMaxConcurrentRequests(200)
+//                                /* 设置启用超时时间 默认true*/
+//                                .withExecutionTimeoutEnabled(true)
+//                                /* 设置超时时间 默认1000ms*/
+//                                .withExecutionTimeoutInMilliseconds(1000)
+//                                /* 设置启用断路器(熔断器) 默认true*/
+//                                .withCircuitBreakerEnabled(true)
+//                                /* 设置错误百分比，超过该值打开断路器 默认50*/
 //                                .withCircuitBreakerErrorThresholdPercentage(50)
-//                                .withCircuitBreakerRequestVolumeThreshold(2)
-//                                .withCircuitBreakerSleepWindowInMilliseconds(5000))
+//                                /* 设置10s中内最少的请求量，大于该值断路器配置才会生效 默认20*/
+//                                .withCircuitBreakerRequestVolumeThreshold(5)
+//                                /* 短路器打开后多长时间尝试关闭（Half open）默认5s*/
+//                                .withCircuitBreakerSleepWindowInMilliseconds(5000)
+//                )
 //        );
+
+        // 6.信号量隔离:SEMAPHORE (使用信号量则必须等待执行完成以后才能返回调用方, 如果使用线程则不需要等待因为是开启的另一个线程)
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
+                .andCommandKey(HystrixCommandKey.Factory.asKey(name))
+                /* 配置信号量隔离方式(默认(上面的)采用线程池隔离), 此时 发起请求的线程和真实执行的线程是同一个线程*/
+                .andCommandPropertiesDefaults(
+                        HystrixCommandProperties.Setter()
+                                /* 设置使用信号量隔离策略 */
+                                .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
+                                /* 设置信号量隔离时的最大并发请求数 如果超了就直接执行降级策略:getFallback*/
+                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(100)
+                                /* 设置fallback的最大并发数 如果超了就直接抛异常*/
+                                .withFallbackIsolationSemaphoreMaxConcurrentRequests(200)
+                                /* 设置启用超时时间 默认true*/
+                                .withExecutionTimeoutEnabled(true)
+                                /* 设置超时时间 默认1000ms*/
+                                .withExecutionTimeoutInMilliseconds(1000)
+                                /* 设置启用断路器(熔断器) 默认true*/
+                                .withCircuitBreakerEnabled(true)
+                                /* 设置错误百分比，超过该值打开断路器 默认50*/
+                                .withCircuitBreakerErrorThresholdPercentage(50)
+                                /* 设置10s中内最少的请求量，大于该值断路器配置才会生效 默认20*/
+                                .withCircuitBreakerRequestVolumeThreshold(5)
+                                /* 短路器打开后多长时间尝试关闭（Half open）默认5s*/
+                                .withCircuitBreakerSleepWindowInMilliseconds(5000)
+                )
+        );
+
+        // 线程池隔离缺点是带来一定的开销，但不会阻塞请求线程，适合于于IO密集型的任务
+        // 信号量隔离使用用户请求线程，没有格外线程切换开销，使用与执行时间和执行逻辑都比较短的本地计算。比如CPU密集型的任务
 
         this.name = name;
         this.groupName = groupName;
+        this.startTime = System.currentTimeMillis();
+        this.staticStartTIme = beginTime;
 
-        System.out.println("构造 " + groupName + " * " + name);
+        System.out.println("  构造 " + groupName + " * " + name);
 
     }
 
@@ -103,7 +146,7 @@ public class HystrixRequest extends HystrixCommand<String> {
             //是否允许熔断器忽略错误,默认false, 不开启
             private final HystrixProperty<Boolean> circuitBreakerForceClosed;*
      *
-     *
+     * extends HystrixCollapser
      * 3):命令合并(Collapser)配置
             //请求合并是允许的最大请求数,默认: Integer.MAX_VALUE
             private final HystrixProperty<Integer> maxRequestsInBatch;
@@ -121,37 +164,68 @@ public class HystrixRequest extends HystrixCommand<String> {
             // 建议值:-1表示不等待直接拒绝,测试表明线程池使用直接决绝策略+ 合适大小的非回缩线程池效率最高.所以不建议修改此值。
             // 当使用非回缩线程池时，queueSizeRejectionThreshold,keepAliveTimeMinutes 参数无效
             HystrixThreadPoolProperties.Setter().withMaxQueueSize(int value)
-
+    *
     * */
 
+    private String getTime() {
+        return " 线程执行时间:<" + (System.currentTimeMillis() - startTime) + "> ";
+    }
+
+
+    private String getTotalTime() {
+        return " 执行总时间:<" + getTotal() + ">";
+    }
+
+    private long getTotal() {
+        return System.currentTimeMillis() - staticStartTIme;
+    }
 
     @Override
     protected String run() {
-        System.out.println("RUN---> " + Thread.currentThread().getName() + " * " + groupName + " * " + name);
+        System.out.println("  RUN STA -> " + Thread.currentThread().getName() + " * " + groupName + " * " + name + " : " + getTotalTime());
 
-        // 处理 延迟
-        for (int i = 0; i < 5; i++) {
-            try {
-                Thread.sleep(100);
-                System.out.println("running-- " + groupName + " " + i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        // 处理 延迟 1
+//        for (int i = 0; i < 15; i++) {
+//            try {
+//                Thread.sleep(200); // 150 200 500 1000
+//                System.out.println("  running -> " + groupName + " " + i + " : " + getTotalTime() + getTime());
+//
+//            } catch (Exception e) {
+//                System.err.println("  " + e.getMessage() + " : " + getTotalTime() + getTime());
+//            }
+//        }
+
+        // 处理 延迟 2
+        // Integer groupNumber = Integer.valueOf(groupName.substring(groupName.length() - 3));
+        if (getTotal() < 26000) {
+            for (int i = 0; i < 2; i++) {
+                try {
+                    Thread.sleep(600);
+                } catch (Exception ignore) {
+
+                }
             }
         }
 
-        return "thread:" + Thread.currentThread().getName() + ", Hello " + name;
+        return "  Hello group:" + groupName + ", name:" + name;
     }
 
-    // 使用Fallback() 提供降级策略
+    // 使用Fallback() 提供降级策略 如果不实现getFallback则调用父类(抛异常, onError可捕获)
+    // 除了HystrixBadRequestException异常之外，所有从run()方法抛出的异常都算作失败，并触发降级getFallback()和断路器逻辑。
+    // HystrixBadRequestException用在非法参数或非系统故障异常等不应触发回退逻辑的场景。
     @Override
     protected String getFallback() {
-        System.out.println("getFallback");
-        return "jump to getFallback >>>>>> " + Thread.currentThread().getName();
+        System.out.println(" getFallback " + Thread.currentThread().getName() + " : " + getTotalTime() + getTime());
+        return "jump into fall >----> " + Thread.currentThread().getName();
     }
 
-    //重写getCacheKey方法,实现区分不同请求的逻辑
-//    @Override
-//    protected String getCacheKey() {
+    // 重写getCacheKey方法,实现区分不同请求的逻辑, 如果调用到getFallback则不会缓存 返回结果必须相同
+    @Override
+    protected String getCacheKey() {
+        return null;
 //        return groupName + "_" + name;
-//    }
+//        return  UUID.randomUUID().toString();
+//        return groupName + "_" + "qwertyu";
+//        return name + "_" + "qwertyu";
+    }
 }
