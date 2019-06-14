@@ -29,7 +29,7 @@ table:
         1.表示几个行源进行union操作
         2.表示使用内联视图
 
-type:   表示的访问路径,及数据获取途径
+type:   表示的访问路径,及数据获取途径 一般来说，得保证查询至少达到range级别，最好能达到ref，否则就可能会出现性能问题
     优先级:null->system->const->eq-ref->ref->fulltext->ref_or_null->index_merge->unique_subquery->index_subquery->range->index->ALL
     1.null:     不访问任何表
     2.system:   一种特殊的const 要求表中只有一条记录
