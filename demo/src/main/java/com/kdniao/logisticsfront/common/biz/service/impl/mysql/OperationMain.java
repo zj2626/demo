@@ -1,14 +1,14 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.mysql;
 
-//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.UcAreaDOMapper;
-//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDO;
-//import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.UcAreaDOExample;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.LineitemMapper;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.OrdersMapper;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.Orders;
+import com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.model.OrdersExample;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -33,7 +33,7 @@ public class OperationMain implements Runnable {
         OperationMain readMain = new OperationMain(false);
         OperationMain writeMain = new OperationMain(true);
 
-        ExecutorService service = Executors.newFixedThreadPool(50);
+        ExecutorService service = Executors.newFixedThreadPool(10);
         List<Future<?>> futureTasks = new ArrayList<>();
 
         long start = System.currentTimeMillis();
@@ -60,28 +60,21 @@ public class OperationMain implements Runnable {
 
     @Override
     public void run() {
-//        UcAreaDOMapper ucAreaDOMapper = (UcAreaDOMapper) applicationContext.getBean("areaDOMapper");
-//
-//        System.out.println(Thread.currentThread().getName());
-//
-//        long start = System.currentTimeMillis();
-//        if (!ifWrite) {
-//            UcAreaDOExample example = new UcAreaDOExample();
-//            UcAreaDOExample.Criteria criteria = example.createCriteria();
-//
-//            List<UcAreaDO> list = ucAreaDOMapper.selectByExample(example);
-//            System.out.println("list.size " + list.size());
-//        } else {
-//            UcAreaDO record = new UcAreaDO();
-//            record.setId("10007.0");
-//            record.setAreaCode("231282022");
-//            record.setAreaName(UUID.randomUUID().toString());
-//
-//            int updateInt = ucAreaDOMapper.updateByPrimaryKey(record);
-//            System.out.println("updateInt " + updateInt);
-//        }
-//
-//        long end = System.currentTimeMillis();
-//        System.out.println(Thread.currentThread().getName() + " --- " + (end - start) + "\n");
+        LineitemMapper lineitemMapper = applicationContext.getBean(LineitemMapper.class);
+        OrdersMapper ordersMapper = applicationContext.getBean(OrdersMapper.class);
+
+        System.out.println(Thread.currentThread().getName());
+
+        long start = System.currentTimeMillis();
+        if (!ifWrite) {
+            OrdersExample example = new OrdersExample();
+            OrdersExample.Criteria criteria = example.createCriteria();
+
+            List<Orders> list = ordersMapper.selectByExample(example);
+            System.out.println("list.size " + list.size());
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(Thread.currentThread().getName() + " --- " + (end - start) + "\n");
     }
 }

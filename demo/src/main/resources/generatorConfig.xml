@@ -37,7 +37,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="" tableName="testa" domainObjectName="TestA">
+        <table schema="" tableName="orders" domainObjectName="Orders">
             <property name="useActualColumnNames" value="false" />
         </table>
     </context>
