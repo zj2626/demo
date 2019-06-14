@@ -69,12 +69,13 @@ public class OperationMain implements Runnable {
         if (!ifWrite) {
             OrdersExample example = new OrdersExample();
             OrdersExample.Criteria criteria = example.createCriteria();
+            criteria.andOTotalpriceEqualTo(100D);
 
             List<Orders> list = ordersMapper.selectByExample(example);
-            System.out.println("list.size " + list.size());
+            System.out.println("list.size 大小:" + list.size());
         }
 
         long end = System.currentTimeMillis();
-        System.out.println(Thread.currentThread().getName() + " --- " + (end - start) + "\n");
+        System.out.println(Thread.currentThread().getName() + " -> 时间:" + (end - start) + "\n");
     }
 }
