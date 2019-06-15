@@ -22,11 +22,11 @@ public class MySQLDemo {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
     @Value("${zj.database.url}")
-    private static String DB_URL = "jdbc:mysql://192.168.1.233:3306/test";
+    private static String DB_URL = "jdbc:mysql://127.0.0.1:3306/test";
     @Value("${zj.database.username}")
     private static String USER = "root";
     @Value("${zj.database.password}")
-    private static String PASS = "sql@kdn!123";
+    private static String PASS = "123456";
 
     private String sql = "INSERT INTO testa (NAME, AGE) VALUES";
     private String sql2 = "INSERT INTO testb (NAME, AGE) VALUES";

@@ -35,8 +35,8 @@ public class RedisTest {
 //        System.out.println("user list>>>>" + redisUtil.hmget("user"));
 //        System.out.println("#################################");
 
-//        testMore(applicationContext);
-        testMore2(applicationContext);
+        testMore(applicationContext);
+//        testMore2(applicationContext);
     }
 
     private static void testMore(ApplicationContext applicationContext) {
