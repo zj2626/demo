@@ -7,11 +7,8 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="byName">
 
-    <bean id="MyBeanFactoryAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanFactoryAware"
-          init-method="init"/>
-
-    <bean id="MyBeanNameAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanNameAware"
-          init-method="init"/>
+<!--    <bean id="MyBeanFactoryAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanFactoryAware" init-method="init"/>-->
+<!--    <bean id="MyBeanNameAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanNameAware" init-method="init"/>-->
 
 <!--    <context:component-scan base-package="com.kdniao.logisticsfront.common.biz.service.impl.spring.*"/>-->
     <bean id="userDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.UserDao"/>

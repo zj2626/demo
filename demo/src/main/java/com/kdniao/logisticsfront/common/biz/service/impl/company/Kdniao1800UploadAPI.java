@@ -68,7 +68,7 @@ public class Kdniao1800UploadAPI implements InitializingBean {
         try {
             for (int i = 0; i < rowLength; i++) {
                 System.out.print(resultData[i] + ' ');
-                String result = api.getOrderTracesByJson("STO", resultData[i]);
+                String result = api.getOrderTracesByJson("YD", resultData[i]);
                 System.out.println(result);
             }
         } catch (Exception e) {
@@ -80,8 +80,8 @@ public class Kdniao1800UploadAPI implements InitializingBean {
 //    private String AppKey = "03489832-1264-474e-9198-fd6ba64a5766";
 //    private String EBusinessID = "1529654";
 //    private String AppKey = "bc6fd7a5-e0f7-425e-a693-7414b9cc5cdb";
-    private String EBusinessID = "1536679";
-    private String AppKey = "862b1b5a-d9ac-4cfd-89fe-347bd2e51be7";
+    private String EBusinessID = "1541047";
+    private String AppKey = "2e8c554c-f5b0-4025-8732-ed95e0d5da0f";
     private String ReqURL = "http://api.freight.kdniao.com/settlement/settlementApiInvoke.json";
 
 //    private String EBusinessID = "1261885";
@@ -106,13 +106,13 @@ public class Kdniao1800UploadAPI implements InitializingBean {
                 "\t\"MonthCode\": \"\",\n" +
                 "\t\"IsNotice\": \"0\",\n" +
                 "\t\"Sender\": {\n" +
-                "\t\t\"Name\": \"王琳\",\n" +
+                "\t\t\"Name\": \"胡兰花\",\n" +
                 "\t\t\"Tel\": \"\",\n" +
-                "\t\t\"Mobile\": \"13911575870\",\n" +
-                "\t\t\"ProvinceName\": \"北京市\",\n" +
-                "\t\t\"CityName\": \"北京市\",\n" +
-                "\t\t\"ExpAreaName\": \"朝阳区\",\n" +
-                "\t\t\"Address\": \"马各庄圆通院内泽美仓储\"\n" +
+                "\t\t\"Mobile\": \"18779220935 \",\n" +
+                "\t\t\"ProvinceName\": \"广东省\",\n" +
+                "\t\t\"CityName\": \"深圳市\",\n" +
+                "\t\t\"ExpAreaName\": \"宝安区\",\n" +
+                "\t\t\"Address\": \"西乡街道流塘路金满堂大厦502\"\n" +
                 "\t},\n" +
                 "\t\"Receiver\": {\n" +
                 "\t\t\"Name\": \"1255760\",\n" +

@@ -29,9 +29,6 @@ public class CompanyDemoTest {
     @Test
     public void test1() {
         try {
-//        UcAreaDOMapper ucAreaDOMapper = (UcAreaDOMapper) applicationContext.getBean("areaDOMapper");
-//        System.out.println("list.size " + ucAreaDOMapper.selectByExample(new UcAreaDOExample()).size());
-
             ShipperEntranceSettingMapper shipperEntranceSettingMapper = (ShipperEntranceSettingMapper) applicationContext.getBean("shipperEntranceSettingMapper");
 
             String[] requestTypes = new String[]{"1001", "1007", "1008", "1800"};
