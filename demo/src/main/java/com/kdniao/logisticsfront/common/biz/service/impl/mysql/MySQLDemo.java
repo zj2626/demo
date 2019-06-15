@@ -1,6 +1,9 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.mysql;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.*;
 import java.util.UUID;
@@ -9,21 +12,29 @@ import java.util.UUID;
  * 操作数据库 test库中的testa表和testb表
  */
 public class MySQLDemo {
+    private static ApplicationContext applicationContext = null;
+
+    static {
+        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+    }
+
     // JDBC 驱动名及数据库 URL
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://192.168.1.233:3306/test";
 
-    // 数据库的用户名与密码，需要根据自己的设置
-    private static final String USER = "root";
-    private static final String PASS = "sql@kdn!123";
+    @Value("${zj.database.url}")
+    private static String DB_URL = "jdbc:mysql://192.168.1.233:3306/test";
+    @Value("${zj.database.username}")
+    private static String USER = "root";
+    @Value("${zj.database.password}")
+    private static String PASS = "sql@kdn!123";
 
     private String sql = "INSERT INTO testa (NAME, AGE) VALUES";
     private String sql2 = "INSERT INTO testb (NAME, AGE) VALUES";
     private String sql21 = "INSERT INTO testc (NAME, AGE) VALUES";
     private String sql22 = "INSERT INTO testd (NAME, AGE, SEX, COMMENT) VALUES";
-    private String sql3 = "SELECT t1.ID, t1.AGE FROM testa t1 JOIN testb t2 ON t1.AGE = t2.AGE WHERE t2.AGE < 35;";
-    private String sql4 = "SELECT t1.ID, t1.AGE FROM testa t1 JOIN (SELECT t2.AGE FROM testb t2 WHERE t2.AGE < 35) t2 WHERE t1.AGE = t2.AGE;";
-    private String sql5 = "SELECT t1.ID, t1.AGE FROM testa t1 WHERE AGE IN (SELECT t2.AGE FROM testb t2 WHERE t2.AGE < 35);";
+    private String sql3 = "SELECT t1.ID, t1.AGE FROM testc t1 JOIN testd t2 ON t1.AGE = t2.AGE WHERE t2.AGE < 35;";
+    private String sql4 = "SELECT t1.ID, t1.AGE FROM testc t1 JOIN (SELECT t2.AGE FROM testd t2 WHERE t2.AGE < 35) t2 WHERE t1.AGE = t2.AGE;";
+    private String sql5 = "SELECT t1.ID, t1.AGE FROM testc t1 WHERE AGE IN (SELECT t2.AGE FROM testd t2 WHERE t2.AGE < 35);";
 
     @Test
     public void test() {

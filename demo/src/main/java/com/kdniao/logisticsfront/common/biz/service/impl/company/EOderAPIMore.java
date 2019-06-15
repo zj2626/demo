@@ -82,10 +82,7 @@ public class EOderAPIMore extends Thread {
     //private String AppKey = "02f9dfca-5465-4964-8c7c-e11676c4c1a4";
 
     //请求url
-    //private String ReqURL="http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
-    //private String ReqURL="http://localhost:8084/openapi/gateway/exterfaceInvoke.json";   
     private String ReqURL = "http://192.168.1.15:8080/openapi/gateway/exterfaceInvoke.json";
-    // private String ReqURL = "http://api.kdniao.com/api/EOrderService";
 
     /**
      * Json方式 查询订单物流轨迹
