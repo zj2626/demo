@@ -67,3 +67,18 @@ InnoDB优化：
     15.前缀索引：尽量使用索引的前缀部分
     16.通配符：不要把通配符放在前面
     17.强制索引：特殊情况下强制使用指定索引
+
+数据库监控-调优使用：
+    1.show status;
+    2.show status like 'handler_read%';
+    3.show status like 'Table%';
+    4.show status like 'Slow%';
+    5.show status like 'Up%';
+    5.show variables like '%slow%'; 查看慢查询是否开启
+定位问题：
+    1.检查索引是否被使用
+    2.检查索引是否用的对
+    3.检查索引是否参与了计算
+    4.检查不同索引之间在where/on/having条件下的选择率，高于10%就应该查找原因或者禁用此索引
+    5.检查索引使用方式，看只读索引是否可行
+    6.检查出现分组/排序/去重时候索引使用情况
