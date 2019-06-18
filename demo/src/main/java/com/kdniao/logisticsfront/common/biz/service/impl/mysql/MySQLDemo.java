@@ -12,12 +12,6 @@ import java.util.UUID;
  * 操作数据库 test库中的testa表和testb表
  */
 public class MySQLDemo {
-    private static ApplicationContext applicationContext = null;
-
-    static {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-    }
-
     // JDBC 驱动名及数据库 URL
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
@@ -246,7 +240,7 @@ public class MySQLDemo {
         }
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         // 注册 JDBC 驱动
         Class.forName(JDBC_DRIVER);
 
@@ -255,7 +249,7 @@ public class MySQLDemo {
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
-    private void closeConnection(Connection conn, Statement stmt) throws ClassNotFoundException, SQLException {
+    public static void closeConnection(Connection conn, Statement stmt) throws ClassNotFoundException, SQLException {
         // 关闭资源
         try {
             if (stmt != null) {
