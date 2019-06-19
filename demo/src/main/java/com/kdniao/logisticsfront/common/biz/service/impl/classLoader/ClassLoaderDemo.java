@@ -1,11 +1,12 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.classLoader;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
 public class ClassLoaderDemo {
+
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
     /**
@@ -25,6 +26,10 @@ public class ClassLoaderDemo {
      */
     @Test
     public void test() {
+        System.out.println(System.getProperty("sun.boot.class.path"));
+        System.out.println(System.getProperty("java.ext.dirs"));
+        System.out.println(System.getProperty("java.class.path"));
+
         // ClassLoader是由AppClassLoader加载的
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         //application class loader
@@ -36,9 +41,8 @@ public class ClassLoaderDemo {
 
         try {
             Class clazz = classLoader.loadClass("com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA");
-            UserA user = (UserA) clazz.newInstance();
-            System.out.println(user);
-
+            Object object = clazz.newInstance();
+            System.out.println(object);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,15 +50,32 @@ public class ClassLoaderDemo {
 
     @Test
     public void test2() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        CustomClassLoader classLoader = new CustomClassLoader("");
-        Class<?> clazz = Class.forName("com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA", true, classLoader);
+        CustomClassLoader classLoader = new CustomClassLoader("H:");
+        // 方法一
+//        Class<?> clazz = Class.forName("com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA", true, classLoader);
+        // 方法二
+        Class<?> clazz = classLoader.loadClass("com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA");
+        System.out.println(clazz.getClassLoader());
 
-        UserA user = (UserA) clazz.newInstance();
-        System.out.println(user);
+        Object object = clazz.newInstance();
+        System.out.println(object);
+        System.out.println(object.getClass().getClassLoader());
+
+        System.out.println("#########################");
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        System.out.println(cl);
     }
 
     @Test
-    public void test3() throws ClassNotFoundException {
+    public void test3() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Thread.currentThread().setContextClassLoader(new CustomClassLoader("H:"));
 
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Class<?> clazz = classLoader.loadClass("com.kdniao.logisticsfront.common.biz.service.impl.classLoader.bean.UserA");
+        System.out.println(clazz.getClassLoader());
+
+        Object object = clazz.newInstance();
+        System.out.println(object);
+        System.out.println(object.getClass().getClassLoader());
     }
 }

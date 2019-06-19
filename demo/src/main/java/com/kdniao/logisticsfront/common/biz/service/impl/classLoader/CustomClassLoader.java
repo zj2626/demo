@@ -12,23 +12,22 @@ import java.io.*;
  * 6.resolveClass(Class<?> c) : 链接指定的Java类
  */
 public class CustomClassLoader extends ClassLoader {
-    private static String separator = File.separator;
+    private static String separator = "/";
     private String rootPath;
 
     public CustomClassLoader(String rootPath) {
         this.rootPath = rootPath;
     }
 
+
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        System.out.println("findClass " + name);
         Class<?> c = findLoadedClass(name);
         if (c != null) {
-            System.out.println("C");
             return c;
         }
 
-        System.out.println("B");
         byte[] classData = getClassData(name);
         if (null != classData) {
             return defineClass(name, classData, 0, classData.length);
@@ -38,17 +37,15 @@ public class CustomClassLoader extends ClassLoader {
     }
 
     private byte[] getClassData(String name) {
-        System.out.println(rootPath);
-        System.out.println(name);
-        System.out.println(separator);
-        String fullName = rootPath.replaceAll("\\.", "\\/") + separator + name;
-        System.out.println("waiting for load: " + fullName);
+        // 需要把.class放置在应用工程所有的目录之外 防止父类加载器可以加载
+        String path = rootPath + separator + getFileName(name);
+        System.out.println(path);
 
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = null;
 
         try {
-            File file = new File(fullName);
+            File file = new File(path);
             inputStream = new FileInputStream(file);
             outputStream = new ByteArrayOutputStream();
             byte[] bytes = new byte[2014];
@@ -59,26 +56,35 @@ public class CustomClassLoader extends ClassLoader {
 
             return outputStream.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
 
             return null;
         } finally {
-            if(outputStream != null){
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
 
-            if(inputStream != null){
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
         }
 
+    }
+
+    private String getFileName(String name) {
+        int index = name.lastIndexOf('.');
+        if(index == -1){
+            return name+".class";
+        }else{
+            return name.substring(index+1)+".class";
+        }
     }
 }
