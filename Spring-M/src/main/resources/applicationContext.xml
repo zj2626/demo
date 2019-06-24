@@ -320,6 +320,11 @@
         <property name="sqlSessionFactory" ref="zjSqlSessionFactory"/>
     </bean>
 
+    <bean id="testcMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="hello.data.mapper.TestcMapper"/>
+        <property name="sqlSessionFactory" ref="zjSqlSessionFactory"/>
+    </bean>
+
     <!--******************************************************************************************************************-->
 
     <!-- jdbc事务管理器 id命名为transactionManager时,声明式事务引用到的地方可省略-->
@@ -386,8 +391,8 @@
     <bean id="curatorFrameworkFactory" class="org.apache.curator.framework.CuratorFrameworkFactory" factory-method="newClient">
         <constructor-arg name="connectString" value="${dubbo.registry.address}"/>
         <constructor-arg name="retryPolicy" ref="curatorRetryPolicy"/>
-        <constructor-arg name="sessionTimeoutMs" value="30000"/>
-        <constructor-arg name="connectionTimeoutMs" value="60000"/>
+        <constructor-arg name="sessionTimeoutMs" value="60000"/>
+        <constructor-arg name="connectionTimeoutMs" value="30000"/>
     </bean>
 
     <bean name="lockUtils" class="hello.lock.LockUtils">

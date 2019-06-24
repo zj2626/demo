@@ -296,6 +296,13 @@ public class MyController {
         return "";
     }
 
+    @RequestMapping("/log")
+    public String testMybatisLog(String name) {
+        doSomething.testMybatisLog(name);
+
+        return "god";
+    }
+
     @RequestMapping("/request")
     public String doRequest(String name) {
         return doSomething.doHttpRequest(name);

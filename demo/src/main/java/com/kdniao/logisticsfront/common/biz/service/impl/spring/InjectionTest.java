@@ -5,14 +5,18 @@ import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.Inject
 import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao3;
 import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.UserDao;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class InjectionTest {
-    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+    ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
     @Test
-    public void test() {
+    public void test1() {
+        applicationContext.start();
+    }
+
+    @Test
+    public void testL() {
         UserDao userDao = applicationContext.getBean(UserDao.class);
         System.out.println(userDao);
         System.out.println("###############");
@@ -31,6 +35,5 @@ public class InjectionTest {
         System.out.println(injectUserDao3);
         System.out.println(injectUserDao3.getU());
         System.out.println("###############");
-
     }
 }

@@ -6,6 +6,7 @@ import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
 import hello.data.service.AreaCodeDao;
+import hello.data.service.TestcDao;
 import hello.hystrix.HystrixUtil;
 import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
@@ -46,6 +47,11 @@ public class DoSomething {
 
     private TransactionTemplate transactionTemplate;
     private AreaCodeDao areaCodeDao;
+    private TestcDao testcDao;
+
+    public void setTestcDao(TestcDao testcDao) {
+        this.testcDao = testcDao;
+    }
 
     private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
 
@@ -321,6 +327,13 @@ public class DoSomething {
             }
         }
         return true;
+    }
+
+    public void testMybatisLog(String codes) {
+        String[] codeList = codes.split(",");
+        for (String code : codeList) {
+            testcDao.select(Integer.valueOf(code));
+        }
     }
 
     /*httpRequest*/
