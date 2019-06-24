@@ -1,10 +1,8 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.mysql;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.UUID;
 
@@ -30,6 +28,8 @@ public class MySQLDemo {
     private String sql3 = "SELECT t1.ID, t1.AGE FROM testc t1 JOIN testd t2 ON t1.AGE = t2.AGE WHERE t2.AGE < 35;";
     private String sql4 = "SELECT t1.ID, t1.AGE FROM testc t1 JOIN (SELECT t2.AGE FROM testd t2 WHERE t2.AGE < 35) t2 WHERE t1.AGE = t2.AGE;";
     private String sql5 = "SELECT t1.ID, t1.AGE FROM testc t1 WHERE AGE IN (SELECT t2.AGE FROM testd t2 WHERE t2.AGE < 35);";
+
+    private String sql6 = "SELECT * FROM testc_copy1";
 
     @Test
     public void test() {
@@ -225,6 +225,63 @@ public class MySQLDemo {
             ResultSet resultSet = stmt.executeQuery(sql5);
             int rs = 0;
             while (resultSet.next()) {
+                rs++;
+            }
+
+            System.out.println("rs: " + rs);
+        } catch (Exception se) {
+            se.printStackTrace();
+        } finally {
+            try {
+                closeConnection(conn, stmt);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 数据库
+     * 字符类型:
+     * ***char varchar 都是以字符为单位, 也就是说如果设置长度为10,则可以插入10个字母或者10个汉字(varchar是变长,实际存储大小随字符串长度而定)
+     * <p>
+     * 数字类型:
+     * ***tinyint smallint int 其都有固定长度 所以设计表时设置长度并不会影响其存储大小 只是影响了其显示长度(不影响使用代码操作的显示)
+     * tinyint:     存储大小为 1 个字节(-128 ~ 127)
+     * smallint:    存储大小为 2 个字节(--32,768 ~ 32,767)
+     * int:         存储大小为 4 个字节(-2,147,483,648 ~ 2,147,483,647)
+     * <p>
+     * 浮点类型:
+     * ***float double decimal 其长度受到设计表时设置长度影响 如果超过长度则进行四舍五入,之后的结果也要满足设置的长度要求
+     * ***使用（M，D）表示,其中M表示该值的总共长度，D表示小数点后面的长度，M和D又称为精度和标度
+     * ***FLOAT和DOUBLE在不指 定精度时，默认会按照实际的精度来显示，而DECIMAL在不指定精度时，默认整数为10，小数为0。
+     * ***decimal是精确的 其他不是;FLOAT用于单精度，而DOUBLE是双精度数字。 MySQL的单精度值使用四个字节，双精度值使用八个字节。
+     * float:       设置长度(5,2) : (-999.99 ~ 999.99)
+     * double:      设置长度(5,2) : (-999.99 ~ 999.99)
+     * decimal:     设置长度(5,2) : (-999.99 ~ 999.99)
+     */
+    @Test
+    public void test6() {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = getConnection();
+            stmt = conn.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery(sql6);
+            int rs = 0;
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("NAME");
+                String namec = resultSet.getString("NAMEC");
+                int age = resultSet.getInt("AGE");
+                int head = resultSet.getInt("head");
+                int it = resultSet.getInt("IT");
+                float ft = resultSet.getFloat("FT");
+                double dt = resultSet.getDouble("DT");
+                BigDecimal bt = resultSet.getBigDecimal("BT");
+                System.out.println(age + "\t" + head + "\t" + it + "\t" + ft + "\t" + dt + "\t" + bt);
+
                 rs++;
             }
 
