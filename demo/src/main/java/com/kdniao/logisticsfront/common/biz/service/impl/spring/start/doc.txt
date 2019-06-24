@@ -1,0 +1,33 @@
+IOC容器: 负责三个东西
+    1.管理Bean [BeanFactory]:
+        1.Bean的创建
+        2.Bean的存储
+        3.Bean的获取
+        4.依赖注入:自动完成依赖Bean的检测和注入
+        5.自动生成Bean: 通过Bean的定义生成Bean
+    2.定义Bean [BeanDefiniton]
+        1.Bean属性定义
+            1.id
+            2.name
+            3.scope
+            4.className
+            5.parent
+            6.lazyInit
+            7.Depends
+            8.Property
+        2.Bean存储定义
+            1.XML
+            2.properties
+    3.Bean加载/解析[BeanDefinitionReader]
+        1.加载XML文件流
+        2.转化为Document
+        3.Document Element解析/注册为BeanDefiniton [DocumentLoader/BeanDefinitionRegistry]
+            1.解析
+            2.注册
+实现流程
+    1.加载注册BeanDefinition
+        1.加载
+        2.解析
+        3.注册
+    2.创建Bean的具体实现
+    3.依赖具体实现

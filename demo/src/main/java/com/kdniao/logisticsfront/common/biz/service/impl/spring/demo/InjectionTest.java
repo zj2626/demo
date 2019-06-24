@@ -1,9 +1,5 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.spring;
+package com.kdniao.logisticsfront.common.biz.service.impl.spring.demo;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao;
-import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao2;
-import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao3;
-import com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.UserDao;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

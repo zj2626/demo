@@ -11,15 +11,15 @@
 <!--    <bean id="MyBeanNameAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanNameAware" init-method="init"/>-->
 
 <!--    <context:component-scan base-package="com.kdniao.logisticsfront.common.biz.service.impl.spring.*"/>-->
-    <bean id="userDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.UserDao"/>
+    <bean id="userDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.UserDao"/>
 
-    <bean id="injectUserDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao">
+    <bean id="injectUserDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao">
 <!--        <property name="userDao" ref="userDao"/>-->
     </bean>
-    <bean id="injectUserDao2" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao2">
+    <bean id="injectUserDao2" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao2">
 <!--        <property name="userDao" ref="userDao"/>-->
     </bean>
-    <bean id="injectUserDao3" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.injection.InjectUserDao3">
+    <bean id="injectUserDao3" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao3">
         <constructor-arg name="userDao" ref="userDao"/>
     </bean>
 

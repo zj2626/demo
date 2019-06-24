@@ -1,6 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.spring.injection;
-
-import org.springframework.stereotype.Component;
+package com.kdniao.logisticsfront.common.biz.service.impl.spring.demo;
 
 public class InjectUserDao3 {
     private UserDao userDao;
@@ -9,7 +7,7 @@ public class InjectUserDao3 {
         this.userDao = userDao;
     }
 
-    public UserDao getU(){
+    public UserDao getU() {
         return userDao;
     }
 }
