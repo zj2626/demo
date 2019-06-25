@@ -37,8 +37,8 @@ public class BeanDefinitonTest {
         BeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(factory);
         beanDefinitionReader.loadBeanDefinitions("classpath:framework/spring.xml");
 
-        MyBeanDao fDao = (MyBeanDao) factory.getBean("myBeanDao");
-        System.out.println(fDao);
+//        MyBeanDao fDao = (MyBeanDao) factory.getBean("myBeanDao");
+//        System.out.println(fDao);
 
     }
 }
