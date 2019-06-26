@@ -24,10 +24,35 @@ IOC容器: 负责三个东西
         3.Document Element解析/注册为BeanDefiniton [DocumentLoader/BeanDefinitionRegistry]
             1.解析
             2.注册
-实现流程
-    1.加载注册BeanDefinition
-        1.加载
-        2.解析
-        3.注册
-    2.创建Bean的具体实现
-    3.依赖具体实现
+
+    IOC实现流程
+        1.加载注册BeanDefinition
+            1.加载
+            2.解析
+            3.注册
+        2.创建Bean的具体实现
+        3.依赖具体实现
+
+AOP: 为了批量定义程序逻辑
+    AOP定义组件:
+        1. proxyConfig: 大部分config在AdvisedSupport中
+            1.AspectJProxyFactory
+            2.ProxyFactory
+            3.ProxyFactoryBean
+
+    通知,拦截组件: 实现接口:Advice
+
+    调用执行组件:
+        1. java proxy
+            Proxy, InvocationHandler, ProxyClassFactory, ProxyGenerator
+        2. cglib proxy
+            Enhancer, MethodInterceptor
+
+    其他优化组件:
+        1.AopProxyBeanFactory
+        2.AopProxy
+
+    含义解释:
+        3.Advice :通知拦截器, 会在所有的方法上加拦截操作
+        1.Advisor:[通知拦截器 + 切入点(pointcut)]的适配器, 可以指定在哪些方法进行拦截操作
+        2.Advised:AdvisedSupport
