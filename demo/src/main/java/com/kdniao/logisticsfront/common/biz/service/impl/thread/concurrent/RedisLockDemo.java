@@ -70,15 +70,15 @@ public class RedisLockDemo implements Runnable {
          * */
     }
 
-    private static boolean getLock(RedisTemplate<String, Object> redisTemplate, String lockStr) {
+    private static boolean getLock(RedisTemplate<String, Object> redisTemplate, String lockStr, String lockValue) {
         boolean ifLock = false;
 
         /* 方法一 opsForValue (由于不是原子操作, 当删除不成功且在expire之前报错可能导致死锁)*/
         if (true) {
-            ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, String.valueOf(System.currentTimeMillis()));
+            ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, lockValue);
             if (ifLock) {
-                redisTemplate.expire(lockStr, 4000, TimeUnit.MILLISECONDS);
-//                redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
+//                redisTemplate.expire(lockStr, 4000, TimeUnit.MILLISECONDS);
+                redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
             }
         }
 
@@ -90,7 +90,7 @@ public class RedisLockDemo implements Runnable {
                 Object object = connection.execute(
                         OPTION,
                         keySerializer.serialize(lockStr),
-                        valueSerializer.serialize(String.valueOf(System.currentTimeMillis())),
+                        valueSerializer.serialize(lockValue),
                         SafeEncoder.encode(SET_IF_NOT_EXIST),
                         SafeEncoder.encode(SET_WITH_EXPIRE_TIME), // "EX"
                         Protocol.toByteArray(3000));
@@ -110,7 +110,7 @@ public class RedisLockDemo implements Runnable {
                 connection.execute(
                         OPTION,
                         keySerializer.serialize(lockStr),
-                        valueSerializer.serialize(String.valueOf(System.currentTimeMillis())),
+                        valueSerializer.serialize(lockValue),
                         SafeEncoder.encode(SET_IF_NOT_EXIST),
                         SafeEncoder.encode(SET_WITH_EXPIRE_TIME), // "EX"
                         Protocol.toByteArray(3000));
@@ -126,9 +126,9 @@ public class RedisLockDemo implements Runnable {
             }
         }
 
-        /* 方法四 这方法有问题 bug ?????*/
+        /* 方法四 有问题 不可用 bug ?????*/
         if (false) {
-            ifLock = lock(redisTemplate, lockStr, String.valueOf(System.currentTimeMillis()));
+            ifLock = lock(redisTemplate, lockStr, lockValue);
         }
 
         return ifLock;
@@ -151,14 +151,18 @@ public class RedisLockDemo implements Runnable {
     }
 
     // 当第一个线程超时 则第二个线程进入并设置redis, 然后第一个线程结束并删除redis值,会导致第三个等待的线程立即进入,此时第二个线程可能还没超时或结束
-    // 如果超时情况几乎很少发生,则不需要考虑这个问题, (也可以设置redis失效时间长一点可以缓解这个问题,并且使用同一个key的情况出现多次访问可能性很低)
-    private static void releaseLock(RedisTemplate<String, Object> redisTemplate, String lockStr) {
-         redisTemplate.delete(lockStr);
+    // 所以需要设置redis的value, 且每个线程的value是不同的 可解决
+    private static void releaseLock(RedisTemplate<String, Object> redisTemplate, String lockStr, String lockValue) {
+        String value = String.valueOf(redisTemplate.opsForValue().get(lockValue));
+        if (lockValue.equals(value)) {
+            redisTemplate.delete(lockStr);
+        }
     }
 
     @Override
     public void run() {
         String lockStr = "lockStr007";
+        String lockVal = UUID.randomUUID().toString();
         System.out.println(lockStr);
 
         RedisTemplate<String, Object> redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
@@ -168,7 +172,7 @@ public class RedisLockDemo implements Runnable {
             for (int i = 0; i < 5; i++) {
                 try {
                     while (true) {
-                        boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr);
+                        boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr, lockVal);
                         if (ifLock) {
                             System.out.println(Thread.currentThread().getName() + " A " + i);
                             Integer nt = sum;
@@ -195,7 +199,7 @@ public class RedisLockDemo implements Runnable {
                 } finally {
                     try {
                         System.out.println(Thread.currentThread().getName() + " release " + "\n");
-                        releaseLock(redisTemplate, lockStr);
+                        releaseLock(redisTemplate, lockStr, lockVal);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -209,7 +213,7 @@ public class RedisLockDemo implements Runnable {
             for (int j = 0; j < 100; j++) {
                 try {
                     while (true) {
-                        boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr);
+                        boolean ifLock = RedisLockDemo.getLock(redisTemplate, lockStr, lockVal);
                         if (ifLock) {
                             System.out.println(Thread.currentThread().getName() + " - " + sum);
                             sum++;
@@ -221,7 +225,7 @@ public class RedisLockDemo implements Runnable {
                     e.printStackTrace();
                 } finally {
                     try {
-                        releaseLock(redisTemplate, lockStr);
+                        releaseLock(redisTemplate, lockStr, lockVal);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
