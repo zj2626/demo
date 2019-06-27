@@ -3,11 +3,9 @@ package com.kdniao.logisticsfront.common.biz.service.impl.date;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TestTime {
@@ -44,6 +42,7 @@ public class TestTime {
     // 下面都是线程安全的 best !!!!!!
     @Test
     public void testTime3() {
+        // LocalDate
         LocalDate nowDate = LocalDate.now();
         System.out.println(nowDate);
         System.out.println(nowDate.getYear());
@@ -57,6 +56,7 @@ public class TestTime {
         System.out.println(znow);
         System.out.println();
 
+        // LocalDate
         LocalDate date = LocalDate.of(2019, 5, 12);
         System.out.println(date);
         LocalDate date2 = LocalDate.ofYearDay(2019, 210);
@@ -67,6 +67,7 @@ public class TestTime {
         System.out.println();
         System.out.println();
 
+        // LocalTime
         LocalTime noon = LocalTime.NOON;
         System.out.println(noon);
         LocalTime nowTime = LocalTime.now();
@@ -76,6 +77,7 @@ public class TestTime {
         System.out.println(nowTime.getSecond());
         System.out.println();
 
+        // LocalTime
         LocalTime time = LocalTime.ofSecondOfDay(1234);
         System.out.println(time);
         // ##############
@@ -84,6 +86,7 @@ public class TestTime {
         System.out.println();
         System.out.println();
 
+        // LocalDateTime
         LocalDateTime nowDateTime = LocalDateTime.now();
         System.out.println(nowDateTime);
         LocalDateTime dateTime = LocalDateTime.of(nowDate, nowTime);
@@ -106,5 +109,26 @@ public class TestTime {
         DateTimeFormatter dtf4 = DateTimeFormatter.ofPattern(stf);
         String dateTimeStr4 = dtf4.format(LocalDateTime.parse(datetTimeStr));
         System.out.println(dateTimeStr4);
+        System.out.println();
+
+        // Date转换为LocalDateTime
+        Date utilDate = new Date();
+        Instant instant = utilDate.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault(); // 默认时区
+        // 方法一
+        LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+        // 方法二
+        LocalDateTime localDateTime2 = LocalDateTime.ofInstant(utilDate.toInstant(), zoneId);
+        System.out.println(utilDate);
+        System.out.println(localDateTime);
+        System.out.println(localDateTime2);
+        System.out.println();
+
+        // LocalDateTime转换为Date
+        ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+        Date utilDate2 = Date.from(zonedDateTime.toInstant());
+        System.out.println(localDateTime);
+        System.out.println(zonedDateTime);
+        System.out.println(utilDate2);
     }
 }
