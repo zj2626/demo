@@ -1,0 +1,6 @@
+server:
+  port: 8078
+
+spring:
+  profiles:
+    active: "@profiles.active@"

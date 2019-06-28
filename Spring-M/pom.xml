@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>service.ay</groupId>
-    <artifactId>ay</artifactId>
+    <artifactId>spring-m</artifactId>
     <version>0.1</version>
     <packaging>war</packaging>
     <profiles>
@@ -63,9 +63,9 @@
             <name>Nexus aliyun</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
             <layout>default</layout>
-            <!--<snapshots>
+            <snapshots>
                 <enabled>false</enabled>
-            </snapshots>-->
+            </snapshots>
         </repository>
     </repositories>
     <properties>
@@ -253,7 +253,7 @@
         </dependency>
         <dependency>
             <groupId>service.zj</groupId>
-            <artifactId>zj</artifactId>
+            <artifactId>spring-h</artifactId>
             <version>0.1</version>
         </dependency>
         <dependency>
