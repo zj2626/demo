@@ -33,12 +33,8 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>mvc</servlet-name>
+		<servlet-name>dispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextAttribute</param-name>
-			<param-value>org.springframework.web.context.WebApplicationContext.ROOT</param-value>
-		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath:/framework/spring-mvc.xml</param-value>
@@ -46,7 +42,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>mvc</servlet-name>
+		<servlet-name>dispatcherServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 </web-app>

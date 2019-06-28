@@ -4,4 +4,29 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!-- default-autowire="byName" default-lazy-init="true" -->
 
+    <!-- 执行顺序: 请求->DispatcherServlet->HandlerMapping->HandlerAdapter->Controller->ViewResolver->View -->
+
+    <!--处理器-->
+    <bean id="demoController" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.mvc.DemoController"/>
+
+    <!--处理器映射器-->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="urlMap">
+            <props>
+                <prop key="/main.do">demoController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--处理器适配器-->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    <!--视图解析器(映射)-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".jsp"/>
+
+        <!--解析处理视图-->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    </bean>
 </beans>

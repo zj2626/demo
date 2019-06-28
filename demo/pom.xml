@@ -75,6 +75,17 @@
         <jsoup_version>1.10.2</jsoup_version>
         <zxing_version>3.2.1</zxing_version>
     </properties>
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <!--<snapshots>
+                <enabled>false</enabled>
+            </snapshots>-->
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.netflix.hystrix</groupId>
@@ -353,6 +364,24 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.9.4</version>
+        </dependency>
+        <!-- jstl -->
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- jstl-api -->
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl-api</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- jstl-impl -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jstl-impl</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 </project>

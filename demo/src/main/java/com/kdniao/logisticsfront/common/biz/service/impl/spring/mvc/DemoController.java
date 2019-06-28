@@ -1,17 +1,22 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.spring.mvc;
 
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DemoController {
+public class DemoController implements Controller {
 
     public ModelAndView doMyRequest(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("AAA");
-
         ModelAndView modelAndView = new ModelAndView("main");
         modelAndView.addObject("attributeName", "attributeValue");
         return modelAndView;
+    }
+
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("handleRequest");
+        return doMyRequest(request, response);
     }
 }
