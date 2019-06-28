@@ -20,7 +20,8 @@ dubbo:
   application:
     name: hello-world-app
     logger: log4j
-    registry: zookeeper://192.168.1.232:2181
+  registry:
+    address: zookeeper://192.168.1.232:2181
   protocol:
     name: dubbo
     port: 28081

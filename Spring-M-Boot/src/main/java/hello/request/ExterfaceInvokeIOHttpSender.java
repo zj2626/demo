@@ -15,6 +15,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +33,7 @@ import java.util.Map.Entry;
  * @author dev
  * @version $Id: ExterfaceInvokeIOHttpSender.java, v 0.1 2018年5月15日 上午10:37:07 dev Exp $
  */
+@Component
 public class ExterfaceInvokeIOHttpSender implements InitializingBean {
 
     protected String appName;

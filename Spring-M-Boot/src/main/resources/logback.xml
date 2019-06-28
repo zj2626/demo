@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-<!--    <property name="logDir" value="H:/logs/sprint-boot"/>-->
-    <property name="logDir" value="/data/logs/boot"/>
-    <property name="application.name" value="temp"/>
+<!--    <property name="logDir" value="H:/logs/sprint-m"/>-->
+    <property name="logDir" value="/data/logs/ay"/>
+    <property name="application.name" value="tempa"/>
 <!--    <property resource="prop.properties" />-->
-    <contextName>SPRING-H</contextName>
+    <contextName>SPRING-M</contextName>
 
-    <appender name="SH-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="SM-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[spring-m] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="SH-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SM-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append><!--默认true-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logDir}/${application.name}/%d{yyyy-MM-dd-HH}.log</fileNamePattern> <!--每小时一个文件 下面5表示文件只保存5份-->
@@ -22,7 +22,7 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <appender name="SH-TEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SM-TEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${logDir}/${application.name}/test.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -39,7 +39,7 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <appender name="SH-ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SM-ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${logDir}/${application.name}/err.log</File>
         <append>true</append>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -55,7 +55,7 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <appender name="SH-WEB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SM-WEB" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${logDir}/${application.name}/web.log</File>
         <append>true</append>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -75,17 +75,17 @@
     <!--关闭某个包的日志-->
 <!--    <logger name="o.a.k.c.c.i.AbstractCoordinator" level="OFF"/>-->
 
-    <logger name="SH.test">
+    <logger name="sm.test">
         <level value="INFO"/>
-        <appender-ref ref="SH-TEST"/>
+        <appender-ref ref="SM-TEST"/>
     </logger>
 
-    <logger name="SH.err" level="ERROR">
-        <appender-ref ref="SH-ERR"/>
+    <logger name="sm.err" level="ERROR">
+        <appender-ref ref="SM-ERR"/>
     </logger>
 
-    <logger name="SH.web" level="DEBUG">
-        <appender-ref ref="SH-WEB"/>
+    <logger name="sm.web" level="DEBUG">
+        <appender-ref ref="SM-WEB"/>
     </logger>
 
     <!--hibernate log configure-->
@@ -102,8 +102,8 @@
     <logger name="java.sql.PreparedStatement" level="DEBUG"/>
 
     <root level="INFO">
-        <appender-ref ref="SH-STDOUT"/>
-        <appender-ref ref="SH-FILE"/>
+        <appender-ref ref="SM-STDOUT"/>
+        <appender-ref ref="SM-FILE"/>
     </root>
 
     <!--

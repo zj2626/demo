@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hello.data.mapper.UCAreaDOMapper">
+    <resultMap id="BaseResultMap" type="hello.data.model.UCAreaDO">
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+
+    </resultMap>
+
+    <!-- 基本列 -->
+    <sql id="Base_Column_List">
+        id,
+        area_code,
+        area_name,
+        level
+    </sql>
+
+    <!-- 单个插入 -->
+    <insert id="insertUCArea" parameterType="hello.data.model.UCAreaDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into uc_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="areaCode != null">
+                area_code,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+            <if test="level != null">
+                level
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="areaCode != null">
+                #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+
+        </trim>
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO uc_area
+        (id,area_code,area_name,level)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR},#{item.areaCode,jdbcType=VARCHAR},#{item.areaName,jdbcType=VARCHAR},#{item.level,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <!-- 单个更新 -->
+    <update id="updateUCArea" parameterType="hello.data.model.UCAreaDO">
+        update uc_area
+        <set>
+            area_name=#{areaName,jdbcType=VARCHAR},
+            level=#{level,jdbcType=INTEGER}
+        </set>
+        where area_code = #{areaCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE uc_area
+            <set>
+                area_code=#{item.areaCode,jdbcType=VARCHAR},
+                area_name=#{item.areaName,jdbcType=VARCHAR},
+                level=#{item.level,jdbcType=INTEGER}
+            </set>
+            WHERE ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteUCArea" parameterType="hello.data.model.UCAreaDO">
+        delete from uc_area where area_code = #{areaCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 批量删除 -->
+    <update id="deleteBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update uc_area
+            set UPDATED = #{item.updated,jdbcType=TIMESTAMP},UPDATEDBY = #{item.updatedby,jdbcType=VARCHAR}
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+
+    <!-- 单个查询 -->
+    <select id="getUCArea" parameterType="hello.data.model.UCAreaDO"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM uc_area
+        WHERE 1 = 1
+        <if test="id != null">
+            AND id = #{id, jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="findByEntity" parameterType="hello.data.model.UCAreaDO"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM uc_area
+        WHERE 1 = 1
+        <if test="id != null">
+            AND id = #{id, jdbcType=BIGINT}
+        </if>
+        <if test="areaName != null">
+            AND area_name = #{areaName, jdbcType=VARCHAR}
+        </if>
+        <if test="areaNames != null">
+            AND area_name in
+            <foreach collection="areaNames" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="level != null">
+            AND level = #{level, jdbcType=INTEGER}
+        </if>
+        <if test="areaCode != null">
+            AND area_code like concat(#{areaCode,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>

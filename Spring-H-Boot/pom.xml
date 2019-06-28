@@ -13,8 +13,8 @@
     <version>0.1</version>
     <name>zj-boot</name>
     <description>Demo project for Spring Boot</description>
-    <!--    <packaging>war</packaging>-->
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
+<!--    <packaging>jar</packaging>-->
 
     <profiles>
         <profile>

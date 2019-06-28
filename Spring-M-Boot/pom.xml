@@ -20,7 +20,7 @@
         <profile>
             <id>comp</id>
             <properties>
-                <deploy_env>comp</deploy_env>
+                <activatedProperties>comp</activatedProperties>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -29,7 +29,7 @@
         <profile>
             <id>home</id>
             <properties>
-                <deploy_env>home</deploy_env>
+                <activatedProperties>home</activatedProperties>
             </properties>
         </profile>
     </profiles>
