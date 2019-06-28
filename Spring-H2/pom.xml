@@ -6,6 +6,7 @@
 
     <groupId>service.zj</groupId>
     <artifactId>spring-h</artifactId>
+    <name>zj-h</name>
     <version>0.1</version>
 <!--    <packaging>jar</packaging>-->
     <packaging>war</packaging>

@@ -6,6 +6,7 @@
 
     <groupId>service.ay</groupId>
     <artifactId>spring-m</artifactId>
+    <name>ay-m</name>
     <version>0.1</version>
     <packaging>war</packaging>
     <profiles>
