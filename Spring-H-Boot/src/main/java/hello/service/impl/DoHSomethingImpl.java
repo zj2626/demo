@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Service("doHSomethingImpl")
+@Service
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";

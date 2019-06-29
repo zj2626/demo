@@ -9,11 +9,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ZookeeperConfigration {
-//    @Value("${dubbo.registry.address}")
-    private String connectString = "192.168.1.232:2181";
+    @Value("${dubbo.registry.address}")
+    private String connectString;
 
     @Bean
     public CuratorFramework getCuratorFramework() {
+        connectString = connectString.replace("zookeeper://", "");
+
         ExponentialBackoffRetry curatorRetryPolicy =
                 new ExponentialBackoffRetry(1000, 3);
 

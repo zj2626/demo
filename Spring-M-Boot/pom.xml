@@ -131,6 +131,11 @@
             <artifactId>dubbo-container-logback</artifactId>
             <version>${dubbo_version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.32.Final</version>
+        </dependency>
 
         <!--zookeeper-->
         <dependency>
@@ -146,11 +151,6 @@
             <version>1.2.46</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.32.Final</version>
-        </dependency>-->
 
         <!--kafka-->
         <dependency>
@@ -207,7 +207,7 @@
         </plugins>
 
         <resources>
-            <resource>
+            <!--<resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
@@ -220,7 +220,7 @@
                 <excludes>
                     <exclude>application-{profiles.active}.properties</exclude>
                 </excludes>
-            </resource>
+            </resource>-->
         </resources>
 
     </build>

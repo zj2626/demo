@@ -80,7 +80,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--dubbo-springBoot???-->
+        <!--dubbo-springBoot-->
         <dependency>
             <groupId>io.dubbo.springboot</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
@@ -102,6 +102,11 @@
             <version>2.6.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.32.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>com.github.sgroschupf</groupId>
@@ -115,11 +120,6 @@
             <version>1.2.46</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.32.Final</version>
-        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-container-logback</artifactId>

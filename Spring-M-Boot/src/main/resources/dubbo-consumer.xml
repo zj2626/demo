@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!--生成远程服务代理 作为可调用的bean-->
+    <dubbo:reference id="doWithAnnotation" interface="hello.service.DoWithAnnotation" group="${dubbo.consumer.group}"
+                     cache="true"/>
+
+    <dubbo:reference id="doHSomething" interface="hello.service.DoHSomething" group="${dubbo.consumer.group}"
+                     filter="${dubbo.consumer.filter}">
+        <!--<dubbo:method name="sayHello" async="true" return="true"/>-->
+        <!--<dubbo:method name="sayFuck"/>-->
+    </dubbo:reference>
+</beans>

@@ -3,8 +3,8 @@ package hello.service.impl;
 import hello.service.DoWithAnnotation;
 import org.springframework.stereotype.Service;
 
-@Service("doWithAnnotationImpl")
-@com.alibaba.dubbo.config.annotation.Service(group = "zj.hello-app", filter = "mySecondFilter,myOtherFilter")
+@Service
+@com.alibaba.dubbo.config.annotation.Service(group = "${dubbo.provider.group}", filter = "${dubbo.provider.filter}")
 public class DoWithAnnotationImpl implements DoWithAnnotation {
 
     @Override
