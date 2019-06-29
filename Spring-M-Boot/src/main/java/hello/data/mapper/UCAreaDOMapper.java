@@ -1,12 +1,12 @@
 package hello.data.mapper;
 
 import hello.data.model.UCAreaDO;
-import org.springframework.data.repository.query.Param;
-//import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-
+@Mapper
 public interface UCAreaDOMapper {
 
     Integer insertUCArea(UCAreaDO entity);

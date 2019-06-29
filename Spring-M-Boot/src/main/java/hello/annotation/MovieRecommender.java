@@ -1,5 +1,8 @@
 package hello.annotation;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MovieRecommender {
     private String name;
 

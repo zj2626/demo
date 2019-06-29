@@ -1,6 +1,5 @@
 package hello.control;
 
-import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
@@ -14,6 +13,7 @@ import hello.service.DoWithAnnotation;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -27,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Future;
 
 @Service
@@ -39,14 +42,19 @@ public class DoSomething {
 
     /*  不需要@Autowired因为设置了default-autowire="byName" 但是需要setter方法 */
     private RedisTemplate<String, Object> throttlingRedisTemplate;
+    @Autowired
     private DoHSomething doHSomething;
+    @Autowired
     private DoWithAnnotation doWithAnnotation;
-
+    @Autowired
     private SimpleMovieLister simpleMovieLister;
+    @Autowired
     private MovieRecommender movieRecommender2;
 
     private TransactionTemplate transactionTemplate;
+    @Autowired
     private AreaCodeDao areaCodeDao;
+    @Autowired
     private TestcDao testcDao;
 
     public void setTestcDao(TestcDao testcDao) {

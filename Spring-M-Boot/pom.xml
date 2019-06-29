@@ -14,10 +14,10 @@
     <name>ay-boot</name>
     <description>Demo project for Spring Boot</description>
     <packaging>war</packaging>
-<!--    <packaging>jar</packaging>-->
+    <!--    <packaging>jar</packaging>-->
 
     <profiles>
-        <profile>
+        <!--<profile>
             <id>comp</id>
             <properties>
                 <activatedProperties>comp</activatedProperties>
@@ -31,13 +31,14 @@
             <properties>
                 <activatedProperties>home</activatedProperties>
             </properties>
-        </profile>
+        </profile>-->
     </profiles>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springversion>4.2.6.RELEASE</springversion>
+        <mysql_version>5.1.33</mysql_version>
         <dubbo_version>2.6.6</dubbo_version>
         <tomcatservletversion>8.5.4</tomcatservletversion>
         <java.version>1.8</java.version>
@@ -91,13 +92,19 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql_version}</version>
+        </dependency>
 
-        <!--dubbo-springBoot-->
+        <!--dubbo-->
         <dependency>
             <groupId>io.dubbo.springboot</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
@@ -119,13 +126,20 @@
             <version>2.6.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-container-logback</artifactId>
+            <version>${dubbo_version}</version>
+        </dependency>
 
+        <!--zookeeper-->
         <dependency>
             <groupId>com.github.sgroschupf</groupId>
             <artifactId>zkclient</artifactId>
             <version>0.1</version>
         </dependency>
 
+        <!--fastjson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -137,17 +151,14 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.32.Final</version>
         </dependency>-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-container-logback</artifactId>
-            <version>${dubbo_version}</version>
-        </dependency>
 
+        <!--kafka-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>2.2.6.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
@@ -200,14 +211,14 @@
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>application-*.yml</exclude>
+                    <exclude>application-*.properties</exclude>
                 </excludes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>application-{profiles.active}.yml</exclude>
+                    <exclude>application-{profiles.active}.properties</exclude>
                 </excludes>
             </resource>
         </resources>

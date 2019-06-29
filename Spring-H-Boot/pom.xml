@@ -17,7 +17,7 @@
 <!--    <packaging>jar</packaging>-->
 
     <profiles>
-        <profile>
+        <!--<profile>
             <id>comp</id>
             <properties>
                 <deploy_env>comp</deploy_env>
@@ -31,7 +31,7 @@
             <properties>
                 <deploy_env>home</deploy_env>
             </properties>
-        </profile>
+        </profile>-->
     </profiles>
 
     <properties>
@@ -145,22 +145,22 @@
             </plugin>
         </plugins>
 
-        <resources>
+        <!--<resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>application-*.yml</exclude>
+                    <exclude>application-*.properties</exclude>
                 </excludes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>application-{profiles.active}.yml</exclude>
+                    <exclude>application-{profiles.active}.properties</exclude>
                 </excludes>
             </resource>
-        </resources>
+        </resources>-->
 
     </build>
 

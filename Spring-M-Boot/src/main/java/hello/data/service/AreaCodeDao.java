@@ -10,6 +10,7 @@ import hello.data.mapper.UCAreaDOMapper;
 import hello.data.model.UCAreaDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,11 +24,8 @@ public class AreaCodeDao {
     private static String[] cityUnits = {"市", "县", "自治县", "自治州", "地区"};
     private static String[] countyUnits = {"市", "辖区", "区", "县", "自治县"};
 
+    @Autowired
     private UCAreaDOMapper areaDOMapper;
-
-    public void setAreaDOMapper(UCAreaDOMapper areaDOMapper) {
-        this.areaDOMapper = areaDOMapper;
-    }
 
     /**
      * 通过名称查询code 拼接行政单位 增加查到几率

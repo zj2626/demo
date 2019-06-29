@@ -1,6 +1,0 @@
-server:
-  port: 8073
-
-spring:
-  profiles:
-    active: "@profiles.active@"

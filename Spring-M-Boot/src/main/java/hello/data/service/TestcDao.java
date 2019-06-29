@@ -9,18 +9,15 @@ import hello.data.mapper.TestcMapper;
 import hello.data.model.Testc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TestcDao {
     private static final Logger logger = LoggerFactory.getLogger(TestcDao.class);
 
+    @Autowired
     private TestcMapper testcMapper;
-
-    public void setTestcMapper(TestcMapper testcMapper) {
-        this.testcMapper = testcMapper;
-    }
-
 
     public void select(Integer id){
         Testc testc = testcMapper.selectByPrimaryKey(id);
