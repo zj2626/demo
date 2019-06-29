@@ -4,15 +4,14 @@ import hello.service.util.Change;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.listener.MessageListener;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
-@Service
-public class GetSomething2 implements MessageListener<String, byte[]> {
+@Component
+public class GetSomething2 {
     private static final Logger logger = LoggerFactory.getLogger(GetSomething2.class);
 
-    @Override
+    @KafkaListener(topics = {"kfk-to-topic-zj", "kfk-to-topic-zj-05"}, containerFactory = "kafkaBatchListener2")
     public void onMessage(ConsumerRecord<String, byte[]> data) {
         logger.info("[第二个消费方法] 消息开始消费 " +
                 "\t[" + Thread.currentThread().getName() + "] " +

@@ -1,6 +1,7 @@
 package hello.control;
 
 import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
@@ -103,6 +104,7 @@ public class DoSomething {
             rpcContext.set("aa", "bb");
 //            rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
             rpcContext.setAttachment("cc", "dd");
+            rpcContext.setUrl(URL.valueOf("www.baidu.com"));
 
             boolean isConsumerSide = rpcContext.isConsumerSide();
             String serverIP = rpcContext.getRemoteHost();

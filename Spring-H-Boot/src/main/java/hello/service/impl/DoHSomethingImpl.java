@@ -4,6 +4,7 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import hello.service.util.Change;
 import org.apache.kafka.common.PartitionInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,8 @@ public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";
 
+    @Autowired
     private KafkaTemplate<String, byte[]> kafkaTemplate;
-
-    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
 
     public DoHSomethingImpl() {
         System.out.println("构造造 DoHSomethingImpl");
@@ -36,12 +34,12 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("Hello****************************** " + name);
 
         RpcContext rpcContext = RpcContext.getContext();
-        System.out.println("RpcContext > " + rpcContext.get("aa"));
-        System.out.println("RpcContext > " + rpcContext.get("cc"));
+        System.out.println("sayHello RpcContext aa > " + rpcContext.get("aa"));
+        System.out.println("sayHello RpcContext cc > " + rpcContext.get("cc"));
 //        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
         System.out.println("**********");
-        System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
-        System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
+        System.out.println("sayHello RpcContext aa > " + rpcContext.getAttachment("aa"));
+        System.out.println("sayHello RpcContext cc > " + rpcContext.getAttachment("cc"));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
 
         // set requestId
@@ -64,12 +62,12 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("SHIT****************************** " + name);
 
         RpcContext rpcContext = RpcContext.getContext();
-        System.out.println("RpcContext > " + rpcContext.get("aa"));
-        System.out.println("RpcContext > " + rpcContext.get("cc"));
+        System.out.println("sayShit RpcContext aa > " + rpcContext.get("aa"));
+        System.out.println("sayShit RpcContext cc > " + rpcContext.get("cc"));
 //        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
         System.out.println("**********");
-        System.out.println("RpcContext > " + rpcContext.getAttachment("aa"));
-        System.out.println("RpcContext > " + rpcContext.getAttachment("cc"));
+        System.out.println("sayShit RpcContext aa > " + rpcContext.getAttachment("aa"));
+        System.out.println("sayShit RpcContext cc > " + rpcContext.getAttachment("cc"));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
 
         return "shit u " + name;
@@ -84,13 +82,17 @@ public class DoHSomethingImpl implements DoHSomething {
 
 
     private String sendMethod(String name) {
-        System.out.println("KAFKA -> " + (null != kafkaTemplate));
-        if (null != kafkaTemplate) {
-            System.out.println(">>>");
-            List<PartitionInfo> partitionInfos = kafkaTemplate.partitionsFor(topicName_5);
-            System.out.println("topic[" + topicName_5 + "]的partition: " + partitionInfos.size() + "\t" + partitionInfos);
-            kafkaTemplate.send(topicName_5, Change.strToByteArray(new Date() + " - " + UUID.randomUUID()));
-            System.out.println(">>>>>>>>>");
+        try{
+            System.out.println("KAFKA -> " + (null != kafkaTemplate));
+            if (null != kafkaTemplate) {
+                System.out.println(">>>");
+                List<PartitionInfo> partitionInfos = kafkaTemplate.partitionsFor(topicName_5);
+                System.out.println("topic[" + topicName_5 + "]的partition: " + partitionInfos.size() + "\t" + partitionInfos);
+                kafkaTemplate.send(topicName_5, Change.strToByteArray(new Date() + " - " + UUID.randomUUID()));
+                System.out.println(">>>>>>>>>");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         return ">Dubbo fuck u " + name;

@@ -9,9 +9,8 @@ public class AnnotationFirstFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        System.out.println("开始调用 AnnotationFirstFilter");
+        System.out.println("开 始 调 用 AnnotationFirstFilter");
         Result result = invoker.invoke(invocation);
-        System.out.println("结束调用 AnnotationFirstFilter\n");
         return result;
     }
 }

@@ -1,5 +1,7 @@
 package hello.control;
 
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
@@ -27,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Future;
 
 @Service
@@ -100,7 +99,7 @@ public class DoSomething {
     }
 
     public boolean dodubbo() {
-//        doMakeLog();
+        doMakeLog();
 
         System.out.println("do  doHSomething: " + (doHSomething != null));
         System.out.println("do  doWithAnnotation: " + (doWithAnnotation != null));
@@ -111,7 +110,9 @@ public class DoSomething {
             rpcContext.set("aa", "bb");
 //            rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
             rpcContext.setAttachment("cc", "dd");
+            rpcContext.setUrl(URL.valueOf("www.baidu.com"));
 
+            System.out.println(rpcContext.getUrl());
             boolean isConsumerSide = rpcContext.isConsumerSide();
             String serverIP = rpcContext.getRemoteHost();
             String requestId = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
@@ -185,19 +186,23 @@ public class DoSomething {
         System.out.println("\n回声测试完毕");
 
         System.out.println("测试缓存 缓存的最大量是1000");
-        for (int n = 0; n < 1000; n++) { // 改为1001则下面的测试则会调用接口而不是使用缓存 (缓存的最大量是1000)
+        for (int n = 0; n < 2; n++) { // 改为1001则下面的测试则会调用接口而不是使用缓存 (缓存的最大量是1000)
             String pre = null;
             for (int i = 0; i < 10; i++) {
                 String result = doWithAnnotation.sayFuck(String.valueOf(n));
-                System.out.print(n + " ");
+                System.out.println(n);
                 if (pre != null && !pre.equals(result)) {
                     System.err.println("n=" + n + " ERROR: " + result);
                 }
                 pre = result;
             }
-            System.out.println("\n" + pre);
+            System.out.println(pre);
         }
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ignored) {
+        }
         System.out.println("测试LRU有移除最开始的一个缓存项");
         doWithAnnotation.sayFuck("0");
 

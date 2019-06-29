@@ -10,7 +10,7 @@ public class AnnotationFilter extends ConsumerContextFilter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        System.out.println("_________________dubbo CONSUMER Filter");
+        System.out.print("_____\t");
 
         return super.invoke(invoker, invocation);
     }

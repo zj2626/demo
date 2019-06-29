@@ -6,9 +6,10 @@
     <!--dubbo-->
     <!--声明暴露的服务接口-->
     <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="${dubbo.provider.group}"
-                   proxy="${dubbo.provider.proxy}"> <!-- filter="mySecondFilter,myOtherFilter" -->
-        <!--<dubbo:method name="sayHello" async="${dubbo.provider.async}" return="true"/>-->
-        <!--<dubbo:method name="sayFuck"/>-->
+                   proxy="${dubbo.provider.proxy}">
+        <dubbo:method name="sayFuckToKafka" async="true"/>
+        <dubbo:method name="sayHello" return="true"/>
+        <dubbo:method name="sayShit" async="false"/>
     </dubbo:service>
 
     <dubbo:annotation package="${dubbo.scan.base-packages}"/>
