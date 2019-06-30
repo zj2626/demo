@@ -19,12 +19,21 @@ public class TestcDao {
     @Autowired
     private TestcMapper testcMapper;
 
-    public void select(Integer id){
-        try{
-            Testc testc = testcMapper.selectByPrimaryKey(id);
-            logger.info("<TestcDao>" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public Testc select(Integer id){
+        Testc testc = testcMapper.selectByPrimaryKey(id);
+        logger.info("<TestcDao>" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
+        return testc;
+    }
+
+    public int insert(Testc record){
+        return testcMapper.insert(record);
+    }
+
+    public int delete(Integer id){
+        return testcMapper.deleteByPrimaryKey(id);
+    }
+
+    public int update(Testc record){
+        return testcMapper.updateByPrimaryKey(record);
     }
 }

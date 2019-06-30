@@ -1,4 +1,4 @@
-package hello.bean;
+package hello.control;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.control.BaseResult;

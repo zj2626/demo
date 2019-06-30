@@ -12,8 +12,7 @@ public class DemoController {
     @Value("${httpUrl}")
     private String url;
 
-    @RequestMapping("/getfun")
-    @GetMapping
+    @GetMapping("/getfun")
     public String demoGetRequest(String name){
         System.out.println("demoGetRequest > " + name);
         System.out.println("GET");
@@ -21,8 +20,7 @@ public class DemoController {
         return name + " > " + url;
     }
 
-    @RequestMapping(value = "/postfun")
-    @PostMapping
+    @PostMapping(value = "/postfun")
     public String demoPostRequest(String name){
         System.out.println("demoPostRequest > " + name);
         System.out.println("POST");
