@@ -2,7 +2,6 @@ package hello.control.service;
 
 import hello.control.RestService;
 import hello.data.model.Testc;
-import hello.data.service.AreaCodeDao;
 import hello.data.service.TestcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,6 @@ import java.util.List;
 public class RestServiceImpl implements RestService {
     @Autowired
     private TestcDao testcDao;
-
-    @Autowired
-    private AreaCodeDao areaCodeDao;
 
     @Override
     public void update(Testc model) {
