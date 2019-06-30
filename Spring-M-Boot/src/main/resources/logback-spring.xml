@@ -4,7 +4,7 @@
 <!--    <property name="logDir" value="/data/logs/ay"/>-->
     <property resource="application.properties" />
     <property name="application.name" value="${application.name}"/>
-    <contextName>SPRING-M</contextName>
+        <contextName>SPRING-M</contextName>
 
     <appender name="SM-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

@@ -49,4 +49,15 @@ public class GetSomething1 {
      * 2         4
      *
      * */
+
+    @KafkaListener(topics = {"kfk-to-topic-zj", "kfk-to-topic-zj-05"}, containerFactory = "kafkaBatchListener2")
+    public void onMessage(ConsumerRecord<String, byte[]> data) {
+        logger.info("[第二个消费方法] 消息开始消费 " +
+                "\t[" + Thread.currentThread().getName() + "] " +
+                "\t[" + data.topic() + "]" +
+                "\t[" + data.offset() + "]" +
+                "\t[" + data.partition() + "]" +
+                "");
+        logger.info(" [第二个消费方法] 收到消息: " + Change.byteArrayToStr(data.value()));
+    }
 }

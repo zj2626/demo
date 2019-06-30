@@ -20,7 +20,11 @@ public class TestcDao {
     private TestcMapper testcMapper;
 
     public void select(Integer id){
-        Testc testc = testcMapper.selectByPrimaryKey(id);
-        logger.info("<TestcDao>" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
+        try{
+            Testc testc = testcMapper.selectByPrimaryKey(id);
+            logger.info("<TestcDao>" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
