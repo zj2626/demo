@@ -17,21 +17,21 @@
 <!--    <packaging>jar</packaging>-->
 
     <profiles>
-        <!--<profile>
+        <profile>
             <id>comp</id>
             <properties>
-                <deploy_env>comp</deploy_env>
+                <profiles.active>comp</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>home</id>
+            <properties>
+                <profiles.active>home</profiles.active>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
-        <profile>
-            <id>home</id>
-            <properties>
-                <deploy_env>home</deploy_env>
-            </properties>
-        </profile>-->
     </profiles>
 
     <properties>
@@ -78,6 +78,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!--dubbo-springBoot-->
@@ -145,22 +151,18 @@
             </plugin>
         </plugins>
 
-        <!--<resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>application-*.properties</exclude>
-                </excludes>
-            </resource>
+        <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>application-{profiles.active}.properties</exclude>
-                </excludes>
+                <includes>
+                    <include>application.properties</include>
+                    <include>application-${profiles.active}.properties</include>
+                    <include>META-INF/**</include>
+                    <include>**/*.xml</include>
+                </includes>
             </resource>
-        </resources>-->
+        </resources>
 
     </build>
 

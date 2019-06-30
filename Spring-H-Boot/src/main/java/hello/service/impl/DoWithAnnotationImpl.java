@@ -4,7 +4,7 @@ import hello.service.DoWithAnnotation;
 import org.springframework.stereotype.Service;
 
 @Service
-@com.alibaba.dubbo.config.annotation.Service(group = "${dubbo.provider.group}", filter = "${dubbo.provider.filter}")
+@com.alibaba.dubbo.config.annotation.Service(group = "${dubbo.provider.group}")
 public class DoWithAnnotationImpl implements DoWithAnnotation {
 
     @Override
