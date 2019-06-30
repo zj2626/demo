@@ -2,6 +2,7 @@ package hello.transaction;
 
 import hello.data.model.UCAreaDO;
 import hello.data.service.AreaCodeDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,11 +12,8 @@ import java.util.List;
 
 @Service
 public class DoSomethingForTransaction {
+    @Autowired
     private AreaCodeDao areaCodeDao;
-
-    public void setAreaCodeDao(AreaCodeDao areaCodeDao) {
-        this.areaCodeDao = areaCodeDao;
-    }
 
     public DoSomethingForTransaction() {
         System.out.println("DoSomethingForTransaction");
@@ -45,7 +43,7 @@ public class DoSomethingForTransaction {
          * 1.READ_UNCOMMITTED时:脏读 > eg:getAreaName不停变化
          * 2.READ_COMMITTED时:  不可重复读:多次读数据时数据被修改则返回的数据不一致 > eg:getAreaName变化
          * 3.REPEATABLE_READ时: 幻读:多次读取不同数据集时返回的集合不一致 > eg:list.size变化
-         * 4.SERIALIZABLE时:    效率低:写的过程不允许读取
+         * 4.SERIALIZABLE时:    效率低:写的过程不允许读取,eg:本方法会阻塞等待写完毕
          * */
         try {
             List<UCAreaDO> list = areaCodeDao.getArea("231282022");

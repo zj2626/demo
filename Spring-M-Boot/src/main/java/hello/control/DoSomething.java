@@ -5,7 +5,6 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
-import hello.data.service.AreaCodeDao;
 import hello.data.service.TestcDao;
 import hello.hystrix.HystrixUtil;
 import hello.request.ExterfaceInvokeIOHttpSender;
@@ -22,11 +21,6 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,10 +45,6 @@ public class DoSomething {
     private SimpleMovieLister simpleMovieLister;
     @Autowired
     private MovieRecommender movieRecommender2;
-
-    private TransactionTemplate transactionTemplate;
-    @Autowired
-    private AreaCodeDao areaCodeDao;
     @Autowired
     private TestcDao testcDao;
     @Autowired
@@ -245,67 +235,6 @@ public class DoSomething {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /*编程式事务管理*/
-    public boolean dotransaction(String codes) {
-//        doMakeLog();
-
-        String areaName = "北京";
-        System.out.println(areaName + ">>" + areaCodeDao.queryCodeByName(areaName, 2, null));
-
-
-        final String[] codeList = codes.split(",");
-        try {
-            transactionTemplate.execute(new TransactionCallback<String>() {
-
-                @Override
-                public String doInTransaction(TransactionStatus transactionStatus) {
-                    for (String code : codeList) {
-                        Integer sum = areaCodeDao.removeArea(code);
-                        if (sum <= 0) {
-                            throw new RuntimeException("未删除");
-                        }
-                    }
-
-                    return null;
-                }
-            });
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-//                    transactionStatus.setRollbackOnly();
-        }
-        return false;
-    }
-
-    /*声明式事务管理*/
-    public boolean dotransactionTX(String codes) {
-//        doMakeLog();
-
-        String[] codeList = codes.split(",");
-        for (String code : codeList) {
-            Integer sum = areaCodeDao.removeArea(code);
-            if (sum <= 0) {
-                throw new RuntimeException("未删除");
-            }
-        }
-        return true;
-    }
-
-    /*声明式事务管理*/
-    @Transactional(propagation = Propagation.REQUIRED)
-    public boolean dotransactionAnnotation(String codes) {
-//        doMakeLog();
-
-        String[] codeList = codes.split(",");
-        for (String code : codeList) {
-            Integer sum = areaCodeDao.removeArea(code);
-            if (sum <= 0) {
-                throw new RuntimeException("未删除");
-            }
-        }
-        return true;
     }
 
     public void testMybatisLog(String codes) {

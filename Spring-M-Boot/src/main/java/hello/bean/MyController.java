@@ -1,7 +1,10 @@
 package hello.bean;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
-import hello.control.*;
+import hello.control.BaseResult;
+import hello.control.DoSomething;
+import hello.control.InvokeCallback;
+import hello.control.InvokeTemplate;
 import hello.lock.LockServiceA;
 import hello.lock.LockServiceB;
 import hello.spring.scope.DemoService;
@@ -162,13 +165,31 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionTX")
+    @RequestMapping("/transactionTXWrite")
     public BaseResult transactionTX(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
         if (StringUtils.isNotEmpty(code)) {
             try {
-                result.setSuccess(doTransaction.dotransactionTX(code));
+                result.setSuccess(doTransaction.dotransactionTXWrite(code));
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.setSuccess(false);
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping("/transactionTXRead")
+    public BaseResult transactionTX2(String code) {
+        BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        if (StringUtils.isNotEmpty(code)) {
+            try {
+                for (int i = 0; i < 10; i++) {
+                    result.setSuccess(doTransaction.dotransactionTXRead(code));
+                    Thread.sleep(500);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setSuccess(false);
@@ -209,7 +230,7 @@ public class MyController {
     public BaseResult transactionB() {
         BaseResult result = new BaseResult();
         try {
-            for (int i = 0; i < 28; i++) {
+            for (int i = 0; i < 30; i++) {
                 doSomethingForTransaction.dotransactionTXB();
                 Thread.sleep(500);
             }

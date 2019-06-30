@@ -11,12 +11,8 @@ public class DoSomethingProxy {
     private DoSomethingForTransaction doSomethingForTransaction;
     @Autowired
     private DoSomethingForTransaction2 doSomethingForTransaction2;
-
+    @Autowired
     private AreaCodeDao areaCodeDao;
-
-    public void setAreaCodeDao(AreaCodeDao areaCodeDao) {
-        this.areaCodeDao = areaCodeDao;
-    }
 
     //  UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only
     //  IllegalTransactionStateException: No existing transaction found for transaction marked with propagation 'mandatory'

@@ -55,5 +55,20 @@ public class UCAreaDO {
         this.level = level;
     }
 
-
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"id\":\"")
+                .append(id).append('\"');
+        sb.append(",\"areaCode\":\"")
+                .append(areaCode).append('\"');
+        sb.append(",\"areaName\":\"")
+                .append(areaName).append('\"');
+        sb.append(",\"areaNames\":")
+                .append(areaNames);
+        sb.append(",\"level\":")
+                .append(level);
+        sb.append('}');
+        return sb.toString();
+    }
 }
