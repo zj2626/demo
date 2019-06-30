@@ -45,20 +45,4 @@ public class LockServiceA {
             lockUtils.release(lock);
         }
     }
-
-    public void invokeS2() {
-        InterProcessMutex lock = lockUtils.acquire(lockSStr);
-
-        System.out.println("LockServiceA in S2 " + lockSStr);
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println("LockServiceA out S2" + lockSStr);
-            lockUtils.release(lock);
-        }
-    }
-
 }

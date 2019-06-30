@@ -310,10 +310,8 @@ public class MyController {
 
     @RequestMapping("/testLockB")
     public String testLockB() {
-//        lockServiceB.invokeF();
-        lockServiceB.invokeS();
-//        lockServiceA.invokeF();
-//        lockServiceA.invokeS2();
+        lockServiceB.invokeF();
+//        lockServiceB.invokeS();
         return "";
     }
 

@@ -10,21 +10,12 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class LockUtils implements InitializingBean {
+public class LockUtils {
     @Autowired
-    private CuratorFramework curatorFramework;
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        this.curatorFramework.start();
-    }
-
-    public void setCuratorFramework(CuratorFramework curatorFramework) {
-        this.curatorFramework = curatorFramework;
-    }
+    private CuratorFramework client;
 
     public InterProcessMutex acquire(String lockStr) {
-        InterProcessMutex lock = new InterProcessMutex(curatorFramework, lockStr);
+        InterProcessMutex lock = new InterProcessMutex(client, lockStr);
 
         try {
             lock.acquire(10, TimeUnit.SECONDS);
