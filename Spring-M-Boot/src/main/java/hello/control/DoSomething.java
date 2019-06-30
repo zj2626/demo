@@ -41,7 +41,7 @@ public class DoSomething {
     private static final Logger logger3 = LoggerFactory.getLogger("sm.err");
     private static final Logger logger4 = LoggerFactory.getLogger("sm.web");
 
-    /*  不需要@Autowired因为设置了default-autowire="byName" 但是需要setter方法 */
+    @Autowired
     private RedisTemplate<String, Object> throttlingRedisTemplate;
     @Autowired
     private DoHSomething doHSomething;
@@ -57,47 +57,11 @@ public class DoSomething {
     private AreaCodeDao areaCodeDao;
     @Autowired
     private TestcDao testcDao;
-
-    public void setTestcDao(TestcDao testcDao) {
-        this.testcDao = testcDao;
-    }
-
+    @Autowired
     private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
-
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
-    }
-
-    public void setAreaCodeDao(AreaCodeDao areaCodeDao) {
-        this.areaCodeDao = areaCodeDao;
-    }
 
     public DoSomething() {
         System.out.println("构造造 DoSomething");
-    }
-
-    public void setThrottlingRedisTemplate(RedisTemplate<String, Object> throttlingRedisTemplate) {
-        this.throttlingRedisTemplate = throttlingRedisTemplate;
-    }
-
-    public void setSimpleMovieLister(SimpleMovieLister simpleMovieLister) {
-        this.simpleMovieLister = simpleMovieLister;
-    }
-
-    public void setExterfaceInvokeIOHttpSender(ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender) {
-        this.exterfaceInvokeIOHttpSender = exterfaceInvokeIOHttpSender;
-    }
-
-    public void setDoHSomething(DoHSomething doHSomething) {
-        this.doHSomething = doHSomething;
-    }
-
-    public void setDoWithAnnotation(DoWithAnnotation doWithAnnotation) {
-        this.doWithAnnotation = doWithAnnotation;
-    }
-
-    public void setMovieRecommender2(MovieRecommender movieRecommender2) {
-        this.movieRecommender2 = movieRecommender2;
     }
 
     public boolean dodubbo() {

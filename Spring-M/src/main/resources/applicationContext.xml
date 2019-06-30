@@ -83,9 +83,9 @@
     <!--redis-->
     <bean id="throttlingJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="100"/>
+        <property name="maxIdle" value="100"/>
         <property name="minIdle" value="10"/>
         <property name="maxWaitMillis" value="1000"/>
-        <property name="maxIdle" value="100"/>
         <property name="testOnBorrow" value="true"/>
     </bean>
 

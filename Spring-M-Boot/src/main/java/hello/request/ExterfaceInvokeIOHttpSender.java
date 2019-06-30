@@ -33,7 +33,6 @@ import java.util.Map.Entry;
  * @author dev
  * @version $Id: ExterfaceInvokeIOHttpSender.java, v 0.1 2018年5月15日 上午10:37:07 dev Exp $
  */
-@Component
 public class ExterfaceInvokeIOHttpSender implements InitializingBean {
 
     protected String appName;

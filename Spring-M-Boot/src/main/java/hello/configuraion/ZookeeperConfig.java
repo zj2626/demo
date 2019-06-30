@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ZookeeperConfigration {
+public class ZookeeperConfig {
     @Value("${dubbo.registry.address}")
     private String connectString;
 
     @Bean
-    public CuratorFramework getCuratorFramework() {
+    public CuratorFramework curatorFramework() {
         connectString = connectString.replace("zookeeper://", "");
 
         ExponentialBackoffRetry curatorRetryPolicy =
