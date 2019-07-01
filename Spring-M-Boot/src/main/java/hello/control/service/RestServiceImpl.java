@@ -28,7 +28,7 @@ public class RestServiceImpl implements RestService {
     @Override
     public List<Testc> findAll() {
         List<Testc> list = new ArrayList<>();
-        for (int i = 4100; i < 4120; i++) {
+        for (int i = 1; i < 20; i++) {
             Testc testc = testcDao.select(i);
             if (null != testc) {
                 list.add(testc);
