@@ -16,8 +16,10 @@
     </properties>
 
     <modules>
-        <module>spring-h-boot</module>
         <module>spring-h-boot-start</module>
+        <module>spring-h-boot-service</module>
+        <module>spring-h-boot-model</module>
+        <module>spring-h-boot</module>
     </modules>
 
 </project>

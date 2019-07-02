@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>service.zj</groupId>
-    <artifactId>spring-h-boot</artifactId>
+    <artifactId>spring-h-boot-service</artifactId>
     <version>0.1</version>
     <name>zj-boot</name>
     <description>Demo project for Spring Boot</description>
@@ -41,7 +41,7 @@
     <dependencies>
         <dependency>
             <groupId>service.zj</groupId>
-            <artifactId>spring-h-boot-service</artifactId>
+            <artifactId>spring-h-boot-model</artifactId>
             <version>0.1</version>
         </dependency>
 

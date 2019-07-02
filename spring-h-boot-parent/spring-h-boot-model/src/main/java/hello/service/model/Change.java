@@ -1,4 +1,4 @@
-package hello.service.util;
+package hello.service.model;
 
 public class Change {
     public static byte[] strToByteArray(String str) {

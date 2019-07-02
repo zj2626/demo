@@ -2,11 +2,11 @@ package hello.service.impl;
 
 import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
-import hello.service.util.Change;
 import org.apache.kafka.common.PartitionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import hello.service.model.Change;
 
 import java.util.Date;
 import java.util.List;

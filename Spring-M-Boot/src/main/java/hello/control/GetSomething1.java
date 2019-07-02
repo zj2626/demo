@@ -1,6 +1,6 @@
 package hello.control;
 
-import hello.service.util.Change;
+import hello.service.model.Change;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
