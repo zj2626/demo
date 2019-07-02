@@ -6,22 +6,23 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.6.RELEASE</version>
-        <relativePath/>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>service.zj</groupId>
-    <artifactId>spring-h-boot-service</artifactId>
+    <groupId>service.ay</groupId>
+    <artifactId>spring-m-boot</artifactId>
     <version>0.1</version>
-    <name>spring-h-service</name>
+    <name>spring-m-biz</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springversion>4.2.6.RELEASE</springversion>
+        <mysql_version>5.1.33</mysql_version>
         <dubbo_version>2.6.6</dubbo_version>
         <tomcatservletversion>8.5.4</tomcatservletversion>
+        <java.version>1.8</java.version>
     </properties>
 
     <repositories>
@@ -40,10 +41,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>service.zj</groupId>
-            <artifactId>spring-h-boot-model</artifactId>
+            <groupId>service.ay</groupId>
+            <artifactId>spring-m-boot-service</artifactId>
             <version>0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>service.zj</groupId>
+            <artifactId>spring-h-boot-service</artifactId>
+            <version>0.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,7 +70,50 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--dubbo-springBoot-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+        <!--transaction-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <!--redis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--mybatis-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql_version}</version>
+        </dependency>
+
+        <!--dubbo-->
         <dependency>
             <groupId>io.dubbo.springboot</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
@@ -85,33 +136,77 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-container-logback</artifactId>
+            <version>${dubbo_version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.32.Final</version>
         </dependency>
 
+        <!--zookeeper-->
         <dependency>
             <groupId>com.github.sgroschupf</groupId>
             <artifactId>zkclient</artifactId>
             <version>0.1</version>
         </dependency>
 
+        <!--fastjson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.46</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-container-logback</artifactId>
-            <version>${dubbo_version}</version>
-        </dependency>
 
+        <!--kafka-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>2.2.6.RELEASE</version>
+        </dependency>
+
+        <!--curator-->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
+            <version>1.5.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-metrics-event-stream</artifactId>
+            <version>1.5.9</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -126,6 +221,7 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 
 </project>

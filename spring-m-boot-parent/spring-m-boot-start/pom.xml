@@ -8,10 +8,10 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/>
     </parent>
-    <groupId>service.zj</groupId>
-    <artifactId>spring-h-boot-start</artifactId>
+    <groupId>service.ay</groupId>
+    <artifactId>spring-m-boot-start</artifactId>
     <version>0.1</version>
-    <name>spring-h-start</name>
+    <name>spring-m-start</name>
     <description>Demo project for Spring Boot</description>
     <packaging>war</packaging>
 
@@ -33,6 +33,16 @@
         </profile>
     </profiles>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <springversion>4.2.6.RELEASE</springversion>
+        <mysql_version>5.1.33</mysql_version>
+        <dubbo_version>2.6.6</dubbo_version>
+        <tomcatservletversion>8.5.4</tomcatservletversion>
+        <java.version>1.8</java.version>
+    </properties>
+
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
@@ -44,19 +54,24 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springversion>4.2.6.RELEASE</springversion>
-        <dubbo_version>2.6.6</dubbo_version>
-        <tomcatservletversion>8.5.4</tomcatservletversion>
-    </properties>
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>service.zj</groupId>
-            <artifactId>spring-h-boot</artifactId>
+            <groupId>service.ay</groupId>
+            <artifactId>spring-m-boot</artifactId>
             <version>0.1</version>
         </dependency>
 
@@ -78,12 +93,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+        <!--fastjson-->
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.46</version>
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

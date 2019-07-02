@@ -11,7 +11,7 @@
     <groupId>service.zj</groupId>
     <artifactId>spring-h-boot-model</artifactId>
     <version>0.1</version>
-    <name>zj-boot</name>
+    <name>spring-h-model</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 

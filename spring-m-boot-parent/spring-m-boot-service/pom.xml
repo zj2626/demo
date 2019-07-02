@@ -8,41 +8,12 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/>
     </parent>
-    <groupId>service.zj</groupId>
-    <artifactId>spring-h-boot-start</artifactId>
+    <groupId>service.ay</groupId>
+    <artifactId>spring-m-boot-service</artifactId>
     <version>0.1</version>
-    <name>spring-h-start</name>
+    <name>spring-m-service</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
-
-    <profiles>
-        <profile>
-            <id>comp</id>
-            <properties>
-                <profiles.active>comp</profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>home</id>
-            <properties>
-                <profiles.active>home</profiles.active>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -53,10 +24,24 @@
         <tomcatservletversion>8.5.4</tomcatservletversion>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>service.zj</groupId>
-            <artifactId>spring-h-boot</artifactId>
+            <groupId>service.ay</groupId>
+            <artifactId>spring-m-boot-model</artifactId>
             <version>0.1</version>
         </dependency>
 
@@ -77,13 +62,57 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--dubbo-springBoot-->
+        <dependency>
+            <groupId>io.dubbo.springboot</groupId>
+            <artifactId>spring-boot-starter-dubbo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-config-spring</artifactId>
+            <version>2.6.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.32.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.sgroschupf</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.46</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-container-logback</artifactId>
+            <version>${dubbo_version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>2.2.6.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -97,20 +126,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>application.properties</include>
-                    <include>application-${profiles.active}.properties</include>
-                    <include>META-INF/**</include>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
-
     </build>
 
 </project>
