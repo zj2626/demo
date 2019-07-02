@@ -1,9 +1,8 @@
-package hello.controller;
+package hello.service.start;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -13,7 +12,7 @@ public class DemoController {
     private String url;
 
     @GetMapping("/getfun")
-    public String demoGetRequest(String name){
+    public String demoGetRequest(String name) {
         System.out.println("demoGetRequest > " + name);
         System.out.println("GET");
 
@@ -21,7 +20,7 @@ public class DemoController {
     }
 
     @PostMapping(value = "/postfun")
-    public String demoPostRequest(String name){
+    public String demoPostRequest(String name) {
         System.out.println("demoPostRequest > " + name);
         System.out.println("POST");
 

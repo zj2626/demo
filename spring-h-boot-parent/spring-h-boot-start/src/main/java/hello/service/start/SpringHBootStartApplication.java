@@ -1,4 +1,4 @@
-package hello;
+package hello.service.start;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,16 +10,18 @@ import org.springframework.context.annotation.ImportResource;
  * install command: clean install -Dprofiles.active=home -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
  * run command:     spring-boot:run -Dprofiles.active=home
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "hello")
 @ImportResource({"classpath:dubbo-provider.xml"})
-public class ZjBootApplication extends SpringBootServletInitializer {
+//@Import(ServiceConfiguration.class)
+public class SpringHBootStartApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZjBootApplication.class, args);
+        SpringApplication.run(SpringHBootStartApplication.class, args);
     }
+
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(ZjBootApplication.class);
+        return builder.sources(SpringHBootStartApplication.class);
     }
 }

@@ -1,20 +1,33 @@
-package hello.controller;
+package hello.service.start;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import hello.service.DoHSomething;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class H2Controller {
+    @Autowired
+    private DoHSomething doHSomething;
+
     private Integer down = 2;
 
-    @RequestMapping("/setdm")
+
+    @GetMapping("/ddd")
+    public String test(String name) {
+        String result = doHSomething.sayFuckShit(name);
+
+        return result;
+    }
+
+    @GetMapping("/setdm")
     public String setDenominator(Integer down) {
         this.down = down;
 
         return "success";
     }
 
-    @RequestMapping("/message")
+    @GetMapping("/message")
     public String getMessage(String message) {
         try {
             int total = (int) (1 + Math.random() * (100 - 1 + 1)); // 1-100

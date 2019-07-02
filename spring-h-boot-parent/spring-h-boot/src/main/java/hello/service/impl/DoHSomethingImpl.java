@@ -82,7 +82,7 @@ public class DoHSomethingImpl implements DoHSomething {
 
 
     private String sendMethod(String name) {
-        try{
+        try {
             System.out.println("KAFKA -> " + (null != kafkaTemplate));
             if (null != kafkaTemplate) {
                 System.out.println(">>>");
@@ -91,13 +91,19 @@ public class DoHSomethingImpl implements DoHSomething {
                 kafkaTemplate.send(topicName_5, Change.strToByteArray(new Date() + " - " + UUID.randomUUID()));
                 System.out.println(">>>>>>>>>");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return ">Dubbo fuck u " + name;
     }
 
+
+    @Override
+    public String sayFuckShit(String name) {
+        System.out.println("调用了 " + name);
+        return name;
+    }
 
 //    /**
 //     * 发送消息
