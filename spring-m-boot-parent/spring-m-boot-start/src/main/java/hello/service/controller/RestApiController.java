@@ -1,4 +1,4 @@
-package hello.control;
+package hello.service.controller;
 
 import com.alibaba.fastjson.JSON;
 import hello.service.RestService;

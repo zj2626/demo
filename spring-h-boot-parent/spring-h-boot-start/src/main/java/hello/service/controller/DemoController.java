@@ -1,4 +1,4 @@
-package hello.service.start;
+package hello.service.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package hello.service.start;
+package hello.service.controller;
 
 import hello.service.DoHSomething;
 import org.springframework.beans.factory.annotation.Autowired;
