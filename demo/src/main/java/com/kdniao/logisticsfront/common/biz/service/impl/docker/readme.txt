@@ -29,11 +29,11 @@ docker images
 docker run -d -p 8090:8080 webapp
 
 
-## 帮助命令
+################## < 帮助命令 > ##################
 # docker info
 # docker --help
 
-## 镜像命令
+################## < 镜像命令 > ##################
 # docker images
     -a 列出所有的
     -q 只显示镜像ID
@@ -44,7 +44,7 @@ docker run -d -p 8090:8080 webapp
 # docker rmi hello-world            删除
 # docker rmi -f $(docker images -q)
 
-## 容器命令
+################## < 容器命令 > ##################
 # docker run -i -t -p XXX
     -i 以交互模式运行容器，通常与 -t 同时使用
     -t 为容器重新分配一个伪输入终端，通常与 -i 同时使用; terminal
@@ -57,7 +57,7 @@ docker run -d -p 8090:8080 webapp
     -p
     -v 挂载
     --name 重命名
-# exit 退出容器
+# exit 退出容器, [如果exec进入容器,退出的是当前进程]
 # docker port XXX 查看端口映射
 # docker logs XXX
 # docker inspect XXX 查看 Docker 的底层信息
@@ -68,6 +68,7 @@ docker run -d -p 8090:8080 webapp
 # docker ps -a -q | xargs docker rm 删除多个容器
 # docker exec -it XXX bashshell 产生新进程 [ docker exec -t 0dfe4s5840 /bin/bash ]
     -i 以交互模式
+# docker attach XXX 进入容器当前进程
 
 ## 提交镜像到docker, 以现有容器为基础复制出一个新的镜像
 # docker commit -m="information message" -a="Author" 13b567b774a7 "imageName"
@@ -75,3 +76,27 @@ docker run -d -p 8090:8080 webapp
 ## 拷贝容器内文件到主机
 # docker cp 298e47921ad3:/root H://
 # docker cp H://file 298e47921ad3:/root/
+
+################## < 容器数据卷 > ##################
+## 挂载命令[把centos下的docker目录挂载到Administrator下的docker文件夹] [windows比较特殊,要挂载在用户目录下]
+# docker run -it -v /c/Users/Administrator/docker:/docker --name centos1 centos
+## 多个容器挂载到同一个目录[共享,修改可见]
+# docker run -it --name centos2 --volumes-from centos1 centos [容器centos2和centos1共享Administrator/docker目录的所有下文件]
+
+################## < DockerFile > ##################
+## 用来构建docker镜像
+# FROM          基础镜像(指定基于哪个镜像, 相当于import)
+# MAINTAINER    镜像维护者(姓名,邮箱)
+# RUN           镜像构建时运行的命令
+# WORKDIR       容器创建后所在目录
+# EXPOSE        暴露的对外端口号
+# ENV           构建镜像时设置的环境变量
+# ADD           宿主机目录下文件复制到镜像且自动解压
+# COPY
+# VOLUME        容器数据卷,用于保存和持久化
+# CMD           指定容器启动命令,只能指定一条(多条则只执行最后一条), 且CMD命令会被docker run命令后面的参数替换
+# ENTRYPOINT    指定容器启动命令,会把docker run命令后面的参数追加到后面
+# ONBUILD
+## 构建命令~运行命令
+# docker build -f ./Dockerfile -t myproject .
+# docker run -it -d -p 8081:8080 myproject
