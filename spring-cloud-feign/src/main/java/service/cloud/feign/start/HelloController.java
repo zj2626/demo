@@ -14,9 +14,12 @@ public class HelloController {
     @GetMapping("/hi")
     public String home(String name) {
         name = null == name ? "ay2626" : name;
-        System.out.println("******************");
-        System.out.println(name);
-        return service.doServiceRequest(name);
+        return service.doServiceRequestHi(name);
     }
 
+    @GetMapping("/test/hystrix")
+    public String home(Boolean success) {
+        success = null == success ? true : success;
+        return service.doServiceRequestHalfFailed(success);
+    }
 }
