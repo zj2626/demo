@@ -7,8 +7,13 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ImportResource;
 
 /**
+ * ********************
  * install command: clean install -Dprofiles.active=home -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+ * path: /demo/spring-h-boot-parent
+ * ********************
  * run command:     spring-boot:run -Dprofiles.active=home
+ * path: /demo/spring-h-boot-parent/spring-h-boot-start
+ * ********************
  */
 @SpringBootApplication(scanBasePackages = "hello")
 @ImportResource({"classpath:dubbo-provider.xml"})
