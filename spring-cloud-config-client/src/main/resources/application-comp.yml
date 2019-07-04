@@ -1,0 +1,17 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: spring-cloud-config-client01
+
+  cloud:
+    config:
+      label: master
+      profile: dev
+      uri: http://localhost:8888/
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8090/eureka,http://localhost:8091/eureka
