@@ -12,14 +12,14 @@ public class HelloController {
 
     @GetMapping("/hi")
     public String home(String name) {
+        System.out.println("ribbon request");
         name = null == name ? "zj2626" : name;
-        System.out.println("###################");
-        System.out.println(name);
         return service.doServiceRequestHi(name);
     }
 
     @GetMapping("/test/hystrix")
     public String home(Boolean success) {
+        System.out.println("ribbon request");
         success = null == success ? true : success;
         return service.doServiceRequestHalfFailed(success);
     }
