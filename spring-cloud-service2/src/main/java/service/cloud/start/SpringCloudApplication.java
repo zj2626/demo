@@ -12,8 +12,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * run command:     spring-boot:run -Dprofiles.active=home
  * path: /demo/spring-cloud-server
  * ********************
- * <p>
- * Eureka Server
  */
 @EnableEurekaServer
 @SpringBootApplication

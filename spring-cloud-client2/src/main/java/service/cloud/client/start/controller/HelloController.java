@@ -23,5 +23,4 @@ public class HelloController {
     public String actuator() {
         return "by " + applicationName + ", i am from port:" + port;
     }
-
 }
