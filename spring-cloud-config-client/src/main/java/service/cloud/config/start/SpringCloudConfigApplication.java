@@ -2,6 +2,7 @@ package service.cloud.config.start;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * Config Client
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * * pro正式环境
  * spring.cloud.config.uri= http://localhost:8888/ 指明配置服务中心的网址。
  */
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringCloudConfigApplication {
 

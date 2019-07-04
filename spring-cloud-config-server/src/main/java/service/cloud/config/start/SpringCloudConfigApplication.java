@@ -1,7 +1,8 @@
 package service.cloud.config.start;
 
-import org.springframework.boot.SpringApplication;1
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
@@ -12,8 +13,11 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  * spring.cloud.config.label：配置仓库的分支
  * spring.cloud.config.server.git.username：访问git仓库的用户名
  * spring.cloud.config.server.git.password：访问git仓库的用户密码
+ *
+ * 在github上的配置文件的命名规则: {label}/{name}-{profiles}.{type}
  */
 @EnableConfigServer
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringCloudConfigApplication {
 

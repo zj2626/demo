@@ -15,8 +15,11 @@ spring:
           search-paths: respo
 #          username: un
 #          password: pw
+#          basedir: D:/Config/basedir
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:8090/eureka,http://localhost:8091/eureka
