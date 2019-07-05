@@ -4,20 +4,14 @@ server:
 spring:
   application:
     name: spring-cloud-config-client01
-
-#  cloud:
-#    config:
-#      label: master
-#      profile: dev
-#      uri: http://localhost:8888/
-
   cloud:
     config:
+      label: master
       profile: dev
+      uri: http://localhost:8888/
       discovery:
         enabled: true
         service-id: spring-cloud-config-server01
-
 
 eureka:
   instance:

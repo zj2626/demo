@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Config Server
@@ -17,7 +18,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  * 在github上的配置文件的命名规则: {label}/{name}-{profiles}.{type}
  */
 @EnableConfigServer
-@EnableDiscoveryClient
+@EnableEurekaClient     // ???????
+@EnableDiscoveryClient  // ???????
 @SpringBootApplication
 public class SpringCloudConfigApplication {
 

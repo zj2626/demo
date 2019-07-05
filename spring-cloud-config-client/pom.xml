@@ -50,7 +50,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--config-client-->
+        <!--config-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -88,6 +88,8 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
+                    <include>bootstrap.yml</include>
+<!--                    <include>bootstrap-${profiles.active}.yml</include>-->
                     <include>application.yml</include>
                     <include>application-${profiles.active}.yml</include>
 <!--                    <include>META-INF/**</include>-->

@@ -16,9 +16,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @EnableDiscoveryClient
 @SpringBootApplication
-public class SpringCloudConfigApplication {
+public class SpringCloudConfigClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudConfigApplication.class, args);
+        SpringApplication.run(SpringCloudConfigClientApplication.class, args);
     }
 }
