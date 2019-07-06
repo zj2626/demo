@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  * CountDownLatch 功能等于join()
  */
 public class CountDownLatchDemo2 {
-    private static final  int num = 5;
+    private static final int num = 5;
 
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(num);
@@ -19,17 +19,20 @@ public class CountDownLatchDemo2 {
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             futureTasks.add(service.submit(job));
-            Thread.sleep(100);
+            Thread.sleep(10);
         }
 
         System.out.println("####1####");
 
         System.out.println("await");
-        latch.await(1000, TimeUnit.MILLISECONDS);
+        latch.await(10000, TimeUnit.MILLISECONDS); //会阻塞最大10s直到其count为0或者超时
+        System.out.println("awaited");
 
-        service.shutdown();
+        service.submit(new Job(latch));
 
         System.out.println("####2####");
+
+        service.shutdown();
     }
 
     private static class Job implements Runnable {
@@ -41,11 +44,13 @@ public class CountDownLatchDemo2 {
 
         @Override
         public void run() {
+            int number = Integer.valueOf(Thread.currentThread().getName().substring(Thread.currentThread().getName().length() - 1));
+
             try {
-                for (int j = 0; j < 3; j++) {
+                for (int j = 0; j < number; j++) {
                     System.out.println(Thread.currentThread().getName() + " -- " + j);
                     try {
-                        Thread.sleep(150);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

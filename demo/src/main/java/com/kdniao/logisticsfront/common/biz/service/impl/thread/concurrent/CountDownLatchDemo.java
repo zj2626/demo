@@ -20,38 +20,50 @@ public class CountDownLatchDemo {
         List<Job> jobList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Job rd = new Job(latch);
+            rd.setSize(i+1);
             jobList.add(rd);
         }
 
         for (Job job : jobList) {
             service.submit(job);
-            Thread.sleep(100);
+            Thread.sleep(10);
         }
 
         System.out.println("####1####");
 
         System.out.println("await");
-        latch.await(1000, TimeUnit.MILLISECONDS);
+        latch.await(10000, TimeUnit.MILLISECONDS); //会阻塞最大10s直到其count为0或者超时
+        System.out.println("awaited");
+
+        service.submit(new Job(latch));
+
+        System.out.println("####2####");
+
+        Thread.sleep(20000);
 
         service.shutdown();
 
-        System.out.println("####2####");
     }
 
     private static class Job implements Runnable {
+        private int size = 2;
         private CountDownLatch latch;
 
         public Job(CountDownLatch latch) {
             this.latch = latch;
         }
 
+        public void setSize(int size) {
+            this.size = size;
+        }
+
         @Override
         public void run() {
             try {
-                for (int j = 0; j < 3; j++) {
-                    System.out.println(Thread.currentThread().getName() + " -- " + j);
+                for (int j = 0; j < size; j++) {
+                    System.out.println(size + "-" + Thread.currentThread().getName() + " -- " + j);
                     try {
-                        Thread.sleep(150);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
