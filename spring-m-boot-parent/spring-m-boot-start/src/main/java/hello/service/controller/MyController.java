@@ -327,7 +327,7 @@ public class MyController {
         return doSomething.doHttpRequest(name);
     }
 
-    @RequestMapping("/hystrix")
+    @RequestMapping("/test/hystrix")
     public String hystrix(String name) {
         return doSomething.doHystrixHttpRequest(name);
     }

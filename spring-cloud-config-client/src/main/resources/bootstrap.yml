@@ -8,7 +8,7 @@
 #    config:
 #      label: master
 #      profile: dev
-#      uri: http://localhost:8888/
+#      uri: http://localhost:18092/
 #      discovery:
 #        enabled: true
 #        service-id: spring-cloud-config-server01
@@ -18,4 +18,4 @@
 #    prefer-ip-address: true
 #  client:
 #    service-url:
-#      defaultZone: http://localhost:8090/eureka
+#      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka

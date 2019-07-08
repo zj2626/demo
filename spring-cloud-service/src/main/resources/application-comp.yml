@@ -2,7 +2,7 @@ spring:
   application:
     name: spring-cloud-service01
 server:
-  port: 8090
+  port: 18090
 eureka:
   instance:
     hostname: localhost

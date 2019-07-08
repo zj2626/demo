@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: spring-cloud-zipkin-server
+  profiles:
+    active: ${profiles.active}

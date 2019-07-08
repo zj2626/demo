@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * * dev开发环境配置文件
  * * test测试环境
  * * pro正式环境
- * spring.cloud.config.uri= http://localhost:8888/ 指明配置服务中心的网址。
+ * spring.cloud.config.uri= http://localhost:18092/ 指明配置服务中心的网址。
  */
 @EnableDiscoveryClient
 @SpringBootApplication

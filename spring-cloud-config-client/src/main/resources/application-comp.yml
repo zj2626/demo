@@ -1,5 +1,5 @@
 server:
-  port: 8087
+  port: 8092
 
 spring:
   application:
@@ -8,7 +8,7 @@ spring:
     config:
       label: master
       profile: dev
-      uri: http://localhost:8888/
+      uri: http://localhost:18092/
       discovery:
         enabled: true
         service-id: spring-cloud-config-server01
@@ -33,4 +33,4 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://localhost:8090/eureka,http://localhost:8091/eureka
+      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka
