@@ -12,6 +12,21 @@ spring:
       discovery:
         enabled: true
         service-id: spring-cloud-config-server01
+    bus:
+      trace:
+        enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+#    username:
+#    password:
+
+# 刷新配置地址: http://localhost:8087/actuator/bus-refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
 
 eureka:
   instance:
