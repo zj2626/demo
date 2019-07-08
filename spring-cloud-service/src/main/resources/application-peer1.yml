@@ -1,0 +1,16 @@
+server:
+  port: 18090
+
+spring:
+  application:
+    name: spring-cloud-service01
+
+eureka:
+  instance:
+    hostname: peer1
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://peer2:18091/eureka/

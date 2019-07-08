@@ -12,6 +12,14 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * run command:     spring-boot:run -Dprofiles.active=home
  * path: /demo/spring-cloud-server
  * ********************
+ *
+ * ********************
+ * 高可用的服务注册中心 启动
+ * java -jar spring-cloud-service-0.1.jar --spring.profiles.active=peer1
+ * java -jar spring-cloud-service-0.1.jar --spring.profiles.active=peer2
+ * ********************
+ *
+ *
  * <p>
  * Eureka Server
  * <p>
