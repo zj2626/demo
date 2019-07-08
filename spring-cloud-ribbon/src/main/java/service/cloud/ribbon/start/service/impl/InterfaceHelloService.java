@@ -7,4 +7,7 @@ public interface InterfaceHelloService {
 
     @HystrixCommand
     String doServiceRequestHalfFailed(Boolean success);
+
+    @HystrixCommand(fallbackMethod = "onError")
+    String doServiceRequestHalfFailed2(Boolean success);
 }

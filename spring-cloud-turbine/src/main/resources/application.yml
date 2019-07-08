@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: spring-cloud-turbine01
+  profiles:
+    active: ${profiles.active}

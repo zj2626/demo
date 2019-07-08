@@ -19,6 +19,7 @@ public class HelloServiceImpl implements InterfaceHelloService {
 
     /**
      * 添加熔断操作
+     *
      * @param success
      * @return
      */
@@ -28,7 +29,13 @@ public class HelloServiceImpl implements InterfaceHelloService {
         return restTemplate.getForObject("http://spring-cloud-client01/half?success=" + success, String.class);
     }
 
-    private String onError(Boolean success){
+    @Override
+    @HystrixCommand(fallbackMethod = "onError")
+    public String doServiceRequestHalfFailed2(Boolean success) {
+        return restTemplate.getForObject("http://spring-cloud-client01/half?success=" + success, String.class);
+    }
+
+    private String onError(Boolean success) {
         return "ERROR...";
     }
 }

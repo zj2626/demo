@@ -30,6 +30,7 @@ public class HelloController {
 
     @GetMapping("/half")
     public String half(@RequestParam Boolean success) {
+        System.out.println("Here..... " + success);
         if (!success) {
             try {
                 Thread.sleep(5000);

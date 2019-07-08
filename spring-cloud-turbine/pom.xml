@@ -9,11 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>service.cloud</groupId>
-    <artifactId>spring-cloud-ribbon</artifactId>
+    <artifactId>spring-cloud-turbine</artifactId>
     <version>0.1</version>
-    <name>spring-cloud-ribbon</name>
+    <name>spring-cloud-turbine</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
 
     <profiles>
         <profile>
@@ -50,23 +49,38 @@
             <scope>test</scope>
         </dependency>
 
-        <!--eureka-client-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!--ribbon-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-
         <!--hystrix-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
+
+        <!--hystrix-dashboard-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+        </dependency>
+
+        <!--turbine-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-turbine</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!--eureka-client-->
+        <!--<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -96,7 +110,7 @@
                 <includes>
                     <include>application.yml</include>
                     <include>application-${profiles.active}.yml</include>
-<!--                    <include>META-INF/**</include>-->
+                    <!--<include>META-INF/**</include>-->
                     <include>**/*.xml</include>
                 </includes>
             </resource>

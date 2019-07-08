@@ -18,9 +18,16 @@ public class HelloController {
     }
 
     @GetMapping("/test/hystrix")
-    public String home(Boolean success) {
+    public String thystrix(Boolean success) {
         System.out.println("ribbon request");
         success = null == success ? true : success;
         return service.doServiceRequestHalfFailed(success);
+    }
+
+    @GetMapping("/test/hystrix2")
+    public String thystrix2(Boolean success) {
+        System.out.println("ribbon request 2");
+        success = null == success ? true : success;
+        return service.doServiceRequestHalfFailed2(success);
     }
 }

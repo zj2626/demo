@@ -7,7 +7,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,11 +15,10 @@ import org.springframework.web.client.RestTemplate;
  * <p>
  * hystrix
  * <p>
- * Dashboard 访问地址:http://127.0.0.1:8081/hystrix
- * Dashboard-Stream 地址:http://127.0.0.1:8081/hystrix.stream
+ * Dashboard 访问地址:http://localhost:18094/hystrix
+ * Dashboard-Stream 地址:http://localhost:8081/hystrix.stream
  */
 @EnableHystrix
-@EnableHystrixDashboard
 //@EnableCircuitBreaker
 @EnableDiscoveryClient
 @SpringBootApplication
@@ -45,7 +43,7 @@ public class SpringCloudRibbonApplication {
         HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(streamServlet);
         registrationBean.setLoadOnStartup(1);
-        registrationBean.addUrlMappings("/hystrix.stream");
+        registrationBean.addUrlMappings("/hystrix.stream", "/actuator/hystrix.stream");
         registrationBean.setName("HystrixMetricsStreamServlet");
         return registrationBean;
     }
