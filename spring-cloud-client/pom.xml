@@ -17,25 +17,19 @@
 
     <profiles>
         <profile>
-            <id>comp</id>
+            <id>prod</id>
             <properties>
-                <profiles.active>comp</profiles.active>
+                <profiles.active>prod</profiles.active>
             </properties>
-        </profile>
-        <profile>
-            <id>home</id>
-            <properties>
-                <profiles.active>home</profiles.active>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 

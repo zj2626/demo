@@ -1,18 +1,23 @@
 server:
-  port: 8090
+  port: 8091
 
 spring:
   application:
-    name: spring-cloud-client01
+    name: spring-cloud-client02
   zipkin:
     base-url: http://localhost:18093
   sleuth:
     sampler:
       probability: 1.0 # 将采样比例设置为 1.0，也就是全部都需要。默认是 0.1
+#    web:
+#      client:
+#        enabled: true
 
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 10  # 实例续约间隔时间
+    lease-expiration-duration-in-seconds: 30 # 实例超时时间
 
   client:
     healthcheck:

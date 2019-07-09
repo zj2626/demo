@@ -8,10 +8,10 @@ import org.springframework.context.annotation.ImportResource;
 
 /**
  * ********************
- * install command: clean install -Dprofiles.active=home -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+ * install command: clean install -Dprofiles.active=test -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
  * path: /demo/spring-h-boot-parent
  * ********************
- * run command:     spring-boot:run -Dprofiles.active=home
+ * run command:     spring-boot:run -Dprofiles.active=test
  * path: /demo/spring-h-boot-parent/spring-h-boot-start
  * ********************
  */

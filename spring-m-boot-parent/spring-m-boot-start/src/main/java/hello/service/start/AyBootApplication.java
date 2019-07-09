@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * ********************
- * install command: clean install -Dprofiles.active=home -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+ * install command: clean install -Dprofiles.active=test -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
  * path: /demo/spring-m-boot-parent
  * ********************
- * run command:     spring-boot:run -Dprofiles.active=home
+ * run command:     spring-boot:run -Dprofiles.active=test
  * path: /demo/spring-m-boot-parent/spring-h-boot-start
  * ********************
  */

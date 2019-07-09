@@ -23,9 +23,9 @@
             </properties>
         </profile>
         <profile>
-            <id>home</id>
+            <id>test</id>
             <properties>
-                <profiles.active>home</profiles.active>
+                <profiles.active>test</profiles.active>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
