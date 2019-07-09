@@ -13,7 +13,6 @@
     <version>0.1</version>
     <name>spring-cloud-zipkin-server</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
 
     <profiles>
         <profile>
