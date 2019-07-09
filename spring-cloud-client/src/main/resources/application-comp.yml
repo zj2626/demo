@@ -14,6 +14,13 @@ spring:
 #        enabled: true
 
 eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 10  # 实例续约间隔时间
+    lease-expiration-duration-in-seconds: 30 # 实例超时时间
+
   client:
+    healthcheck:
+      enabled: true # 开启健康检查
     service-url:
       defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka

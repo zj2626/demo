@@ -31,6 +31,12 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
     </profiles>
 
     <properties>
@@ -48,6 +54,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!--eureka-client-->
@@ -98,7 +109,7 @@
                 <includes>
                     <include>application.yml</include>
                     <include>application-${profiles.active}.yml</include>
-<!--                    <include>META-INF/**</include>-->
+                    <!--                    <include>META-INF/**</include>-->
                     <include>**/*.xml</include>
                 </includes>
             </resource>

@@ -23,11 +23,6 @@ public class HelloController {
         return "hi " + name + ",i am from port:" + port;
     }
 
-    @GetMapping("/actuator/info")
-    public String actuator() {
-        return "by " + applicationName + ", i am from port:" + port;
-    }
-
     @GetMapping("/half")
     public String half(@RequestParam Boolean success) {
         System.out.println("Here..... " + success);
