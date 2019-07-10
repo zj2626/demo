@@ -24,13 +24,13 @@
 
 <div id="myDivId" style="color: blueviolet;">
     HELLO WORLD
+    <input type="checkbox" value="A" id="fff">没影响
 
     <div class="myDivClass bar"> click</div>
     <div class="myDivClass"> click 2</div>
     <div class="myDivClass2" style="background: beige"> click 3</div>
 
     <a href="/main.do">点击</a>
-
     <div style="border: red 1px solid; padding: 2px">
         <table style="border: green 2px solid; padding: 1px">
             <thead>
@@ -48,6 +48,13 @@
             </tr>
             </tbody>
         </table>
+
+        <div>
+            <input type="checkbox" value="A" id="all">全选
+            <input type="checkbox" value="B" name="item">B
+            <input type="checkbox" value="C" name="item">C
+            <input type="checkbox" value="D" name="item">D
+        </div>
     </div>
 </div>
 
@@ -56,6 +63,11 @@
 <script>
     $(function () {
         console.log("this is a hello world !!!!!");
+
+        $("#all").click(function () {
+            var checked = this.checked;
+           $(":checkbox[name='item']").attr("checked", checked);
+        });
 
         function alertSomeThing(info) {
             alert(info);
