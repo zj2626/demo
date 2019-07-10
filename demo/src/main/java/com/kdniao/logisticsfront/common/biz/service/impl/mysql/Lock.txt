@@ -1,0 +1,80 @@
+Mysql InnoDB 锁类型:
+    1.共享锁         [S锁] Share Locks
+    2.排它锁         [X锁] Exclusive Locks
+    3.意向锁共享锁    [IS锁0]Intention Share Locks
+    4.意向锁排它锁    Intention Exclusive Locks
+    5.自增锁         AUTO-INC Locks
+
+    行锁算法:
+        1.临键锁     Next-key Locks
+        2.间隙锁     Gap Locks
+        3.记录锁     Record Locks
+
+#####################################################################
+
+* set session autocommit = [on/off];
+    1. 当设置autocommit为true(默认), 在不开启事务的时候获得锁的语句会自动加上begin(或者start transaction)和commit,如果异常则rollback
+    2. 当设置autocommit为false,则会默认为获得锁的语句开启事务(相当于加上begin),但是需要手动执行和提交事务commit或回滚rollback
+    3. 如果手动开启事务(执行begin),则不会自动提交,需要手动执行和提交事务commit或回滚rollback
+    4. 锁是加在执行条件的索引以及主键索引上的, 所以锁的冲突都是指当操作同一数据时发生的
+    5. 共享锁可以和共享锁同时被获取,但是共享锁和排它锁/排它锁和排它锁不能同时被获取
+    6. 也就是说,假设当开启事务并执行共享锁语句,当未提交时,其他的排它锁都会阻塞;
+    7. 也就是说,假设当开启事务并执行排它锁语句,当未提交时,其他的排它锁以及共享锁都会阻塞;
+    8. 就算开始了事务,如果不对数据进行加锁,也不会有冲突问题(阻塞)
+    9. 因为是在索引上加锁, 所以如果获得锁的语句的条件执行没有命中索引而导致全表扫描,则会导致变成表锁而不是行锁(InnoDB的表锁实际是锁定所有的行,伪表锁),见4(锁加在条件索引以及主键索引上)
+    10. 对锁定的数据可以读取快照(不加(lock in share mode)的查询就是查询的快照)
+
+共享锁: 读锁 用法: select语句 + lock in share mode;
+
+排它锁: 写锁 用法: 执行CUD语句获得的锁;
+
+意向锁共享锁: 事务准备给数据行加共享锁前需要获得IS锁, IS锁之间可以互相兼容
+意向锁排它锁: 事务准备给数据行加排它锁前需要获得IX锁, IX锁之间可以互相兼容
+
+    *. 当有事务要锁表时会判断是否有其他事务持有意向锁,可以快速判断该表能不能启用表锁
+
+自增锁: 自增长列自增长使用的特殊表级锁, 默认为1(代表连续), 事务未提交ID永久丢失(造成表中的ID不连续)
+
+#####################################################################
+
+临键锁: (Next-key Locks) 当sql语句执行应用到索引且为范围查找时, 当有数据命中时,此时sql语句上加上的锁就是临键锁
+    1. 锁定范围是左开右闭区间
+    2. 区间划分: 根据查询条件的数据列划分;例如针对主键id列,其数据的[3,6,9,12],则区间就划分为{(-∞,3], (3,6], (6,9], (9,12], (12,+∞)}
+    3. Next-key发生: 例如查询条件为[where id>7 AND id<10], 当sql获得的临键锁会锁定区间{(3,6], (6,9], (9,12]}的所有数据,期间其他事务不能获得锁(即使向对应区间中插入数据也阻塞)
+    4. 如果查询的区间超过数据的边界, 则会导致锁定无穷(无穷大或者小范围), 相当于锁表了
+    5. 如果查询条件列中有重复数据, 则只匹配离范围最近的(且满足左开右闭)
+    6. 目的: 防止幻读
+    7. 临键锁和MVCC一起配合,使得InnoDB的可重复读隔离级别也能实现防止幻读
+    8. [Next-key Locks] = [Record Locks] + [Gap Locks]
+
+        # session one
+        set session autocommit = off;
+        update `testc` set name = 'ffff' where id > 8 AND id < 10;
+        rollback;
+
+        # session two
+        SELECT * FROM `testc` where id = 6 lock in share mode;   # not block
+        SELECT * FROM `testc` where id = 9 lock in share mode;   # blocked
+        SELECT * FROM `testc` where id = 11 lock in share mode;  # not block (没数据, 变为间隙锁)
+        SELECT * FROM `testc` where id = 12 lock in share mode;  # blocked
+        insert into `testc` (id, name, age) values(7, 'aaa', 7); # blocked
+
+间隙锁: (Gap Locks) 当sql语句执行, 如果查询的数据不存在的时候, 临键锁会退化为间隙锁
+    1. 锁定范围是左开右开区间
+    2. 区间划分: 根据查询条件的数据列划分;例如针对主键id列,其数据的[3,6,9,12],则区间就划分为{(-∞,3), (3,6), (6,9), (9,12), (12,+∞)}
+    3. Gap发生: 例如查询条件为[where id>7 AND id<9], 当sql获得的临键锁会锁定区间{(6,9)}的区间,期间其他事务不能向对应区间插入数据
+    4. Gap只在RR(可重复读)的隔离级别存在
+
+        # session one
+        set session autocommit = off;
+        update `testc` set name = 'ffff' where id = 11;
+        rollback;
+
+        # session two
+        insert into `testc` (id, name, age) values(10, 'aaa', 10); # blocked
+        insert into `testc` (id, name, age) values(11, 'aaa', 11); # blocked
+
+记录锁: (Record Locks) 当sql语句执行使用主键/唯一索引(精准匹配), 临键锁会退化为记录锁 (*如果数据不存在则用间隙锁)
+    1. 如果查询条件的索引不是唯一索引,则会锁定对应多个数据的两边的区间(开区间): 例如表中age列包含[3,6,9,9,12],则查询条件[age=9]会锁定{(6,12)}区间,区间内插入数据会阻塞
+
+

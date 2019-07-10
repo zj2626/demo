@@ -91,9 +91,9 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <imageName>${project.artifactId}-${profiles.active}:${project.version}</imageName>
-                    <dockerDirectory>src/main/resources/docker</dockerDirectory>
-                    <dockerHost>192.168.99.100:2375</dockerHost>
+                    <imageName>${project.artifactId}/${profiles.active}:${project.version}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory> <!-- ?????? -->
+                    <!--<dockerHost>192.168.99.100:2375</dockerHost>-->
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
