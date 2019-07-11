@@ -1,0 +1,35 @@
+Mysql配置:
+
+*** my.cnf:
+*. max_connection =2000     最大连接数 (其设置会受到系统句柄数和mysql句柄数限制,所以一定情况下需要同时修改)
+*. port = 3306              端口
+*. basedir = /data/mysql
+*. datadir = /data/mysql    数据文件位置
+*. pid-file = /data/mysql/mysql.pid     pid文件位置
+*. user = mysql
+*. bind-address = 0.0.0.0
+*. lower_case_table_names = 0   表名区分大小写(0表示区分)
+*. service-id = 1
+*. tmp_table_size = 16M         临时表大小
+*. transaction_isolation = REPEATABLE-READ 事务隔离级别
+*. read_only = 1                从库中设置只读
+
+*** 内存:
+*. sort_buffer_size     connection排序缓冲区大小,查询语句中有文件排序操作时分配内存大小   建议256k~2M
+*. join_buffer_size     connection关联查询缓冲区大小,查询语句中有关联查询时分配内存大小   建议256k~1M
+*. Innodb_buffer_pool_size  数据缓存/索引缓存/数据缓冲/内部结构   默认128M
+    建议Innodb_buffer_pool_size = (物理总内存 - 系统运行使用内存 - connection连接使用内存) * 90%
+
+*** 其他参数:
+*. wait_timeout:            服务器关闭等待连接的超时时间
+*. innodb_open_files:       限制InnoDB可打开的表数量
+*. innodb_write_io_threads
+*. innodb_read_io_threads:  InnoDB处理缓冲区数据的读写IO请求数
+*. innodb_lock_wait_timeout:InnoDB事务被回滚前的锁定超时时间
+
+*** 三大范式:
+1. 每列只有单一值且不可拆分
+2. 每行都有主键进行区分
+3. 表中其他列数据只依赖于主键,不包含其他表的数据
+
+
