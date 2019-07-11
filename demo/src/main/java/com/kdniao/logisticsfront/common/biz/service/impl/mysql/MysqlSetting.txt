@@ -7,7 +7,7 @@ Mysql配置:
 *. datadir = /data/mysql    数据文件位置
 *. pid-file = /data/mysql/mysql.pid     pid文件位置
 *. user = mysql
-*. bind-address = 0.0.0.0
+*. bind-address = 0.0.0.0       绑定IP,增加远程访问IP地址或者禁掉可以让远程机登陆访问了
 *. lower_case_table_names = 0   表名区分大小写(0表示区分)
 *. service-id = 1
 *. tmp_table_size = 16M         临时表大小
@@ -15,21 +15,53 @@ Mysql配置:
 *. read_only = 1                从库中设置只读
 
 *** 内存:
-*. sort_buffer_size     connection排序缓冲区大小,查询语句中有文件排序操作时分配内存大小   建议256k~2M
-*. join_buffer_size     connection关联查询缓冲区大小,查询语句中有关联查询时分配内存大小   建议256k~1M
-*. Innodb_buffer_pool_size  数据缓存/索引缓存/数据缓冲/内部结构   默认128M
+*. sort_buffer_size     排序缓冲区大小,查询语句中有文件排序操作时分配内存大小   建议256k~2M
+*. join_buffer_size     关联查询缓冲区大小,查询语句中有关联查询时分配内存大小   建议256k~1M
+*. innodb_page_size = 8192      每个数据页大小
+*. Innodb_buffer_pool_size = 2G  缓冲池: 数据缓存/索引缓存/数据缓冲/内部结构   默认128M
     建议Innodb_buffer_pool_size = (物理总内存 - 系统运行使用内存 - connection连接使用内存) * 90%
+*. innodb_buffer_pool_instances = 8 开启多个内存缓冲池,可以进行并行的内存读写
+*. max_allowed_packet = 16M     接受数据包的大小,仅当需要时才会分配额外内存
+*. read_buffer_size = 16M       对表进行顺序扫描的请求将分配的读入缓冲区大小
+*. read_rnd_buffer_size = 32M   对表进行随机扫描的请求将分配的读入缓冲区大小,当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区
 
 *** 其他参数:
-*. wait_timeout:            服务器关闭等待连接的超时时间
-*. innodb_open_files:       限制InnoDB可打开的表数量
+*. innodb_file_per_table = 1 独立表空间模式
+*. slow_query_log = 1       开启慢查日志
+*. slow_query_log_file = slow.log 慢查日志记录文件
+*. long_query_time = 2      慢查询时间 超过2秒则为慢查询
+*. wait_timeout             服务器关闭等待连接的超时时间
+*. log_error = error.log    错误日志路径
+*. log-bin = bin.log        修改操作日志路径, 把对数据进行修改的所有SQL命令(也就是INSERT、UPDATE和DELETE命令)以二进制格式记入日志
+*. binlog_format = mixed
+*. expire_logs_days = 90    bin log 自动删除/过期的天数
+*. innodb_open_files        限制InnoDB可打开的表数量
 *. innodb_write_io_threads
-*. innodb_read_io_threads:  InnoDB处理缓冲区数据的读写IO请求数
-*. innodb_lock_wait_timeout:InnoDB事务被回滚前的锁定超时时间
+*. innodb_read_io_threads   InnoDB处理缓冲区数据的读写IO请求数
+*. innodb_lock_wait_timeout InnoDB事务被回滚前的锁定超时时间
 
 *** 三大范式:
 1. 每列只有单一值且不可拆分
 2. 每行都有主键进行区分
 3. 表中其他列数据只依赖于主键,不包含其他表的数据
 
+*** SQL_MODE:
+
+ONLY_FULL_GROUP_BY：出现在select语句、HAVING条件和ORDER BY语句中的列，必须是GROUP BY的列或者依赖于GROUP BY列的函数列。
+
+NO_AUTO_VALUE_ON_ZERO：该值影响自增长列的插入。默认设置下，插入0或NULL代表生成下一个自增长值。如果用户希望插入的值为0，而该列又是自增长的，那么这个选项就有用了。
+
+STRICT_TRANS_TABLES：在该模式下，如果一个值不能插入到一个事务表中，则中断当前的操作，对非事务表不做限制
+
+NO_ZERO_IN_DATE：这个模式影响了是否允许日期中的月份和日包含0。如果开启此模式，2016-01-00是不允许的，但是0000-02-01是允许的。它实际的行为受到 strict mode是否开启的影响1。
+
+NO_ZERO_DATE：设置该值，mysql数据库不允许插入零日期。它实际的行为受到 strictmode是否开启的影响2。ERROR_FOR_DIVISION_BY_ZERO：在INSERT或UPDATE过程中，如果数据被零除，则产生错误而非警告。如果未给出该模式，那么数据被零除时MySQL返回NULL
+
+NO_AUTO_CREATE_USER：禁止GRANT创建密码为空的用户
+
+NO_ENGINE_SUBSTITUTION：如果需要的存储引擎被禁用或未编译，那么抛出错误。不设置此值时，用默认的存储引擎替代，并抛出一个异常
+
+PIPES_AS_CONCAT：将”||”视为字符串的连接操作符而非或运算符，这和Oracle数据库是一样的，也和字符串的拼接函数Concat相类似
+
+ANSI_QUOTES：启用ANSI_QUOTES后，不能用双引号来引用字符串，因为它被解释为识别符
 
