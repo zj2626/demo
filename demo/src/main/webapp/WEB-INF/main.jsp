@@ -17,7 +17,8 @@
         text-align: center;
         font-size: 40px
     }
-    thead{
+
+    thead {
         background: cadetblue;
     }
 </style>
@@ -55,6 +56,13 @@
             <input type="checkbox" value="C" name="item">C
             <input type="checkbox" value="D" name="item">D
         </div>
+        <br>
+        <br>
+        <br>
+        <div id="ss">点击就送</div>
+        <div id="ss2">点击就送</div>
+        <div id="ss3">点击就送</div>
+
     </div>
 </div>
 
@@ -66,7 +74,7 @@
 
         $("#all").click(function () {
             var checked = this.checked;
-           $(":checkbox[name='item']").attr("checked", checked);
+            $(":checkbox[name='item']").attr("checked", checked);
         });
 
         function alertSomeThing(info) {
@@ -138,8 +146,144 @@
 
         $(".myDivClass2").click(function () {
             consoleSomeThing(this);
-        })
+        });
 
+        $("#ss").click(function () {
+            var arr = [1, 2, 3, 4, 5];
+            var b = sum(arr);
+            console.log("-------------");
+            var c = sum2();
+            c(arr);
+            console.log("-------------");
+            var d = sum2(arr);
+            d();
+            console.log("-------------");
+            var e = sum3(arr)(arr); // sum3和sum2等效,也和sum5等效
+            console.log("-------------");
+            console.log(sum4(arr));
+            console.log("-------------");
+            var f = sum5(arr);      // sum5和sum6等效
+            console.log(f());
+            console.log("-------------");
+            var g = sum6();
+            console.log(g(arr));
+        });
+
+        $("#ss2").click(function () {
+            var arr = sum7();
+            console.log(arr[0]());
+            console.log(arr[1]());
+            console.log(arr[2]());
+            console.log("---");
+
+            arr = sum8();
+            console.log(arr[0]);
+            console.log(arr[1]);
+            console.log(arr[2]);
+        });
+
+        $("#ss3").click(function () {
+            var time = sum9();
+            console.log(time.cot());
+            console.log(time.cot());
+            console.log(time.cot());
+            console.log(time.cot());
+            console.log(time.cot());
+        });
+
+        function sum(arr) {
+            console.log("A " + arr);
+
+            function print(arr) {
+                console.log("B " + arr);
+            }
+
+            return print(arr);
+        }
+
+        function sum2(arr) {
+            console.log("A " + arr);
+
+            function print(arr) {
+                console.log("B " + arr);
+            }
+
+            return print;
+        }
+
+        function sum3(arr) {
+            console.log("A " + arr);
+
+            return function print(arr) {
+                console.log("B " + arr);
+            }
+        }
+
+        /*实例 -- JavaScript闭包*/
+        function sum4(arr) {
+            return arr.reduce(function (x, y) {
+                return x + y;
+            });
+        }
+
+        function sum5(arr) {
+            return function () {
+                return arr.reduce(function (x, y) {
+                    return x + y;
+                })
+            };
+        }
+
+        function sum6() {
+            return function (arr) {
+                return arr.reduce(function (x, y) {
+                    return x + y;
+                })
+            };
+        }
+
+        /*当闭包遇到循环变量或者变化的变量 错误的写法*/
+        function sum7() {
+            var arr = [];
+            for (var i = 1; i <= 3; i++) {
+                arr.push(function () {
+                    return i * i; // 永远返回16 因为函数没有立刻执行，而是直到调用了内部函数才执行
+                });
+            }
+            return arr;
+        }
+
+        /*当闭包遇到循环变量或者变化的变量 正确的写法*/
+        function sum8() {
+            var arr = [];
+
+            for (var i = 1; i <= 3; i++) {
+                arr.push((function () {
+                    return i * i;
+                })());
+            }
+
+            /*同理*/
+            // for (var i=1; i<=3; i++) {
+            //     arr.push((function (n) {
+            //         return n * n;
+            //     })(i));
+            // }
+
+            return arr;
+        }
+
+        /*闭包用法举例*/
+        function sum9(item) {
+            item = item || 0;
+
+            return {
+                cot: function () {
+                    item = item + 1;
+                    return item;
+                }
+            }
+        }
     })
 </script>
 </body>
