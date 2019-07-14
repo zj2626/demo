@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.start;
 
 import java.util.Arrays;
 
