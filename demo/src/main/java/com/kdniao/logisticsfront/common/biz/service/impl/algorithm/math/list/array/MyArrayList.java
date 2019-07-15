@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.array;
 
 import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.interfaces.ListInterface;
 
@@ -31,11 +31,7 @@ public class MyArrayList<E> implements ListInterface<E> {
 
     @Override
     public boolean add(Object o) {
-        // 判断是否需要扩容
-        ensureCapacityInternal();
-
-        elementData[size] = o;
-        size++;
+        this.add(size, o);
         return true;
     }
 
@@ -49,7 +45,7 @@ public class MyArrayList<E> implements ListInterface<E> {
             index = this.size;
         }
 
-        for (int i = this.size; i > index; i++) {
+        for (int i = this.size; i > index; i--) {
             elementData[i] = elementData[i - 1];
         }
         elementData[index] = element;
