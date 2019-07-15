@@ -1,17 +1,17 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.link;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.interfaces.ListInterface;
+import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.interfaces.ListInterface;
+import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.node.DoubleNode;
 
 /**
- * 单链表
- *
- * @param <E>
+ * 线性表:
+ * 双向链表 待完成
  */
-public class MSingleyLinkedList<E> implements ListInterface<E> {
-    private Node<E> head = new Node<>();           //头节点 不存数据 为了编程方便
-    private int size;               //元素的个数
+public class DoublyLinkedList<E> implements ListInterface<E> {
+    private DoubleNode<E> head = new DoubleNode<>();    //头节点 不存数据 为了编程方便
+    private int size;                       //元素的个数
 
-    public MSingleyLinkedList() {
+    public DoublyLinkedList() {
 
     }
 
@@ -34,12 +34,12 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     @Override
     public void add(int index, E element) {
         // 新创建一个节点
-        Node<E> newNode = new Node<>(element, null);
+        DoubleNode<E> newNode = new DoubleNode<>(element, null);
 
-        Node<E> node = cycle(index);
+        DoubleNode<E> node = cycle(index);
 
         // 找到待插入节点的后继
-        Node<E> nextNode = node.next();
+        DoubleNode<E> nextNode = node.next();
         // 指定新节点的后继
         newNode.setNext(nextNode);
         // 指定新节点的后继
@@ -56,20 +56,20 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     public E remove(int index) {
         if (index >= 0 && index < this.size) {
             // 得到删除节点的前驱节点
-            Node<E> node = cycle(index);
+            DoubleNode<E> node = cycle(index);
 
             // 得到待删除节点
-            Node<E> nextNode = node.next();
-            Node<E> delNode = nextNode;
+            DoubleNode<E> nextNode = node.next();
+            DoubleNode<E> delnode = nextNode;
 
             // 得到待删除节点后继节点
             nextNode = nextNode.next();
-            delNode.setNext(null);
+            delnode.setNext(null);
 
             // 设置待删除节点前驱节点 指向待删除节点后继节点
             node.setNext(nextNode);
             size--;
-            return delNode.getData();
+            return delnode.getData();
         } else {
             return null;
         }
@@ -78,7 +78,7 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     @Override
     public E get(int index) {
         if (index >= 0 && index < this.size) {
-            Node<E> node = cycle(index + 1);
+            DoubleNode<E> node = cycle(index + 1);
 
             return node.getData();
         } else {
@@ -89,7 +89,7 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     @Override
     public E set(int index, E element) {
         if (index >= 0 && index < this.size) {
-            Node<E> node = cycle(index + 1);
+            DoubleNode<E> node = cycle(index + 1);
             node.setData(element);
 
             return node.getData();
@@ -98,8 +98,8 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
         }
     }
 
-    private Node<E> cycle(int index) {
-        Node<E> node = head;
+    private DoubleNode<E> cycle(int index) {
+        DoubleNode<E> node = head;
         int i = 0;
         while (node.hasNext() && i < index) {
             node = node.next();
@@ -144,7 +144,7 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     private String elementStr() {
         StringBuffer string = new StringBuffer("[");
 
-        Node<E> node = head;
+        DoubleNode<E> node = head;
         if (null != node) {
             while (node.hasNext()) {
                 node = node.next();

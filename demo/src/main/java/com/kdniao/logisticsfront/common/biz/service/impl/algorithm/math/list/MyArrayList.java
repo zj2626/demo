@@ -1,10 +1,11 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.array;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.interfaces.ListInterface;
+import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.interfaces.ListInterface;
 
 import java.util.Arrays;
 
 /**
+ * 线性表:
  * 顺序表，可扩容
  */
 public class MyArrayList<E> implements ListInterface<E> {

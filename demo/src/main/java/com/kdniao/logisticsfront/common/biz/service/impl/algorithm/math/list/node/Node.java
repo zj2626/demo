@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.link;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.node;
 
 public class Node<E> {
     private E data;

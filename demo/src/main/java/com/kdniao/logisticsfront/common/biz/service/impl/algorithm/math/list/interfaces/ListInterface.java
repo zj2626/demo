@@ -1,6 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.interfaces;
-
-import java.util.Iterator;
+package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.list.interfaces;
 
 /**
  * 顺序表接口
