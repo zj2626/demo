@@ -12,12 +12,11 @@ public class MyArrayList<E> implements ListInterface<E> {
     private int size;               //元素的个数
 
     public MyArrayList() {
-        elementData = new Object[]{};
+        elementData = new Object[4];
     }
 
     public MyArrayList(int initSize) {
         elementData = new Object[initSize];
-        this.size = 0;
     }
 
     @Override
@@ -59,11 +58,15 @@ public class MyArrayList<E> implements ListInterface<E> {
 
     private void ensureCapacityInternal() {
         if (this.size >= elementData.length - 1) {
-            Object[] newElementData = new Object[size + 5];
-            for (int i = 0; i < size; i++) {
-                newElementData[i] = elementData[i];
-            }
-            elementData = newElementData;
+//            Object[] newElementData = new Object[size + 5];
+//            for (int i = 0; i < size; i++) {
+//                newElementData[i] = elementData[i];
+//            }
+//            elementData = newElementData;
+
+            /*同理*/
+            elementData = Arrays.copyOf(elementData, size + size / 2);
+
         }
     }
 
@@ -133,10 +136,24 @@ public class MyArrayList<E> implements ListInterface<E> {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"elementData\":")
-                .append(Arrays.toString(elementData));
+                .append(elementStr());
         sb.append(",\"size\":")
                 .append(size);
         sb.append('}');
         return sb.toString();
+    }
+
+    private String elementStr() {
+        StringBuffer string = new StringBuffer("[");
+
+        for (int i = 0; i < this.size; i++) {
+            string.append(elementData[i]);
+            if (i != this.size - 1) {
+                string.append(",");
+            }
+        }
+
+        string.append("]");
+        return string.toString();
     }
 }
