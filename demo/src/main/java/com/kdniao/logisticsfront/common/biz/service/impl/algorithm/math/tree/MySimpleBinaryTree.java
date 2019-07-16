@@ -237,7 +237,32 @@ public class MySimpleBinaryTree<E> implements BinaryTreeInterface<E> {
     @Override
     public void postOrderTraversalByStack() {
         if (!isEmpty()) {
+            Deque<Node<E>> deque = new LinkedList<>();
+            deque.push(root);
 
+            // 下面的算法是先把当前结点入栈,再随后顺序入栈其右子结点,左子结点
+            // 每次判断栈顶结点,是叶子节点或者上一个出栈的节点和当前结点有直接相连(是父子结点)则可以出栈
+            Node<E> prev = null;
+            while (!deque.isEmpty()) {
+                // 每次指向当前栈顶结点
+                Node<E> current = deque.peek();
+
+                // 判断当前结点没有左右子结点 或者 前一个访问的结点不是当前结点的左右子结点
+                if ((!current.hasLeftChild() && !current.hasRightChild())
+                        || (null != prev && (current.getLeftChild() == prev || current.getRightChild() == prev))) {
+                    current = deque.pop();
+                    System.out.print(current.getData().toString() + '\t');
+                    prev = current;
+                } else {
+                    if (current.hasRightChild()) {
+                        deque.push(current.getRightChild());
+                    }
+                    if (current.hasLeftChild()) {
+                        deque.push(current.getLeftChild());
+                    }
+                }
+                // System.out.println(deque);
+            }
         }
         System.out.println("后序遍历");
     }
