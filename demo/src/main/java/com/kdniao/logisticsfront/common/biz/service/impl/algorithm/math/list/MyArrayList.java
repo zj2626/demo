@@ -146,7 +146,7 @@ public class MyArrayList<E> implements ListInterface<E> {
         for (int i = 0; i < this.size; i++) {
             string.append(elementData[i]);
             if (i != this.size - 1) {
-                string.append(",");
+                string.append(", ");
             }
         }
 

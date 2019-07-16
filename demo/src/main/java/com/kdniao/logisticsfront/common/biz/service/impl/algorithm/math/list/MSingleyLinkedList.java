@@ -139,6 +139,7 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
     public String toString() {
         return "MyLinkedList{" +
                 "data=" + elementStr() +
+                ", head=" + head.next() +
                 ", size=" + size +
                 '}';
     }
@@ -152,7 +153,7 @@ public class MSingleyLinkedList<E> implements ListInterface<E> {
                 node = node.next();
                 string.append(node.getData());
                 if (node.hasNext()) {
-                    string.append(",");
+                    string.append(", ");
                 }
             }
         }
