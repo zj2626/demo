@@ -16,26 +16,26 @@ import java.util.List;
 public class ListDemo {
     @Test
     public void testArrayList() {
-        List<Object> arrayList = new ArrayList<>();
-        arrayList.add(12);
-        arrayList.add("aa");
-        arrayList.add(11.22);
-        System.out.println(arrayList.isEmpty());
-        System.out.println(arrayList.size());
-        System.out.println(arrayList.get(1));
-        System.out.println(arrayList);
+        List<Object> list = new ArrayList<>();
+        list.add(12);
+        list.add("aa");
+        list.add(11.22);
+        System.out.println(list.isEmpty());
+        System.out.println(list.size());
+        System.out.println(list.get(1));
+        System.out.println(list);
     }
 
     @Test
     public void testLinkedList() {
-        List<Object> arrayList = new LinkedList<>();
-        arrayList.add(12);
-        arrayList.add("aa");
-        arrayList.add(11.22);
-        System.out.println(arrayList.isEmpty());
-        System.out.println(arrayList.size());
-        System.out.println(arrayList.get(1));
-        System.out.println(arrayList);
+        List<Object> list = new LinkedList<>();
+        list.add(12);
+        list.add("aa");
+        list.add(11.22);
+        System.out.println(list.isEmpty());
+        System.out.println(list.size());
+        System.out.println(list.get(1));
+        System.out.println(list);
     }
 
     @Test
