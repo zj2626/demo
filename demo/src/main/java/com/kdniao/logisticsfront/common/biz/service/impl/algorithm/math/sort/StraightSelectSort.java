@@ -13,20 +13,20 @@ public class StraightSelectSort extends Arrayss {
     @Test
     public void test() {
         for (int i = 0; i < arr.length - 1; i++) {
-            int current = arr[i];
-            int currentIndex = i + 1;
+            // 初始化下标, 随着内部for执行, 下标变成最小值所在下标
+            int current = i;
             for (int j = i + 1; j < arr.length; j++) {
-                if (current > arr[j]) {
-                    current = arr[j];
-                    currentIndex = j;
+                if (arr[current] > arr[j]) {
+                    current = j;
                 }
                 n++;
             }
 
             int temp = arr[i];
-            if (temp != current) {
-                arr[i] = current;
-                arr[currentIndex] = temp;
+            // i位置和最小值位置数据进行交换,如果i已经是最小值就不执行交换
+            if (temp != arr[current]) {
+                arr[i] = arr[current];
+                arr[current] = temp;
             }
 
             System.out.println(Arrays.toString(arr));
