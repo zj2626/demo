@@ -13,7 +13,7 @@ public class Arrayss {
     @Before
     public void init() {
         // 正向
-        arr = new Integer[]{2, 1, 5, 3, 4, 7, 9, 10, 11, 8};
+        arr = new Integer[]{2, 1, 10, 5, 3, 4, 7, 9, 11, 8};
 
         // 反向
         ArrayUtils.reverse(arr);
