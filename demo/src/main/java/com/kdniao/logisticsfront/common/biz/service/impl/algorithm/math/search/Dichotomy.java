@@ -1,18 +1,15 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.search;
 
+import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.data.Arrayss;
 import org.junit.Test;
 
 import java.util.Arrays;
 
 // 二分法 时间复杂度: log2^n
-public class Dichotomy {
+public class Dichotomy extends Arrayss {
 
     @Test
     public void test() {
-        int[] arr = {1, 54, 26, 2, 4, 3, 6, 84, 7, 94, 54, 5, 63, 564, 3, 523, 99};
-        System.out.println(arr.length);
-        System.out.println(Arrays.toString(arr));
-
         //二分法
         // 1排序
         Arrays.sort(arr);
