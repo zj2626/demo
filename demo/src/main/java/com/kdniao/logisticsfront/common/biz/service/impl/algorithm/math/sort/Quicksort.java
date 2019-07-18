@@ -82,7 +82,6 @@ public class Quicksort extends Arrayss {
             while (key <= arr[max] && min < max) {
                 max--;
             }
-
             // 从头部遍历 得到比基准值大的值的位置 直到min和max相等
             while (key >= arr[min] && min < max) {
                 min++;
@@ -92,18 +91,14 @@ public class Quicksort extends Arrayss {
             if (min < max) {
                 exchange(arr, min, max);
             }
-            System.out.print("<" + Arrays.toString(arr) + ">" + "\t");
 
-            n++;
+            loopCount++;
         }
-        System.out.print('\n');
 
         // 交换停留位置值和基准值, 此时min左边都是比基准值小, 右边都是比基准值大
         exchange(arr, low, min);
 
-        System.out.println(low + " - " + high + " | " + min + " - " + max);
-        System.out.println(Arrays.toString(arr));
-        System.out.print('\n');
+        log(true);
 
         //left
         quick(arr, low, min - 1);
@@ -154,7 +149,6 @@ public class Quicksort extends Arrayss {
             if (min < max) {
                 // 位置: max -> min
                 exchange(arr, min, max);
-                System.out.print("<" + Arrays.toString(arr) + ">" + "\t");
             }
 
             // 从头部遍历 得到比基准值大的值的位置
@@ -165,15 +159,12 @@ public class Quicksort extends Arrayss {
             if (min < max) {
                 // 位置: min -> max
                 exchange(arr, min, max);
-                System.out.print(Arrays.toString(arr) + "\t");
             }
-            System.out.print('\n');
-            n++;
+
+            loopCount++;
         }
 
-        System.out.println(low + " - " + high + " | " + min + " - " + max);
-        System.out.println(Arrays.toString(arr));
-        System.out.print('\n');
+        log(true);
 
         //left
         quick2(arr, low, min - 1);
@@ -186,11 +177,14 @@ public class Quicksort extends Arrayss {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
+
+        log(false);
+        exchangeNumber++;
     }
 
     /****************************/
 
-    public static void quickSort(Integer[] arr, int low, int high) {
+    private void quickSort(Integer[] arr, int low, int high) {
         int i, j, temp, t;
         if (low > high) {
             return;
@@ -215,16 +209,15 @@ public class Quicksort extends Arrayss {
                 arr[j] = arr[i];
                 arr[i] = t;
             }
-            n++;
+
+            loopCount++;
 
         }
         //最后将基准为与i和j相等位置的数字交换
         arr[low] = arr[i];
         arr[i] = temp;
 
-        System.out.println(low + " - " + high + " | " + i + " - " + j);
-        System.out.println(Arrays.toString(arr));
-        System.out.print('\n');
+        log(true);
 
         //递归调用左半数组
         quickSort(arr, low, j - 1);
@@ -254,13 +247,12 @@ public class Quicksort extends Arrayss {
                 a[j] = a[i];
                 j--;
             }
-            n++;
+
+            loopCount++;
         }
         a[i] = pivotNum;
 
-        System.out.println(low + " - " + high + " | " + i + " - " + j);
-        System.out.println(Arrays.toString(arr));
-        System.out.print('\n');
+        log(true);
 
         sort(a, low, i - 1);
         sort(a, i + 1, high);

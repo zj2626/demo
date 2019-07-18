@@ -19,7 +19,7 @@ public class BubbleSort extends Arrayss {
                     arr[j] = arr[i];
                     arr[i] = temp;
                 }
-                n++;
+                loopCount++;
             }
 
             System.out.println(Arrays.toString(arr));
@@ -35,7 +35,7 @@ public class BubbleSort extends Arrayss {
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
                 }
-                n++;
+                loopCount++;
             }
 
             System.out.println(Arrays.toString(arr));

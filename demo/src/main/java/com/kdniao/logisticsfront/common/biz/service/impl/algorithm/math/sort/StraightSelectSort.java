@@ -19,7 +19,7 @@ public class StraightSelectSort extends Arrayss {
                 if (arr[current] > arr[j]) {
                     current = j;
                 }
-                n++;
+                loopCount++;
             }
 
             int temp = arr[i];

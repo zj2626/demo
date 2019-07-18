@@ -8,7 +8,8 @@ import java.util.Arrays;
 
 public class Arrayss {
     protected static Integer[] arr;
-    protected static int n = 0;
+    protected static int loopCount = 0;
+    protected static int exchangeNumber = 0;
 
     @Before
     public void init() {
@@ -26,6 +27,11 @@ public class Arrayss {
     @After
     public void print() {
         System.out.println("\n" + "<操作后> \n" + Arrays.toString(arr) + "\n<操作后>");
-        System.out.println("次数: " + n);
+        System.out.println("循环次数: " + loopCount);
+        System.out.println("位移次数: " + exchangeNumber);
+    }
+
+    public void log(boolean ifMain){
+            System.out.println((ifMain ? "" : " ") + Arrays.toString(arr));
     }
 }

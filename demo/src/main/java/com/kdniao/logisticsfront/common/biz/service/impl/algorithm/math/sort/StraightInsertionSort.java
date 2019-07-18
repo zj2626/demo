@@ -19,7 +19,7 @@ public class StraightInsertionSort extends Arrayss {
             for (int j = i - 1; j >= 0 && arr[j] > temp; j--) {
                 arr[j + 1] = arr[j];
                 arr[j] = temp;
-                n++;
+                loopCount++;
             }
 
             System.out.println(Arrays.toString(arr));
@@ -34,7 +34,7 @@ public class StraightInsertionSort extends Arrayss {
             // 这里就是遍历之前的数 从前往后比较
             for (; j >= 0 && arr[j] > temp; j--) {
                 arr[j + 1] = arr[j];
-                n++;
+                loopCount++;
             }
             arr[j + 1] = temp;
 
