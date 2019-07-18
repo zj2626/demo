@@ -173,15 +173,6 @@ public class Quicksort extends Arrayss {
         quick2(arr, min + 1, high);
     }
 
-    private void exchange(Integer[] arr, int i, int j) {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-
-        log(false);
-        exchangeNumber++;
-    }
-
     /****************************/
 
     private void quickSort(Integer[] arr, int low, int high) {

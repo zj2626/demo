@@ -34,4 +34,13 @@ public class Arrayss {
     public void log(boolean ifMain){
             System.out.println((ifMain ? "" : " ") + Arrays.toString(arr));
     }
+
+    protected void exchange(Integer[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+
+        log(false);
+        exchangeNumber++;
+    }
 }
