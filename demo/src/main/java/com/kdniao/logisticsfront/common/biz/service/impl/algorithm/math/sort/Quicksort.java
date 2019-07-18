@@ -9,17 +9,24 @@ import java.util.Arrays;
  * 快速排序
  * <p>
  * 冒泡+递归+分治
+ *
+ * 我写了两种实现方法 原理上是一个意思,只是移动的顺序不太一样
+ * 1.test方法中是先交换其他值达到左小右大,此时停留位置就是居中位置, 然后在把停留位置值的和基准值交换
+ * 2.test2方法是直接把基准值和其他值轮流交换(把大于的值交换到右边,把小于的值交换到左边), 基准值自然停留在居中位置
  * <p>
  * 适合数据不大的情况
  */
 public class Quicksort extends Arrayss {
-    /*自己的*/
+    /*自己的 quick执行的交换是先不交换基准值, 直到其他的值都已经交换,
+    此时最终下标停留位置其左边都是比基准值小, 右边都是比基准值大;
+    此时把停留位置值和基准值进行交换(停留位置值肯定小于基准值,因为移动是先移动的max下标, 所以永远指向小于基准值的值)*/
     @Test
     public void test() {
         quick(arr, 0, arr.length - 1);
     }
 
-    /*自己的*/
+    /*自己的 quick执行的交换是直接交换基准值, 每次通过基准值位置实现对其他值的位置变化,
+    直到基准值左边都是比基准值小的, 右边都是比基准值大的*/
     @Test
     public void test2() {
         quick2(arr, 0, arr.length - 1);
@@ -38,6 +45,28 @@ public class Quicksort extends Arrayss {
     }
 
     public void quick(Integer[] arr, int low, int high) {
+        /**
+         * before [8, 11, 9, 7, 4, 3, 5, 10, 1, 2]
+         *
+         * [8, 2, 9, 7, 4, 3, 5, 10, 1, 11]  [8, 2, 1, 7, 4, 3, 5, 10, 9, 11]  [8, 2, 1, 7, 4, 3, 5, 10, 9, 11]
+         * [5, 2, 1, 7, 4, 3, 8, 10, 9, 11]
+         *
+         * [5, 2, 1, 3, 4, 7, 8, 10, 9, 11]  [5, 2, 1, 3, 4, 7, 8, 10, 9, 11]
+         * [4, 2, 1, 3, 5, 7, 8, 10, 9, 11]
+         *
+         * [4, 2, 1, 3, 5, 7, 8, 10, 9, 11]
+         * [3, 2, 1, 4, 5, 7, 8, 10, 9, 11]
+         *
+         * [3, 2, 1, 4, 5, 7, 8, 10, 9, 11]
+         * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
+         *
+         * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
+         * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
+         *
+         * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
+         * [1, 2, 3, 4, 5, 7, 8, 9, 10, 11]
+         */
+
         // 1.先判断要排序的数组分区是数组的有效部分
         if (low >= high) {
             return;
@@ -49,22 +78,38 @@ public class Quicksort extends Arrayss {
         int max = high;
 
         while (min < max) {
-            // 从尾部遍历 得到比基准值小的值的位置
-            while (key < arr[max]) {
+            // 从尾部遍历 得到比基准值小的值的位置 直到min和max相等
+            while (key <= arr[max] && min < max) {
                 max--;
             }
 
-            // 从头部遍历 得到比基准值大的值的位置
-            while (key > arr[min]) {
+            // 从头部遍历 得到比基准值大的值的位置 直到min和max相等
+            while (key >= arr[min] && min < max) {
                 min++;
             }
 
-            exchange(arr, min, max);
+            // 如果不是同一个位置(min==max),则进行交换
+            if (min < max) {
+                exchange(arr, min, max);
+            }
+            System.out.print("<" + Arrays.toString(arr) + ">" + "\t");
+
+            n++;
         }
+        System.out.print('\n');
+
+        // 交换停留位置值和基准值, 此时min左边都是比基准值小, 右边都是比基准值大
+        exchange(arr, low, min);
 
         System.out.println(low + " - " + high + " | " + min + " - " + max);
         System.out.println(Arrays.toString(arr));
-        System.out.println();
+        System.out.print('\n');
+
+        //left
+        quick(arr, low, min - 1);
+
+        //right
+        quick(arr, min + 1, high);
     }
 
     public void quick2(Integer[] arr, int low, int high) {
@@ -82,6 +127,7 @@ public class Quicksort extends Arrayss {
          * left-right: base on: 5
          * [1, 2, 3, 7, 4, 5, 8, 10, 9, 11]  [1, 2, 3, 5, 4, 7, 8, 10, 9, 11]
          * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
+         *
          * left-right-left: base on: 3
          * [1, 2, 3, 4, 5, 7, 8, 10, 9, 11]
          *
@@ -108,7 +154,7 @@ public class Quicksort extends Arrayss {
             if (min < max) {
                 // 位置: max -> min
                 exchange(arr, min, max);
-                System.out.print("> " + Arrays.toString(arr) + "\t");
+                System.out.print("<" + Arrays.toString(arr) + ">" + "\t");
             }
 
             // 从头部遍历 得到比基准值大的值的位置
@@ -121,13 +167,13 @@ public class Quicksort extends Arrayss {
                 exchange(arr, min, max);
                 System.out.print(Arrays.toString(arr) + "\t");
             }
-            System.out.println();
+            System.out.print('\n');
             n++;
         }
 
         System.out.println(low + " - " + high + " | " + min + " - " + max);
         System.out.println(Arrays.toString(arr));
-        System.out.println();
+        System.out.print('\n');
 
         //left
         quick2(arr, low, min - 1);
@@ -141,6 +187,8 @@ public class Quicksort extends Arrayss {
         arr[i] = arr[j];
         arr[j] = temp;
     }
+
+    /****************************/
 
     public static void quickSort(Integer[] arr, int low, int high) {
         int i, j, temp, t;
@@ -176,7 +224,7 @@ public class Quicksort extends Arrayss {
 
         System.out.println(low + " - " + high + " | " + i + " - " + j);
         System.out.println(Arrays.toString(arr));
-        System.out.println();
+        System.out.print('\n');
 
         //递归调用左半数组
         quickSort(arr, low, j - 1);
@@ -212,7 +260,7 @@ public class Quicksort extends Arrayss {
 
         System.out.println(low + " - " + high + " | " + i + " - " + j);
         System.out.println(Arrays.toString(arr));
-        System.out.println();
+        System.out.print('\n');
 
         sort(a, low, i - 1);
         sort(a, i + 1, high);
