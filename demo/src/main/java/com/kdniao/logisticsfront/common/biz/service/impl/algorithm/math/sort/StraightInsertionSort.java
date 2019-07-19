@@ -3,42 +3,25 @@ package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.sort;
 import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.data.Arrayss;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 /**
  * 直接插入排序
+ * <p>
+ * 当插入第i（i>1）个元素时，前面的data[0],data[1]……data[i-1]已经排好序。这时用data[i]的排序码与data[i-1],data[i-2],……的排序码顺序进行比较，找到插入位置即将data[i]插入，原来位置上的元素向后顺序移动。
  */
 public class StraightInsertionSort extends Arrayss {
 
-    // 从第二个数开始, 和之前的数进行一一对比, 比较要从后往前比较,效率高
     @Test
     public void test() {
         for (int i = 1; i < arr.length; i++) {
             int temp = arr[i];
             // 这里就是遍历之前的数 从后往前比较
-            for (int j = i - 1; j >= 0 && arr[j] > temp; j--) {
-                arr[j + 1] = arr[j];
-                arr[j] = temp;
-                loopCount++;
-            }
-
-            System.out.println(Arrays.toString(arr));
-        }
-    }
-
-    @Test
-    public void test2() {
-        for (int i = 1; i < arr.length; i++) {
-            int temp = arr[i];
             int j = i - 1;
-            // 这里就是遍历之前的数 从前往后比较
             for (; j >= 0 && arr[j] > temp; j--) {
+                // 每个比当前值大的都向后移动一位
                 arr[j + 1] = arr[j];
                 loopCount++;
             }
             arr[j + 1] = temp;
-
-            System.out.println(Arrays.toString(arr));
         }
     }
 }

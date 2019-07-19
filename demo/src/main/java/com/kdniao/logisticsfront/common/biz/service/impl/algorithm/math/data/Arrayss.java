@@ -21,12 +21,12 @@ public class Arrayss {
         ArrayUtils.reverse(arr);
 
         System.out.println("长度: " + arr.length);
-        System.out.println("<操作前> \n" + Arrays.toString(arr) + "\n<操作前> \n");
+        System.out.println("<排序操作前> \n" + Arrays.toString(arr) + "\n<排序操作前> \n");
     }
 
     @After
     public void print() {
-        System.out.println("\n" + "<操作后> \n" + Arrays.toString(arr) + "\n<操作后>");
+        System.out.println("\n" + "<排序操作后> \n" + Arrays.toString(arr) + "\n<排序操作后>");
         System.out.println("循环次数: " + loopCount);
         System.out.println("位移次数: " + exchangeNumber);
     }

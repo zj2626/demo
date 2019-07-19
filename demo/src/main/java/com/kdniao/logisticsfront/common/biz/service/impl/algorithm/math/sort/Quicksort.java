@@ -3,15 +3,13 @@ package com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.sort;
 import com.kdniao.logisticsfront.common.biz.service.impl.algorithm.math.data.Arrayss;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 /**
  * 快速排序
  * <p>
  * 冒泡+递归+分治
- *
+ * <p>
  * 我写了两种实现方法 原理上是一个意思,只是移动的顺序不太一样
- * 1.test方法中是先交换其他值达到左小右大,此时停留位置就是居中位置, 然后在把停留位置值的和基准值交换
+ * 1.test方法中是先交换其他值达到左小右大,此时停留位置就是居中位置, 然后在把停留位置值的和基准值交换 (better)
  * 2.test2方法是直接把基准值和其他值轮流交换(把大于的值交换到右边,把小于的值交换到左边), 基准值自然停留在居中位置
  * <p>
  * 适合数据不大的情况

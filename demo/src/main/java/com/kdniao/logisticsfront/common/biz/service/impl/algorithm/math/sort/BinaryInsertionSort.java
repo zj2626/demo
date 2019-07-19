@@ -5,6 +5,8 @@ import org.junit.Test;
 
 /**
  * 折半插入查找
+ *
+ * 设元素序列data[0],data[1],……data[n-1]。其中data[0],data[1],……data[i-1]是已经排好序的元素。在插入data[i]时，利用折半搜索法寻找data[i]的插入位置。
  */
 public class BinaryInsertionSort extends Arrayss {
     @Test
