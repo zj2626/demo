@@ -35,14 +35,14 @@ public class RestApiController {
     // 获取分页 Product 模拟
     @GetMapping("/products/{code}/reviews")
     public String page(@PathVariable Integer code, Integer page, Integer size) {
-        System.out.println("page: " + code);
+        System.out.println("code: " + code);
         System.out.println("page: " + page);
-        System.out.println("page: " + size);
+        System.out.println("size: " + size);
         return JSON.toJSONString(map);
     }
 
     // 新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]
-    @PostMapping("/products")
+    @PostMapping(value = "/products", produces = "application/json;charset=utf-8")
     public String create(@RequestBody TestcModel model) {
         System.out.println("create: " + model);
         return JSON.toJSONString(map);
