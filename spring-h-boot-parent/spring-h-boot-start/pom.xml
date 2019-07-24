@@ -13,7 +13,7 @@
     <version>0.1</version>
     <name>spring-h-start</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <profiles>
         <profile>
@@ -95,6 +95,10 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!--<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>-->
         </plugins>
 
         <resources>
