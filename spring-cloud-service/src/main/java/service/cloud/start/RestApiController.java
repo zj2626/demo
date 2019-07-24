@@ -1,11 +1,13 @@
 package service.cloud.start;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.web.bind.annotation.*;
 import service.cloud.start.model.BatchEntity;
 import service.cloud.start.model.TestcModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -66,9 +68,26 @@ public class RestApiController {
     }
 
     /*批量操作*/
-    @PostMapping("/products/batch")
+    @PostMapping("/products/batch") // ???????待完成
     public String batch(@RequestBody BatchEntity model) {
         System.out.println(model);
+
+        switch (model.getMethod()) {
+            case create:
+                List<TestcModel> modelList = JSONArray.parseArray(model.getData(), TestcModel.class);
+                System.out.println(modelList);
+                break;
+            case update:
+                List<TestcModel> modelList2 = JSON.parseArray(model.getData(), TestcModel.class);
+                System.out.println(modelList2);
+                break;
+            case delete:
+                String[] ids = model.getData().split(",");
+                System.out.println(ids);
+                break;
+            default:
+        }
+
         return "{\"success\":true, \"code\":200}";
     }
 }
