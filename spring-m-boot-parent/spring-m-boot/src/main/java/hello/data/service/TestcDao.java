@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class TestcDao {
     private static final Logger logger = LoggerFactory.getLogger(TestcDao.class);
@@ -27,6 +29,10 @@ public class TestcDao {
 
     public int insert(Testc record){
         return testcMapper.insert(record);
+    }
+
+    public int insertBatch(List<Testc> records){
+        return testcMapper.insertBatch(records);
     }
 
     public int delete(Integer id){

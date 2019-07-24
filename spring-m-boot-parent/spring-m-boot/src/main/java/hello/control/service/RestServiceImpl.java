@@ -20,11 +20,6 @@ public class RestServiceImpl implements RestService {
         testcDao.update(Testc.modelToTestC(model));
     }
 
-    @Override
-    public void create(TestcModel model) {
-        testcDao.insert(Testc.modelToTestC(model));
-    }
-
     // 模拟查询所有的
     @Override
     public List<TestcModel> findAll() {
@@ -45,7 +40,29 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
+    public void create(TestcModel model) {
+        testcDao.insert(Testc.modelToTestC(model));
+    }
+
+    @Override
     public void delOne(Integer id) {
         testcDao.delete(id);
+    }
+
+    @Override
+    public void updateBatch(List<TestcModel> models) {
+        System.out.println(models);
+    }
+
+    @Override
+    public void createBatch(List<TestcModel> models) {
+        List<Testc> testcs = new ArrayList<>();
+        models.forEach(model-> testcs.add(Testc.modelToTestC(model)));
+        testcDao.insertBatch(testcs);
+    }
+
+    @Override
+    public void delBatch(String[] ids) {
+        System.out.println(ids);
     }
 }

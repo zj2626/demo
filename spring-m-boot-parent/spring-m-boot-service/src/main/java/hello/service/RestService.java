@@ -9,9 +9,15 @@ public interface RestService {
 
     void create(TestcModel model);
 
+    void updateBatch(List<TestcModel> models);
+
+    void createBatch(List<TestcModel> models);
+
     List<TestcModel> findAll();
 
     TestcModel findOne(Integer id);
 
     void delOne(Integer id);
+
+    void delBatch(String[] ids);
 }

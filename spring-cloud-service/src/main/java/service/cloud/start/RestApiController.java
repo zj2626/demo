@@ -2,6 +2,7 @@ package service.cloud.start;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.web.bind.annotation.*;
+import service.cloud.start.model.BatchEntity;
 import service.cloud.start.model.TestcModel;
 
 import java.util.HashMap;
@@ -64,19 +65,10 @@ public class RestApiController {
         return JSON.toJSONString(map);
     }
 
-    /*
-    * rest命名规范
-    * 1.GET：读取（Read）
-        POST：新建（Create）
-        PUT：更新（Update）
-        PATCH：更新（Update），通常是部分更新
-        DELETE：删除（Delete）
-    * 2.只支持get和post的时候，可用post模拟其他请求，但是要加属性[X-HTTP-Method-Override: PUT]
-    * 3.宾语(地址)必须是名称不能有动词
-    * 4.统一使用复数，即使是查一条数据
-    * 5.级别不要太多，后面的级别可以用查询字符串表达(?name=xxx)
-    * 6.状态码必须精确，每次请求都要返回状态码
-    * 7.返回信息要是Json而不要返回纯本文 ???
-    * 8.返回信息中提供其他相关的api的链接以方便使用
-    * */
+    /*批量操作*/
+    @PostMapping("/products/batch")
+    public String batch(@RequestBody BatchEntity model) {
+        System.out.println(model);
+        return "{\"success\":true, \"code\":200}";
+    }
 }

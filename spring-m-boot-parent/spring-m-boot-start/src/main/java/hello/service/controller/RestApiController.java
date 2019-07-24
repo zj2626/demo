@@ -2,6 +2,7 @@ package hello.service.controller;
 
 import com.alibaba.fastjson.JSON;
 import hello.service.RestService;
+import hello.service.model.BatchEntity;
 import hello.service.model.TestcModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,27 @@ public class RestApiController {
     @DeleteMapping("/products/{code}")
     public String delete(@PathVariable Integer code) {
         restService.delOne(code);
+        return "{\"success\":true, \"code\":200}";
+    }
+
+    /*批量操作*/
+    @PostMapping("/resource/batch")
+    public String batch(@RequestBody BatchEntity model) {
+        System.out.println(model);
+
+        switch (model.getMethod()) {
+            case create:
+                restService.createBatch(JSON.parseArray(model.getData(), TestcModel.class));
+                break;
+            case update:
+                restService.updateBatch(JSON.parseArray(model.getData(), TestcModel.class));
+                break;
+            case delete:
+                restService.delBatch(model.getData().split(","));
+                break;
+            default:
+        }
+
         return "{\"success\":true, \"code\":200}";
     }
 
