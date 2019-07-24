@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
+/* restful学习记录见 spring-m-boot-start*/
 public class RestApiController {
     private static Map<String, Object> map;
 
