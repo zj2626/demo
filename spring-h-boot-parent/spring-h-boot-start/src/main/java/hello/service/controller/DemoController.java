@@ -11,6 +11,10 @@ public class DemoController {
     @Value("${httpUrl}")
     private String url;
 
+
+    @Value("${vEntity.name}")
+    private String name;
+
     @GetMapping("/getfun")
     public String demoGetRequest(String name) {
         System.out.println("demoGetRequest > " + name);
@@ -25,5 +29,11 @@ public class DemoController {
         System.out.println("POST");
 
         return name;
+    }
+
+    @PostMapping(value = "/testvalue")
+    public String testvalue() {
+        System.out.println(name);
+        return null;
     }
 }
