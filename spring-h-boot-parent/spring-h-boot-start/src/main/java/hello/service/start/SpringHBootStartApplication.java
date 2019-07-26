@@ -3,6 +3,7 @@ package hello.service.start;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ImportResource;
 
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.ImportResource;
  * ********************
  */
 @SpringBootApplication(scanBasePackages = "hello")
+@EnableConfigurationProperties
 @ImportResource({"classpath:dubbo-provider.xml"})
 //@Import(ServiceConfiguration.class)
 public class SpringHBootStartApplication extends SpringBootServletInitializer {

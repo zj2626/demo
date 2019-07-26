@@ -83,11 +83,11 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
@@ -101,10 +101,10 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>-->
+            </plugin>
         </plugins>
 
         <resources>

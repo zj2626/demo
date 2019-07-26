@@ -1,5 +1,8 @@
 package hello.service.controller;
 
+import com.alibaba.fastjson.JSON;
+import hello.service.controller.entity.ValueEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +15,11 @@ public class DemoController {
     private String url;
 
 
-    @Value("${vEntity.name}")
+    @Value("${ventity.name}")
     private String name;
+
+    @Autowired
+    private ValueEntity valueEntity;
 
     @GetMapping("/getfun")
     public String demoGetRequest(String name) {
@@ -31,9 +37,11 @@ public class DemoController {
         return name;
     }
 
-    @PostMapping(value = "/testvalue")
+    @GetMapping(value = "/testvalue")
     public String testvalue() {
         System.out.println(name);
-        return null;
+        String msg = JSON.toJSONString(valueEntity);
+        System.out.println(msg);
+        return msg;
     }
 }
