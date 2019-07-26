@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource({"classpath:dubbo-consumer.xml", "classpath:transaction.xml"})
 @MapperScan("hello.data.mapper")
 @EnableTransactionManagement
+@EnableCaching
 public class AyBootApplication extends SpringBootServletInitializer {
 
     /*

@@ -1,8 +1,8 @@
 package hello.control.service;
 
 import hello.data.model.Testc;
-import hello.service.RestService;
 import hello.data.service.TestcDao;
+import hello.service.RestService;
 import hello.service.model.TestcModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +57,7 @@ public class RestServiceImpl implements RestService {
     @Override
     public void createBatch(List<TestcModel> models) {
         List<Testc> testcs = new ArrayList<>();
-        models.forEach(model-> testcs.add(Testc.modelToTestC(model)));
+        models.forEach(model -> testcs.add(Testc.modelToTestC(model)));
         testcDao.insertBatch(testcs);
     }
 
