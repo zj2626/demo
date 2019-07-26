@@ -11,8 +11,9 @@ import hello.spring.scope.DemoService;
 import hello.transaction.DoSomethingForTransaction;
 import hello.transaction.DoSomethingProxy;
 import hello.transaction.DoTransaction;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //@Scope("prototype")
@@ -43,21 +44,14 @@ public class MyController {
 //        this.doSomething = doSomething;
 //    }
 
-    @RequestMapping("/")
+    @ApiOperation(value = "/")
+    @GetMapping("/")
     public String index() {
         System.out.println("hello");
         return "hello";
     }
 
-    @RequestMapping("/shit")
-    public String shit() {
-        System.out.println("shit ");
-        System.out.println("shit action");
-        System.out.println("shit action action");
-        return "shit createCommand";
-    }
-
-    @RequestMapping("/dubbo")
+    @GetMapping("/dubbo")
     public BaseResult dubbo() {
         final BaseResult result = new BaseResult();
         System.out.println("into dubbo");
@@ -80,7 +74,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/dubbo2")
+    @GetMapping("/dubbo2")
     public BaseResult dubbo2(String same) {
         final Boolean sameBoolean = Boolean.valueOf(same);
         System.out.println("into dubbo2");
@@ -104,7 +98,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/redis")
+    @GetMapping("/redis")
     public BaseResult redis() {
         System.out.println("into redis");
 
@@ -127,7 +121,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/kafka")
+    @GetMapping("/kafka")
     public BaseResult kafka(String same) {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -147,7 +141,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/fuck")
+    @GetMapping("/fuck")
     public String fuck(String name) {
         System.out.println("fuck " + name);
         System.out.println("fuck action");
@@ -155,7 +149,7 @@ public class MyController {
         return "fff createCommand";
     }
 
-    @RequestMapping("/transaction")
+    @GetMapping("/transaction")
     public BaseResult transaction(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -165,7 +159,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionTXWrite")
+    @GetMapping("/transactionTXWrite")
     public BaseResult transactionTX(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -180,7 +174,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionTXRead")
+    @GetMapping("/transactionTXRead")
     public BaseResult transactionTX2(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -198,7 +192,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionAnnotation")
+    @GetMapping("/transactionAnnotation")
     public BaseResult transactionAnnotation(String code) {
         BaseResult result = new BaseResult();
         result.setSuccess(false);
@@ -214,7 +208,7 @@ public class MyController {
     }
 
     /*先调用transactionB再调用transactionA,观察控制台输出结果中transactionB接口的打印数据的变化*/
-    @RequestMapping("/transactionA")
+    @GetMapping("/transactionA")
     public BaseResult transactionA(String name) {
         BaseResult result = new BaseResult();
         try {
@@ -226,7 +220,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionB")
+    @GetMapping("/transactionB")
     public BaseResult transactionB() {
         BaseResult result = new BaseResult();
         try {
@@ -240,7 +234,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionC")
+    @GetMapping("/transactionC")
     public BaseResult transactionC() {
         BaseResult result = new BaseResult();
         try {
@@ -252,7 +246,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionD")
+    @GetMapping("/transactionD")
     public BaseResult transactionD(String name) {
         BaseResult result = new BaseResult();
         try {
@@ -271,7 +265,7 @@ public class MyController {
         return result;
     }
 
-    @RequestMapping("/transactionE")
+    @GetMapping("/transactionE")
     public BaseResult transactionE(String name) {
         BaseResult result = new BaseResult();
         try {
@@ -286,14 +280,14 @@ public class MyController {
 
     /***********************************/
 
-    @RequestMapping("/setN")
+    @GetMapping("/setN")
     public String seta(int n) {
         System.out.println(demoService.hashCode());
         demoService.setNum(n);
         return "";
     }
 
-    @RequestMapping("/getN")
+    @GetMapping("/getN")
     public String geta() {
         System.out.println(demoService.hashCode());
         return "" + demoService.getNum();
@@ -301,38 +295,38 @@ public class MyController {
 
     /***********************************/
 
-    @RequestMapping("/testLockA")
+    @GetMapping("/testLockA")
     public String testLockA() {
         lockServiceA.invokeF();
 //        lockServiceA.invokeS();
         return "";
     }
 
-    @RequestMapping("/testLockB")
+    @GetMapping("/testLockB")
     public String testLockB() {
         lockServiceB.invokeF();
 //        lockServiceB.invokeS();
         return "";
     }
 
-    @RequestMapping("/log")
+    @GetMapping("/log")
     public String testMybatisLog(String name) {
         doSomething.testMybatisLog(name);
 
         return "god";
     }
 
-    @RequestMapping("/request")
+    @GetMapping("/request")
     public String doRequest(String name) {
         return doSomething.doHttpRequest(name);
     }
 
-    @RequestMapping("/test/hystrix")
+    @GetMapping("/test/hystrix")
     public String hystrix(String name) {
         return doSomething.doHystrixHttpRequest(name);
     }
 
-    @RequestMapping("/testError")
+    @GetMapping("/testError")
     public String testError() {
         doSomething.testError();
         return "";

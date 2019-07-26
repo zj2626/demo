@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import hello.service.RestService;
 import hello.service.model.BatchEntity;
 import hello.service.model.TestcModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +14,19 @@ public class RestApiController {
     @Autowired
     private RestService restService;
 
-    // 获取所有 Product
+    @ApiOperation(value = "获取所有 Product")
     @GetMapping("/products")
     public String products() {
         return JSON.toJSONString(restService.findAll());
     }
 
-    // 获取指定 Product
+    @ApiOperation(value = "获取指定 Product")
     @GetMapping("/products/{code}")
     public String product(@PathVariable Integer code) {
         return JSON.toJSONString(restService.findOne(code));
     }
 
-    // 获取分页 Product 模拟
+    @ApiOperation(value = "获取分页 Product 模拟")
     @GetMapping("/products/{code}/reviews")
     public String page(@PathVariable Integer code, Integer page, Integer size) {
         System.out.println(code);
@@ -34,14 +35,14 @@ public class RestApiController {
         return JSON.toJSONString(restService.findAll());
     }
 
-    // 新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]
+    @ApiOperation(value = "新建一个 Product", notes = "新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]")
     @PostMapping("/products")
     public String create(@RequestBody TestcModel model) {
         restService.create(model);
         return "{\"success\":true, \"code\":200}";
     }
 
-    // 更新一个 Product, 内容放在请求体里 [默认Content-Type为application/json]
+    @ApiOperation(value = "更新一个 Product", notes = "更新一个 Product, 内容放在请求体里 [默认Content-Type为application/json]")
     @PutMapping("/products/{code}")
     public String update(@PathVariable Integer code, @RequestBody TestcModel model) {
         model.setId(code);
@@ -49,14 +50,14 @@ public class RestApiController {
         return "{\"success\":true, \"code\":200}";
     }
 
-    // 删除一个 Product
+    @ApiOperation(value = "删除一个 Product")
     @DeleteMapping("/products/{code}")
     public String delete(@PathVariable Integer code) {
         restService.delOne(code);
         return "{\"success\":true, \"code\":200}";
     }
 
-    /*批量操作*/
+    @ApiOperation(value = "批量操作")
     @PostMapping("/resource/batch")
     public String batch(@RequestBody BatchEntity model) {
         System.out.println(model);
