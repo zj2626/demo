@@ -8,7 +8,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class WaitVsSleepDemo {
-    /*wait 和 sleep区别*/
+    /*wait 和 sleep区别
+    *
+    *
+    * wait: 当线程执行wait()方法时候，会释放当前的锁，然后让出CPU，进入等待状态.
+    * */
     @Test
     public void test2() {
         ExecutorService executorService = Executors.newFixedThreadPool(20);
