@@ -2,6 +2,9 @@ package com.kdniao.logisticsfront.common.biz.service.impl.thread.system.chain;
 
 import org.junit.Test;
 
+/**
+ * 责任链模式
+ */
 public class Main {
 
     @Test
