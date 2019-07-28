@@ -15,23 +15,24 @@ public class TestCompareAndSwap {
             }).start();
         }
     }
-}
 
-class CompareAndSwap {
-    private int value;//内存值
+    static class CompareAndSwap {
+        private int value;//内存值
 
-    //获取内存值
-    public synchronized int get() {
-        return value;
-    }
-
-    //比较
-    public synchronized boolean compareAndSwap(int expectedValue, int newValue) {
-        int oldValue = value;//线程读取内存值，与预估值比较
-        if (oldValue == expectedValue) {
-            this.value = newValue;
-            return true;
+        //获取内存值
+        public synchronized int get() {
+            return value;
         }
-        return false;
+
+        //比较
+        public synchronized boolean compareAndSwap(int expectedValue, int newValue) {
+            int oldValue = value;//线程读取内存值，与预估值比较
+            if (oldValue == expectedValue) {
+                this.value = newValue;
+                return true;
+            }
+            return false;
+        }
     }
 }
+

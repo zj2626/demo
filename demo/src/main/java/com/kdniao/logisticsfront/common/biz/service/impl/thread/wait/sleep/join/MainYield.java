@@ -11,22 +11,23 @@ public class MainYield {
         threada.start();
         threadb.start();
     }
-}
 
-class ThreadA extends Thread {
-    public void run() {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("ThreadA--" + i);
-            Thread.yield();
+    static class ThreadA extends Thread {
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                System.out.println("ThreadA--" + i);
+                Thread.yield();
+            }
+        }
+    }
+
+    static class ThreadB extends Thread {
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                System.out.println("ThreadB--" + i);
+                Thread.yield();
+            }
         }
     }
 }
 
-class ThreadB extends Thread {
-    public void run() {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("ThreadB--" + i);
-            Thread.yield();
-        }
-    }
-}

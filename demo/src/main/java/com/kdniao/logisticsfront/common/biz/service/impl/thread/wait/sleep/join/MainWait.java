@@ -22,131 +22,130 @@ public class MainWait {
 //        t2.join();
 
     }
-}
 
 
-class RunClass6 implements Runnable {
-    private PrinterNum printerNum;
+    static class RunClass6 implements Runnable {
+        private PrinterNum printerNum;
 
-    public RunClass6(PrinterNum printerNum) {
-        this.printerNum = printerNum;
-    }
-
-    @Override
-    public void run() {
-        try {
-            fun();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        public RunClass6(PrinterNum printerNum) {
+            this.printerNum = printerNum;
         }
-    }
 
-    public void fun() throws InterruptedException {
+        @Override
+        public void run() {
+            try {
+                fun();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void fun() throws InterruptedException {
 //        printerNum.printA();
 
-        synchronized (printerNum) {
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            synchronized (printerNum) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (printerNum.num % 3 == 0) {
+                        System.out.println("RunClass6 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
+                        printerNum.notifyAll();
+                    }
+
+                    printerNum.wait();
+
+                    System.out.println("\nRunClass6 after wait");
                 }
-
-                if (printerNum.num % 3 == 0) {
-                    System.out.println("RunClass6 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
-                    printerNum.notifyAll();
-                }
-
-                printerNum.wait();
-
-                System.out.println("\nRunClass6 after wait");
             }
         }
     }
-}
 
-class RunClass7 implements Runnable {
-    private PrinterNum printerNum;
+    static class RunClass7 implements Runnable {
+        private PrinterNum printerNum;
 
-    public RunClass7(PrinterNum printerNum) {
-        this.printerNum = printerNum;
-    }
-
-    @Override
-    public void run() {
-        try {
-            fun();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        public RunClass7(PrinterNum printerNum) {
+            this.printerNum = printerNum;
         }
-    }
 
-    public void fun() throws InterruptedException {
+        @Override
+        public void run() {
+            try {
+                fun();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void fun() throws InterruptedException {
 //        printerNum.printB();
 
-        synchronized (printerNum) {
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            synchronized (printerNum) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (printerNum.num % 3 == 1) {
+                        System.out.println("RunClass7 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
+                        printerNum.notifyAll();
+                    }
+
+                    printerNum.wait();
+
+                    System.out.println("\nRunClass7 after wait");
                 }
-
-                if (printerNum.num % 3 == 1) {
-                    System.out.println("RunClass7 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
-                    printerNum.notifyAll();
-                }
-
-                printerNum.wait();
-
-                System.out.println("\nRunClass7 after wait");
             }
         }
     }
-}
 
-class RunClass8 implements Runnable {
-    private PrinterNum printerNum;
+    static class RunClass8 implements Runnable {
+        private PrinterNum printerNum;
 
-    public RunClass8(PrinterNum printerNum) {
-        this.printerNum = printerNum;
-    }
-
-    @Override
-    public void run() {
-        try {
-            fun();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        public RunClass8(PrinterNum printerNum) {
+            this.printerNum = printerNum;
         }
-    }
 
-    public void fun() throws InterruptedException {
+        @Override
+        public void run() {
+            try {
+                fun();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void fun() throws InterruptedException {
 //        printerNum.printC();
 
-        synchronized (printerNum) {
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            synchronized (printerNum) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (printerNum.num % 3 == 2) {
+                        System.out.println("RunClass8 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
+                        printerNum.notifyAll();
+                    }
+
+                    printerNum.wait();
+
+                    System.out.println("\nRunClass8 after wait");
                 }
-
-                if (printerNum.num % 3 == 2) {
-                    System.out.println("RunClass8 " + Thread.currentThread().getName() + " <> " + printerNum.num++);
-                    printerNum.notifyAll();
-                }
-
-                printerNum.wait();
-
-                System.out.println("\nRunClass8 after wait");
             }
         }
     }
-}
 
-class PrinterNum {
-    public Integer num = 0;
+    static class PrinterNum {
+        public Integer num = 0;
 
 //    public void printA() throws InterruptedException {
 //        synchronized (this) {
@@ -204,5 +203,8 @@ class PrinterNum {
 //            }
 //        }
 //    }
+    }
+
+
 }
 

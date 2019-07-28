@@ -1,5 +1,8 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.lock;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.counter;
 
+/**
+ * 不可重入
+ */
 public class LockUn {
     private boolean isLocked = false;
 

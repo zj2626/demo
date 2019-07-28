@@ -16,44 +16,42 @@ public class MainSynchronized {
         t2.join();
     }
 
-}
 
-class RunClass4 implements Runnable {
-    private static String name;
-    private String sex;
-    private Object u;
+    static class RunClass4 implements Runnable {
+        private static String name;
+        private String sex;
+        private Object u;
 
-    public RunClass4(String name, String sex, Object u) {
-        this.name = name;
-        this.sex = sex;
-        this.u = u;
-    }
+        public RunClass4(String name, String sex, Object u) {
+            this.name = name;
+            this.sex = sex;
+            this.u = u;
+        }
 
-    @Override
-    public void run() {
-        fun();
-    }
+        @Override
+        public void run() {
+            fun();
+        }
 
-    public void fun() {
+        public void fun() {
 //    public synchronized void fun() { // stop 500
-        synchronized (this) // stop 500
+            synchronized (this) // stop 500
 //        synchronized (name)  // stop 5000
 //        synchronized (sex)  // stop 500
 //        synchronized (u)  // stop 500
 //        synchronized (Locks.class)  // stop 5000
-        {
-            System.out.println(name + " - " + Thread.currentThread().getName());
-            System.out.println(u.hashCode());
+            {
+                System.out.println(name + " - " + Thread.currentThread().getName());
+                System.out.println(u.hashCode());
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 }
 
-class Locks {
 
-}

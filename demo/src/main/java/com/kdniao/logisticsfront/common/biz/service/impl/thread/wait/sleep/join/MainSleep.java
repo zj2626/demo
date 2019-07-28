@@ -14,28 +14,28 @@ public class MainSleep {
 
     }
 
-}
+    static class RunClass5 implements Runnable {
+        private static Integer num = 5;
+        private String u;
 
-class RunClass5 implements Runnable {
-    private static Integer num = 5;
-    private String u;
+        public RunClass5(String u) {
+            this.u = u;
+        }
 
-    public RunClass5(String u) {
-        this.u = u;
-    }
+        @Override
+        public void run() {
+            synchronized (num) {
+                while (true) {
+                    System.out.println(u + " -in- " + Thread.currentThread().getName());
 
-    @Override
-    public void run() {
-        synchronized (num) {
-            while (true) {
-                System.out.println(u + " -in- " + Thread.currentThread().getName());
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
+
 }

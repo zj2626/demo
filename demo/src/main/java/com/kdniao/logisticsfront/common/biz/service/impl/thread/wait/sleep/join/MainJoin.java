@@ -14,19 +14,19 @@ public class MainJoin {
 
     }
 
-}
+    static class RunClass3 implements Runnable {
+        private Object u;
 
-class RunClass3 implements Runnable {
-    private Object u;
+        public RunClass3(Object u) {
+            this.u = u;
+        }
 
-    public RunClass3(Object u) {
-        this.u = u;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            System.out.println("in " + Thread.currentThread().getName());
+        @Override
+        public void run() {
+            while (true) {
+                System.out.println("in " + Thread.currentThread().getName());
+            }
         }
     }
+
 }

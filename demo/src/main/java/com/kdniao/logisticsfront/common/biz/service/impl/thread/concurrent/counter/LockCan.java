@@ -1,12 +1,14 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.lock;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.counter;
 
+/**
+ * 可重入
+ */
 public class LockCan {
     boolean isLocked = false;
     Thread lockedBy = null;
     int lockedCount = 0;
 
-    public synchronized void lock()
-            throws InterruptedException {
+    public synchronized void lock() throws InterruptedException {
         Thread thread = Thread.currentThread();
         while (isLocked && lockedBy != thread) {
             System.out.println(Thread.currentThread().getName() + " wait ");
