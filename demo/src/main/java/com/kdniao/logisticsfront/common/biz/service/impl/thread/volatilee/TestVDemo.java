@@ -1,6 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.volat;
-
-import org.junit.Test;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.volatilee;
 
 public class TestVDemo extends Thread {
     private long i = 0;

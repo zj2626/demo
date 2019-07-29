@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.volat;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.volatilee;
 
 import org.junit.Test;
 

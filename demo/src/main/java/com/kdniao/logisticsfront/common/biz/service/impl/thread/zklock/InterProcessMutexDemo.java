@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.zklock;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁:

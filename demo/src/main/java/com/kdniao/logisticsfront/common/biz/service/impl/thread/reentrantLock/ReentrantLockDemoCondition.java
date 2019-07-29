@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.reentrantLock;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;

@@ -1,10 +1,12 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
 
+import com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.entity.User;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class BlockingQueueDemo {
     public static void main(String[] args) {
         BlockingQueue blockingQueue = new ArrayBlockingQueue(10);
 

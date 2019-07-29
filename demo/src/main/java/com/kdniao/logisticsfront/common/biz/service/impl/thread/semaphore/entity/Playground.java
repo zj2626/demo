@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.entity;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.semaphore.entity;
 
 import java.util.concurrent.Semaphore;
 

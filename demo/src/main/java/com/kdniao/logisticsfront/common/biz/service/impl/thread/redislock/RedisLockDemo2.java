@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.redislock;
 
 import org.redisson.Redisson;
 import org.redisson.api.RAtomicLong;

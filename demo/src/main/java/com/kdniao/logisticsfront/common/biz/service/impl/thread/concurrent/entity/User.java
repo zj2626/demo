@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent;
+package com.kdniao.logisticsfront.common.biz.service.impl.thread.concurrent.entity;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.kdniao.logisticsfront.common.biz.service.impl.thread.semaphore;
 
-import com.kdniao.logisticsfront.common.biz.service.impl.thread.entity.Playground;
+import com.kdniao.logisticsfront.common.biz.service.impl.thread.semaphore.entity.Playground;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -26,7 +26,7 @@ public class SemaphoreDemo {
                 if (track != null) {
                     System.out.println("学生" + num + "在" + track.toString() + "上跑步");
                     TimeUnit.SECONDS.sleep(2);
-                    System.out.println("学生" + num + "释放" + track.toString());
+                    System.out.println(" - - 学生" + num + "释放" + track.toString());
                     //释放跑道
                     playground.releaseTrack(track);
                 }
@@ -41,8 +41,8 @@ public class SemaphoreDemo {
 
         Executor executor = Executors.newCachedThreadPool();
         Playground playground = new Playground();
-        for (int i = 0; i < 100; i++) {
-            executor.execute(new Student(i+1,playground));
+        for (int i = 0; i < 20; i++) {
+            executor.execute(new Student(i+1, playground));
         }
 
     }
