@@ -14,6 +14,16 @@ public class ThreadPoolDemo {
      * newFixedThreadPool:最后一个参数是工作队列,而其默认阻塞队列大小为Integer.MAX_VALUE,当线程多时耗费资源;(but线程数是固定的)
      * newCachedThreadPool:其线程数最大为Integer.MAX_VALUE,导致创建很多线程(but阻塞队列=最大是固定的)
      * newScheduledThreadPool:其线程数最大为Integer.MAX_VALUE,导致创建很多线程(but阻塞队列=最大是固定的)
+     * <p>
+     * <p>
+     * <p>
+     * int corePoolSize,                    核心线程数大小
+     * int maximumPoolSize,                 最大线程数大小
+     * long keepAliveTime,                  超时(存活)时间,超出核心线程数之外的多余线程的存活时间, 0则立刻回收
+     * TimeUnit unit,                       存活时间单位
+     * BlockingQueue<Runnable> workQueue,   阻塞队列
+     * ThreadFactory threadFactory,         线程配置工厂
+     * RejectedExecutionHandler handler     拒绝策略(队列超出最大线程数时)
      *
      * @throws InterruptedException
      */
@@ -70,14 +80,13 @@ public class ThreadPoolDemo {
      */
     @Test
     public void example2() throws InterruptedException {
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("zj-example-pool-%d").build();
         ExecutorService executorService = new ThreadPoolExecutor(
                 5,
                 200,
                 0L,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(1024),
-                threadFactory,
+                new ThreadFactoryBuilder().setNameFormat("zj-example-pool-%d").build(),
                 new ThreadPoolExecutor.AbortPolicy());
 
         System.out.println(executorService);
@@ -104,9 +113,8 @@ public class ThreadPoolDemo {
      */
     @Test
     public void example3() throws InterruptedException {
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("example-pool-%d").build();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadFactory(threadFactory);
+        executor.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("example-pool-%d").build());
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(200);
