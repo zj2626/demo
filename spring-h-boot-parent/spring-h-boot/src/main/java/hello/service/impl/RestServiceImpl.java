@@ -6,6 +6,7 @@ import hello.service.RestService;
 import hello.service.model.TestcModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,18 @@ public class RestServiceImpl implements RestService {
 
     // 模拟查询所有的
     @Override
-    public List<TestcModel> findAll() {
+    public List<TestcModel> findAll(Integer size) {
         List<TestcModel> list = new ArrayList<>();
-        for (int i = 1; i < 20; i++) {
+        int n = 4000;
+        for (int i = n; i < n + size; i++) {
             Testc testc = testcDao.select(i);
             if (null != testc) {
                 list.add(testc.toModel());
             }
+        }
+
+        if(CollectionUtils.isEmpty(list)){
+            throw new RuntimeException("empty data !");
         }
 
         return list;

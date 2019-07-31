@@ -16,8 +16,8 @@ public class RestApiController {
 
     @ApiOperation(value = "获取所有 Product")
     @GetMapping("/products")
-    public String products() {
-        return JSON.toJSONString(restService.findAll());
+    public String products(@RequestParam(defaultValue = "0") Integer size) {
+        return JSON.toJSONString(restService.findAll(size));
     }
 
     @ApiOperation(value = "获取指定 Product")
@@ -28,11 +28,11 @@ public class RestApiController {
 
     @ApiOperation(value = "获取分页 Product 模拟")
     @GetMapping("/products/{code}/reviews")
-    public String page(@PathVariable Integer code, Integer page, Integer size) {
+    public String page(@PathVariable Integer code, @RequestParam Integer page, @RequestParam Integer size) {
         System.out.println(code);
         System.out.println(page);
         System.out.println(size);
-        return JSON.toJSONString(restService.findAll());
+        return JSON.toJSONString(restService.findAll(size));
     }
 
     @ApiOperation(value = "新建一个 Product", notes = "新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]")

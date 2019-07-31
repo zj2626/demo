@@ -13,7 +13,7 @@ public interface RestService {
 
     void createBatch(List<TestcModel> models);
 
-    List<TestcModel> findAll();
+    List<TestcModel> findAll(Integer size);
 
     TestcModel findOne(Integer id);
 

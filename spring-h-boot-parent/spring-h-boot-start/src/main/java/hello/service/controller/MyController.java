@@ -3,7 +3,6 @@ package hello.service.controller;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.service.BaseResult;
 import hello.service.DoSomething;
-import hello.service.InvokeTemplate;
 import hello.transaction.DoSomethingForTransaction;
 import hello.transaction.DoSomethingProxy;
 import hello.transaction.DoTransaction;
@@ -22,8 +21,6 @@ public class MyController {
     private DoSomethingProxy doSomethingProxy;
     @Autowired
     private DoTransaction doTransaction;
-
-    private InvokeTemplate template = new InvokeTemplate();
 
     public MyController() {
         System.out.println("<构造函数> MyController ");
