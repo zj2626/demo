@@ -1,7 +1,6 @@
-package servicejz.springhbootstart;
+package hello.service.start;
 
 import hello.service.controller.RestApiController;
-import hello.service.start.AyBootApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestApiController.class)
 @AutoConfigureRestDocs(outputDir = "target/snippets")
-@ContextConfiguration(classes = AyBootApplication.class)
+@ContextConfiguration(classes = SpringHBootStartApplication.class)
 public class WebLayerTest {
     @Autowired
     private MockMvc mockMvc;

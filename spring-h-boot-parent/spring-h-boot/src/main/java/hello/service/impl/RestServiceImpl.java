@@ -1,4 +1,4 @@
-package hello.control.service;
+package hello.service.impl;
 
 import hello.data.model.Testc;
 import hello.data.service.TestcDao;

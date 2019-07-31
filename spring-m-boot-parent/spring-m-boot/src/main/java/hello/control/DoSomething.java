@@ -5,7 +5,6 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
-import hello.data.service.TestcDao;
 import hello.hystrix.HystrixUtil;
 import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
@@ -36,7 +35,7 @@ public class DoSomething {
     private static final Logger logger4 = LoggerFactory.getLogger("sm.web");
 
     @Autowired
-    private RedisTemplate<String, Object> throttlingRedisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     private DoHSomething doHSomething;
     @Autowired
@@ -45,8 +44,6 @@ public class DoSomething {
     private SimpleMovieLister simpleMovieLister;
     @Autowired
     private MovieRecommender movieRecommender2;
-    @Autowired
-    private TestcDao testcDao;
     @Autowired
     private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
 
@@ -166,16 +163,16 @@ public class DoSomething {
     }
 
     public boolean doredis() {
-        System.out.println("do redis throttlingRedisTemplate: " + (throttlingRedisTemplate != null));
+        System.out.println("do redis redisTemplate: " + (redisTemplate != null));
         System.out.println("do redis simpleMovieLister: " + (simpleMovieLister != null));
         System.out.println("do redis movieRecommender2: " + (movieRecommender2 != null));
 
-        if (null != throttlingRedisTemplate) {
+        if (null != redisTemplate) {
             try {
-                throttlingRedisTemplate.opsForValue().set("a", "B");
+                redisTemplate.opsForValue().set("a", "B");
                 System.out.println("---------------------------");
 
-                throttlingRedisTemplate.execute(new RedisCallback<String>() {
+                redisTemplate.execute(new RedisCallback<String>() {
                     @Override
                     public String doInRedis(RedisConnection connection) throws DataAccessException {
                         connection.openPipeline();
@@ -189,7 +186,7 @@ public class DoSomething {
                     }
                 });
 
-                throttlingRedisTemplate.execute(new SessionCallback<String>() {
+                redisTemplate.execute(new SessionCallback<String>() {
                     @Override
                     public <K, V> String execute(RedisOperations<K, V> operations) throws DataAccessException {
                         RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
@@ -234,13 +231,6 @@ public class DoSomething {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public void testMybatisLog(String codes) {
-        String[] codeList = codes.split(",");
-        for (String code : codeList) {
-            testcDao.select(Integer.valueOf(code));
         }
     }
 

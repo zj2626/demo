@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
-/* restful学习记录见 spring-m-boot-start*/
+/* restful学习记录见 spring-h-boot-start*/
 public class RestApiController {
     private static Map<String, Object> map;
 
