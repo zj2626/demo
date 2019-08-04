@@ -1,10 +1,13 @@
 package hello.service.impl;
 
-import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import hello.service.util.Change;
 import org.apache.kafka.common.PartitionInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +19,18 @@ import java.util.UUID;
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";
+    private String routingKey_5 = "rabbit-to-topic-zj-05";
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
+    private AmqpTemplate amqpTemplate;
+
     public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void setAmqpTemplate(AmqpTemplate amqpTemplate) {
+        this.amqpTemplate = amqpTemplate;
     }
 
     public DoHSomethingImpl() {
@@ -83,7 +93,6 @@ public class DoHSomethingImpl implements DoHSomething {
         return result;
     }
 
-
     private String sendMethod(String name) {
         System.out.println("KAFKA -> " + (null != kafkaTemplate));
         if (null != kafkaTemplate) {
@@ -94,9 +103,26 @@ public class DoHSomethingImpl implements DoHSomething {
             System.out.println(">>>>>>>>>");
         }
 
-        return ">Dubbo fuck u " + name;
+        return "> KAFKA" + name;
     }
 
+    @Override
+    public String sayFuckToRabbitmq(String name) {
+        String result = sendMethodRabbit(name);
+        System.out.println("发送rabbitmq消息完毕 " + result);
+        return result;
+    }
+
+    private String sendMethodRabbit(String name) {
+        System.out.println("RABBITMQ -> " + (null != amqpTemplate));
+        if (null != amqpTemplate) {
+            System.out.println(">>>>");
+            amqpTemplate.send(new Message(name.getBytes(), new MessageProperties()));
+            System.out.println(">>>>>>>>>");
+        }
+
+        return "> RABBITMQ " + name;
+    }
 
 //    /**
 //     * 发送消息

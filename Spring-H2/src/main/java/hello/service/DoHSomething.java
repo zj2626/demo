@@ -7,4 +7,6 @@ public interface DoHSomething {
     String sayFuckToKafka(String name);
 
     String sayShit(String name);
+
+    String sayFuckToRabbitmq(String name);
 }

@@ -244,25 +244,26 @@ public class DoSomething {
     }
 
     public boolean dokafka() {
-//        doMakeLog();
-
         try {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test kafka");
 
             String thing2 = doHSomething.sayFuckToKafka("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    while (true){
-//                        doHSomething.sayFuckToKafka("def");
-//                    }
-//                }
-//            }).start();
+    public boolean dorabbitmq() {
+        try {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    "  getting test rabbitmq");
 
-
+            String thing2 = doHSomething.sayFuckToRabbitmq("abc");
+            System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -95,7 +95,7 @@ public class DoHSomethingImpl implements DoHSomething {
             e.printStackTrace();
         }
 
-        return ">Dubbo fuck u " + name;
+        return "> KAFKA " + name;
     }
 
 

@@ -3,12 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-4.0.xsd
     http://code.alibabatech.com/schema/dubbo
-    http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd"
        default-autowire="byName">
 
     <context:component-scan base-package="hello"/>
@@ -27,13 +28,57 @@
     <dubbo:protocol name="dubbo" port="28081"/>
     <!--声明暴露的服务接口-->
     <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="zj.hello-app"
-                    proxy="javassist"> <!-- filter="mySecondFilter,myOtherFilter" -->
+                   proxy="javassist"> <!-- filter="mySecondFilter,myOtherFilter" -->
         <!--<dubbo:method name="sayHello" async="true" return="true"/>-->
         <!--<dubbo:method name="sayFuck"/>-->
     </dubbo:service>
-    <dubbo:provider retries="3" protocol="dubbo" timeout="5000" group="zj.hello-world-app" cache="false" async="false" accesslog="true"/>
+    <dubbo:provider retries="3" protocol="dubbo" timeout="5000" group="zj.hello-world-app" cache="false" async="false"
+                    accesslog="true"/>
 
     <dubbo:annotation package="hello.service"/>
+
+    <!--rabbitmq-->
+    <!--<bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        &lt;!&ndash;设置了rabbitmq的地址、端口，集群部署的情况下可填写多个，“,”分隔。&ndash;&gt;
+        <property name="addresses" value="localhost:5672"/>
+        <property name="username" value="guest"/>
+        <property name="password" value="guest"/>
+        <property name="virtualHost" value="/"/>
+        &lt;!&ndash;缓存模式，共有两种，CHANNEL和CONNECTION模式&ndash;&gt;
+        &lt;!&ndash;        <property name="cacheMode" value="org.springframework.amqp.rabbit.connection.CachingConnectionFactory.CacheMode.CHANNEL"/>&ndash;&gt;
+        <property name="channelCacheSize" value="25"/>
+        <property name="channelCheckoutTimeout" value="0"/>
+        <property name="publisherReturns" value="false"/>
+        <property name="publisherConfirms" value="false"/>
+    </bean>
+
+    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>-->
+
+    <!--配置connection-factory，指定连接rabbit server参数 -->
+    <rabbit:connection-factory id="rabbitConnectionFactory"
+                               username="guest"
+                               password="guest"
+                               host="localhost"
+                               port="5672"/>
+
+    <!--定义rabbit template用于数据的接收和发送 -->
+    <rabbit:template id="amqpTemplate" connection-factory="rabbitConnectionFactory"
+                     exchange="exchangeTest"/>
+
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成 -->
+    <rabbit:admin connection-factory="rabbitConnectionFactory"/>
+
+    <!-- 定义direct exchange，绑定queueTest -->
+    <rabbit:direct-exchange name="exchangeTest" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="queueTest" key="queueTestKey"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!--定义queue -->
+    <rabbit:queue name="queueTest" durable="true" auto-delete="false" exclusive="false"/>
 
     <!--kafka-->
     <!--生产者-->
@@ -42,12 +87,12 @@
             <map>
                 <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
                 <entry key="group.id" value="zj.hello-app"/>
-                <entry key="retries" value="0" />
-                <entry key="batch.size" value="16384" />
-                <entry key="linger.ms" value="1" />
-                <entry key="buffer.memory" value="33554432" />
-                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer" />
-                <entry key="value.serializer" value="org.apache.kafka.common.serialization.ByteArraySerializer" />
+                <entry key="retries" value="0"/>
+                <entry key="batch.size" value="16384"/>
+                <entry key="linger.ms" value="1"/>
+                <entry key="buffer.memory" value="33554432"/>
+                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="value.serializer" value="org.apache.kafka.common.serialization.ByteArraySerializer"/>
             </map>
         </constructor-arg>
     </bean>

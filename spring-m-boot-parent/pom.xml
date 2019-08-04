@@ -9,6 +9,8 @@
     <description>Demo project for Spring Boot</description>
     <packaging>pom</packaging>
 
+    <!-- http://localhost:8085/swagger-ui.html -->
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -31,7 +31,7 @@ public class MyAopConfig {
 
     @AfterReturning(value = "writeLog()", returning = "result")
     public void doAfterMethod(String result) {
-        System.out.println("@Before:后置通知");
+        System.out.println("@AfterReturning:后置通知");
         System.out.println("doAfterMethod > " + result);
     }
 

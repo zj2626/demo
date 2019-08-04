@@ -125,7 +125,7 @@ public class MyController {
     }
 
     @RequestMapping("/kafka")
-    public BaseResult kafka(String same) {
+    public BaseResult kafka() {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
@@ -134,10 +134,29 @@ public class MyController {
 
             }
 
-
             @Override
             public void doInvoke() {
                 result.setSuccess(doSomething.dokafka());
+            }
+        });
+
+        return result;
+    }
+
+    /* 执行:rabbitmq-plugins enable rabbitmq_management 访问:http://127.0.0.1:15672/ */
+    @RequestMapping("/rabbitmq")
+    public BaseResult rabbitmq() {
+        final BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+
+            }
+
+            @Override
+            public void doInvoke() {
+                result.setSuccess(doSomething.dorabbitmq());
             }
         });
 
