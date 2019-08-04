@@ -6,6 +6,8 @@ public interface DoHSomething {
 
     public String sayFuckToKafka(String name);
 
+    public String sayFuckToRabbitmq(String name);
+
     public String sayShit(String name);
 
     public String sayFuckShit(String name);

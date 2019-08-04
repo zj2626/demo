@@ -8,6 +8,7 @@
     <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="${dubbo.provider.group}"
                    proxy="${dubbo.provider.proxy}">
         <dubbo:method name="sayFuckToKafka" async="true"/>
+        <dubbo:method name="sayFuckToRabbitmq" async="true"/>
         <dubbo:method name="sayHello" return="true"/>
         <dubbo:method name="sayShit" async="false"/>
     </dubbo:service>

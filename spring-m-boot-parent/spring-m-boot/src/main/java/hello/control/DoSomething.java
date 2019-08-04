@@ -221,6 +221,20 @@ public class DoSomething {
         }
     }
 
+    public boolean dorabbitmq() {
+        try {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    "  getting test rabbitmq");
+
+            String thing2 = doHSomething.sayFuckToRabbitmq("abc");
+            System.out.println("\n调用发消息结束 >>>> end " + thing2);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /*httpRequest*/
     public String doHttpRequest(String message) {
         message = StringUtils.isNotEmpty(message) ? message : "defultFuck";

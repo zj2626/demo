@@ -3,6 +3,9 @@ package hello.service.impl;
 import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import org.apache.kafka.common.PartitionInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class DoHSomethingImpl implements DoHSomething {
 
     @Autowired
     private KafkaTemplate<String, byte[]> kafkaTemplate;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     public DoHSomethingImpl() {
         System.out.println("构造造 DoHSomethingImpl");
@@ -98,6 +104,23 @@ public class DoHSomethingImpl implements DoHSomething {
         return "> KAFKA " + name;
     }
 
+    @Override
+    public String sayFuckToRabbitmq(String name) {
+        String result = sendMethodRabbit(name);
+        System.out.println("发送rabbitmq消息完毕 " + result);
+        return result;
+    }
+
+    private String sendMethodRabbit(String name) {
+        System.out.println("RABBITMQ -> " + (null != amqpTemplate));
+        if (null != amqpTemplate) {
+            System.out.println(">>>>");
+            amqpTemplate.send(new Message(name.getBytes(), new MessageProperties()));
+            System.out.println(">>>>>>>>>");
+        }
+
+        return "> RABBITMQ " + name;
+    }
 
     @Override
     public String sayFuckShit(String name) {

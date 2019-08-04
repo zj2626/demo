@@ -10,6 +10,7 @@ import hello.spring.scope.DemoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //@Scope("prototype")
@@ -125,6 +126,26 @@ public class MyController {
             @Override
             public void doInvoke() {
                 result.setSuccess(doSomething.dokafka());
+            }
+        });
+
+        return result;
+    }
+
+    /* 执行:rabbitmq-plugins enable rabbitmq_management 访问:http://127.0.0.1:15672/ */
+    @GetMapping("/rabbitmq")
+    public BaseResult rabbitmq() {
+        final BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+
+            }
+
+            @Override
+            public void doInvoke() {
+                result.setSuccess(doSomething.dorabbitmq());
             }
         });
 
