@@ -21,6 +21,10 @@ public class Print {
         return pattern.matcher(str);
     }
     
+    public static boolean lookingAt(String expression, String str, boolean ifPrint) {
+        return match(expression, str, ifPrint).lookingAt();
+    }
+    
     /**
      * 全部匹配
      *
@@ -30,11 +34,10 @@ public class Print {
      * @return
      */
     public static boolean matches(String expression, String str, boolean ifPrint) {
-        if (ifPrint) {
-            Print.out(expression, str);
-        }
+        return match(expression, str, ifPrint).matches();
         
-        return Pattern.matches(expression, str);
+        // 或者直接用下面的静态方法
+        // return Pattern.matches(expression, str);
     }
     
     public static boolean replace(String expression, String str, boolean ifPrint) {

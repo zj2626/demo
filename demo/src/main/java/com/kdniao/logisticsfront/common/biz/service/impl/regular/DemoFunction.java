@@ -13,19 +13,28 @@ public class DemoFunction {
     String tmp = "hello world hello (abc ea)";
     
     @Test
-    public void matches() {
-        /*全部匹配*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        
-        System.out.println(Print.matches("\\d", tmp, false));
-    }
-    
-    @Test
     public void match() {
         /*包含匹配*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        matcher = Print.match("\\d", tmp, true);
+        matcher = Print.match("hel1lo wor2ld", tmp, true);
         Print.out(matcher);
+    }
+    
+    @Test
+    public void lookingAt() {
+        /*包含匹配*/
+        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        System.out.println(Print.lookingAt("hel1lo wor2ld", tmp, true));
+    }
+    
+    @Test
+    public void matches() {
+        /*全部匹配 整个序列都匹配*/
+        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        
+        System.out.println(Print.matches("hel1lo wor2ld", tmp, true));
+        System.out.println(Print.matches("hel1lo wor2ld hel3lo 4\\(abc\\)5", tmp, true));
+        System.out.println(Print.matches("hel1lo\\ wor2ld\\ hel3lo\\ 4\\(abc\\)5", tmp, true));
     }
     
     @Test
@@ -48,6 +57,16 @@ public class DemoFunction {
         System.out.println(result);
     }
     
+    @Test
+    public void appendReplacement() {
+    
+    }
+    
+    @Test
+    public void appendTail() {
+    
+    }
+    
     /**
      * replacement转义
      * <p>
@@ -68,9 +87,16 @@ public class DemoFunction {
         System.out.println(result);
     }
     
+    /**
+     * regex转义
+     * <p>
+     * 和replacement类似的，如果regex中有字符需要转义，也可主动加\来转义
+     * 在确定regex中不包含正则表达式的时候，可以使用Pattern.quote()来转义
+     */
     @Test
     public void quoteReplacement2() {
         String REGEX = "${dog}";
+        // String REGEX = "\\$\\{dog}"; // 可以改成这样就不需要Pattern.quote()方法
         String INPUT = "The ${dog} says meow All $dogs say meow.";
         String REPLACE = "cat";
         
