@@ -146,10 +146,10 @@ public class DemoTest2 {
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
     
         matcher = Print.match("\\d", tmp, true);
-        Print.out(matcher, end - start);
+        Print.out(matcher);
     
         matcher = Print.match("\\D", tmp, true);
-        Print.out(matcher, end - start);
+        Print.out(matcher);
     }
     
     @Test

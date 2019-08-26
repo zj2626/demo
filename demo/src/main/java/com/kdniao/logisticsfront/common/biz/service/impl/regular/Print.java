@@ -4,13 +4,45 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Print {
-    static Matcher match(String expression, String str, boolean ifPrint) {
+    /**
+     * 包含匹配
+     *
+     * @param expression
+     * @param str
+     * @param ifPrint
+     * @return
+     */
+    public static Matcher match(String expression, String str, boolean ifPrint) {
         if (ifPrint) {
             Print.out(expression, str);
         }
         
         Pattern pattern = Pattern.compile(expression);
         return pattern.matcher(str);
+    }
+    
+    /**
+     * 全部匹配
+     *
+     * @param expression
+     * @param str
+     * @param ifPrint
+     * @return
+     */
+    public static boolean matches(String expression, String str, boolean ifPrint) {
+        if (ifPrint) {
+            Print.out(expression, str);
+        }
+        
+        return Pattern.matches(expression, str);
+    }
+    
+    public static boolean replace(String expression, String str, boolean ifPrint) {
+        if (ifPrint) {
+            Print.out(expression, str);
+        }
+        Pattern pattern = Pattern.compile(expression);
+        return false;
     }
     
     public static long time() {
@@ -22,11 +54,7 @@ public class Print {
         System.out.printf("匹配表达式:%20s\n", expression);
     }
     
-    public static void out(Matcher matcher) {
-        out(matcher, -1L);
-    }
-    
-    public static void out(Matcher matcher, long time) {
+    public static void out(Matcher matcher, long... times) {
         int num = 0;
         while (matcher.find()) {
             num++;
@@ -34,7 +62,11 @@ public class Print {
                     num, matcher.start(), matcher.end(), matcher.group());
             System.out.print("|--\n");
         }
-        System.out.printf("匹配成功次数:%-24s 执行时长:%d\n", num, time);
-        System.out.println("############################################################\n");
+        
+        System.out.printf("匹配成功次数:%-24s ", num);
+        if (times.length > 0) {
+            System.out.printf("执行时长:%s", times[0]);
+        }
+        System.out.println("\n############################################################\n");
     }
 }

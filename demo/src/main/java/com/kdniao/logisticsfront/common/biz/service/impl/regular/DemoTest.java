@@ -154,13 +154,13 @@ public class DemoTest {
             matcher = Print.match("c(?=mK|act|fps)", tmp, false);
         }
         end = Print.time();
-        Print.out(matcher);
+        Print.out(matcher, end - start);
         
         start = Print.time();
         for (int i = 0; i < size; i++) {
             matcher = Print.match("c(?!mK|act|fps)", tmp, false);
         }
         end = Print.time();
-        Print.out(matcher);
+        Print.out(matcher, end - start);
     }
 }
