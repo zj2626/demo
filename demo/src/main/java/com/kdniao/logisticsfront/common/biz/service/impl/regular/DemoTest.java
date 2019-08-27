@@ -155,12 +155,12 @@ public class DemoTest {
         }
         end = Print.time();
         Print.out(matcher, end - start);
+    
+        System.out.println("******");
+        matcher = Print.match("cc(...(?!123))", tmp, false);
+        Print.out(matcher);
         
-        start = Print.time();
-        for (int i = 0; i < size; i++) {
-            matcher = Print.match("c(?!mK|act|fps)", tmp, false);
-        }
-        end = Print.time();
-        Print.out(matcher, end - start);
+        matcher = Print.match("cc^((?!1).)*$", tmp, false);
+        Print.out(matcher);
     }
 }

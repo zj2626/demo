@@ -15,7 +15,7 @@ public class DemoTest2 {
     long end = 0L;
     Matcher matcher;
     int size = 2000000;
-    String tmp = "hello world hello (abc ea)";
+    String tmp = "hello-world hello (abc ea)";
     
     @Test
     public void test9() {
@@ -25,7 +25,7 @@ public class DemoTest2 {
         matcher = Print.match("[oa boooooo]", tmp, true);
         Print.out(matcher, end - start);
         
-        matcher = Print.match("o[r ]", tmp, true);
+        matcher = Print.match("o[(r)(\\-)]", tmp, true);
         Print.out(matcher, end - start);
         
         matcher = Print.match("[^oa b]", tmp, true);
