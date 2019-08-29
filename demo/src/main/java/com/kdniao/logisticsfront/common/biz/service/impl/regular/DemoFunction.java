@@ -120,7 +120,8 @@ public class DemoFunction {
                 "\"storeId\":\"madjb30qnu6nf\",\"storeName\":\"麦当劳车公庙1号店\",\"skuId\":\"mcrjuplspqdou\",\"skuName\":\"肥高套餐620adadsa\"," +
                 "\"orderId\":\"mbblo1beqb3ti\",\"createTime\":1566476698000,\"createUser\":\"system\",\"updateTime\":1566476698000," +
                 "\"updateUser\":\"system\",\"orderNo\":\"1908220000202956\",\"planDeliverTime\":1566468544000," +
-                "\"locatedAddrId\":\"m0dtva277g11g\",\"produceOrderNum\":\"#B984-1\" } ] , \"storeName\": [ \"海松大厦A座404\" , \"海松大厦A座404\"," +
+                "\"locatedAddrId\":\"m0dtva277g11g\",\"produceOrderNum\":\"#B984-1\" } ] , \"storeName\": [ \"海松大厦A座404\" , " +
+                "\"海松大厦A座404\"," +
                 "\"海松大厦A座404\"] , \"orderMaster\" :  { \"id\":\"mbblo1beqb3ti\",\"actualAmount\":0.80,\"address\":\"海松大厦A座404\"," +
                 "\"addressMask\":\"海松大厦A座**4\",\"amount\":1.00,\"createTime\":1566467644000,\"createUser\":\"m8sq6okjeu7eq\"," +
                 "\"deliverFee\":0.00,\"deliverType\":0,\"discountAmount\":0.20,\"isPaid\":0,\"kitchenCoId\":\"m6olhg2putpo8\"," +
@@ -157,7 +158,8 @@ public class DemoFunction {
                 "\"storeId\":\"madjb30qnu6nf\",\"storeName\":\"麦当劳车公庙1号店\",\"skuId\":\"mcrjuplspqdou\",\"skuName\":\"肥高套餐620adadsa\"," +
                 "\"orderId\":\"mbblo1beqb3ti\",\"createTime\":1566476698000,\"createUser\":\"system\",\"updateTime\":1566476698000," +
                 "\"updateUser\":\"system\",\"orderNo\":\"1908220000202956\",\"planDeliverTime\":1566468544000," +
-                "\"locatedAddrId\":\"m0dtva277g11g\",\"produceOrderNum\":\"#B984-1\" } ] , \"storeName\": [ \"海松大厦A座404\" , \"海松大厦A座404\"," +
+                "\"locatedAddrId\":\"m0dtva277g11g\",\"produceOrderNum\":\"#B984-1\" } ] , \"storeName\": [ \"海松大厦A座404\" , " +
+                "\"海松大厦A座404\"," +
                 "\"海松大厦A座404\"] , \"orderMaster\" :  { \"id\":\"mbblo1beqb3ti\",\"actualAmount\":0.80,\"address\":\"海松大厦A座404\"," +
                 "\"addressMask\":\"海松大厦A座**4\",\"amount\":1.00,\"createTime\":1566467644000,\"createUser\":\"m8sq6okjeu7eq\"," +
                 "\"deliverFee\":0.00,\"deliverType\":0,\"discountAmount\":0.20,\"isPaid\":0,\"kitchenCoId\":\"m6olhg2putpo8\"," +
@@ -181,15 +183,36 @@ public class DemoFunction {
             if (key.contains(":")) {
                 /* 要替换成的字符串*/
                 String replacement = key.replaceAll("\"", "").replace(":", "");
-
+                
                 String matchingStr = "\"" + replacement.trim() + "\":";
                 matcher.appendReplacement(sb, matchingStr);
             }
         }
         matcher.appendTail(sb);
-    
+        
         System.out.println("\n替换前字符串: \n" + json);
-        System.out.println("匹配成功次数: " + count);;
+        System.out.println("匹配成功次数: " + count);
+        ;
         System.out.println("替换后字符串: \n" + sb.toString());
+    }
+    
+    /*两个连续相同的字符正则*/
+    @Test
+    public void same() {
+        /*全部匹配 整个序列都匹配*/
+        tmp = "hel1lo  wwwor2ld  heel3lo  4(abc)5";
+        String regx = "^*(.)\\1{1}";
+//        String regx = "^*( )\\1{1}";
+        
+        StringBuffer sb = new StringBuffer();
+        Matcher matcher = Print.match(regx, tmp, false);
+        while (matcher.find()) {
+            System.out.println("###");
+            String key = tmp.substring(matcher.start(), matcher.end());
+            System.out.println(key);
+            matcher.appendReplacement(sb, key + "*");
+        }
+        matcher.appendTail(sb);
+        System.out.println(sb.toString());
     }
 }
