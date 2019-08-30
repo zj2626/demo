@@ -4,6 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Print {
+    public static long time() {
+        return System.currentTimeMillis();
+    }
+    
     /**
      * 包含匹配
      *
@@ -14,12 +18,18 @@ public class Print {
      */
     public static Matcher match(String expression, String str, boolean ifPrint) {
         if (ifPrint) {
-            Print.out(expression, str);
+            out(expression, str);
         }
         
         Pattern pattern = Pattern.compile(expression);
         return pattern.matcher(str);
     }
+    
+    private static void out(String expression, String str) {
+        System.out.printf("字符串:%30s\t长度: %3d\n", str, str.length());
+        System.out.printf("匹配表达式:%20s\n", expression);
+    }
+    
     
     public static boolean lookingAt(String expression, String str, boolean ifPrint) {
         return match(expression, str, ifPrint).lookingAt();
@@ -39,24 +49,7 @@ public class Print {
         // 或者直接用下面的静态方法
         // return Pattern.matches(expression, str);
     }
-    
-    public static boolean replace(String expression, String str, boolean ifPrint) {
-        if (ifPrint) {
-            Print.out(expression, str);
-        }
-        Pattern pattern = Pattern.compile(expression);
-        return false;
-    }
-    
-    public static long time() {
-        return System.currentTimeMillis();
-    }
-    
-    public static void out(String expression, String str) {
-        System.out.printf("字符串:%30s\t长度: %3d\n", str, str.length());
-        System.out.printf("匹配表达式:%20s\n", expression);
-    }
-    
+  
     public static void out(Matcher matcher, long... times) {
         int num = 0;
         while (matcher.find()) {

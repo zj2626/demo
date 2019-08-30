@@ -16,7 +16,8 @@ public class DemoFunction {
     public void match() {
         /*包含匹配*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        matcher = Print.match("hel1lo wor2ld", tmp, true);
+        Pattern pattern = Pattern.compile("hel1lo wor2ld");
+        Matcher matcher = pattern.matcher(tmp);
         Print.out(matcher);
     }
     
@@ -24,7 +25,9 @@ public class DemoFunction {
     public void lookingAt() {
         /*包含匹配*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        System.out.println(Print.lookingAt("hel1lo wor2ld", tmp, true));
+        Pattern pattern = Pattern.compile("hel1lo wor2ld");
+        Matcher matcher = pattern.matcher(tmp);
+        System.out.println(matcher.lookingAt());
     }
     
     @Test
@@ -32,6 +35,10 @@ public class DemoFunction {
         /*全部匹配 整个序列都匹配*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         
+        // 方法一
+        System.out.println(Pattern.matches("hel1lo wor2ld", tmp));
+        
+        // 方法二
         System.out.println(Print.matches("hel1lo wor2ld", tmp, true));
         System.out.println(Print.matches("hel1lo wor2ld hel3lo 4\\(abc\\)5", tmp, true));
         System.out.println(Print.matches("hel1lo\\ wor2ld\\ hel3lo\\ 4\\(abc\\)5", tmp, true));
@@ -41,8 +48,8 @@ public class DemoFunction {
     public void replaceAll() {
         /*匹配替换全部*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        matcher = Print.match("\\d", tmp, true);
-        Print.out(matcher);
+        Pattern pattern = Pattern.compile("\\d");
+        Matcher matcher = pattern.matcher(tmp);
         String result = matcher.replaceAll("X");
         System.out.println(result);
     }
@@ -51,19 +58,23 @@ public class DemoFunction {
     public void replaceFirst() {
         /*匹配替换第一个*/
         tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        matcher = Print.match("\\d", tmp, true);
+        Pattern pattern = Pattern.compile("\\d");
+        Matcher matcher = pattern.matcher(tmp);
         System.out.println(matcher.replaceFirst("XXX"));
     }
     
     @Test
     public void appendReplacement() {
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        matcher = Print.match("\\d", tmp, true);
+        /*文本替换 循环替换*/
+        tmp = "hel1lo wor2ld hel3lo 4abc5";
+        Pattern pattern = Pattern.compile("\\d");
+        Matcher matcher = pattern.matcher(tmp);
         int num = 0;
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             num++;
-            matcher.appendReplacement(sb, "XXX" + num);
+            String key = tmp.substring(matcher.start(), matcher.end());
+            matcher.appendReplacement(sb, "(" + key + ")");
         }
         matcher.appendTail(sb);
         System.out.println(num);
@@ -87,6 +98,7 @@ public class DemoFunction {
         
         matcher = Print.match(REGEX, INPUT, true);
         Print.out(matcher);
+        
         String result = matcher.replaceAll(Matcher.quoteReplacement(REPLACE));
         System.out.println(result);
     }
@@ -106,6 +118,7 @@ public class DemoFunction {
         
         matcher = Print.match(Pattern.quote(REGEX), INPUT, true);
         Print.out(matcher);
+        
         String result = matcher.replaceAll(REPLACE);
         System.out.println(result);
     }
