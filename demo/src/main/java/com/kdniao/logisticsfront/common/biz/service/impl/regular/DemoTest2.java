@@ -57,7 +57,7 @@ public class DemoTest2 {
     
     @Test
     public void test10() {
-        tmp = "hello world hello (abc (llo) lloo) o\tlloo ";
+        tmp = "hello world hello (abc (llo) llo) o\tlloo ";
         /*匹配llo在右边界的字符串: 空格以及符号为边界*/
         matcher = Print.match("llo\\b", tmp, true);
         Print.out(matcher, end - start);

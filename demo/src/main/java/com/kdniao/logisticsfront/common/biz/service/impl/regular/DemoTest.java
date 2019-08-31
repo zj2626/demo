@@ -37,6 +37,10 @@ public class DemoTest {
         pattern = Pattern.compile("bccc$");
         matcher = pattern.matcher(tmp);
         Print.out(matcher);
+    
+        pattern = Pattern.compile("^abc*123abc*$");
+        matcher = pattern.matcher(tmp);
+        Print.out(matcher);
     }
     
     @Test
