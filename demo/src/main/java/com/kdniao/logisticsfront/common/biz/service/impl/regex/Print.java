@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.regular;
+package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,10 +53,10 @@ public class Print {
     public static void out(Matcher matcher, long... times) {
         int num = 0;
         while (matcher.find()) {
-            num++;
             System.out.printf("匹配到的第%2d个子字符串的位置是从%2d到%2d, 匹配的子字符串为:%5s",
                     num, matcher.start(), matcher.end(), matcher.group());
             System.out.print("|--\n");
+            num++;
         }
         
         System.out.printf("匹配成功次数:%-24s ", num);

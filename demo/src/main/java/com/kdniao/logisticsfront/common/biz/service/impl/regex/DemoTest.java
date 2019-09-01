@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.regular;
+package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class DemoTest {
     long start = 0L;
     long end = 0L;
     Matcher matcher;
-    int size = 2000000;
+    int size = 200;
     
     @Test
     public void demo() {
@@ -37,7 +37,7 @@ public class DemoTest {
         pattern = Pattern.compile("bccc$");
         matcher = pattern.matcher(tmp);
         Print.out(matcher);
-    
+        
         pattern = Pattern.compile("^abc*123abc*$");
         matcher = pattern.matcher(tmp);
         Print.out(matcher);
@@ -97,6 +97,9 @@ public class DemoTest {
         matcher = Print.match("abc??", tmp, true);
         Print.out(matcher);
         
+        matcher = Print.match("abc{2}", tmp, true);
+        Print.out(matcher);
+        
         matcher = Print.match("abc{2,5}", tmp, true);
         Print.out(matcher);
         
@@ -106,12 +109,25 @@ public class DemoTest {
     
     @Test
     public void test6() {
-        String tmp = "abccmoba123abccfps123abccact";
+//        String tmp = "abccmoba123abccfps123abccact";
+        String tmp = "abccd1233abccd";
         
-        matcher = Print.match("(abcc)", tmp, true);
+        matcher = Print.match("abc", tmp, true);
         Print.out(matcher);
         
-        matcher = Print.match("(abc|abcc)", tmp, true);
+        matcher = Print.match("(abc)", tmp, true);
+        Print.out(matcher);
+        
+        matcher = Print.match("123|abc+", tmp, true);
+        Print.out(matcher);
+    
+        matcher = Print.match("123+|abc+", tmp, true);
+        Print.out(matcher);
+        
+        matcher = Print.match("(123|abc)+", tmp, true);
+        Print.out(matcher);
+        
+        matcher = Print.match("(123)+|(abc)+", tmp, true);
         Print.out(matcher);
     }
     
@@ -144,27 +160,38 @@ public class DemoTest {
     
     @Test
     public void test8() {    // TODO what is this ???
-        String tmp = "abccmoba123abccfps123abccact";
-        
-        start = Print.time();
-        for (int i = 0; i < size; i++) {
-            matcher = Print.match("c(?:mK|act|fps)", tmp, false);
-        }
-        end = Print.time();
-        Print.out(matcher, end - start);
-        
-        start = Print.time();
-        for (int i = 0; i < size; i++) {
-            matcher = Print.match("c(?=mK|act|fps)", tmp, false);
-        }
-        end = Print.time();
-        Print.out(matcher, end - start);
+        String tmp = "abccc";
     
-        System.out.println("******");
-        matcher = Print.match("cc(...(?!123))", tmp, false);
+        matcher = Print.match("a(bc*)", tmp, true);
+        Print.out(matcher);
+    
+        matcher = Print.match("a(?:bc*)", tmp, true);
+        Print.out(matcher);
+    
+        System.out.println("###################");
+        
+        tmp = "abc acd aef gbc";
+    
+        matcher = Print.match("a(bc|cd)", tmp, true);
         Print.out(matcher);
         
-        matcher = Print.match("cc^((?!1).)*$", tmp, false);
+        matcher = Print.match("a(?:bc|cd)", tmp, true);
+        Print.out(matcher);
+        
+        // 前瞻
+        matcher = Print.match("a(?=bc|cd)", tmp, true);
+        Print.out(matcher);
+    
+        // 后顾
+        matcher = Print.match("(?<=a)(bc|cd)", tmp, true);
+        Print.out(matcher);
+    
+        // 负前瞻
+        matcher = Print.match("a(?!bc|cd)", tmp, true);
+        Print.out(matcher);
+    
+        // 负后顾
+        matcher = Print.match("(?<!a)(bc|cd)", tmp, true);
         Print.out(matcher);
     }
 }

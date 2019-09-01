@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.regular;
+package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import org.junit.Test;
 
@@ -57,7 +57,7 @@ public class DemoTest2 {
     
     @Test
     public void test10() {
-        tmp = "hello world hello (abc (llo) llo) o\tlloo ";
+        tmp = "hello world hello (abc (llo) llo) o\tlloo";
         /*匹配llo在右边界的字符串: 空格以及符号为边界*/
         matcher = Print.match("llo\\b", tmp, true);
         Print.out(matcher, end - start);
@@ -86,18 +86,12 @@ public class DemoTest2 {
         /*同理*/
         matcher = Print.match("\t", tmp, true);
         Print.out(matcher, end - start);
-        /*同理*/
-        matcher = Print.match("\\t", tmp, true);
-        Print.out(matcher, end - start);
     
         /*** 匹配\n ***/
         matcher = Print.match("\\cJ", tmp, true);
         Print.out(matcher, end - start);
         /*同理*/
         matcher = Print.match("\n", tmp, true);
-        Print.out(matcher, end - start);
-        /*同理*/
-        matcher = Print.match("\\n", tmp, true);
         Print.out(matcher, end - start);
     
         /*** 匹配\r ***/
@@ -106,18 +100,12 @@ public class DemoTest2 {
         /*同理*/
         matcher = Print.match("\r", tmp, true);
         Print.out(matcher, end - start);
-        /*同理*/
-        matcher = Print.match("\\r", tmp, true);
-        Print.out(matcher, end - start);
     
         /*** 匹配\f ***/
         matcher = Print.match("\\cL", tmp, true);
         Print.out(matcher, end - start);
         /*同理*/
         matcher = Print.match("\f", tmp, true);
-        Print.out(matcher, end - start);
-        /*同理*/
-        matcher = Print.match("\\f", tmp, true);
         Print.out(matcher, end - start);
         
         /*** 匹配\v ***/

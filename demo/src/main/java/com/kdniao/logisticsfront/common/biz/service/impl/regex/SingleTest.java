@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.regular;
+package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.kdniao.logisticsfront.common.biz.service.impl.regular;
+package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import org.junit.Test;
 
@@ -6,16 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DemoFunction {
-    long start = 0L;
-    long end = 0L;
-    Matcher matcher;
-    int size = 2000000;
-    String tmp = "hello world hello (abc ea)";
-    
     @Test
     public void match() {
         /*包含匹配*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         Pattern pattern = Pattern.compile("hel1lo wor2ld");
         Matcher matcher = pattern.matcher(tmp);
         Print.out(matcher);
@@ -24,7 +18,7 @@ public class DemoFunction {
     @Test
     public void lookingAt() {
         /*包含匹配*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         Pattern pattern = Pattern.compile("hel1lo wor2ld");
         Matcher matcher = pattern.matcher(tmp);
         System.out.println(matcher.lookingAt());
@@ -33,7 +27,7 @@ public class DemoFunction {
     @Test
     public void matches() {
         /*全部匹配 整个序列都匹配*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         
         // 方法一
         System.out.println(Pattern.matches("hel1lo wor2ld", tmp));
@@ -41,13 +35,12 @@ public class DemoFunction {
         // 方法二
         System.out.println(Print.matches("hel1lo wor2ld", tmp, true));
         System.out.println(Print.matches("hel1lo wor2ld hel3lo 4\\(abc\\)5", tmp, true));
-        System.out.println(Print.matches("hel1lo\\ wor2ld\\ hel3lo\\ 4\\(abc\\)5", tmp, true));
     }
     
     @Test
     public void replaceAll() {
         /*匹配替换全部*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         Pattern pattern = Pattern.compile("\\d");
         Matcher matcher = pattern.matcher(tmp);
         String result = matcher.replaceAll("X");
@@ -57,7 +50,7 @@ public class DemoFunction {
     @Test
     public void replaceFirst() {
         /*匹配替换第一个*/
-        tmp = "hel1lo wor2ld hel3lo 4(abc)5";
+        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         Pattern pattern = Pattern.compile("\\d");
         Matcher matcher = pattern.matcher(tmp);
         System.out.println(matcher.replaceFirst("XXX"));
@@ -66,7 +59,7 @@ public class DemoFunction {
     @Test
     public void appendReplacement() {
         /*文本替换 循环替换*/
-        tmp = "hel1lo wor2ld hel3lo 4abc5";
+        String tmp = "hel1lo wor2ld hel3lo 4abc5";
         Pattern pattern = Pattern.compile("\\d");
         Matcher matcher = pattern.matcher(tmp);
         int num = 0;
@@ -95,8 +88,8 @@ public class DemoFunction {
         String INPUT = "The dog says meow All $dogs say meow.";
         String REPLACE = "$cat";
         REPLACE = "cat\\";
-        
-        matcher = Print.match(REGEX, INPUT, true);
+    
+        Matcher matcher = Print.match(REGEX, INPUT, true);
         Print.out(matcher);
         
         String result = matcher.replaceAll(Matcher.quoteReplacement(REPLACE));
@@ -115,8 +108,8 @@ public class DemoFunction {
         // String REGEX = "\\$\\{dog}"; // 可以改成这样就不需要Pattern.quote()方法
         String INPUT = "The ${dog} says meow All $dogs say meow.";
         String REPLACE = "cat";
-        
-        matcher = Print.match(Pattern.quote(REGEX), INPUT, true);
+    
+        Matcher matcher = Print.match(Pattern.quote(REGEX), INPUT, true);
         Print.out(matcher);
         
         String result = matcher.replaceAll(REPLACE);
@@ -158,6 +151,46 @@ public class DemoFunction {
         
         System.out.println(Pattern.matches(expression, json.trim()));
     }
+    
+    /*捕获组 有n个"("就有n+1个分组*/
+    @Test
+    public void group() {
+        String tmp = "2017-04-25";
+        
+        /*普通捕获组 从正则表达式左侧开始，每出现一个左括号“(”记做一个分组，分组编号从1开始。0代表整个表达式*/
+        Matcher matcher = Print.match("(\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        for (int i = 0; i <= matcher.groupCount(); i++) {
+            System.out.println(matcher.group(i));
+        }
+        
+        /*命名捕获组 每个以左括号开始的捕获组，都紧跟着“?”，而后才是正则表达式*/
+        matcher = Print.match("(?<year>\\d{4})-(?<md>(?<month>\\d{2})-(?<day>\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.group("year"));
+        System.out.println(matcher.group("md"));
+        System.out.println(matcher.group("month"));
+        System.out.println(matcher.group("day"));
+    
+        /*非捕获组*/
+        matcher = Print.match("(?:\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.groupCount());
+        matcher = Print.match("(?:\\d{4})-(?:(\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.groupCount());
+        
+        /*更多*/
+        tmp = "2017-04-25 2012-07-21 ";
+        matcher = Print.match("((\\d{4})-((\\d{2})-(\\d{2})) )", tmp, true);
+//        Print.out(matcher);
+        matcher.find();
+        System.out.println(matcher.group(1));
+        matcher.find();
+        System.out.println(matcher.group(1));
+    }
+    
+    Matcher matcher;
     
     /**
      * 替换json字符串的所有key
@@ -213,7 +246,7 @@ public class DemoFunction {
     @Test
     public void same() {
         /*全部匹配 整个序列都匹配*/
-        tmp = "hel1lo  wwwor2ld  heel3lo  4(abc)5";
+        String tmp = "hel1lo  wwwor2ld  heel3lo  4(abc)5";
         String regx = "^*(.)\\1{1}";
 //        String regx = "^*( )\\1{1}";
         
