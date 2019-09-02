@@ -2,6 +2,7 @@ package com.kdniao.logisticsfront.common.biz.service.impl.regex;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,10 +10,13 @@ public class DemoFunction {
     @Test
     public void match() {
         /*包含匹配*/
-        String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
-        Pattern pattern = Pattern.compile("hel1lo wor2ld");
+        String tmp = "hello world hello world";
+        Pattern pattern = Pattern.compile("hello world");
         Matcher matcher = pattern.matcher(tmp);
         Print.out(matcher);
+        System.out.println(pattern.flags());
+        System.out.println(pattern.pattern());
+        System.out.println(Arrays.toString(pattern.split(tmp)));
     }
     
     @Test
@@ -21,6 +25,7 @@ public class DemoFunction {
         String tmp = "hel1lo wor2ld hel3lo 4(abc)5";
         Pattern pattern = Pattern.compile("hel1lo wor2ld");
         Matcher matcher = pattern.matcher(tmp);
+        System.out.println(matcher.find());
         System.out.println(matcher.lookingAt());
     }
     
@@ -88,7 +93,7 @@ public class DemoFunction {
         String INPUT = "The dog says meow All $dogs say meow.";
         String REPLACE = "$cat";
         REPLACE = "cat\\";
-    
+        
         Matcher matcher = Print.match(REGEX, INPUT, true);
         Print.out(matcher);
         
@@ -108,12 +113,46 @@ public class DemoFunction {
         // String REGEX = "\\$\\{dog}"; // 可以改成这样就不需要Pattern.quote()方法
         String INPUT = "The ${dog} says meow All $dogs say meow.";
         String REPLACE = "cat";
-    
+        
         Matcher matcher = Print.match(Pattern.quote(REGEX), INPUT, true);
         Print.out(matcher);
         
         String result = matcher.replaceAll(REPLACE);
         System.out.println(result);
+    }
+    
+    /*捕获组 有n个"("就有n+1个分组*/
+    @Test
+    public void group() {
+        String tmp = "2017-04-25";
+        
+        /*普通捕获组 从正则表达式左侧开始，每出现一个左括号“(”记做一个分组，分组编号从1开始。0代表整个表达式*/
+        Matcher matcher = Print.match("(\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        for (int i = 0; i <= matcher.groupCount(); i++) {
+            System.out.println(matcher.group(i));
+        }
+
+        /*命名捕获组 每个以左括号开始的捕获组，都紧跟着“?”，而后才是正则表达式*/
+        matcher = Print.match("(?<year>\\d{4})-(?<md>(?<month>\\d{2})-(?<day>\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.group("year"));
+        System.out.println(matcher.group("md"));
+        System.out.println(matcher.group("month"));
+        System.out.println(matcher.group("day"));
+
+        /*非捕获组*/
+        matcher = Print.match("(?:\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.groupCount());
+        matcher = Print.match("(?:\\d{4})-(?:(\\d{2})-(\\d{2}))", tmp, true);
+        matcher.find();
+        System.out.println(matcher.groupCount());
+        
+        /*更多*/
+        tmp = "2017-04-25 2017-04-25 ";
+        matcher = Print.match("((\\d{4})-((\\d{2})-(\\d{2})) )\\1", tmp, true);
+        Print.out(matcher);
     }
     
     /*判断是否json字符串*/
@@ -150,44 +189,6 @@ public class DemoFunction {
         String expression = "\\[ *?(?!\\{).* *?]";
         
         System.out.println(Pattern.matches(expression, json.trim()));
-    }
-    
-    /*捕获组 有n个"("就有n+1个分组*/
-    @Test
-    public void group() {
-        String tmp = "2017-04-25";
-        
-        /*普通捕获组 从正则表达式左侧开始，每出现一个左括号“(”记做一个分组，分组编号从1开始。0代表整个表达式*/
-        Matcher matcher = Print.match("(\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
-        matcher.find();
-        for (int i = 0; i <= matcher.groupCount(); i++) {
-            System.out.println(matcher.group(i));
-        }
-        
-        /*命名捕获组 每个以左括号开始的捕获组，都紧跟着“?”，而后才是正则表达式*/
-        matcher = Print.match("(?<year>\\d{4})-(?<md>(?<month>\\d{2})-(?<day>\\d{2}))", tmp, true);
-        matcher.find();
-        System.out.println(matcher.group("year"));
-        System.out.println(matcher.group("md"));
-        System.out.println(matcher.group("month"));
-        System.out.println(matcher.group("day"));
-    
-        /*非捕获组*/
-        matcher = Print.match("(?:\\d{4})-((\\d{2})-(\\d{2}))", tmp, true);
-        matcher.find();
-        System.out.println(matcher.groupCount());
-        matcher = Print.match("(?:\\d{4})-(?:(\\d{2})-(\\d{2}))", tmp, true);
-        matcher.find();
-        System.out.println(matcher.groupCount());
-        
-        /*更多*/
-        tmp = "2017-04-25 2012-07-21 ";
-        matcher = Print.match("((\\d{4})-((\\d{2})-(\\d{2})) )", tmp, true);
-//        Print.out(matcher);
-        matcher.find();
-        System.out.println(matcher.group(1));
-        matcher.find();
-        System.out.println(matcher.group(1));
     }
     
     Matcher matcher;
