@@ -3,6 +3,7 @@ package service.cloud.start;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * ********************
@@ -25,7 +26,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * <p>
  * 在微服务架构中，需要几个基础的服务治理组件，包括服务注册与发现、服务消费、负载均衡、断路器、智能路由、配置管理等
  */
-@EnableDiscoveryClient
+@EnableEurekaServer
 @SpringBootApplication
 public class SpringCloudApplication {
 
