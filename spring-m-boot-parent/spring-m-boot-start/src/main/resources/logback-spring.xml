@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="logDir" value="E:/logs/spring-m"/>
+    <property name="logDir" value="C:/logs/spring-m"/>
 <!--    <property name="logDir" value="/data/logs/ay"/>-->
     <property resource="application.properties" />
     <property name="application.name" value="${application.name}"/>

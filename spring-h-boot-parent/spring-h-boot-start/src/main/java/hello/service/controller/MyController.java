@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController
 public class MyController {
     @Autowired
@@ -29,9 +32,9 @@ public class MyController {
     
     @ApiOperation(value = "/")
     @GetMapping("/")
-    public String index() {
+    public void index(HttpServletResponse response) throws IOException {
         System.out.println("hello");
-        return "redirect:/swagger-ui.html";
+        response.sendRedirect("swagger-ui.html");
     }
     
     @GetMapping("/transaction")

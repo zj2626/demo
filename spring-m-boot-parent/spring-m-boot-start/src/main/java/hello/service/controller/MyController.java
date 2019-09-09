@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 //@Scope("prototype")
 @RestController
 public class MyController {
@@ -34,12 +37,12 @@ public class MyController {
 //        System.out.println("<构造函数> MyController 2");
 //        this.doSomething = doSomething;
 //    }
-
+    
     @ApiOperation(value = "/")
     @GetMapping("/")
-    public String index() {
+    public void index(HttpServletResponse response) throws IOException {
         System.out.println("hello");
-        return "redirect:/swagger-ui.html";
+        response.sendRedirect("swagger-ui.html");
     }
 
     @GetMapping("/dubbo")

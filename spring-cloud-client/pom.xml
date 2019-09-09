@@ -74,47 +74,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>-->
-
-        <!--<dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-web</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-apollo</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-tag</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-sso</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-notify</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-doc</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-activemq</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>common.core</groupId>
-            <artifactId>common-cache</artifactId>
-            <version>${common.core.version}</version>
-        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
