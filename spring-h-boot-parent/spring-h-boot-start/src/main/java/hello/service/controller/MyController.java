@@ -6,6 +6,7 @@ import hello.service.DoSomething;
 import hello.transaction.DoSomethingForTransaction;
 import hello.transaction.DoSomethingProxy;
 import hello.transaction.DoTransaction;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,14 @@ public class MyController {
     public MyController() {
         System.out.println("<构造函数> MyController ");
     }
-
+    
+    @ApiOperation(value = "/")
+    @GetMapping("/")
+    public String index() {
+        System.out.println("hello");
+        return "redirect:/swagger-ui.html";
+    }
+    
     @GetMapping("/transaction")
     public BaseResult transaction(String code) {
         BaseResult result = new BaseResult();

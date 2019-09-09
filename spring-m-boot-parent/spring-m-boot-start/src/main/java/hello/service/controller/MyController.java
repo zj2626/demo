@@ -39,7 +39,7 @@ public class MyController {
     @GetMapping("/")
     public String index() {
         System.out.println("hello");
-        return "hello";
+        return "redirect:/swagger-ui.html";
     }
 
     @GetMapping("/dubbo")
