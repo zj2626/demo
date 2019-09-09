@@ -19,14 +19,14 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication(scanBasePackages = "hello")
 @ImportResource({"classpath:dubbo-consumer.xml"})
 @EnableCaching
-public class AyBootApplication extends SpringBootServletInitializer {
+public class SpringMBootStartApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(AyBootApplication.class, args);
+        SpringApplication.run(SpringMBootStartApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(AyBootApplication.class);
+        return builder.sources(SpringMBootStartApplication.class);
     }
 }
