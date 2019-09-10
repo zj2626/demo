@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
-public class RedisConfig {
+public class RedisTemplateConfig {
     @Value("${spring.redis.password}")
     private String password;
     
@@ -25,6 +25,9 @@ public class RedisConfig {
     
     @Value("${spring.redis.port}")
     private Integer port;
+    
+    @Value("${spring.redis.timeout}")
+    private Integer timeout;
     
     @Value("${spring.redis.jedis.pool.max-total}")
     private Integer maxTotal;
@@ -55,9 +58,9 @@ public class RedisConfig {
     private GenericJackson2JsonRedisSerializer hashValueSerializer = new GenericJackson2JsonRedisSerializer();
     
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory jedisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
         redisTemplate.setKeySerializer(keySerializer);
         redisTemplate.setValueSerializer(valueSerializer);
         redisTemplate.setHashKeySerializer(hashKeySerializer);
@@ -67,8 +70,7 @@ public class RedisConfig {
         return redisTemplate;
     }
     
-    @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
+    private JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnectionFactory = null;
         
         /* redis哨兵连接启动 */
@@ -85,12 +87,13 @@ public class RedisConfig {
             jedisConnectionFactory.setPort(port);
         }
         
+        jedisConnectionFactory.setTimeout(timeout);
         jedisConnectionFactory.setPassword(password);
         jedisConnectionFactory.afterPropertiesSet();
         return jedisConnectionFactory;
     }
     
-    public RedisSentinelConfiguration redisSentinelConfiguration() {
+    private RedisSentinelConfiguration redisSentinelConfiguration() {
         if (StringUtils.isEmpty(sentinelMaster)) {
             return null;
         }
@@ -111,7 +114,7 @@ public class RedisConfig {
         return redisSentinelConfiguration;
     }
     
-    public JedisPoolConfig jedisPoolConfig() {
+    private JedisPoolConfig jedisPoolConfig() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxIdle(maxIdle);
