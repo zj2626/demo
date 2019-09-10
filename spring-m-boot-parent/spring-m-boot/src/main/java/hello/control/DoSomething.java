@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,8 @@ public class DoSomething {
     private static final Logger logger3 = LoggerFactory.getLogger("sm.err");
     private static final Logger logger4 = LoggerFactory.getLogger("sm.web");
 
+    @Autowired
+    private Jedis jedis;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
@@ -164,20 +167,23 @@ public class DoSomething {
 
     public boolean doredis() {
         System.out.println("do redis redisTemplate: " + (redisTemplate != null));
-        System.out.println("do redis simpleMovieLister: " + (simpleMovieLister != null));
-        System.out.println("do redis movieRecommender2: " + (movieRecommender2 != null));
+        System.out.println("do redis jedis: " + (jedis != null));
 
         if (null != redisTemplate) {
             try {
                 redisTemplate.opsForValue().set("a", "B");
                 System.out.println("---------------------------");
-
+                jedis.zadd("queue_00", 1, "a");
+                jedis.zadd("queue_00", 2, "b");
+                jedis.zadd("queue_00", 3, "c");
+                jedis.zadd("queue_00", 3, "d");
+                System.out.println("---------------------------");
                 redisTemplate.execute(new RedisCallback<String>() {
                     @Override
                     public String doInRedis(RedisConnection connection) throws DataAccessException {
                         connection.openPipeline();
 
-                        connection.zCount("route_pulling_queue_00".getBytes(), 0, 1552036878499L);
+                        connection.zCount("queue_00".getBytes(), 0, 1552036878499L);
 
                         List<Object> result = connection.closePipeline();
                         System.out.println("_______");
@@ -190,7 +196,7 @@ public class DoSomething {
                     @Override
                     public <K, V> String execute(RedisOperations<K, V> operations) throws DataAccessException {
                         RedisOperations<String, Object> redisOperations = (RedisOperations<String, Object>) operations;
-                        Long result = redisOperations.opsForZSet().count("route_pulling_queue_00", 0, 1552036878499L);
+                        Long result = redisOperations.opsForZSet().count("queue_00", 0, 1552036878499L);
                         System.out.println("_______");
                         System.out.println(result);
                         return null;
@@ -237,6 +243,9 @@ public class DoSomething {
 
     /*httpRequest*/
     public String doHttpRequest(String message) {
+        System.out.println("do simpleMovieLister: " + (simpleMovieLister != null));
+        System.out.println("do movieRecommender2: " + (movieRecommender2 != null));
+        
         message = StringUtils.isNotEmpty(message) ? message : "defultFuck";
 
         Map<String, Object> params = new HashMap<String, Object>();

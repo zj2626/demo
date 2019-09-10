@@ -154,14 +154,14 @@ public class RedisTest {
         RedisTemplate redisTemplate = (RedisTemplate) applicationContext.getBean("redisTemplate");
 
         List<String> zSet = Arrays.asList(
-                "route_pulling_queue_00",
-                "route_pulling_queue_05",
-                "route_sub_followup_queue_00"
+                "queue_00",
+                "queue_05",
+                "up_queue_00"
         );
 
         List<String> hash = Arrays.asList(
-                "route_subscription_01",
-                "route_subscription_04"
+                "subscription_01",
+                "subscription_04"
         );
 
         List result = null;

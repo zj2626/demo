@@ -3,9 +3,15 @@ package hello.configuraion;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisSentinelPool;
+import redis.clients.util.Pool;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 public class JedisConfig {
@@ -43,17 +49,34 @@ public class JedisConfig {
     
     @Bean
     public Jedis jedis() {
-        JedisPool jedisPool = new JedisPool(
-                jedisPoolConfig(),
-                this.host,
-                this.port,
-                this.timeout,
-                this.password,
-                0,
-                null
-        );
+        Pool<Jedis> jedisPool = jedisSentinel();
+        
+        if (null == jedisPool) {
+            jedisPool = new JedisPool(
+                    jedisPoolConfig(),
+                    this.host,
+                    this.port,
+                    this.timeout,
+                    this.password,
+                    0,
+                    null
+            );
+        }
         
         return jedisPool.getResource();
+        
+    }
+    
+    private JedisSentinelPool jedisSentinel() {
+        if (StringUtils.isEmpty(sentinelMaster)) {
+            return null;
+        }
+        
+        Set<String> redisNodeSet = new HashSet<>();
+        for (String x : sentinelNodes) {
+            redisNodeSet.add(x);
+        }
+        return new JedisSentinelPool(sentinelMaster, redisNodeSet, jedisPoolConfig());
     }
     
     private JedisPoolConfig jedisPoolConfig() {
