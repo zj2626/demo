@@ -7,6 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource({"classpath:dubbo-provider.xml", "classpath:transaction.xml"})
 @MapperScan("hello.data.mapper")
 @EnableTransactionManagement
+@EnableJms //启动消息队列
 //@Import(ServiceConfiguration.class)
 public class SpringHBootStartApplication extends SpringBootServletInitializer {
 

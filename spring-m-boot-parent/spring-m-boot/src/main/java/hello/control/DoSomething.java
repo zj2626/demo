@@ -226,12 +226,12 @@ public class DoSomething {
             return false;
         }
     }
-
+    
     public boolean dorabbitmq() {
         try {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test rabbitmq");
-
+            
             String thing2 = doHSomething.sayFuckToRabbitmq("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
@@ -240,7 +240,21 @@ public class DoSomething {
             return false;
         }
     }
-
+    
+    public boolean doactivemq() {
+        try {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    "  getting test activemq");
+            
+            String thing2 = doHSomething.sayFuckToActivemq("abc");
+            System.out.println("\n调用发消息结束 >>>> end " + thing2);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     /*httpRequest*/
     public String doHttpRequest(String message) {
         System.out.println("do simpleMovieLister: " + (simpleMovieLister != null));

@@ -18,7 +18,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @SpringBootApplication(scanBasePackages = "hello")
 @ImportResource({"classpath:dubbo-consumer.xml"})
-@EnableCaching
+//@EnableCaching
 public class SpringMBootStartApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

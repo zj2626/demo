@@ -154,6 +154,25 @@ public class MyController {
 
         return result;
     }
+    
+    @GetMapping("/activemq")
+    public BaseResult activemq() {
+        final BaseResult result = new BaseResult();
+        result.setSuccess(false);
+        this.template.invoke(result, new InvokeCallback() {
+            @Override
+            public void checkParameters() {
+            
+            }
+            
+            @Override
+            public void doInvoke() {
+                result.setSuccess(doSomething.doactivemq());
+            }
+        });
+        
+        return result;
+    }
 
     @GetMapping("/fuck")
     public String fuck(String name) {

@@ -2,15 +2,18 @@ package hello.service.impl;
 
 import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
+import hello.service.model.Change;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.kafka.common.PartitionInfo;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import hello.service.model.Change;
 
+import javax.jms.Destination;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -19,17 +22,20 @@ import java.util.UUID;
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";
-
+    
     @Autowired
     private KafkaTemplate<String, byte[]> kafkaTemplate;
-
+    
     @Autowired
     private AmqpTemplate amqpTemplate;
-
+    
+    @Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
+    
     public DoHSomethingImpl() {
         System.out.println("构造造 DoHSomethingImpl");
     }
-
+    
     @Override
     public String sayHello(String name) {
         try {
@@ -38,7 +44,7 @@ public class DoHSomethingImpl implements DoHSomething {
             e.printStackTrace();
         }
         System.out.println("Hello****************************** " + name);
-
+        
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("sayHello RpcContext aa > " + rpcContext.get("aa"));
         System.out.println("sayHello RpcContext cc > " + rpcContext.get("cc"));
@@ -47,16 +53,16 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("sayHello RpcContext aa > " + rpcContext.getAttachment("aa"));
         System.out.println("sayHello RpcContext cc > " + rpcContext.getAttachment("cc"));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-
+        
         // set requestId
         System.out.println("**************");
 //        rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
 //        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-
+        
         return ">Dubbo " + name;
     }
-
+    
     @Override
     public String sayShit(String name) {
         try {
@@ -64,9 +70,9 @@ public class DoHSomethingImpl implements DoHSomething {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        
         System.out.println("SHIT****************************** " + name);
-
+        
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("sayShit RpcContext aa > " + rpcContext.get("aa"));
         System.out.println("sayShit RpcContext cc > " + rpcContext.get("cc"));
@@ -75,18 +81,18 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("sayShit RpcContext aa > " + rpcContext.getAttachment("aa"));
         System.out.println("sayShit RpcContext cc > " + rpcContext.getAttachment("cc"));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-
+        
         return "shit u " + name;
     }
-
+    
     @Override
     public String sayFuckToKafka(String name) {
         String result = sendMethod(name);
         System.out.println("发送kafka消息完毕 " + result);
         return result;
     }
-
-
+    
+    
     private String sendMethod(String name) {
         try {
             System.out.println("KAFKA -> " + (null != kafkaTemplate));
@@ -100,17 +106,17 @@ public class DoHSomethingImpl implements DoHSomething {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return "> KAFKA " + name;
     }
-
+    
     @Override
     public String sayFuckToRabbitmq(String name) {
         String result = sendMethodRabbit(name);
         System.out.println("发送rabbitmq消息完毕 " + result);
         return result;
     }
-
+    
     private String sendMethodRabbit(String name) {
         System.out.println("RABBITMQ -> " + (null != amqpTemplate));
         if (null != amqpTemplate) {
@@ -118,10 +124,30 @@ public class DoHSomethingImpl implements DoHSomething {
             amqpTemplate.send(new Message(name.getBytes(), new MessageProperties()));
             System.out.println(">>>>>>>>>");
         }
-
+        
         return "> RABBITMQ " + name;
     }
-
+    
+    @Override
+    public String sayFuckToActivemq(String name) {
+        String result = sendMethodActive(name);
+        System.out.println("发送activemq消息完毕 " + result);
+        return result;
+    }
+    
+    private String sendMethodActive(String name) {
+        System.out.println("ACTIVEMQ -> " + (null != jmsMessagingTemplate));
+        if (null != jmsMessagingTemplate) {
+            System.out.println(">>>>");
+            Destination destination = new ActiveMQQueue("test.spring.active.queue");
+            
+            jmsMessagingTemplate.convertAndSend(destination, name);
+            System.out.println(">>>>>>>>>");
+        }
+        
+        return "> ACTIVEMQ " + name;
+    }
+    
     @Override
     public String sayFuckShit(String name) {
         System.out.println("调用了 " + name);

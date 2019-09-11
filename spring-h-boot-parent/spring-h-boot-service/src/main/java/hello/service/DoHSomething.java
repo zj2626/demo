@@ -9,6 +9,8 @@ public interface DoHSomething {
     public String sayFuckToRabbitmq(String name);
 
     public String sayShit(String name);
-
+    
+    String sayFuckToActivemq(String name);
+    
     public String sayFuckShit(String name);
 }
