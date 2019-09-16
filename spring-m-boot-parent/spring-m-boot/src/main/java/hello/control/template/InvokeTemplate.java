@@ -1,4 +1,6 @@
-package hello.control;
+package hello.control.template;
+
+import hello.control.BaseResult;
 
 public class InvokeTemplate {
 

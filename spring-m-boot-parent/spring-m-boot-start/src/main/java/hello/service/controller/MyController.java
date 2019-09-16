@@ -2,15 +2,14 @@ package hello.service.controller;
 
 import hello.control.BaseResult;
 import hello.control.DoSomething;
-import hello.control.InvokeCallback;
-import hello.control.InvokeTemplate;
+import hello.control.template.InvokeCallback;
+import hello.control.template.InvokeTemplate;
 import hello.lock.LockServiceA;
 import hello.lock.LockServiceB;
 import hello.spring.scope.DemoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;

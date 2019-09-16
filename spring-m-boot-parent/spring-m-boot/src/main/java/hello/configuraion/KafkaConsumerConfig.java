@@ -1,6 +1,5 @@
 package hello.configuraion;
 
-import hello.control.GetSomething1;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,33 +18,33 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class KafkaConsumerConfig {
-
+    
     @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServers;
-
+    
     @Value("${spring.kafka.consumer.enable-auto-commit}")
     private Boolean autoCommit;
-
+    
     @Value("${spring.kafka.consumer.auto-commit-interval}")
     private Integer autoCommitInterval;
-
+    
     @Value("${spring.kafka.consumer.max-poll-records}")
     private Integer maxPollRecords;
-
+    
     @Value("${spring.kafka.consumer.auto-offset-reset}")
     private String autoOffsetReset;
-
+    
     @Value("${spring.kafka.consumer.session-timeout}")
     private String sessionTimeout;
-
+    
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
-
+    
     private String groupId2 = "group-1";
-
+    
     @Value("${spring.kafka.listener.concurrency}")
     private Integer concurrency;
-
+    
     private Integer concurrency2 = 5;
 
 //    @Value("#{'${spring.kafka.listener.concurrencys}'.split(',')[0]}")
@@ -53,13 +52,13 @@ public class KafkaConsumerConfig {
 //
 //    @Value("#{'${spring.kafka.listener.concurrencys}'.split(',')[1]}")
 //    private Integer concurrency6;
-
+    
     @Value("${spring.kafka.consumer.key-deserializer}")
     private String keyDeserializer;
-
+    
     @Value("${spring.kafka.consumer.value-deserializer}")
     private String valueDeserializer;
-
+    
     /**
      * 并发数10
      *
@@ -73,7 +72,7 @@ public class KafkaConsumerConfig {
 //        factory.setMessageConverter();
         return factory;
     }
-
+    
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>(11);
@@ -90,7 +89,7 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
         return props;
     }
-
+    
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -105,14 +104,14 @@ public class KafkaConsumerConfig {
 //        factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL_IMMEDIATE);
         return factory;
     }
-
+    
     @Bean
     public ConsumerFactory<String, byte[]> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
-
+    
     /*********************************配置的第二个消费者****************************/
-
+    
     /**
      * 并发数5
      *
@@ -125,7 +124,7 @@ public class KafkaConsumerConfig {
         factory.setConcurrency(concurrency2);
         return factory;
     }
-
+    
     @Bean
     public Map<String, Object> consumerConfigs2() {
         Map<String, Object> props = new HashMap<>(11);
@@ -142,18 +141,18 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
         return props;
     }
-
+    
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory2() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory2());
         return factory;
     }
-
+    
     @Bean
     public ConsumerFactory<String, byte[]> consumerFactory2() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs2());
     }
-
-
+    
+    
 }

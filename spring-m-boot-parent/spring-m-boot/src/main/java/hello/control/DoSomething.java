@@ -78,7 +78,7 @@ public class DoSomething {
 
             //################################## 同步
             System.out.println("#sayShit ");
-            System.out.println("#sayShit " + doHSomething.sayShit("0-0-0-0"));
+            System.out.println("#sayShit " + doHSomething.remoteToDubboSync("0-0-0-0"));
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide2 = rpcContext.isConsumerSide();
             String serverIP2 = rpcContext.getRemoteHost();
@@ -89,7 +89,7 @@ public class DoSomething {
 
             //################################## 异步
             System.out.println("#sayHello >>>> begin");
-            System.out.println("#sayHello " + doHSomething.sayHello("sFFFFFFF"));
+            System.out.println("#sayHello " + doHSomething.remoteToDubboAsync("sFFFFFFF"));
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide3 = rpcContext.isConsumerSide();
             String serverIP3 = rpcContext.getRemoteHost();
@@ -218,7 +218,7 @@ public class DoSomething {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test kafka");
 
-            String thing2 = doHSomething.sayFuckToKafka("abc");
+            String thing2 = doHSomething.remoteToKafka("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {
@@ -232,7 +232,7 @@ public class DoSomething {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test rabbitmq");
             
-            String thing2 = doHSomething.sayFuckToRabbitmq("abc");
+            String thing2 = doHSomething.remoteToRabbitmq("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {
@@ -246,7 +246,7 @@ public class DoSomething {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test activemq");
             
-            String thing2 = doHSomething.sayFuckToActivemq("abc");
+            String thing2 = doHSomething.remoteToActivemq("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {

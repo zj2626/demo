@@ -8,8 +8,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetSomething1 {
-    private static final Logger logger = LoggerFactory.getLogger(GetSomething1.class);
+public class GetSomeThingOfKafkaComsumer {
+    private static final Logger logger = LoggerFactory.getLogger(GetSomeThingOfKafkaComsumer.class);
 
     @KafkaListener(topics = {"kfk-to-topic-zj", "kfk-to-topic-zj-05", "defaultTopic-zj"}, containerFactory = "kafkaBatchListener")
     public void listen(ConsumerRecord<String, byte[]> data) {

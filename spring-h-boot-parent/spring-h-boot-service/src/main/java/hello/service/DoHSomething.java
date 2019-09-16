@@ -2,15 +2,15 @@ package hello.service;
 
 public interface DoHSomething {
 
-    public String sayHello(String name);
+    public String remoteToDubboAsync(String name);
 
-    public String sayFuckToKafka(String name);
+    public String remoteToKafka(String name);
 
-    public String sayFuckToRabbitmq(String name);
+    public String remoteToRabbitmq(String name);
 
-    public String sayShit(String name);
+    public String remoteToDubboSync(String name);
     
-    String sayFuckToActivemq(String name);
+    String remoteToActivemq(String name);
     
-    public String sayFuckShit(String name);
+    public String local(String name);
 }

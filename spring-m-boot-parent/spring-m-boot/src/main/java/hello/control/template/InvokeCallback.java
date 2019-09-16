@@ -1,4 +1,4 @@
-package hello.control;
+package hello.control.template;
 
 public abstract class InvokeCallback {
     public void checkParameters() {

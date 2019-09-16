@@ -37,7 +37,7 @@ public class DoHSomethingImpl implements DoHSomething {
     }
     
     @Override
-    public String sayHello(String name) {
+    public String remoteToDubboAsync(String name) {
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -64,7 +64,7 @@ public class DoHSomethingImpl implements DoHSomething {
     }
     
     @Override
-    public String sayShit(String name) {
+    public String remoteToDubboSync(String name) {
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -86,7 +86,7 @@ public class DoHSomethingImpl implements DoHSomething {
     }
     
     @Override
-    public String sayFuckToKafka(String name) {
+    public String remoteToKafka(String name) {
         String result = sendMethod(name);
         System.out.println("发送kafka消息完毕 " + result);
         return result;
@@ -111,45 +111,37 @@ public class DoHSomethingImpl implements DoHSomething {
     }
     
     @Override
-    public String sayFuckToRabbitmq(String name) {
-        String result = sendMethodRabbit(name);
-        System.out.println("发送rabbitmq消息完毕 " + result);
-        return result;
-    }
-    
-    private String sendMethodRabbit(String name) {
+    public String remoteToRabbitmq(String name) {
         System.out.println("RABBITMQ -> " + (null != amqpTemplate));
         if (null != amqpTemplate) {
             System.out.println(">>>>");
             amqpTemplate.send(new Message(name.getBytes(), new MessageProperties()));
             System.out.println(">>>>>>>>>");
         }
-        
-        return "> RABBITMQ " + name;
-    }
     
-    @Override
-    public String sayFuckToActivemq(String name) {
-        String result = sendMethodActive(name);
-        System.out.println("发送activemq消息完毕 " + result);
+        String result = "> RABBITMQ " + name;
+        System.out.println("发送rabbitmq消息完毕 " + result);
         return result;
     }
     
-    private String sendMethodActive(String name) {
+    @Override
+    public String remoteToActivemq(String name) {
         System.out.println("ACTIVEMQ -> " + (null != jmsMessagingTemplate));
         if (null != jmsMessagingTemplate) {
             System.out.println(">>>>");
             Destination destination = new ActiveMQQueue("test.spring.active.queue");
-            
+        
             jmsMessagingTemplate.convertAndSend(destination, name);
             System.out.println(">>>>>>>>>");
         }
         
-        return "> ACTIVEMQ " + name;
+        String result = "> ACTIVEMQ " + name;
+        System.out.println("发送activemq消息完毕 " + result);
+        return result;
     }
     
     @Override
-    public String sayFuckShit(String name) {
+    public String local(String name) {
         System.out.println("调用了 " + name);
         return name;
     }

@@ -13,9 +13,9 @@ public class H2Controller {
     private Integer down = 2;
 
 
-    @GetMapping("/ddd")
+    @GetMapping("/local")
     public String test(String name) {
-        String result = doHSomething.sayFuckShit(name);
+        String result = doHSomething.local(name);
 
         return result;
     }
