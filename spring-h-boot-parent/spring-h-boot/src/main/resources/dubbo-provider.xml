@@ -3,14 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
-    <!--dubbo-->
-    <!--声明暴露的服务接口-->
+    <!--dubbo 声明暴露的服务接口-->
     <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="${dubbo.provider.group}"
                    proxy="${dubbo.provider.proxy}">
-        <dubbo:method name="sayFuckToKafka" async="true"/>
-        <dubbo:method name="sayFuckToRabbitmq" async="true"/>
-        <dubbo:method name="sayHello" return="true"/>
-        <dubbo:method name="sayShit" async="false"/>
+        <dubbo:method name="remoteToDubboSync" async="false"/>
+        <dubbo:method name="remoteToDubboAsync" async="true" return="true"/>
+        <dubbo:method name="remoteToKafka" async="true"/>
+        <dubbo:method name="remoteToRabbitmq" async="true"/>
     </dubbo:service>
 
     <dubbo:annotation package="${dubbo.scan.base-packages}"/>

@@ -9,7 +9,7 @@
 
     <dubbo:reference id="doHSomething" interface="hello.service.DoHSomething" group="${dubbo.consumer.group}"
                      filter="${dubbo.consumer.filter}">
-        <!--<dubbo:method name="sayHello" async="true" return="true"/>-->
-        <!--<dubbo:method name="sayFuck"/>-->
+        <!--<dubbo:method name="remoteToDubboAsync" async="true" return="true"/>-->
+        <!--<dubbo:method name="remoteToDubboSync"/>-->
     </dubbo:reference>
 </beans>

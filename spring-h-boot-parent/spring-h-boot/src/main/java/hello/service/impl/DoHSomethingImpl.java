@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@com.alibaba.dubbo.config.annotation.Service(group = "${dubbo.provider.group}")
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";
@@ -37,21 +38,40 @@ public class DoHSomethingImpl implements DoHSomething {
     }
     
     @Override
-    public String remoteToDubboAsync(String name) {
+    public String remoteToDubboSync(String name) {
         try {
-            Thread.sleep(1500);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Hello****************************** " + name);
         
         RpcContext rpcContext = RpcContext.getContext();
-        System.out.println("sayHello RpcContext aa > " + rpcContext.get("aa"));
-        System.out.println("sayHello RpcContext cc > " + rpcContext.get("cc"));
+        System.out.println("remoteToDubboSync RpcContext aa > " + rpcContext.get("aa"));
+        System.out.println("remoteToDubboSync RpcContext cc > " + rpcContext.get("cc"));
+//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
+        System.out.println("**********");
+        System.out.println("remoteToDubboSync RpcContext aa > " + rpcContext.getAttachment("aa"));
+        System.out.println("remoteToDubboSync RpcContext cc > " + rpcContext.getAttachment("cc"));
+//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
+        
+        return "remoteToDubboSync " + name;
+    }
+    
+    @Override
+    public String remoteToDubboAsync(String name) {
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        RpcContext rpcContext = RpcContext.getContext();
+        System.out.println("remoteToDubboAsync RpcContext aa > " + rpcContext.get("aa"));
+        System.out.println("remoteToDubboAsync RpcContext cc > " + rpcContext.get("cc"));
 //        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
         System.out.println("**********");
-        System.out.println("sayHello RpcContext aa > " + rpcContext.getAttachment("aa"));
-        System.out.println("sayHello RpcContext cc > " + rpcContext.getAttachment("cc"));
+        System.out.println("remoteToDubboAsync RpcContext aa > " + rpcContext.getAttachment("aa"));
+        System.out.println("remoteToDubboAsync RpcContext cc > " + rpcContext.getAttachment("cc"));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
         
         // set requestId
@@ -60,29 +80,7 @@ public class DoHSomethingImpl implements DoHSomething {
 //        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
 //        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
         
-        return ">Dubbo " + name;
-    }
-    
-    @Override
-    public String remoteToDubboSync(String name) {
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        System.out.println("SHIT****************************** " + name);
-        
-        RpcContext rpcContext = RpcContext.getContext();
-        System.out.println("sayShit RpcContext aa > " + rpcContext.get("aa"));
-        System.out.println("sayShit RpcContext cc > " + rpcContext.get("cc"));
-//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
-        System.out.println("**********");
-        System.out.println("sayShit RpcContext aa > " + rpcContext.getAttachment("aa"));
-        System.out.println("sayShit RpcContext cc > " + rpcContext.getAttachment("cc"));
-//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-        
-        return "shit u " + name;
+        return "remoteToDubboAsync " + name;
     }
     
     @Override
@@ -91,7 +89,6 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("发送kafka消息完毕 " + result);
         return result;
     }
-    
     
     private String sendMethod(String name) {
         try {
