@@ -68,10 +68,7 @@ public class MyController {
     }
 
     @GetMapping("/dubbo2")
-    public BaseResult dubbo2(String same) {
-        final Boolean sameBoolean = Boolean.valueOf(same);
-        System.out.println("into dubbo2");
-
+    public BaseResult dubbo2() {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
@@ -84,7 +81,7 @@ public class MyController {
             @Override
             public void doInvoke() {
                 System.out.println("do invoke");
-                result.setSuccess(doSomething.dodubbo2(sameBoolean));
+                result.setSuccess(doSomething.dodubbo2());
             }
         });
 

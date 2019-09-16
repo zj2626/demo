@@ -9,7 +9,7 @@ public class DoWithAnnotationImpl implements DoWithAnnotation {
 
     @Override
     public String sayFuck(String name) {
-        System.out.println("doHSomethingImpl sayFuck " + name);
+        System.out.println("doHSomethingImpl sayFuck " + name + ", 执行时间: " + System.currentTimeMillis());
         return "fuck u " + name;
     }
 }

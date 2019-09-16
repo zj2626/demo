@@ -1,6 +1,7 @@
 package hello.control;
 
 import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
@@ -39,9 +40,9 @@ public class DoSomething {
     private Jedis jedis;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-    @Autowired
+    @Reference(group = "${dubbo.consumer.group}")
     private DoHSomething doHSomething;
-    @Autowired
+    @Reference(group = "${dubbo.consumer.group}", cache = "true")
     private DoWithAnnotation doWithAnnotation;
     @Autowired
     private SimpleMovieLister simpleMovieLister;
@@ -116,7 +117,7 @@ public class DoSomething {
             String requestId4 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
             String timestamp4 = rpcContext.getUrl().getParameter("timestamp");
             
-            System.out.println("RPC 1 -> " + requestId  + " > " + serverIP  + " > " + isConsumerSide  + " > " + timestamp);
+            System.out.println("RPC 1 -> " + requestId + " > " + serverIP + " > " + isConsumerSide + " > " + timestamp);
             System.out.println("RPC 2 -> " + requestId2 + " > " + serverIP2 + " > " + isConsumerSide2 + " > " + timestamp2);
             System.out.println("RPC 3 -> " + requestId3 + " > " + serverIP3 + " > " + isConsumerSide3 + " > " + timestamp3);
             System.out.println("RPC 4 -> " + requestId4 + " > " + serverIP4 + " > " + isConsumerSide4 + " > " + timestamp4);
@@ -129,30 +130,20 @@ public class DoSomething {
         }
     }
     
-    public boolean dodubbo2(Boolean same) {
-        System.out.println(">>>>>>>>>>>");
-        
-        String msg;
-        String info;
-        if (null != same && !same) {
-            info = new Random(123).toString();
-            msg = doWithAnnotation.sayFuck(info);
-        } else {
-            info = "0";
-            msg = doWithAnnotation.sayFuck(info);
-        }
-        System.out.println("doWithAnnotation get message >>>> " + msg + " from " + info);
-        
-        System.out.println("\n回声测试开始");
-        EchoService echoService = (EchoService) doWithAnnotation;
-        String status = (String) echoService.$echo("OK\n");
-        System.out.println(status);
-        System.out.println("\n回声测试完毕");
+    public boolean dodubbo2() {
+//        System.out.println("\n回声测试开始 >>>>>>>>>>>>>");
+//        EchoService echoService = (EchoService) doWithAnnotation;
+//        String status = (String) echoService.$echo("OK\n");
+//        System.out.println(status);
+//        System.out.println("\n回声测试完毕 <<<<<<<<<<<<<");
         
         System.out.println("测试缓存 缓存的最大量是1000");
-        for (int n = 0; n < 2; n++) { // 改为1001则下面的测试则会调用接口而不是使用缓存 (缓存的最大量是1000)
+        // 改为1001则下面的测试则会调用接口而不是使用缓存 (缓存的最大量是1000)
+        for (int n = 0; n < 1000; n++) {
             String pre = null;
-            for (int i = 0; i < 10; i++) {
+            int i;
+            // 每个相同参数调用2次,第二次会直接走缓存不会调用到外部服务
+            for (i = 0; i < 2; i++) {
                 String result = doWithAnnotation.sayFuck(String.valueOf(n));
                 System.out.println(n);
                 if (pre != null && !pre.equals(result)) {
@@ -167,7 +158,7 @@ public class DoSomething {
             Thread.sleep(3000);
         } catch (InterruptedException ignored) {
         }
-        System.out.println("测试LRU有移除最开始的一个缓存项");
+        System.out.println("测试LRU有移除最开始的一个缓存项 执行时间: " + System.currentTimeMillis());
         doWithAnnotation.sayFuck("0");
         
         return true;
