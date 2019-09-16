@@ -93,6 +93,7 @@ public class DoSomething {
             //################################## 异步
             System.out.println("\n异步 DUBBO请求 >>>>>>>>>>>>>>>>>> ");
             doHSomething.remoteToDubboAsync("user " + 0);
+            doHSomething.remoteToDubboAsync("user " + 1);
             System.out.println("异步请求 doing...");
             
             // 本端是否为消费端，这里会返回true
