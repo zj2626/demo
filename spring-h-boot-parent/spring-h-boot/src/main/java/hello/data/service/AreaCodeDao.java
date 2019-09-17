@@ -4,10 +4,10 @@
  */
 package hello.data.service;
 
-import com.alibaba.dubbo.common.utils.CollectionUtils;
-import com.alibaba.dubbo.common.utils.StringUtils;
 import hello.data.mapper.UCAreaDOMapper;
 import hello.data.model.UCAreaDO;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class AreaCodeDao {
     private static String[] provinceUnits = {"省", "自治区", "市", "特别行政区"}; // "新疆生产建设兵团"
     private static String[] cityUnits = {"市", "县", "自治县", "自治州", "地区"};
     private static String[] countyUnits = {"市", "辖区", "区", "县", "自治县"};
-
+    
     @Autowired
     private UCAreaDOMapper areaDOMapper;
-
+    
     /**
      * 通过名称查询code 拼接行政单位 增加查到几率
      *
@@ -37,7 +37,7 @@ public class AreaCodeDao {
      */
     public String queryCodeByName(String name, Integer level, String code) {
         List<String> names = new ArrayList<String>();
-
+        
         if (StringUtils.isNotEmpty(name)) {
             if (level == 2) {
                 for (String provinceUnit : provinceUnits) {
@@ -46,12 +46,12 @@ public class AreaCodeDao {
                         break;
                     }
                 }
-
+                
                 names.add(name);
                 for (String provinceUnit : provinceUnits) {
                     names.add(name + provinceUnit);
                 }
-
+                
             } else if (level == 3) {
                 for (String cityUnit : cityUnits) {
                     if (name.contains(cityUnit)) {
@@ -59,12 +59,12 @@ public class AreaCodeDao {
                         break;
                     }
                 }
-
+                
                 names.add(name);
                 for (String cityUnit : cityUnits) {
                     names.add(name + cityUnit);
                 }
-
+                
             } else if (level == 4) {
                 for (String countyUnit : countyUnits) {
                     if (name.contains(countyUnit)) {
@@ -72,21 +72,21 @@ public class AreaCodeDao {
                         break;
                     }
                 }
-
+                
                 names.add(name);
                 for (String countyUnit : countyUnits) {
                     names.add(name + countyUnit);
                 }
             }
         }
-
+        
         if (StringUtils.isNotEmpty(code)) {
             code = code.replaceAll("0*$", ""); // 去除结尾的0
         }
-
+        
         return queryCodeByName(names, level, code);
     }
-
+    
     /**
      * 通过区域名称获取其对应的code,目前仅为优速(UC)使用
      *
@@ -110,24 +110,24 @@ public class AreaCodeDao {
         if (StringUtils.isNotEmpty(code)) {
             areaDO.setAreaCode(code);
         }
-
+        
         List<UCAreaDO> areaDOS = null;
         try {
             areaDOS = areaDOMapper.findByEntity(areaDO);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         if (CollectionUtils.isEmpty(areaDOS)) {
             return null;
         }
         return areaDOS.get(0).getAreaCode();
     }
-
+    
     public List<UCAreaDO> getArea(String code) {
         UCAreaDO areaDO = new UCAreaDO();
         areaDO.setAreaCode(code);
-
+        
         try {
             return areaDOMapper.findByEntity(areaDO);
         } catch (Exception e) {
@@ -135,12 +135,12 @@ public class AreaCodeDao {
         }
         return null;
     }
-
+    
     public Integer updateNameArea(String code, String name) {
         UCAreaDO areaDO = new UCAreaDO();
         areaDO.setAreaCode(code);
         areaDO.setAreaName(name);
-
+        
         try {
             return areaDOMapper.updateUCArea(areaDO);
         } catch (Exception e) {
@@ -148,13 +148,13 @@ public class AreaCodeDao {
         }
         return null;
     }
-
+    
     public Integer insertArea(String code, String name) {
         UCAreaDO areaDO = new UCAreaDO();
         areaDO.setId(UUID.randomUUID().toString());
         areaDO.setAreaCode(code);
         areaDO.setAreaName(name);
-
+        
         try {
             return areaDOMapper.insertUCArea(areaDO);
         } catch (Exception e) {
@@ -162,11 +162,11 @@ public class AreaCodeDao {
         }
         return null;
     }
-
+    
     public Integer removeArea(String code) {
         UCAreaDO areaDO = new UCAreaDO();
         areaDO.setAreaCode(code);
-
+        
         try {
             return areaDOMapper.deleteUCArea(areaDO);
         } catch (Exception e) {

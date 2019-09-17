@@ -1,8 +1,5 @@
 package hello.control;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.dubbo.rpc.RpcContext;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
 import hello.hystrix.HystrixUtil;
@@ -10,6 +7,9 @@ import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
 import org.apache.commons.lang.StringUtils;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.config.annotation.Reference;
+import org.apache.dubbo.rpc.RpcContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

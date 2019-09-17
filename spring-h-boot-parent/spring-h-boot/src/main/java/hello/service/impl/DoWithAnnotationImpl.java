@@ -1,7 +1,7 @@
 package hello.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import hello.service.DoWithAnnotation;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

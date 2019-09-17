@@ -1,9 +1,12 @@
 package hello.control.filter;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.extension.Activate;
-import com.alibaba.dubbo.rpc.*;
-import com.alibaba.dubbo.rpc.filter.ConsumerContextFilter;
+import org.apache.dubbo.common.Constants;
+import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.rpc.Invocation;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.Result;
+import org.apache.dubbo.rpc.RpcException;
+import org.apache.dubbo.rpc.filter.ConsumerContextFilter;
 
 @Activate(group = {Constants.CONSUMER})
 public class AnnotationFilter extends ConsumerContextFilter {

@@ -1,11 +1,11 @@
 package hello.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Method;
-import com.alibaba.dubbo.config.annotation.Service;
-import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import hello.service.model.Change;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.dubbo.config.annotation.Method;
+import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.rpc.RpcContext;
 import org.apache.kafka.common.PartitionInfo;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-@Service(group = "${dubbo.provider.group}"
-//        methods = {
-//        @Method(name = "remoteToDubboSync", async = false),
-//        @Method(name = "remoteToDubboAsync", async = true),
-//        @Method(name = "remoteToKafka", async=true),}
+@Service(group = "${dubbo.provider.group}",
+        methods = {
+        @Method(name = "remoteToDubboSync", async = false),
+        @Method(name = "remoteToDubboAsync", async = true),
+        @Method(name = "remoteToKafka", async=true),}
 )
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
@@ -51,7 +51,7 @@ public class DoHSomethingImpl implements DoHSomething {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+    
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("remoteToDubboSync RpcContext aa > " + rpcContext.get("aa"));
         System.out.println("remoteToDubboSync RpcContext cc > " + rpcContext.get("cc"));
@@ -71,7 +71,7 @@ public class DoHSomethingImpl implements DoHSomething {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+    
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("remoteToDubboAsync RpcContext aa > " + rpcContext.get("aa"));
         System.out.println("remoteToDubboAsync RpcContext cc > " + rpcContext.get("cc"));
