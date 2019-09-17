@@ -1,12 +1,12 @@
 package hello.service;
 
+import hello.service.handler.HandlerContext;
 import hello.service.model.MethodEnum;
 import hello.service.strategy.AbstractOptionStrategy;
-import hello.service.strategy.CreateServiceImpl;
-import hello.service.strategy.DeleteServiceImpl;
-import hello.service.strategy.UpdateServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvokerServiceImpl implements InvokerService {
     private static final Logger logger = LoggerFactory.getLogger(InvokerServiceImpl.class);
+    
+    @Autowired
+    private HandlerContext context;
+    
+    @Autowired
+    @Qualifier("createService")
+    private AbstractOptionStrategy createService;
+    @Autowired
+    @Qualifier("updateService")
+    private AbstractOptionStrategy updateService;
+    @Autowired
+    @Qualifier("deleteService")
+    private AbstractOptionStrategy deleteService;
+    
     
     /**
      * 调用策略接口 根据传入参数判断调用哪个service
@@ -27,32 +41,51 @@ public class InvokerServiceImpl implements InvokerService {
         
         MethodEnum methodType = MethodEnum.get(type);
         if (null != methodType) {
+            logger.info("调用的是 {} - {}", methodType.getCommand(), methodType.getDesc());
+            
+            AbstractOptionStrategy option = context.getInstance(methodType.getCommand());
+            result = option.invoke();
+        } else {
+            throw new RuntimeException("传错啦~~~~~~~~~~~");
+        }
+        
+        logger.info("最终结果: ~ + {}", result);
+        
+        return result;
+    }
+    
+    /*
+    * 原始方法: 使用switch+case
+    @Override
+    public String invoke(String type) {
+        String result = null;
+        
+        MethodEnum methodType = MethodEnum.get(type);
+        if (null != methodType) {
             AbstractOptionStrategy option = null;
             
             logger.info("调用的是 {} - {}", methodType.getCommand(), methodType.getDesc());
             switch (methodType) {
                 case CREATE:
-                    option = new CreateServiceImpl();
+                    option = createService;
                     break;
                 case UPDATE:
-                    option = new UpdateServiceImpl();
+                    option = updateService;
                     break;
                 case DELETE:
-                    option = new DeleteServiceImpl();
+                    option = deleteService;
                     break;
                 default:
                     logger.error("传错喽~");
             }
-            
-            if (null != option) {
-                result = option.invoke();
-            }
+            result = option.invoke();
         } else {
             throw new RuntimeException("传错啦~~~~~~~~~~~");
         }
-    
+        
         logger.info("最终结果: ~ + {}", result);
         
         return result;
     }
+    */
 }
