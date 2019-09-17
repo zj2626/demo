@@ -1,5 +1,7 @@
 package hello.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Method;
+import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.rpc.RpcContext;
 import hello.service.DoHSomething;
 import hello.service.model.Change;
@@ -11,15 +13,19 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.jms.Destination;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@com.alibaba.dubbo.config.annotation.Service(group = "${dubbo.provider.group}")
+@Component
+@Service(group = "${dubbo.provider.group}", methods = {
+        @Method(name = "remoteToDubboSync", async = false),
+        @Method(name = "remoteToDubboAsync", async = true),
+//        @Method(name = "remoteToKafka", async=true),
+})
 public class DoHSomethingImpl implements DoHSomething {
     private String topicName = "kfk-to-topic-zj";
     private String topicName_5 = "kfk-to-topic-zj-05";
@@ -115,7 +121,7 @@ public class DoHSomethingImpl implements DoHSomething {
             amqpTemplate.send(new Message(name.getBytes(), new MessageProperties()));
             System.out.println(">>>>>>>>>");
         }
-    
+        
         String result = "> RABBITMQ " + name;
         System.out.println("发送rabbitmq消息完毕 " + result);
         return result;
@@ -127,7 +133,7 @@ public class DoHSomethingImpl implements DoHSomething {
         if (null != jmsMessagingTemplate) {
             System.out.println(">>>>");
             Destination destination = new ActiveMQQueue("test.spring.active.queue");
-        
+            
             jmsMessagingTemplate.convertAndSend(destination, name);
             System.out.println(">>>>>>>>>");
         }

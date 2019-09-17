@@ -3,7 +3,6 @@ package hello.control;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.rpc.RpcContext;
-import com.alibaba.dubbo.rpc.service.EchoService;
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
 import hello.hystrix.HystrixUtil;
@@ -23,10 +22,10 @@ import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 @Service
@@ -140,26 +139,21 @@ public class DoSomething {
         System.out.println("测试缓存 缓存的最大量是1000");
         // 改为1001则下面的测试则会调用接口而不是使用缓存 (缓存的最大量是1000)
         for (int n = 0; n < 1000; n++) {
-            String pre = null;
             int i;
             // 每个相同参数调用2次,第二次会直接走缓存不会调用到外部服务
             for (i = 0; i < 2; i++) {
                 String result = doWithAnnotation.sayFuck(String.valueOf(n));
-                System.out.println(n);
-                if (pre != null && !pre.equals(result)) {
-                    System.err.println("n=" + n + " ERROR: " + result);
-                }
-                pre = result;
+                System.out.printf("第%d个 第%d次 获得结果: %s\n", n + 1, i + 1, result);
             }
-            System.out.println(pre);
         }
         
         try {
             Thread.sleep(3000);
         } catch (InterruptedException ignored) {
         }
-        System.out.println("测试LRU有移除最开始的一个缓存项 执行时间: " + System.currentTimeMillis());
-        doWithAnnotation.sayFuck("0");
+        System.out.println("测试LRU有移除最开始的一个缓存项 执行时间: " + LocalDateTime.now());
+        doWithAnnotation.sayFuck(String.valueOf(0));
+        doWithAnnotation.sayFuck(String.valueOf(1));
         
         return true;
     }

@@ -4,6 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
     <!--dubbo 声明暴露的服务接口-->
+    <!--
     <dubbo:service interface="hello.service.DoHSomething" ref="doHSomethingImpl" group="${dubbo.provider.group}"
                    proxy="${dubbo.provider.proxy}">
         <dubbo:method name="remoteToDubboSync" async="false"/>
@@ -11,6 +12,7 @@
         <dubbo:method name="remoteToKafka" async="true"/>
         <dubbo:method name="remoteToRabbitmq" async="true"/>
     </dubbo:service>
+    -->
 
     <dubbo:annotation package="${dubbo.scan.base-packages}"/>
 </beans>

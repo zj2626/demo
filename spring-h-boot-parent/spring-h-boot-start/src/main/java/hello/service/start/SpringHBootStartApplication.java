@@ -25,9 +25,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("hello.data.mapper")
 @EnableTransactionManagement
 @EnableJms //启动消息队列
+//@EnableDubbo
 //@Import(ServiceConfiguration.class)
 public class SpringHBootStartApplication extends SpringBootServletInitializer {
-
+    
     /*
      * @EnableTransactionManagement 默认开启事务 -> DataSourceTransactionManager 管理@Transactional方法
      *
@@ -35,8 +36,8 @@ public class SpringHBootStartApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(SpringHBootStartApplication.class, args);
     }
-
-
+    
+    
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(SpringHBootStartApplication.class);
