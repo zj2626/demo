@@ -1,4 +1,4 @@
-package hello.service;
+package hello.service.model;
 
 public class BaseResult {
     private static final long serialVersionUID = 1L;

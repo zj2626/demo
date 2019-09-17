@@ -29,11 +29,7 @@ public class MyController {
 
     private InvokeTemplate template = new InvokeTemplate();
 
-    public MyController() {
-        System.out.println("<构造函数> MyController ");
-    }
 //    public MyController(DoSomething doSomething) {
-//        System.out.println("<构造函数> MyController 2");
 //        this.doSomething = doSomething;
 //    }
     

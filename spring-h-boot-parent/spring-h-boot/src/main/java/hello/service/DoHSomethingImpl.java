@@ -1,4 +1,4 @@
-package hello.service.impl;
+package hello.service;
 
 import hello.service.DoHSomething;
 import hello.service.model.Change;
@@ -39,10 +39,6 @@ public class DoHSomethingImpl implements DoHSomething {
     
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
-    
-    public DoHSomethingImpl() {
-        System.out.println("构造造 DoHSomethingImpl");
-    }
     
     @Override
     public String remoteToDubboSync(String name) {
@@ -142,12 +138,6 @@ public class DoHSomethingImpl implements DoHSomething {
         String result = "> ACTIVEMQ " + name;
         System.out.println("发送activemq消息完毕 " + result);
         return result;
-    }
-    
-    @Override
-    public String local(String name) {
-        System.out.println("调用了 " + name);
-        return name;
     }
 
 //    /**

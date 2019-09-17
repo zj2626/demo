@@ -63,13 +63,13 @@ public class RestApiController {
         System.out.println(model);
 
         switch (model.getMethod()) {
-            case create:
+            case CREATE:
                 restService.createBatch(JSON.parseArray(model.getData(), TestcModel.class));
                 break;
-            case update:
+            case UPDATE:
                 restService.updateBatch(JSON.parseArray(model.getData(), TestcModel.class));
                 break;
-            case delete:
+            case DELETE:
                 restService.delBatch(model.getData().split(","));
                 break;
             default:

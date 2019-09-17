@@ -15,10 +15,6 @@ public class DoSomethingForTransaction {
     @Autowired
     private AreaCodeDao areaCodeDao;
 
-    public DoSomethingForTransaction() {
-        System.out.println("DoSomethingForTransaction");
-    }
-
     /*先调用transactionB再调用transactionA,观察控制台输出结果中transactionB接口的打印数据的变化*/
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public boolean dotransactionTXA(String name) {

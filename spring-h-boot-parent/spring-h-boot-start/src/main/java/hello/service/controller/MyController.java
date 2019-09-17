@@ -1,7 +1,7 @@
 package hello.service.controller;
 
-import hello.service.BaseResult;
-import hello.service.DoSomething;
+import hello.service.model.BaseResult;
+import hello.service.DoSqlSomething;
 import hello.transaction.DoSomethingForTransaction;
 import hello.transaction.DoSomethingProxy;
 import hello.transaction.DoTransaction;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @RestController
 public class MyController {
     @Autowired
-    private DoSomething doSomething;
+    private DoSqlSomething doSqlSomething;
     @Autowired
     private DoSomethingForTransaction doSomethingForTransaction;
     @Autowired
@@ -26,10 +26,6 @@ public class MyController {
     @Autowired
     private DoTransaction doTransaction;
 
-    public MyController() {
-        System.out.println("<构造函数> MyController ");
-    }
-    
     @ApiOperation(value = "/")
     @GetMapping("/")
     public void index(HttpServletResponse response) throws IOException {
@@ -168,7 +164,7 @@ public class MyController {
 
     @GetMapping("/log")
     public String testMybatisLog(@RequestParam String name) {
-        doSomething.testMybatisLog(name);
+        doSqlSomething.testMybatisLog(name);
 
         return "god";
     }

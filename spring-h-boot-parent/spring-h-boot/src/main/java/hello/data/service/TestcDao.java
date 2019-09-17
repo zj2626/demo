@@ -18,6 +18,9 @@ import java.util.List;
 @Component
 public class TestcDao {
     private static final Logger logger = LoggerFactory.getLogger(TestcDao.class);
+    private static final Logger logger2 = LoggerFactory.getLogger("sm.test");
+    private static final Logger logger3 = LoggerFactory.getLogger("sm.err");
+    private static final Logger logger4 = LoggerFactory.getLogger("sm.web");
 
     @Autowired
     private TestcMapper testcMapper;
@@ -25,7 +28,7 @@ public class TestcDao {
     @Cacheable("books") // ?????? 没效果
     public Testc select(Integer id){
         Testc testc = testcMapper.selectByPrimaryKey(id);
-        logger.info("<TestcDao>" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
+        logger.info("[TestcDao]" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
         return testc;
     }
 

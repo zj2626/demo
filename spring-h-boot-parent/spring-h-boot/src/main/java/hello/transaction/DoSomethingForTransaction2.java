@@ -13,10 +13,6 @@ public class DoSomethingForTransaction2 {
         this.areaCodeDao = areaCodeDao;
     }
 
-    public DoSomethingForTransaction2() {
-        System.out.println("DoSomethingForTransaction2");
-    }
-
     @Transactional(propagation = Propagation.REQUIRED)
     public void doTranTXY(String name) {
         try {

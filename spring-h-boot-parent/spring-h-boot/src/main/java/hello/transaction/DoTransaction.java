@@ -15,10 +15,6 @@ public class DoTransaction {
     @Autowired
     private AreaCodeDao areaCodeDao;
 
-    public DoTransaction() {
-        System.out.println("构造造 DoTransaction");
-    }
-
     /*编程式事务管理*/
     public boolean dotransaction(String codes) {
 

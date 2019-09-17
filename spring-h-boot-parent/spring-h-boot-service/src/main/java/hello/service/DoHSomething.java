@@ -11,6 +11,4 @@ public interface DoHSomething {
     public String remoteToDubboSync(String name);
     
     String remoteToActivemq(String name);
-    
-    public String local(String name);
 }
