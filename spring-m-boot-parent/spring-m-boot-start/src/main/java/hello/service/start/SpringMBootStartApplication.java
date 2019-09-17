@@ -1,10 +1,10 @@
 package hello.service.start;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.ImportResource;
 
 /**
  * ********************
@@ -16,8 +16,8 @@ import org.springframework.context.annotation.ImportResource;
  * ********************
  */
 @SpringBootApplication(scanBasePackages = "hello")
-@ImportResource({"classpath:dubbo-consumer.xml"})
-//@EnableDubbo
+@EnableDubbo(scanBasePackages = "hello.service")
+//@ImportResource({"classpath:dubbo-consumer.xml"})
 //@EnableCaching
 public class SpringMBootStartApplication extends SpringBootServletInitializer {
     

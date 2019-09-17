@@ -1,5 +1,7 @@
 package hello.service.start;
 
+import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,11 +23,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication(scanBasePackages = "hello")
 @EnableConfigurationProperties
-@ImportResource({"classpath:dubbo-provider.xml", "classpath:transaction.xml"})
+@ImportResource({"classpath:transaction.xml"}) // , "classpath:dubbo-provider.xml"
 @MapperScan("hello.data.mapper")
 @EnableTransactionManagement
 @EnableJms //启动消息队列
-//@EnableDubbo
+@EnableDubbo(scanBasePackages = "hello.service")
 //@Import(ServiceConfiguration.class)
 public class SpringHBootStartApplication extends SpringBootServletInitializer {
     

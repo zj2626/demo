@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
+    <!-- 该文件可删除 这里只是为了参考-->
     <!--生成远程服务代理 作为可调用的bean-->
     <!--<dubbo:reference id="doWithAnnotation" interface="hello.service.DoWithAnnotation" group="${dubbo.consumer.group}"
                      cache="true"/>
