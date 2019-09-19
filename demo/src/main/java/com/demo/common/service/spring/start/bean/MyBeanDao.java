@@ -5,6 +5,8 @@ public class MyBeanDao {
     private int id;
     private String name;
 
+    private Long time;
+
     public MyBeanDao() {
         System.out.println(MyBeanDao.class.getSimpleName());
     }
@@ -40,5 +42,25 @@ public class MyBeanDao {
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public void exec(){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        time = System.currentTimeMillis();
+        System.out.printf("线程 %s, 调用时间 %s IN ~~~\n",
+                Thread.currentThread().getName(),
+                time);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.printf("线程 %s, 调用时间 %s OUT ~~~\n",
+                Thread.currentThread().getName(),
+                time);
     }
 }

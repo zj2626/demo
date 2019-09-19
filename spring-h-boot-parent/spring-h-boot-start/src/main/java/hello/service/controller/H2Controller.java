@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @RestController
 public class H2Controller {
     @Autowired
@@ -22,6 +25,18 @@ public class H2Controller {
     @ApiOperation(value = "调用策略接口",
             notes = "根据传入参数判断调用哪个service, 包含三种(create, update, delete)类型")
     public String invokeMethod(String methodType) {
+//        ExecutorService service = Executors.newFixedThreadPool(10);
+//        for (int i = 0; i < 5; i++) {
+//            service.submit(() -> {
+//                invokerService.invoke("create");
+//            });
+//        }
+//        for (int i = 0; i < 5; i++) {
+//            service.submit(() -> {
+//                invokerService.invoke("update");
+//            });
+//        }
+        
         methodType = null == methodType ? "create" : methodType;
         return invokerService.invoke(methodType);
     }

@@ -13,13 +13,20 @@ public class DeleteServiceImpl extends AbstractOptionStrategy {
     @Override
     public String option() {
         String name = "Delete way";
-        logger.info("类型 {}, 线程 {}, 参数 {} IN ~~~", name, Thread.currentThread().getName(), getParam());
+        logger.info("线程 {}, 类型 {}, 参数 {}, 调用时间 {} IN ~~~",
+                Thread.currentThread().getName(),
+                name,
+                getParam().getName(),
+                getParam().getTime());
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("类型 {}, 线程 {}, 参数 {} OUT ~~~", name, Thread.currentThread().getName(), getParam());
+        logger.info("线程 {}, 类型 {}, 参数 {}, 调用时间 {} OUT ~~~", Thread.currentThread().getName(),
+                name,
+                getParam().getName(),
+                getParam().getTime());
         
         return name;
     }

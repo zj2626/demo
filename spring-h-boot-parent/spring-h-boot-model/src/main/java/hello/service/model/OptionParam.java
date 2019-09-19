@@ -2,14 +2,14 @@ package hello.service.model;
 
 public class OptionParam {
     private String name;
-    private Integer sex;
+    private Long time;
     
     public OptionParam() {
     }
     
-    public OptionParam(String name, Integer sex) {
+    public OptionParam(String name, Long time) {
         this.name = name;
-        this.sex = sex;
+        this.time = time;
     }
     
     public String getName() {
@@ -20,12 +20,12 @@ public class OptionParam {
         this.name = name;
     }
     
-    public Integer getSex() {
-        return sex;
+    public Long getTime() {
+        return time;
     }
     
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setTime(Long time) {
+        this.time = time;
     }
     
     @Override
@@ -33,8 +33,8 @@ public class OptionParam {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"name\":\"")
                 .append(name).append('\"');
-        sb.append(",\"sex\":")
-                .append(sex);
+        sb.append(",\"time\":")
+                .append(time);
         sb.append('}');
         return sb.toString();
     }

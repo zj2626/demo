@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * 调用策略接口(OptionStrategy)的调用者
  */
@@ -27,13 +29,13 @@ public class InvokerServiceImpl implements InvokerService {
     @Override
     public String invoke(String type) {
         String result = null;
-        
+    
         MethodEnum methodType = MethodEnum.get(type);
         if (null != methodType) {
-            logger.info("调用的是 {} - {}", methodType.getCommand(), methodType.getDesc());
-            
+            logger.info("调用的是 {}", methodType.getCommand());
+
             AbstractOptionStrategy option = context.getInstance(methodType.getCommand());
-            option.setParam(new OptionParam(methodType.getDesc(), methodType.getCommand().hashCode()));
+            option.setParam(new OptionParam(methodType.getDesc(), System.currentTimeMillis()));
             result = option.invoke();
         } else {
             throw new RuntimeException("传错啦~~~~~~~~~~~");
