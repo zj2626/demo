@@ -1,0 +1,89 @@
+package com.demo.common.service.design.creational.singleton;
+
+import org.junit.Test;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+/**
+ * 5. 单例模式(Singleton Pattern)
+ * <p>
+ * 单例模式(Singleton Pattern)：单例模式确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例，这个类称为单例类，它提供全局访问的方法。
+ * 单例模式的要点有三个：一是某个类只能有一个实例；二是它必须自行创建这个实例；三是它必须自行向整个系统提供这个实例。单例模式是一种对象创建型模式。单例模式又名单件模式或单态模式。
+ *
+ * @author zhangj
+ * @version $Id: FactoryDemoTest.java, v 0.1 2019/5/13 17:21 zhangj Exp $
+ */
+public class FactoryDemoTest {
+
+    @Test
+    public void test1() throws IOException, ClassNotFoundException {
+        /*单例方法一: 懒汉式 双重检查*/
+        Singleton singleton = Singleton.getInstance();
+        singleton.getMsg();
+
+        /*单例方法二: 静态内部类*/
+        Singleton2 singleton2 = Singleton2.getInstance();
+        singleton2.getMsg();
+
+        /*单例方法三: 饿汉式*/
+        Singleton3 singleton3 = Singleton3.getInstance();
+        singleton3.getMsg();
+
+        /*单例方法四: 枚举*/
+        Singleton4 singleton4 = Singleton4.RED;
+
+        /*单例方法五: 注册登记式*/
+        Singleton5 singleton5 = Singleton5.getInstance();
+        singleton5.getMsg();
+
+        /*单例方法六: 序列化单例*/
+        Singleton6 singleton6 = Singleton6.getInstance();
+        FileOutputStream fileOutputStream = new FileOutputStream("Seriable.obj");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(singleton6);
+        FileInputStream fileInputStream = new FileInputStream("Seriable.obj");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        Singleton6 singleton7 = (Singleton6) objectInputStream.readObject();
+        singleton6.getMsg();
+        singleton7.getMsg();
+    }
+
+    /**
+     * 5.8. 优点
+     * 提供了对唯一实例的受控访问。因为单例类封装了它的唯一实例，所以它可以严格控制客户怎样以及何时访问它，并为设计及开发团队提供了共享的概念。
+     * 由于在系统内存中只存在一个对象，因此可以节约系统资源，对于一些需要频繁创建和销毁的对象，单例模式无疑可以提高系统的性能。
+     * 允许可变数目的实例。我们可以基于单例模式进行扩展，使用与单例控制相似的方法来获得指定个数的对象实例。
+     * 5.9. 缺点
+     * 由于单例模式中没有抽象层，因此单例类的扩展有很大的困难。
+     * 单例类的职责过重，在一定程度上违背了“单一职责原则”。因为单例类既充当了工厂角色，提供了工厂方法，同时又充当了产品角色，包含一些业务方法，将产品的创建和产品的本身的功能融合到一起。
+     * 滥用单例将带来一些负面问题，如为了节省资源将数据库连接池对象设计为单例类，可能会导致共享连接池对象的程序过多而出现连接池溢出；现在很多面向对象语言(如Java、C#)的运行环境都提供了自动垃圾回收的技术，因此，如果实例化的对象长时间不被利用，系统会认为它是垃圾，会自动销毁并回收资源，下次利用时又将重新实例化，这将导致对象状态的丢失。
+     */
+
+    @Test
+    public void test2() {
+        ExecutorService service = Executors.newFixedThreadPool(100);
+        List<Future<?>> futureTasks = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            futureTasks.add(service.submit(new Runnable() {
+                @Override
+                public void run() {
+                    Singleton5 singleton5 = Singleton5.getInstance();
+                    singleton5.getMsg();
+                }
+            }));
+        }
+        try {
+            for (Future<?> futureTask : futureTasks) {
+                futureTask.get();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        service.shutdown();
+    }
+}

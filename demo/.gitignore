@@ -30,4 +30,4 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/java/com/kdniao/logisticsfront/common/biz/service/impl/company/
+/com/demo/common/service/company/

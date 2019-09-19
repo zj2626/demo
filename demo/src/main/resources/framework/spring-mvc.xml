@@ -7,7 +7,7 @@
     <!-- 执行顺序: 请求->DispatcherServlet->HandlerMapping->HandlerAdapter->Controller->ViewResolver->View -->
 
     <!--处理器-->
-    <bean id="demoController" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.mvc.DemoController"/>
+    <bean id="demoController" class="com.demo.common.service.spring.mvc.DemoController"/>
 
     <!--处理器映射器-->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">

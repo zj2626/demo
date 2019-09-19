@@ -7,19 +7,19 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="byName">
 
-<!--    <bean id="MyBeanFactoryAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanFactoryAware" init-method="init"/>-->
-<!--    <bean id="MyBeanNameAware001" class="com.kdniao.logisticsfront.common.biz.service.impl.bean.MyBeanNameAware" init-method="init"/>-->
+<!--    <bean id="MyBeanFactoryAware001" class="com.demo.common.service.bean.MyBeanFactoryAware" init-method="init"/>-->
+<!--    <bean id="MyBeanNameAware001" class="com.demo.common.service.bean.MyBeanNameAware" init-method="init"/>-->
 
-<!--    <context:component-scan base-package="com.kdniao.logisticsfront.common.biz.service.impl.spring.*"/>-->
-    <bean id="userDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.UserDao"/>
+<!--    <context:component-scan base-package="com.demo.common.service.spring.*"/>-->
+    <bean id="userDao" class="com.demo.common.service.spring.demo.UserDao"/>
 
-    <bean id="injectUserDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao">
+    <bean id="injectUserDao" class="com.demo.common.service.spring.demo.InjectUserDao">
 <!--        <property name="userDao" ref="userDao"/>-->
     </bean>
-    <bean id="injectUserDao2" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao2">
+    <bean id="injectUserDao2" class="com.demo.common.service.spring.demo.InjectUserDao2">
 <!--        <property name="userDao" ref="userDao"/>-->
     </bean>
-    <bean id="injectUserDao3" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.demo.InjectUserDao3">
+    <bean id="injectUserDao3" class="com.demo.common.service.spring.demo.InjectUserDao3">
         <constructor-arg name="userDao" ref="userDao"/>
     </bean>
 
@@ -179,12 +179,12 @@
     </bean>
 
     <bean id="ordersMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.OrdersMapper"/>
+        <property name="mapperInterface" value="com.demo.common.service.mysql.dal.mapper.OrdersMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactoryTest"/>
     </bean>
 
     <bean id="lineitemMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.LineitemMapper"/>
+        <property name="mapperInterface" value="com.demo.common.service.mysql.dal.mapper.LineitemMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactoryTest"/>
     </bean>
 
@@ -237,11 +237,11 @@
     </bean>
 
     <bean id="shipperEntranceSettingMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.kdniao.logisticsfront.common.biz.service.impl.mysql.dal.mapper.ShipperEntranceSettingMapper"/>
+        <property name="mapperInterface" value="com.demo.common.service.mysql.dal.mapper.ShipperEntranceSettingMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactoryMerchant"/>
     </bean>-->
 
-    <bean id="exterfaceInvokeHttpSender" class="com.kdniao.logisticsfront.common.biz.service.impl.mysql.company.ExterfaceInvokeHttpSender">
+    <bean id="exterfaceInvokeHttpSender" class="com.demo.common.service.mysql.company.ExterfaceInvokeHttpSender">
         <property name="contentType" value="application/json; charset=UTF-8" />
         <property name="connectionTimeout" value="15000" />
         <property name="readTimeout" value="15000" />

@@ -4,6 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="byName" ><!--default-lazy-init="true"-->
 
-    <bean id="myBean" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.start.bean.MyBean"/>
-    <bean id="myBeanDao" class="com.kdniao.logisticsfront.common.biz.service.impl.spring.start.bean.MyBeanDao"/>
+    <bean id="myBean" class="com.demo.common.service.spring.start.bean.MyBean"/>
+    <bean id="myBeanDao" class="com.demo.common.service.spring.start.bean.MyBeanDao"/>
 </beans>

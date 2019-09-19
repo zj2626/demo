@@ -6,7 +6,6 @@ import hello.service.strategy.AbstractOptionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,17 +17,6 @@ public class InvokerServiceImpl implements InvokerService {
     
     @Autowired
     private HandlerContext context;
-    
-    @Autowired
-    @Qualifier("createService")
-    private AbstractOptionStrategy createService;
-    @Autowired
-    @Qualifier("updateService")
-    private AbstractOptionStrategy updateService;
-    @Autowired
-    @Qualifier("deleteService")
-    private AbstractOptionStrategy deleteService;
-    
     
     /**
      * 调用策略接口 根据传入参数判断调用哪个service
@@ -56,6 +44,20 @@ public class InvokerServiceImpl implements InvokerService {
     
     /*
     * 原始方法: 使用switch+case
+    
+    
+    @Autowired
+    @Qualifier("createService")
+    private AbstractOptionStrategy createService;
+    
+    @Autowired
+    @Qualifier("updateService")
+    private AbstractOptionStrategy updateService;
+    
+    @Autowired
+    @Qualifier("deleteService")
+    private AbstractOptionStrategy deleteService;
+    
     @Override
     public String invoke(String type) {
         String result = null;
