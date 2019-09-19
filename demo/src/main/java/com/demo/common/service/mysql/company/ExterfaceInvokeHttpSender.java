@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author huangboke
  * @version $Id: ExterfaceInvokeHttpSender.java, v 0.1 2017年3月28日 下午12:51:51 huangboke Exp $
  */
 public class ExterfaceInvokeHttpSender implements InitializingBean {
