@@ -2,6 +2,7 @@ package hello.service;
 
 import hello.service.handler.HandlerContext;
 import hello.service.model.MethodEnum;
+import hello.service.model.OptionParam;
 import hello.service.strategy.AbstractOptionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class InvokerServiceImpl implements InvokerService {
             logger.info("调用的是 {} - {}", methodType.getCommand(), methodType.getDesc());
             
             AbstractOptionStrategy option = context.getInstance(methodType.getCommand());
+            option.setParam(new OptionParam(methodType.getDesc(), methodType.getCommand().hashCode()));
             result = option.invoke();
         } else {
             throw new RuntimeException("传错啦~~~~~~~~~~~");

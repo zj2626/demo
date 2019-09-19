@@ -1,6 +1,8 @@
 package com.demo.common.service.spring.scan;
 
-@HsfComponent
+import org.springframework.stereotype.Component;
+
+@Component
 public class BeanEntity {
     String name;
     Double score;

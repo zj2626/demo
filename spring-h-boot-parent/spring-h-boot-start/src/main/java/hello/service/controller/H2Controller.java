@@ -20,7 +20,7 @@ public class H2Controller {
     
     @GetMapping("/invoke")
     @ApiOperation(value = "调用策略接口",
-            notes = "根据传入参数判断调用哪个service, 包含三种( create, update, delete )类型")
+            notes = "根据传入参数判断调用哪个service, 包含三种(create, update, delete)类型")
     public String invokeMethod(String methodType) {
         methodType = null == methodType ? "create" : methodType;
         return invokerService.invoke(methodType);
