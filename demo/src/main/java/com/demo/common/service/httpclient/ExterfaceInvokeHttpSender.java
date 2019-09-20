@@ -1,4 +1,4 @@
-package com.demo.common.service.mysql.company;
+package com.demo.common.service.httpclient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
@@ -42,16 +42,12 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @version $Id: ExterfaceInvokeHttpSender.java, v 0.1 2017年3月28日 下午12:51:51 huangboke Exp $
- */
 public class ExterfaceInvokeHttpSender implements InitializingBean {
-
+    
     protected static final Logger logger = LoggerFactory.getLogger("remote.digest");
     protected String appName;
     protected CloseableHttpClient httpClient;
@@ -65,79 +61,84 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
     protected String senderType;
     protected int validateAfterInactivityTime = 60000;
     private int maxPerRoute = 500;
-
+    
     public void setMaxPerRoute(int maxPerRoute) {
         this.maxPerRoute = maxPerRoute;
     }
-
+    
     public void setValidateAfterInactivityTime(int validateAfterInactivityTime) {
         this.validateAfterInactivityTime = validateAfterInactivityTime;
     }
-
+    
     public void setAppName(String appName) {
         this.appName = appName;
     }
-
+    
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }
-
+    
     public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
-
+    
     public void setMaxTotalConnection(int maxTotalConnection) {
         this.maxTotalConnection = maxTotalConnection;
     }
-
+    
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
-
+    
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
-
+    
     public void setRetryCount(int retryCount) {
         this.retryCount = retryCount;
     }
-
+    
     public void setHeaderMap(Map<String, String> headerMap) {
         this.headerMap = headerMap;
     }
-
+    
     public void setSenderType(String senderType) {
         this.senderType = senderType;
     }
-
+    
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        
         SSLContextBuilder builder = new SSLContextBuilder();
-        builder.loadTrustMaterial(null, (chain,authType)->true);
+        builder.loadTrustMaterial(null, (chain, authType) -> true);
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build(), NoopHostnameVerifier.INSTANCE);
-        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create().register("http", PlainConnectionSocketFactory.INSTANCE)
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create().register("http",
+                PlainConnectionSocketFactory.INSTANCE)
                 .register("https", sslsf).build();
-        ManagedHttpClientConnectionFactory connFactory = new ManagedHttpClientConnectionFactory(DefaultHttpRequestWriterFactory.INSTANCE, DefaultHttpResponseParserFactory.INSTANCE);
+        ManagedHttpClientConnectionFactory connFactory = new ManagedHttpClientConnectionFactory(DefaultHttpRequestWriterFactory.INSTANCE,
+                DefaultHttpResponseParserFactory.INSTANCE);
         DnsResolver dnsResolver = SystemDefaultDnsResolver.INSTANCE;
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(socketFactoryRegistry, connFactory, dnsResolver);
+        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(socketFactoryRegistry, connFactory,
+                dnsResolver);
         SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).build();
-
+        
         manager.setDefaultSocketConfig(socketConfig);
         manager.setMaxTotal(maxTotalConnection);
         manager.setDefaultMaxPerRoute(maxPerRoute);
         manager.setValidateAfterInactivity(validateAfterInactivityTime);
-        RequestConfig defaulRequestConfig = RequestConfig.custom().setConnectTimeout(connectionTimeout).setSocketTimeout(readTimeout).setConnectionRequestTimeout(connectionTimeout)
+        RequestConfig defaulRequestConfig =
+                RequestConfig.custom().setConnectTimeout(connectionTimeout).setSocketTimeout(readTimeout).setConnectionRequestTimeout(connectionTimeout)
                 .build();
-
-        httpClient = HttpClients.custom().setConnectionManager(manager).setConnectionManagerShared(false).evictIdleConnections(60, TimeUnit.SECONDS).evictExpiredConnections()
+        
+        httpClient = HttpClients.custom().setConnectionManager(manager).setConnectionManagerShared(false).evictIdleConnections(60,
+                TimeUnit.SECONDS).evictExpiredConnections()
                 .setConnectionTimeToLive(60, TimeUnit.SECONDS).setDefaultRequestConfig(defaulRequestConfig).setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
-                .setKeepAliveStrategy(DefaultConnectionKeepAliveStrategy.INSTANCE).setRetryHandler((exception,  executionCount,  context)->{
-                    if(executionCount>2){
+                .setKeepAliveStrategy(DefaultConnectionKeepAliveStrategy.INSTANCE).setRetryHandler((exception, executionCount, context) -> {
+                    if (executionCount > 2) {
                         return false;
                     }
-                    if(exception instanceof NoHttpResponseException ){
-                        logger.warn("NoHttpResponseException on"+executionCount+"call");
+                    if (exception instanceof NoHttpResponseException) {
+                        logger.warn("NoHttpResponseException on" + executionCount + "call");
                         return true;
                     }
                     return false;
@@ -153,23 +154,23 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             }
         });
     }
-
+    
     public String send(String body) {
         return this.send(null, body, HttpPost.METHOD_NAME);
     }
-
+    
     public String send(Map<String, String> paramMap, String body, String method) {
         return this.send(null, paramMap, body, method, null);
     }
-
+    
     public String sendForm(Map<String, String> paramMap, Map<String, String> formMap) {
         return this.send(null, paramMap, null, HttpPost.METHOD_NAME, formMap);
     }
-
+    
     public String send(String path, Map<String, String> paramMap, String body, String method) {
         return this.send(path, paramMap, body, method, null);
     }
-
+    
     public String send(String path, Map<String, String> paramMap, String body, String method, Map<String, String> formMap) {
         HttpRequestBase request = null;
         URIBuilder uriBuilder = null;
@@ -206,7 +207,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             } else {
                 throw new RuntimeException("不支持的http method[" + method + "]");
             }
-
+            
             if (!CollectionUtils.isEmpty(headerMap)) {
                 for (String headerName : headerMap.keySet()) {
                     request.addHeader(headerName, headerMap.get(headerName));
@@ -238,7 +239,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             request.abort();
         }
     }
-
+    
     public byte[] sendStream(String path, Map<String, String> paramMap, String body, String method, Map<String, String> formMap) {
         HttpRequestBase request;
         URIBuilder uriBuilder;
@@ -275,7 +276,7 @@ public class ExterfaceInvokeHttpSender implements InitializingBean {
             } else {
                 throw new RuntimeException("不支持的http method[" + method + "]");
             }
-
+            
             if (!CollectionUtils.isEmpty(headerMap)) {
                 for (String headerName : headerMap.keySet()) {
                     request.addHeader(headerName, headerMap.get(headerName));

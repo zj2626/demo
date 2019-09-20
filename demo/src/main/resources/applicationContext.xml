@@ -240,10 +240,4 @@
         <property name="mapperInterface" value="com.demo.common.service.mysql.dal.mapper.ShipperEntranceSettingMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactoryMerchant"/>
     </bean>-->
-
-    <bean id="exterfaceInvokeHttpSender" class="com.demo.common.service.mysql.company.ExterfaceInvokeHttpSender">
-        <property name="contentType" value="application/json; charset=UTF-8" />
-        <property name="connectionTimeout" value="15000" />
-        <property name="readTimeout" value="15000" />
-    </bean>
 </beans>

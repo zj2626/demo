@@ -1,7 +1,6 @@
 package com.demo.common.service.httpclient;
 
 import com.alibaba.fastjson.JSON;
-import com.demo.common.service.mysql.company.ExterfaceInvokeHttpSender;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.NoHttpResponseException;
@@ -99,21 +98,21 @@ public class HttpClientDemo {
             manager.setValidateAfterInactivity(validateAfterInactivityTime);
             RequestConfig defaulRequestConfig =
                     RequestConfig.custom().setConnectTimeout(connectionTimeout).setSocketTimeout(readTimeout).setConnectionRequestTimeout(connectionTimeout)
-                    .build();
+                            .build();
             
             httpClient = HttpClients.custom().setConnectionManager(manager).setConnectionManagerShared(false).evictIdleConnections(60,
                     TimeUnit.SECONDS).evictExpiredConnections()
                     .setConnectionTimeToLive(60, TimeUnit.SECONDS).setDefaultRequestConfig(defaulRequestConfig).setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
-                    .setKeepAliveStrategy(DefaultConnectionKeepAliveStrategy.INSTANCE).setRetryHandler((exception, executionCount,
-                                                                                                        context) -> {
-                        if (executionCount > 2) {
-                            return false;
-                        }
-                        if (exception instanceof NoHttpResponseException) {
-                            return true;
-                        }
-                        return false;
-                    }).build();
+                    .setKeepAliveStrategy(DefaultConnectionKeepAliveStrategy.INSTANCE).setRetryHandler(
+                            (exception, executionCount, context) -> {
+                                if (executionCount > 2) {
+                                    return false;
+                                }
+                                if (exception instanceof NoHttpResponseException) {
+                                    return true;
+                                }
+                                return false;
+                            }).build();
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
