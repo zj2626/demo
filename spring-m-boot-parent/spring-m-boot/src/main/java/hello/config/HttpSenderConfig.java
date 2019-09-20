@@ -1,4 +1,4 @@
-package hello.configuraion;
+package hello.config;
 
 import hello.request.ExterfaceInvokeIOHttpSender;
 import org.springframework.beans.factory.annotation.Value;

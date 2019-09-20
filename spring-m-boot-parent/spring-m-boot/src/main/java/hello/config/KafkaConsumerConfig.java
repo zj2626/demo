@@ -1,4 +1,4 @@
-package hello.configuraion;
+package hello.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Value;

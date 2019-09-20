@@ -1,4 +1,4 @@
-package hello.configuraion;
+package hello.config;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;

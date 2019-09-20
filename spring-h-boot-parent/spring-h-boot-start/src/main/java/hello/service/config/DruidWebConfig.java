@@ -1,4 +1,4 @@
-package hello.service.configuration;
+package hello.service.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
