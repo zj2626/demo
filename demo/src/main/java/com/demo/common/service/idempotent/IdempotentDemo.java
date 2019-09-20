@@ -6,6 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 幂等
+ */
 public class IdempotentDemo {
     private static Integer value = 0;
     private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");

@@ -1,4 +1,4 @@
-package com.demo.common.service.bean;
+package com.demo.common.service.spring.aware;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

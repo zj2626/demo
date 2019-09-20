@@ -1,4 +1,4 @@
-package com.demo.common.service.array;
+package com.demo.common.service.basic;
 
 import java.util.Arrays;
 

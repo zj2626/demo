@@ -1,4 +1,4 @@
-package com.demo.common.service.util;
+package com.demo.common.service.redis.util;
 
 import java.util.List;
 import java.util.Map;

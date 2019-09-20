@@ -1,4 +1,4 @@
-package com.demo.common.service.bean;
+package com.demo.common.service.spring.aware;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
