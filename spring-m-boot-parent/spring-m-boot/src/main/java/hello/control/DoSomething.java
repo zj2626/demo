@@ -6,6 +6,7 @@ import hello.hystrix.HystrixUtil;
 import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
+import hello.util.MQTTUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.config.annotation.Reference;
@@ -36,17 +37,26 @@ public class DoSomething {
     private static final Logger logger4 = LoggerFactory.getLogger("sm.web");
     
     @Autowired
+    private MQTTUtil mqtt;
+    
+    @Autowired
     private Jedis jedis;
+    
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    
     @Reference(group = "${dubbo.consumer.group}")
     private DoHSomething doHSomething;
+    
     @Reference(group = "${dubbo.consumer.group}", cache = "true")
     private DoWithAnnotation doWithAnnotation;
+    
     @Autowired
     private SimpleMovieLister simpleMovieLister;
+    
     @Autowired
     private MovieRecommender movieRecommender2;
+    
     @Autowired
     private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
     
@@ -241,6 +251,20 @@ public class DoSomething {
             
             String thing2 = doHSomething.remoteToActivemq("abc");
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean domqtt(String topic, String message) {
+        try {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+                    "  getting test domqtt");
+            
+            mqtt.publish(topic, message);
+            System.out.println("\n调用发消息结束 >>>> end ");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

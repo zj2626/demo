@@ -1,8 +1,10 @@
 package hello.util;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Title:Server 这是发送消息的服务端
@@ -10,21 +12,23 @@ import org.springframework.beans.factory.InitializingBean;
  *
  * @author
  */
-public class MQTTUtil implements InitializingBean {
+public class MQTTUtil {
     //tcp://MQTT安装的服务器地址:MQTT定义的端口号
     private static final String HOST = "tcp://127.0.0.1:1883";
     //定义MQTT的ID，可以在MQTT服务配置中指定
-    private static final String CLIENT_ID = "server-001";
+    private static final String CLIENT_ID = "client-01";
     
     private static MqttClient client;
     
     private String userName = "paho";  //非必须
     private String passWord = "";  //非必须
     
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // 构造client 默认为以内存保存
-        client = new MqttClient(HOST, CLIENT_ID, new MemoryPersistence());
+    public MQTTUtil() {
+        try {
+            client = new MqttClient(HOST, CLIENT_ID, new MemoryPersistence());
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -32,13 +36,14 @@ public class MQTTUtil implements InitializingBean {
      */
     public void connect(MqttCallback callBack) {
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setCleanSession(false);
-        // options.setUserName(userName);
-        // options.setPassword(passWord.toCharArray());
+        // 清空session 表示每次连接到服务器都以新的身份连接
+        options.setCleanSession(true);
         // 超时时间
         options.setConnectionTimeout(10);
         // 会话心跳时间
         options.setKeepAliveInterval(20);
+        // options.setUserName(userName);
+        // options.setPassword(passWord.toCharArray());
         
         try {
             client.setCallback(callBack);
@@ -48,26 +53,7 @@ public class MQTTUtil implements InitializingBean {
         }
     }
     
-    public void publish(String topic, String message) throws MqttException {
-        MqttTopic mqttTopic = client.getTopic(topic);
-        
-        if (null != mqttTopic) {
-            MqttMessage mqttMessage = new MqttMessage();
-            //保证消息能到达一次
-            mqttMessage.setQos(1);
-            mqttMessage.setRetained(true);
-            mqttMessage.setPayload(message.getBytes());
-            
-            MqttDeliveryToken token = mqttTopic.publish(mqttMessage);
-            token.waitForCompletion();
-            
-            System.out.println(mqttMessage.isRetained() + "------ratained状态");
-        }
-        
-    }
-    
     public void subscribe(String[] topics, int[] qos) throws MqttException {
         client.subscribe(topics, qos);
     }
-    
 }

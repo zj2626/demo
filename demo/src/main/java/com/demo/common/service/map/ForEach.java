@@ -10,7 +10,7 @@ public class ForEach {
     static Map<String, Object> map = new HashMap<>();
 
     static {
-        for (int i = 0; i < 20000000; i++) {
+        for (int i = 0; i < 10000000; i++) {
             map.put("abc" + i, i);
         }
     }

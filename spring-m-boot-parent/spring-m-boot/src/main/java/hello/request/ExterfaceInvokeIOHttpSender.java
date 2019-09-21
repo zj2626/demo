@@ -26,13 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
-/**
- * 调用网点宝工具
- *
- * @author dev
- * @version $Id: ExterfaceInvokeIOHttpSender.java, v 0.1 2018年5月15日 上午10:37:07 dev Exp $
- */
 public class ExterfaceInvokeIOHttpSender implements InitializingBean {
 
     protected String appName;

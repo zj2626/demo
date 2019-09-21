@@ -8,8 +8,7 @@ public class ClientMQTT {
     
     @Test
     public void demo() throws Exception {
-        MQTTUtil server = new MQTTUtil();
-        server.afterPropertiesSet();
+        MQTTUtil server = new MQTTUtil("client-001");
         
         String[] topic = {"demo_topic_zj_2612"};
         int[] qos = {1};

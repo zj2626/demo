@@ -7,15 +7,16 @@ import org.springframework.context.annotation.Configuration;
 public class ClientMQTT {
     
     @Bean
-    public void init() throws Exception {
+    public MQTTUtil init() throws Exception {
         System.out.println("ClientMQTT");
         MQTTUtil server = new MQTTUtil();
-        server.afterPropertiesSet();
         
-        String[] topic = {"demo_topic_zj_2612"};
+        String[] topic = {"demo_topic_2626"};
         int[] qos = {1};
         
         server.connect(new SubscribeCallback());
         server.subscribe(topic, qos);
+        
+        return server;
     }
 }
