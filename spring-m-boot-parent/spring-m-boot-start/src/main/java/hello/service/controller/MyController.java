@@ -144,15 +144,16 @@ public class MyController {
     @ApiOperation(value = "MQTT")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", dataType = "String", name = "topic", defaultValue = "demo_topic_2626", required = true),
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "message", defaultValue = "这是推送消息的内容", required = true)
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "message", defaultValue = "这是推送消息的内容", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "Integer", name = "qos", defaultValue = "0", required = true)
     })
-    public BaseResult mqtt(String topic, String message) {
+    public BaseResult mqtt(String topic, String message, int qos) {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
             @Override
             public void doInvoke() {
-                result.setSuccess(doSomething.domqtt(topic, message));
+                result.setSuccess(doSomething.domqtt(topic, message, qos));
             }
         });
         

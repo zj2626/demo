@@ -68,6 +68,14 @@ public class MQTTUtil {
         
     }
     
+    /**
+     * @param topics
+     * @param qos    Quality of Service,服务质量 [发布者的Qos, 订阅者的Qos]
+     *               level 0：最多一次的传输
+     *               level 1：至少一次的传输，
+     *               level 2： 只有一次的传输
+     * @throws MqttException
+     */
     public void subscribe(String[] topics, int[] qos) throws MqttException {
         client.subscribe(topics, qos);
     }

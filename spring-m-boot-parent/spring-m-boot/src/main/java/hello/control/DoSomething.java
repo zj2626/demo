@@ -258,12 +258,12 @@ public class DoSomething {
         }
     }
     
-    public boolean domqtt(String topic, String message) {
+    public boolean domqtt(String topic, String message, int qos) {
         try {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test domqtt");
             
-            mqtt.publish(topic, message);
+            mqtt.publish(topic, message, qos);
             System.out.println("\n调用发消息结束 >>>> end ");
             return true;
         } catch (Exception e) {

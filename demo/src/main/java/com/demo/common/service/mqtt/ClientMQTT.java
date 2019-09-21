@@ -11,6 +11,7 @@ public class ClientMQTT {
         MQTTUtil server = new MQTTUtil("client-001");
         
         String[] topic = {"demo_topic_zj_2612"};
+        // 至少一次
         int[] qos = {1};
         
         server.connect(new SubscribeCallback());

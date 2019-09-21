@@ -50,13 +50,22 @@ public class MQTTUtil {
         }
     }
     
-    public void publish(String topic, String message) throws MqttException {
+    /**
+     * @param topic
+     * @param message
+     * @param qos     Quality of Service,服务质量
+     *                level 0：最多一次的传输
+     *                level 1：至少一次的传输，
+     *                level 2： 只有一次的传输
+     * @throws MqttException
+     */
+    public void publish(String topic, String message, int qos) throws MqttException {
         MqttTopic mqttTopic = client.getTopic(topic);
         
         if (null != mqttTopic) {
             MqttMessage mqttMessage = new MqttMessage();
             //保证消息能到达一次
-            mqttMessage.setQos(1);
+            mqttMessage.setQos(qos);
             //设置保留消息，为true，后来的订阅者订阅该主题时仍可接收到该消息
             mqttMessage.setRetained(false);
             mqttMessage.setPayload(message.getBytes());
