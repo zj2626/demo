@@ -72,6 +72,9 @@
         </encoder>
     </appender>
 
+    <!-- 实现mybatis日志打印 -->
+    <logger name="hello.data.mapper" level="DEBUG"/>
+
     <logger name="SH.test">
         <level value="INFO"/>
         <appender-ref ref="SH-TEST"/>

@@ -27,8 +27,10 @@ public class TestcDao {
 
     @Cacheable("books") // ?????? 没效果
     public Testc select(Integer id){
+        logger.info("[TestcDao Before]" + id + " -> ");
+        logger.debug("[TestcDao Debug ]" + id + " -> ");
         Testc testc = testcMapper.selectByPrimaryKey(id);
-        logger.info("[TestcDao]" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
+        logger.info("[TestcDao After ]" + id + " -> " + (testc != null ? JSON.toJSONString(testc) : ""));
         return testc;
     }
 
