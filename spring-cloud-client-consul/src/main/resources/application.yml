@@ -1,5 +1,25 @@
+server:
+  port: 18095
+
 spring:
-  application:
-    name: spring-cloud-client-consul
   profiles:
     active: ${profiles.active}
+  application:
+    name: spring-cloud-client-consul01
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true
+        health-check-path: ${management.contextPath}/health
+        health-check-interval: 15s
+        instance-id: ${spring.application.name}
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka

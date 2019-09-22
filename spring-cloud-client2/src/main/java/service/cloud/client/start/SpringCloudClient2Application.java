@@ -18,10 +18,10 @@ import org.springframework.web.client.RestTemplate;
  */
 @EnableEurekaClient
 @SpringBootApplication
-public class SpringCloudClientApplication {
+public class SpringCloudClient2Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudClientApplication.class, args);
+        SpringApplication.run(SpringCloudClient2Application.class, args);
     }
 
     @Bean

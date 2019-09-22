@@ -1,5 +1,21 @@
+server:
+  port: 18093
+
 spring:
-  application:
-    name: spring-cloud-zipkin-server
   profiles:
     active: ${profiles.active}
+  application:
+    name: spring-cloud-zipkin-server01
+
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka

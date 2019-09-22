@@ -1,5 +1,13 @@
+server:
+  port: 8081
+
 spring:
-  application:
-    name: spring-cloud-ribbon
   profiles:
     active: ${profiles.active}
+  application:
+    name: spring-cloud-ribbon01
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka
