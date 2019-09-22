@@ -1,20 +1,13 @@
 package hello.service.controller;
 
-import hello.service.DoHSomething;
 import hello.service.InvokerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @RestController
 public class H2Controller {
-    @Autowired
-    private DoHSomething doHSomething;
-    
     @Autowired
     private InvokerService invokerService;
     

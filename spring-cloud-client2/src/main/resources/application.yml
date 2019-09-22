@@ -15,6 +15,18 @@ spring:
 #      client:
 #        enabled: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    restart:
+      enabled: true
+    pause:
+      enabled: true
+
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}
