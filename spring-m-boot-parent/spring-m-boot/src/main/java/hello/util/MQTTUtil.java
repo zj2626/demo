@@ -2,6 +2,8 @@ package hello.util;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Title:Server 这是发送消息的服务端
@@ -10,6 +12,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
  * @author
  */
 public class MQTTUtil {
+    private static final Logger logger = LoggerFactory.getLogger(MQTTUtil.class);
+    
     //tcp://MQTT安装的服务器地址:MQTT定义的端口号
     private static final String HOST = "tcp://127.0.0.1:1883";
     //定义MQTT的ID，可以在MQTT服务配置中指定
@@ -72,6 +76,8 @@ public class MQTTUtil {
             
             MqttDeliveryToken token = mqttTopic.publish(mqttMessage);
             token.waitForCompletion();
+            logger.info("MQTT >>> publish message : " + token.isComplete() +
+                    ",{topic : " + topic + ", messageId : " + token.getMessageId() + ", message : " + message + "}");
         }
     }
 }

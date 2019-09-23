@@ -63,7 +63,8 @@ public class MQTTUtil {
             MqttDeliveryToken token = mqttTopic.publish(mqttMessage);
             token.waitForCompletion();
             
-            System.out.println(mqttMessage.isRetained() + "------ratained状态");
+            System.out.println("MQTT >>> publish message : " + token.isComplete() +
+                    ",{topic : " + topic + ", messageId : " + token.getMessageId() + ", message : " + message + "}");
         }
         
     }
