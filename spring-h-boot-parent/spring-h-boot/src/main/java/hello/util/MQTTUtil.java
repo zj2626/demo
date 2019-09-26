@@ -5,6 +5,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.util.StringUtils;
 
 /**
  * Title:Server 这是发送消息的服务端
@@ -23,9 +24,9 @@ public class MQTTUtil {
     private String userName = "paho";  //非必须
     private String passWord = "";  //非必须
     
-    public MQTTUtil() {
+    public MQTTUtil(String clientId) {
         try {
-            client = new MqttClient(HOST, CLIENT_ID, new MemoryPersistence());
+            client = new MqttClient(HOST, StringUtils.isEmpty(clientId) ? CLIENT_ID : clientId, new MemoryPersistence());
         } catch (MqttException e) {
             e.printStackTrace();
         }

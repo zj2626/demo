@@ -6,6 +6,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class SubscribeCallback implements MqttCallback {
     
+    private String name;
+    
+    public SubscribeCallback(String name) {
+        this.name = name;
+    }
+    
     /**
      * 接收到消息
      *
@@ -14,7 +20,8 @@ public class SubscribeCallback implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) {
-        System.out.printf("SubscribeCallback 接收到消息 主题:[%s] Qos:[%s] 内容:[%s] \n", topic, message.getQos(), new String(message.getPayload()));
+        System.out.printf("SubscribeCallback 接收到消息 订阅clientId:[%s] 主题:[%s] Qos:[%s] 内容:[%s] \n", name, topic, message.getQos(),
+                new String(message.getPayload()));
     }
     
     /**
