@@ -4,6 +4,8 @@ import hello.data.service.AreaCodeDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
 
 @Service
 public class DoSomethingForTransaction2 {
@@ -23,7 +25,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -36,7 +39,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-//        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.NESTED)
@@ -47,9 +51,10 @@ public class DoSomethingForTransaction2 {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
 
-        throw new RuntimeException("FFFFFF");
+        }
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
@@ -62,7 +67,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -75,7 +81,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -88,7 +95,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     @Transactional(propagation = Propagation.NEVER)
@@ -101,7 +109,8 @@ public class DoSomethingForTransaction2 {
             e.printStackTrace();
         }
 
-        throw new RuntimeException("FFFFFF");
+        // // 手动回滚
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
 }
