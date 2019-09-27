@@ -1,30 +1,29 @@
 package hello.service.handler;
 
 import hello.service.strategy.AbstractOptionStrategy;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class HandlerContext {
-    private ApplicationContext applicationContext;
-    private Map<String, Class> handleMap;
-    
-    public void setHandleMap(Map<String, Class> handleMap) {
-        this.handleMap = handleMap;
-    }
-    
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-    
+    @Autowired
+    private List<AbstractOptionStrategy> handleList;
+
+    @Autowired
+    private AbstractOptionStrategy defaultService;
+
     public AbstractOptionStrategy getInstance(String name) {
-        Class clazz = handleMap.get(name);
-        if (null == clazz) {
-            throw new RuntimeException("传错喽~");
-        }
-        
-        return (AbstractOptionStrategy) applicationContext.getBean(clazz);
+        AbstractOptionStrategy clazz = handleList.stream()
+                .filter(f ->
+                        StringUtils.equals(name, f.getClass().getAnnotation(HandlerType.class).value()))
+                .findFirst()
+                .orElse(defaultService);
+
+        return clazz;
     }
 }
