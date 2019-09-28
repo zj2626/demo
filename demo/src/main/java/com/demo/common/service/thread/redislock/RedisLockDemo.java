@@ -38,7 +38,7 @@ public class RedisLockDemo implements Runnable {
     private static ApplicationContext applicationContext;
 
     static {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-redis.xml");
     }
 
     public static void main(String[] args) throws InterruptedException {

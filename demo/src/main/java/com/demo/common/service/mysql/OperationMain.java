@@ -26,7 +26,7 @@ public class OperationMain implements Runnable {
     }
 
     static {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-mybatis.xml");
     }
 
     public static void main(String[] args) throws InterruptedException {

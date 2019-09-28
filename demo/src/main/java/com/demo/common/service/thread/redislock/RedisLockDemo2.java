@@ -30,7 +30,7 @@ public class RedisLockDemo2 implements Runnable {
     private static ApplicationContext applicationContext;
 
     static {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-redis.xml");
 
         try {
 //            config.useClusterServers() //这是用的集群server

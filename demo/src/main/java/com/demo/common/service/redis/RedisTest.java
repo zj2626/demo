@@ -16,7 +16,7 @@ import java.util.Set;
 public class RedisTest {
 
     public static void main(String args[]) {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-redis.xml");
 //        RedisUtil redisUtil = (RedisUtil) applicationContext.getBean("redisUtil");
 //        redisUtil.flushDB();
 //

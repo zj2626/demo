@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+
+    <!-- redis属性文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:redis/redis.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="throttlingJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}" />
+        <property name="minIdle" value="${redis.pool.minIdle}" />
+        <property name="maxWaitMillis" value="${redis.pool.maxWaitTime}" />
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+    </bean>
+
+    <bean id="throttlingJedisSentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+        <constructor-arg name="propertySource">
+            <bean class="org.springframework.core.io.support.ResourcePropertySource">
+                <constructor-arg name="location" value="${redis.throttling.redis.sentinel.cluster.config_location}" />
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="throttlingJedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="sentinelConfig" ref="throttlingJedisSentinelConfiguration" />
+        <constructor-arg name="poolConfig" ref="throttlingJedisPoolConfig" />
+        <property name="password" value="${redis.pool.password}" />
+    </bean>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="throttlingJedisConnectionFactory" />
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />
+        </property>
+    </bean>
+
+    <!--&lt;!&ndash; 启动缓存注解功能，否则缓解不会生效 &ndash;&gt;
+      <cache:annotation-driven cache-manager="cacheManager"/>
+
+      &lt;!&ndash; redis属性配置 &ndash;&gt;
+      <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+          <property name="maxTotal" value="${redis.pool.maxTotal}" />
+          <property name="maxIdle" value="${redis.pool.maxIdle}" />
+          <property name="numTestsPerEvictionRun" value="${redis.pool.numTestsPerEvictionRun}" />
+          <property name="timeBetweenEvictionRunsMillis" value="${redis.pool.timeBetweenEvictionRunsMillis}" />
+          <property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}" />
+          <property name="softMinEvictableIdleTimeMillis" value="${redis.pool.softMinEvictableIdleTimeMillis}" />
+          <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" />
+          <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+      </bean>
+
+      &lt;!&ndash; redis集群配置 哨兵模式 &ndash;&gt;
+      <bean id="sentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+          <property name="master">
+              <bean class="org.springframework.data.redis.connection.RedisNode">
+                  &lt;!&ndash;这个值要和Sentinel中指定的master的值一致，不然启动时找不到Sentinel会报错的&ndash;&gt;
+                  <property name="name" value="mymaster"></property>
+              </bean>
+          </property>
+          &lt;!&ndash;记住了,这里是指定Sentinel的IP和端口，不是Master和Slave的&ndash;&gt;
+          <property name="sentinels">
+              <set>
+                  <bean class="org.springframework.data.redis.connection.RedisNode">
+                      <constructor-arg name="host" value="${redis.sentinel.host1}"></constructor-arg>
+                      <constructor-arg name="port" value="${redis.sentinel.port1}"></constructor-arg>
+                  </bean>
+                  <bean class="org.springframework.data.redis.connection.RedisNode">
+                      <constructor-arg name="host" value="${redis.sentinel.host2}"></constructor-arg>
+                      <constructor-arg name="port" value="${redis.sentinel.port2}"></constructor-arg>
+                  </bean>
+              </set>
+          </property>
+      </bean>
+      <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+          <constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>
+          <constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
+      </bean>
+      <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+          <property name="connectionFactory" ref="redisConnectionFactory"></property>
+      </bean>
+      &lt;!&ndash; 缓存管理器 &ndash;&gt;
+      <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+          <constructor-arg ref="redisTemplate" />
+      </bean>-->
+
+</beans>

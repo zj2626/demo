@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
  */
 public class IdempotentDemo {
     private static Integer value = 0;
-    private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
     public static void main(String[] args) {
 //        applicationContext.getBean("");

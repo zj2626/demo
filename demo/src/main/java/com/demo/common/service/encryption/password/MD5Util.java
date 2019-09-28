@@ -1,4 +1,4 @@
-package com.demo.common.service.password;
+package com.demo.common.service.encryption.password;
 
 import org.apache.commons.codec.binary.Hex;
 

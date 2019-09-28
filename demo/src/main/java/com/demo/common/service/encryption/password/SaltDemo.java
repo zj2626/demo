@@ -1,4 +1,4 @@
-package com.demo.common.service.password;
+package com.demo.common.service.encryption.password;
 
 public class SaltDemo {
     public static void main(String[] args) {

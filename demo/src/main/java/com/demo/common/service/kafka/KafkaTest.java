@@ -10,7 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 public class KafkaTest {
     @Test
     public void startProducter() {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-kafka.xml");
         try {
             KafkaTemplate kafkaTemplate = (KafkaTemplate) applicationContext.getBean("kafkaTemplate");
             for (int j = 0; j < 3; j++) {
@@ -30,7 +30,7 @@ public class KafkaTest {
 
     @Test
     public void startConsummer() throws InterruptedException {
-        ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext-kafka.xml");
         TimeUnit.HOURS.sleep(1);
 //        Thread.sleep(1000000);
     }
