@@ -28,7 +28,7 @@ public class KafkaWithoutSpring {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 100; i++) {
                 String msg = i + "";
-                producer.send(new ProducerRecord<String, String>("kfk-to-topic-zj-08", msg));
+                producer.send(new ProducerRecord<>("kfk-to-ay-08", msg));
                 System.out.println("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class KafkaWithoutSpring {
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList("kfk-to-topic-zj-08"));
+        kafkaConsumer.subscribe(Arrays.asList("kfk-to-ay-08"));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
             System.out.println(records.count());
