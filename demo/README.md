@@ -8,6 +8,6 @@
 
 #### Command line: 
 
-> clean -Ptest -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+> clean -P test -D maven.javadoc.skip=true -D maven.test.skip=true
 
 ### Run

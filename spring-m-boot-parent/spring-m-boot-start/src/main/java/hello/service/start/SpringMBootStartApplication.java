@@ -8,10 +8,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * ********************
- * install command: clean install -Dprofiles.active=test -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+ * install command: clean install -D profiles.active=test -D maven.javadoc.skip=true -D maven.test.skip=true
  * path: /demo/spring-m-boot-parent
  * ********************
- * run command:     spring-boot:run -Dprofiles.active=test
+ * run command:     spring-boot:run -D profiles.active=test
  * path: /demo/spring-m-boot-parent/spring-h-boot-start
  * ********************
  */
