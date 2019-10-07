@@ -59,13 +59,13 @@ public class SpringCloudTurbineApplication {
     @HystrixCommand(fallbackMethod = "onError")
     @GetMapping("/test/hystrix")
     public String doServiceRequestHalfFailed3(Boolean success) {
-        return restTemplate.getForObject("http://spring-cloud-client01/half?success=" + success, String.class);
+        return restTemplate.getForObject("http://spring-cloud-client02/half?success=" + success, String.class);
     }
 
     @HystrixCommand(fallbackMethod = "onError")
     @GetMapping("/test/hystrix2")
     public String doServiceRequestHalfFailed4(Boolean success) {
-        return restTemplate.getForObject("http://spring-cloud-client01/half?success=" + success, String.class);
+        return restTemplate.getForObject("http://spring-cloud-client02/half?success=" + success, String.class);
     }
 
     private String onError(Boolean success){
