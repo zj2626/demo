@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    config:
+      name: ${spring.application.name} #需要从github上读取的资源名称，注意没有yml后缀名
+      profile: dev   #本次访问的配置项
+      label: master
+      uri: http://localhost:18092/  #本微服务启动后先去找服务，通过SpringCloudConfig获取GitHub的服务地址
+      # http://localhost:8190/actuator/bus-refresh
+#      discovery:
+#        enabled: true
+#        service-id: spring-cloud-config-server01
+#    bus:
+#      trace:
+#        enabled: true

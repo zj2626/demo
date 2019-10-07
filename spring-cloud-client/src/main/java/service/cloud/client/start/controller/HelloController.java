@@ -1,12 +1,16 @@
 package service.cloud.client.start.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+// 不重启更新配置信息需要用到消息中间件
+@RefreshScope // spring cloud bus配置自动刷新需要在包含更新的@Value的类加上 @RefreshScope
 @RestController
 public class HelloController {
     @Autowired
@@ -18,9 +22,19 @@ public class HelloController {
     @Value("${spring.application.name}")
     String applicationName;
 
+    @Value("${foo:#{null}}")
+    String foo;
+
+    @Value("${spring.profiles.active}")
+    String active;
+
+    // http://localhost:8090/hi?name=zj2626
+    // http://localhost:8190/actuator/bus-refresh
     @GetMapping("/hi")
     public String home(@RequestParam String name) {
-        return "hi " + name + ",i am from port:" + port;
+        return "hi " + name + ", i am from port:" + port + ", active=" + active
+                + ", get config from git success? " + (StringUtils.isNotEmpty(foo) ? "success" : "failed")
+                + ", it is : " + foo;
     }
 
     @GetMapping("/half")

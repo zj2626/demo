@@ -2,7 +2,6 @@ package service.cloud.start;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
@@ -13,7 +12,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * run command:     spring-boot:run -D profiles.active=test
  * path: /demo/spring-cloud-server
  * ********************
- *
+ * <p>
  * ********************
  * 高可用的服务注册中心 启动
  * java -jar spring-cloud-service-0.1.jar --spring.profiles.active=peer1

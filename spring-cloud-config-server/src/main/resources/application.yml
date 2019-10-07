@@ -1,0 +1,31 @@
+server:
+  port: 18092
+
+spring:
+  application:
+    name: spring-cloud-config-server01
+
+  #############################################
+  ############Config Server 配置中心############
+  #############################################
+  cloud:
+    config:
+      # http://localhost:18092/foo/dev
+      # http://localhost:18092/spring-cloud-client01-dev.properties
+      # http://localhost:8090/hi?name=zj2626
+      # http://localhost:8190/actuator/bus-refresh
+      label: master
+      server:
+        git:
+          uri: https://github.com/zj2626/SpringcloudConfig
+          searchPaths: respo
+          username: un #Git仓库为公开仓库，可以不填写用户名和密码，如果是私有仓库需要填写
+          password: pw
+#          basedir: D:/Config/basedir #配置下载到本地
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka
