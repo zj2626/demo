@@ -81,16 +81,10 @@
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
 
-        <!--feign-->
+        <!--feign Feign默认集成了ribbon-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
-        <!--ribbon-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
         </dependency>
 
         <!--hystrix-->
