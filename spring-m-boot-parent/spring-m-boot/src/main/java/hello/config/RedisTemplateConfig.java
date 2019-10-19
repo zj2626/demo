@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -47,7 +48,7 @@ public class RedisTemplateConfig {
     private String sentinelMaster;
     
     @Value("#{'${spring.redis.sentinel.nodes:#{null}}'.split(',')}")
-    private String[] sentinelNodes;
+    private List<String> sentinelNodes;
     
     private StringRedisSerializer keySerializer = new StringRedisSerializer();
     
