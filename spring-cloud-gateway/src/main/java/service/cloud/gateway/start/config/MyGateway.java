@@ -6,6 +6,9 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 使用RouteLocator的Bean进行路由转发，将请求进行处理，最后转发到目标的下游服务
+ */
 @Configuration
 public class MyGateway {
 
