@@ -12,11 +12,6 @@ import java.io.IOException;
 @Component
 public class SchedualServiceHiHystric implements InterfaceFeignService {
     @Override
-    public void index(HttpServletResponse response) throws IOException {
-        System.out.println("没用方法");
-    }
-
-    @Override
     public String fun(String name) {
         return "fallback to here method[fun]";
     }

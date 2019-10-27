@@ -7,10 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface ControllerApi {
-    @ApiOperation(value = "/")
-    @GetMapping("/")
-    void index(HttpServletResponse response) throws IOException;
-
     // http://localhost:8090/hi?name=zj2626
     // http://localhost:8190/actuator/bus-refresh
     @GetMapping("/hi")
