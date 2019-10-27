@@ -1,5 +1,6 @@
 package service.cloud.client.start.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import service.cloud.client.start.controller.api.ControllerApi;
 import service.cloud.client.start.service.InterfaceFeignService;
 import service.cloud.client.start.service.InterfaceRibbonService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 // 不重启更新配置信息需要用到消息中间件
 @RefreshScope // spring cloud bus配置自动刷新需要在包含更新的@Value的类加上 @RefreshScope
@@ -32,6 +36,11 @@ public class HelloClientController implements ControllerApi {
 
     @Value("${spring.profiles.active}")
     String active;
+
+    @Override
+    public void index(HttpServletResponse response) throws IOException {
+        response.sendRedirect("swagger-ui.html");
+    }
 
     // http://localhost:8090/hi?name=zj2626
     // http://localhost:8190/actuator/bus-refresh
