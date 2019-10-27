@@ -18,7 +18,9 @@ public class FunController implements ControllerApi {
 
     @Override
     public String doServiceRequestHi(String name) {
-        return "fucking sorry doo";
+        return "hi " + name + ", "
+                + ", get config from git success? "
+                + ", it is : sprint-cloud-client-02";
     }
 
     @Override
