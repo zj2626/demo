@@ -37,5 +37,5 @@ eureka:
     healthcheck:
       enabled: true # 开启健康检查
     service-url:
-      defaultZone: http://localhost:18090/eureka,http://localhost:18091/eureka
+      defaultZone: http://localhost:18090/eureka
 
