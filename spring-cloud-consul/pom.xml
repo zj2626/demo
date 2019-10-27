@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>service.cloud</groupId>
-    <artifactId>spring-cloud-client-consul</artifactId>
+    <artifactId>spring-cloud-consul</artifactId>
     <version>0.1</version>
-    <name>spring-cloud-client-consul</name>
+    <name>spring-cloud-consul</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

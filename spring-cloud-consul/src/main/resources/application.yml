@@ -5,7 +5,7 @@ spring:
   profiles:
     active: ${profiles.active}
   application:
-    name: spring-cloud-client-consul01
+    name: spring-cloud-consul
 
   cloud:
     consul:

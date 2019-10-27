@@ -1,5 +1,5 @@
 spring:
   application:
-    name: spring-cloud-service01
+    name: spring-cloud-eureka01
   profiles:
     active: ${profiles.active}
