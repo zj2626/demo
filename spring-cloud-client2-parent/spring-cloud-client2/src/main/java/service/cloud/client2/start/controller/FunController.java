@@ -1,8 +1,8 @@
-package service.cloud.client.start.controller;
+package service.cloud.client2.start.controller;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import service.cloud.client.start.controller.api.ControllerApi;
+import service.cloud.client2.start.controller.api.ControllerApi;
 
 @RestController
 public class FunController implements ControllerApi {
@@ -17,14 +17,14 @@ public class FunController implements ControllerApi {
     }
 
     @Override
-    public String doServiceRequestHi(String name) {
+    public String hi(String name) {
         return "hi " + name + ", "
                 + ", get config from git success? "
                 + ", it is : sprint-cloud-client-02";
     }
 
     @Override
-    public String doServiceRequestHalfFailed(Boolean success) {
+    public String doHalfFailed(Boolean success) {
         System.out.println("Here..... " + success);
         if (!success) {
             try {

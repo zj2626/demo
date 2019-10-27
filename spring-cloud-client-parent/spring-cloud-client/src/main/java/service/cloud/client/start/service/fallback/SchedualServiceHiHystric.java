@@ -19,12 +19,12 @@ public class SchedualServiceHiHystric implements InterfaceFeignService {
     }
 
     @Override
-    public String doServiceRequestHi(String name) {
+    public String hi(String name) {
         return "fallback to here method[doServiceRequestHi]";
     }
 
     @Override
-    public String doServiceRequestHalfFailed(Boolean success) {
+    public String doHalfFailed(Boolean success) {
         return "fallback to here method[doServiceRequestHalfFailed]";
     }
 }

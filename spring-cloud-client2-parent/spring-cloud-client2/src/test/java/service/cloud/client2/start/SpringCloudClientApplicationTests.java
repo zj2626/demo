@@ -1,4 +1,4 @@
-package service.cloud.client.start;
+package service.cloud.client2.start;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
