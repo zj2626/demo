@@ -24,12 +24,11 @@ public class KafkaConsumerConfig {
     @Autowired
     private KafkaConsumerBeanConfig consumerBeanConfig;
 
-    private String groupId2 = "group-1";
-
     @Value("${spring.kafka.listener.concurrency}")
     private Integer concurrency;
 
-    private Integer concurrency2 = 5;
+    @Value("${kafka.consumer.group-id[g2]}")
+    private String groupId2;
 
     /*****************************************************************************/
     /*********************************配置的第一个消费者****************************/
@@ -98,7 +97,7 @@ public class KafkaConsumerConfig {
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaBatchListener2() {
         System.out.println("********************************配置的第二个消费者***************************");
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory2();
-        factory.setConcurrency(concurrency2);
+        factory.setConcurrency(5);
         return factory;
     }
 

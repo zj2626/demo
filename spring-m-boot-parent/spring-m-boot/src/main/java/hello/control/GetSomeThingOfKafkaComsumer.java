@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class GetSomeThingOfKafkaComsumer {
     private static final Logger logger = LoggerFactory.getLogger(GetSomeThingOfKafkaComsumer.class);
 
-    @KafkaListener(topics = {"kfk-to-topic-zj", "kfk-to-topic-zj-05", "defaultTopic-zj"}, containerFactory = "kafkaBatchListener")
+    @KafkaListener(topics = {"${kafka.consumer.topic[0]}", "${kafka.consumer.topic[1]}", "${kafka.consumer.topic[2]}"}, containerFactory = "kafkaBatchListener")
     public void listen(ConsumerRecord<String, byte[]> data) {
         logger.info("[第一个消费方法] 消息开始消费 " +
                 "\t[" + Thread.currentThread().getName() + "] " +
@@ -50,7 +50,7 @@ public class GetSomeThingOfKafkaComsumer {
      *
      * */
 
-    @KafkaListener(topics = {"kfk-to-topic-zj", "kfk-to-topic-zj-05"}, containerFactory = "kafkaBatchListener2")
+    @KafkaListener(topics = {"${kafka.consumer.topic[0]}", "${kafka.consumer.topic[1]}"}, containerFactory = "kafkaBatchListener2")
     public void onMessage(ConsumerRecord<String, byte[]> data) {
         logger.info("[第二个消费方法] 消息开始消费 " +
                 "\t[" + Thread.currentThread().getName() + "] " +

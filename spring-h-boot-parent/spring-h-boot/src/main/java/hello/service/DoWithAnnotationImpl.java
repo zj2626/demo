@@ -1,6 +1,8 @@
 package hello.service;
 
 import org.apache.dubbo.config.annotation.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -8,9 +10,10 @@ import java.time.LocalDateTime;
 @Component
 @Service(group = "${dubbo.provider.group}")
 public class DoWithAnnotationImpl implements DoWithAnnotation {
-    
+    private static final Logger logger = LoggerFactory.getLogger(DoWithAnnotationImpl.class);
+
     public DoWithAnnotationImpl() {
-        System.out.println("构造造 DoWithAnnotationImpl");
+        logger.info("构造造 DoWithAnnotationImpl");
     }
     
     @Override

@@ -1,5 +1,7 @@
 package hello.lifecycle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
 
@@ -13,28 +15,31 @@ import org.springframework.beans.factory.*;
  * <p>
  * 3、容器级生命周期接口方法　　：　　这个包括了InstantiationAwareBeanPostProcessor 和 BeanPostProcessor 这两个接口实现，一般称它们的实现类为“后处理器”。
  * <p>
- * 4、工厂后处理器接口方法　　：　　这个包括了AspectJWeavingEnabler, ConfigurationClassPostProcessor, CustomAutowireConfigurer等等非常有用的工厂后处理器　　接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。
+ * 4、工厂后处理器接口方法　　：　　这个包括了AspectJWeavingEnabler, ConfigurationClassPostProcessor,
+ * CustomAutowireConfigurer等等非常有用的工厂后处理器　　接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。
  */
 public class BeanLevel implements BeanFactoryAware, BeanNameAware, InitializingBean, DisposableBean {
+    private static final Logger logger = LoggerFactory.getLogger(BeanLevel.class);
+
     private String name;
     private String address;
     private int phone;
 
     public BeanLevel() {
-        System.out.println("【构造器】调用构造器实例化");
+        logger.info("【构造器】调用构造器实例化");
     }
 
-    public void initMethod(){
-        System.out.println("【init-method】调用<bean>的init-method属性指定的初始化方法");
+    public void initMethod() {
+        logger.info("【init-method】调用<bean>的init-method属性指定的初始化方法");
     }
 
-    public void destroyMethod(){
-        System.out.println("【destroy-method】调用<bean>的destroy-method属性指定的初始化方法");
+    public void destroyMethod() {
+        logger.info("【destroy-method】调用<bean>的destroy-method属性指定的初始化方法");
     }
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        System.out.println("【BeanFactoryAware接口】调用BeanFactoryAware.setBeanFactory()");
+        logger.info("【BeanFactoryAware接口】调用BeanFactoryAware.setBeanFactory()");
     }
 
     @Override

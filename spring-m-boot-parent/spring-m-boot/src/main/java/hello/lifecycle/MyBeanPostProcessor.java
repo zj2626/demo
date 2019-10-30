@@ -1,19 +1,22 @@
 package hello.lifecycle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 public class MyBeanPostProcessor implements BeanPostProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(MyBeanPostProcessor.class);
 
     public MyBeanPostProcessor() {
         super();
-        System.out.println("[MyBeanPostProcessor] 这是BeanPostProcessor实现类构造器！！\n");
+        logger.info("[MyBeanPostProcessor] 这是BeanPostProcessor实现类构造器！！\n");
     }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
             throws BeansException {
-        System.out.println("[MyBeanPostProcessor                  ] 调用postProcessBeforeInitialization对属性进行更改！Before > " + beanName);
+        logger.info("[MyBeanPostProcessor                  ] 调用postProcessBeforeInitialization对属性进行更改！Before > " + beanName);
 //        System.out.println(bean);
         return bean;
     }

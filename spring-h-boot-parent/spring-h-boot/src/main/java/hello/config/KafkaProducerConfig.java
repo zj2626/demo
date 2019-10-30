@@ -26,6 +26,9 @@ public class KafkaProducerConfig {
     @Autowired
     private KafkaProducerBeanConfig producerBeanConfig;
 
+    @Value("${spring.kafka.template.default-topic}")
+    private String defaultTopic;
+
     /*****************************************************************************/
     /*********************************配置的第一个生产者****************************/
     /*****************************************************************************/
@@ -39,6 +42,7 @@ public class KafkaProducerConfig {
     public KafkaTemplate<String, byte[]> kafkaTemplate() {
         System.out.println("********************************配置的第一个生产者***************************");
         KafkaTemplate<String, byte[]> kafkaTemplate = new KafkaTemplate<>(kafkaProducerFactory());
+        kafkaTemplate.setDefaultTopic(defaultTopic);
         return kafkaTemplate;
     }
 

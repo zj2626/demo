@@ -62,7 +62,7 @@ public class DoSomething {
     private ExterfaceInvokeIOHttpSender exterfaceInvokeIOHttpSender;
 
     public DoSomething() {
-        System.out.println("构造造 DoSomething");
+        logger.info("构造造 DoSomething");
     }
 
     public boolean dodubbo() {
