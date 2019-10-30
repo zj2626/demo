@@ -3,6 +3,7 @@ package hello.service;
 import hello.service.DoHSomething;
 import hello.service.model.Change;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.rpc.RpcContext;
@@ -50,13 +51,12 @@ public class DoHSomethingImpl implements DoHSomething {
     
         RpcContext rpcContext = RpcContext.getContext();
         System.out.println("remoteToDubboSync RpcContext aa > " + rpcContext.get("aa"));
-        System.out.println("remoteToDubboSync RpcContext cc > " + rpcContext.get("cc"));
-//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
-        System.out.println("**********");
+        System.out.println("remoteToDubboSync RpcContext bb > " + rpcContext.get("bb"));
+        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
+        System.out.println("RpcContext > " + rpcContext.getUrl());
         System.out.println("remoteToDubboSync RpcContext aa > " + rpcContext.getAttachment("aa"));
-        System.out.println("remoteToDubboSync RpcContext cc > " + rpcContext.getAttachment("cc"));
-//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-        
+        System.out.println("remoteToDubboSync RpcContext bb > " + rpcContext.getAttachment("bb"));
+
         return "remoteToDubboSync " + name;
     }
     
@@ -69,20 +69,13 @@ public class DoHSomethingImpl implements DoHSomething {
         }
     
         RpcContext rpcContext = RpcContext.getContext();
-        System.out.println("remoteToDubboAsync RpcContext aa > " + rpcContext.get("aa"));
         System.out.println("remoteToDubboAsync RpcContext cc > " + rpcContext.get("cc"));
-//        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
-        System.out.println("**********");
-        System.out.println("remoteToDubboAsync RpcContext aa > " + rpcContext.getAttachment("aa"));
+        System.out.println("remoteToDubboAsync RpcContext dd > " + rpcContext.get("dd"));
+        System.out.println("RpcContext > " + rpcContext.get(Constants.NAME));
+        System.out.println("RpcContext > " + rpcContext.getUrl());
         System.out.println("remoteToDubboAsync RpcContext cc > " + rpcContext.getAttachment("cc"));
-//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-        
-        // set requestId
-        System.out.println("**************");
-//        rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
-//        System.out.println("RpcContext > " + rpcContext.get(Constants.REQUESTID_KEY));
-//        System.out.println("RpcContext > " + rpcContext.getAttachment(Constants.REQUESTID_KEY));
-        
+        System.out.println("remoteToDubboAsync RpcContext dd > " + rpcContext.getAttachment("dd"));
+
         return "remoteToDubboAsync " + name;
     }
     

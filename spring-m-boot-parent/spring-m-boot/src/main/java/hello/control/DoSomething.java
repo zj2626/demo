@@ -8,6 +8,7 @@ import hello.service.DoHSomething;
 import hello.service.DoWithAnnotation;
 import hello.util.MQTTUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.RpcContext;
@@ -73,21 +74,17 @@ public class DoSomething {
         try {
             RpcContext rpcContext = RpcContext.getContext();
 
-            rpcContext.set("aa", "bb");
-            //            rpcContext.set(Constants.REQUESTID_KEY, UUID.randomUUID().toString());
-            rpcContext.setAttachment("cc", "dd");
-            rpcContext.setUrl(URL.valueOf("www.baidu.com"));
-
-            System.out.println(rpcContext.getUrl());
-            boolean isConsumerSide = rpcContext.isConsumerSide();
-            String serverIP = rpcContext.getRemoteHost();
-            String requestId = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
-            String timestamp = "";
-            System.out.println("-------------- 1");
+            System.out.println(rpcContext == null);
 
             //################################## 同步
             System.out.println("\n同步 DUBBO请求 >>>>>>>>>>>>>>>>>> ");
-            for (int i = 0; i < 10; i++) {
+
+            rpcContext.set("aa", "a1");
+            rpcContext.setAttachment("bb", "b1");
+            rpcContext.set(Constants.NAME, "zj2626");
+            rpcContext.setUrl(URL.valueOf("www.baidu.com"));
+
+            for (int i = 0; i < 3; i++) {
                 String res = doHSomething.remoteToDubboSync("user " + i);
                 System.out.println("同步请求: " + res);
             }
@@ -96,12 +93,17 @@ public class DoSomething {
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide2 = rpcContext.isConsumerSide();
             String serverIP2 = rpcContext.getRemoteHost();
-            String requestId2 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
-            String timestamp2 = rpcContext.getUrl().getParameter("timestamp");
-            System.out.println("-------------- 2");
+            URL rpcContextUrl2 = rpcContext.getUrl();
+            System.out.println("-------------- a");
 
             //################################## 异步
             System.out.println("\n异步 DUBBO请求 >>>>>>>>>>>>>>>>>> ");
+
+            rpcContext.set("cc", "c1");
+            rpcContext.setAttachment("dd", "d1");
+            rpcContext.set(Constants.NAME, "zj2626");
+            rpcContext.setUrl(URL.valueOf("www.baidu.com"));
+
             doHSomething.remoteToDubboAsync("user " + 0);
             doHSomething.remoteToDubboAsync("user " + 1);
             System.out.println("异步请求 doing...");
@@ -109,9 +111,8 @@ public class DoSomething {
             // 本端是否为消费端，这里会返回true
             boolean isConsumerSide3 = rpcContext.isConsumerSide();
             String serverIP3 = rpcContext.getRemoteHost();
-            String requestId3 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
-            String timestamp3 = rpcContext.getUrl().getParameter("timestamp");
-            System.out.println("-------------- 3");
+            URL rpcContextUrl3 = rpcContext.getUrl();
+            System.out.println("-------------- b");
 
             System.out.println("wait for getting Future, 卡在这里等待获得异步返回结果");
             Future<String> future = rpcContext.getFuture();
@@ -123,14 +124,12 @@ public class DoSomething {
 
             boolean isConsumerSide4 = rpcContext.isConsumerSide();
             String serverIP4 = rpcContext.getRemoteHost();
-            String requestId4 = ""/*(String) RpcContext.getContext().get(Constants.REQUESTID_KEY)*/;
-            String timestamp4 = rpcContext.getUrl().getParameter("timestamp");
+            URL rpcContextUrl4 = rpcContext.getUrl();
+            System.out.println("-------------- c");
 
-            System.out.println("RPC 1 -> " + requestId + " > " + serverIP + " > " + isConsumerSide + " > " + timestamp);
-            System.out.println("RPC 2 -> " + requestId2 + " > " + serverIP2 + " > " + isConsumerSide2 + " > " + timestamp2);
-            System.out.println("RPC 3 -> " + requestId3 + " > " + serverIP3 + " > " + isConsumerSide3 + " > " + timestamp3);
-            System.out.println("RPC 4 -> " + requestId4 + " > " + serverIP4 + " > " + isConsumerSide4 + " > " + timestamp4);
-            System.out.println("-------------- 4");
+            System.out.println("RPC a -> " + serverIP2 + " > " + isConsumerSide2 + " > " + rpcContextUrl2);
+            System.out.println("RPC b -> " + serverIP3 + " > " + isConsumerSide3 + " > " + rpcContextUrl3);
+            System.out.println("RPC c -> " + serverIP4 + " > " + isConsumerSide4 + " > " + rpcContextUrl4);
 
             return true;
         } catch (Exception e) {
