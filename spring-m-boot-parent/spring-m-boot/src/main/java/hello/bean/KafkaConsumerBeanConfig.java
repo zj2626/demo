@@ -8,15 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "spring.kafka.consumer")
 //@PropertySource(value = "application.properties")
-public class KafkaConsumerConfig {
+public class KafkaConsumerBeanConfig {
     private String bootstrapServers;
     private String groupId;
-    private String enableAutoCommit;
-    private String autoCommitInterval;
+    private Boolean enableAutoCommit;
+    private Integer autoCommitInterval;
     private String autoOffsetReset;
     private String keyDeserializer;
     private String valueDeserializer;
-    private String maxPollRecords;
-    private String sessionTimeout;
-    private String concurrency;
+    private Integer maxPollRecords;
+    private Integer sessionTimeout;
 }
