@@ -31,9 +31,6 @@ public class KafkaConsumerConfig {
 
     private Integer concurrency2 = 5;
 
-    //    @Value("#{'${spring.listener.str}'.split(',')[0]}")
-    //    private String str;
-
     /**
      * 并发数10
      *
