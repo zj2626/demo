@@ -31,6 +31,10 @@ public class KafkaConsumerConfig {
 
     private Integer concurrency2 = 5;
 
+    /*****************************************************************************/
+    /*********************************配置的第一个消费者****************************/
+    /*****************************************************************************/
+
     /**
      * 并发数10
      *
@@ -39,14 +43,14 @@ public class KafkaConsumerConfig {
     @Bean
     @ConditionalOnMissingBean(name = "kafkaListenerContainerFactory-001")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaBatchListener() {
+        System.out.println("********************************配置的第一个消费者***************************");
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory();
         factory.setConcurrency(concurrency);
         //        factory.setMessageConverter();
         return factory;
     }
 
-    @Bean
-    public Map<String, Object> consumerConfigs() {
+    private Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>(11);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, consumerBeanConfig.getAutoCommitInterval());
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBeanConfig.getBootstrapServers());
@@ -62,8 +66,7 @@ public class KafkaConsumerConfig {
         return props;
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
+    private ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         //批量消费
@@ -77,12 +80,13 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
-    @Bean
-    public ConsumerFactory<String, byte[]> consumerFactory() {
+    private ConsumerFactory<String, byte[]> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 
+    /*****************************************************************************/
     /*********************************配置的第二个消费者****************************/
+    /*****************************************************************************/
 
     /**
      * 并发数5
@@ -92,13 +96,13 @@ public class KafkaConsumerConfig {
     @Bean
     @ConditionalOnMissingBean(name = "concurrentMessageListenerContainer-002")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaBatchListener2() {
+        System.out.println("********************************配置的第二个消费者***************************");
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory2();
         factory.setConcurrency(concurrency2);
         return factory;
     }
 
-    @Bean
-    public Map<String, Object> consumerConfigs2() {
+    private Map<String, Object> consumerConfigs2() {
         Map<String, Object> props = new HashMap<>(11);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, consumerBeanConfig.getAutoCommitInterval());
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBeanConfig.getBootstrapServers());
@@ -114,15 +118,13 @@ public class KafkaConsumerConfig {
         return props;
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory2() {
+    private ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory2() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory2());
         return factory;
     }
 
-    @Bean
-    public ConsumerFactory<String, byte[]> consumerFactory2() {
+    private ConsumerFactory<String, byte[]> consumerFactory2() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs2());
     }
 }
