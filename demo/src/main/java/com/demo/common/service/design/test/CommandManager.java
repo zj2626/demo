@@ -1,4 +1,4 @@
-package hello.bean;
+package com.demo.common.service.design.test;
 
 import java.util.Map;
 

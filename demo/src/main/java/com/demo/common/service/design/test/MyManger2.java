@@ -1,4 +1,4 @@
-package hello.bean;
+package com.demo.common.service.design.test;
 
 public class MyManger2 extends CommandManager {
 
