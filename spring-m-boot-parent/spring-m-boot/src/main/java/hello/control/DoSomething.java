@@ -215,12 +215,12 @@ public class DoSomething {
         return false;
     }
 
-    public boolean dokafka() {
+    public boolean dokafka(String name) {
         try {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test kafka");
 
-            String thing2 = doHSomething.remoteToKafka("abc");
+            String thing2 = doHSomething.remoteToKafka(name);
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {

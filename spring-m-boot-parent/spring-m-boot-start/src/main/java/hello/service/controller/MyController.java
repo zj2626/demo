@@ -98,13 +98,17 @@ public class MyController {
     }
     
     @GetMapping("/kafka")
-    public BaseResult kafka(String same) {
+    @ApiOperation(value = "kafka")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", defaultValue = "topic-2")
+    })
+    public BaseResult kafka(String name) {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
             @Override
             public void doInvoke() {
-                result.setSuccess(doSomething.dokafka());
+                result.setSuccess(doSomething.dokafka(name));
             }
         });
         
