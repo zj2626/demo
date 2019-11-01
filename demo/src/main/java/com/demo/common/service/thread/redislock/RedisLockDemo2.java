@@ -103,7 +103,7 @@ public class RedisLockDemo2 implements Runnable {
             if (true) {
                 // 即使该锁是公平锁fairLock，使用tryLock()的方式获取锁也会是非公平的方式，只要获取锁时该锁可用那么就会直接获取并返回true。
                 // 这种直接插入的特性在一些特定场景是很有用的。但是如果就是想使用公平的方式的话，可以试一试tryLock(0, TimeUnit.SECONDS)，几乎跟公平锁没区别，只是会监测中断事件
-                ifLock = rLock.tryLock(3000, 3000, TimeUnit.MILLISECONDS);
+                ifLock = rLock.tryLock(6000, 3000, TimeUnit.MILLISECONDS);
                 // ifLock = rLock.tryLock();
             }
         } catch (Exception e) {
@@ -155,6 +155,8 @@ public class RedisLockDemo2 implements Runnable {
 
                             break;
                         }
+
+                        System.out.println(Thread.currentThread().getName() + " D " + i);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
