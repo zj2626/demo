@@ -9,7 +9,7 @@ public class FirstFilter implements Filter {
     
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        logger.info("FirstFilter");
+        // logger.info("FirstFilter");
         return invoker.invoke(invocation);
     }
 }

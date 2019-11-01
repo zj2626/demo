@@ -10,7 +10,7 @@ public class SecondFilter implements Filter {
     
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        logger.info("SecondFilter");
+        // logger.info("SecondFilter");
         return invoker.invoke(invocation);
     }
 }
