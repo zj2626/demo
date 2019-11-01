@@ -31,18 +31,18 @@ public class RedisLockDemo2 implements Runnable {
 //                    .setScanInterval(2000) //设置集群状态扫描时间
 //                    .setMasterConnectionPoolSize(30000) //设置连接数
 //                    .setSlaveConnectionPoolSize(30000)
-//                    .addNodeAddress("192.168.1.22:6379", "192.168.1.22:6380")
+//                    .addNodeAddress("redis://192.168.1.22:6379", "redis://192.168.1.22:6380")
 //                    .setPassword("123456");
 
 //            config.useSentinelServers()
 //                    .setMasterName("logistics_01")
-//                    .addSentinelAddress("192.168.1.21:26379")
+//                    .addSentinelAddress("redis://192.168.1.21:26379")
 //                    .setConnectTimeout(5000)
 //                    .setTimeout(5000)
 //                    .setPassword("123456");
 
             config.useSingleServer()
-                    .setAddress("127.0.0.1:6379")
+                    .setAddress("redis://127.0.0.1:6379")
                     .setConnectTimeout(5000)
                     .setTimeout(5000)
                     .setPassword("123456");
@@ -54,15 +54,11 @@ public class RedisLockDemo2 implements Runnable {
         }
     }
 
-    public static Redisson getRedisson() {
-        return redisson;
-    }
-
     /**
      * 获取redis中的原子ID
      */
     public static Long nextID() {
-        RAtomicLong atomicLong = getRedisson().getAtomicLong(rAtomicName);
+        RAtomicLong atomicLong = redisson.getAtomicLong(rAtomicName);
         atomicLong.incrementAndGet();
         return atomicLong.get();
     }
@@ -92,16 +88,23 @@ public class RedisLockDemo2 implements Runnable {
         System.out.println((end - start) + " --- " + rd.sum);
     }
 
-    private static boolean getLock(Redisson redisson, String lockStr) {
+    private static boolean getLock(String lockStr) {
         boolean ifLock = false;
         try {
-            if (true) {
-                RLock rLock = redisson.getLock(lockStr);
-                // lock提供带timeout参数，timeout结束强制解锁，防止死锁
-                // (不是等待锁时间而是最大执行时间, 方法会一直阻塞直到获得锁)
+            RLock rLock = redisson.getLock(lockStr);
+            if (false) {
+                // lock提供带timeout参数，timeout结束强制解锁，防止死锁 (不是等待锁时间而是最大执行时间, 方法会一直阻塞直到获得锁)
                 // 不设置则默认设置30s;
-                rLock.lock(3000, TimeUnit.MILLISECONDS); // 3000
+
+                rLock.lock(3000, TimeUnit.MILLISECONDS);
                 ifLock = true;
+            }
+
+            if (true) {
+                // 即使该锁是公平锁fairLock，使用tryLock()的方式获取锁也会是非公平的方式，只要获取锁时该锁可用那么就会直接获取并返回true。
+                // 这种直接插入的特性在一些特定场景是很有用的。但是如果就是想使用公平的方式的话，可以试一试tryLock(0, TimeUnit.SECONDS)，几乎跟公平锁没区别，只是会监测中断事件
+                ifLock = rLock.tryLock(3000, 3000, TimeUnit.MILLISECONDS);
+                // ifLock = rLock.tryLock();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,14 +129,12 @@ public class RedisLockDemo2 implements Runnable {
         String lockStr = "lockStr007";
         System.out.println(lockStr);
 
-        Redisson redisson = getRedisson();
-
         // option one
         if (true) {
             for (int i = 0; i < 5; i++) {
                 try {
                     while (true) {
-                        boolean ifLock = RedisLockDemo2.getLock(redisson, lockStr);
+                        boolean ifLock = RedisLockDemo2.getLock(lockStr);
                         if (ifLock) {
                             System.out.println(Thread.currentThread().getName() + " A " + i);
                             Integer nt = sum;
@@ -174,7 +175,7 @@ public class RedisLockDemo2 implements Runnable {
             for (int j = 0; j < 100; j++) {
                 try {
                     while (true) {
-                        boolean ifLock = RedisLockDemo2.getLock(redisson, lockStr);
+                        boolean ifLock = RedisLockDemo2.getLock(lockStr);
                         if (ifLock) {
                             System.out.println(Thread.currentThread().getName() + " - " + sum);
                             sum++;
