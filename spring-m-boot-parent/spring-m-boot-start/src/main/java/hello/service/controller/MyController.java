@@ -96,7 +96,7 @@ public class MyController {
         
         return result;
     }
-    
+
     @GetMapping("/kafka")
     @ApiOperation(value = "kafka")
     @ApiImplicitParams({
@@ -111,8 +111,16 @@ public class MyController {
                 result.setSuccess(doSomething.dokafka(name));
             }
         });
-        
+
         return result;
+    }
+
+    @GetMapping("/kafkaCustomProducer")
+    @ApiOperation(value = "kafkaCustomProducer")
+    @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", defaultValue = "topic-1")
+    public String kafkaCustomProducer(String name) {
+        doSomething.kafkaCustomProducer(name);
+        return "success";
     }
     
     /* 执行:rabbitmq-plugins enable rabbitmq_management 访问:http://127.0.0.1:15672/ */

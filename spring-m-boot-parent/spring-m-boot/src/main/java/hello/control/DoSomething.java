@@ -5,6 +5,7 @@ import hello.annotation.SimpleMovieLister;
 import hello.hystrix.HystrixUtil;
 import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
+import hello.service.DoSendKafka;
 import hello.service.DoWithAnnotation;
 import hello.util.MQTTUtil;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +49,9 @@ public class DoSomething {
 
     @Reference(group = "${dubbo.consumer.group}")
     private DoHSomething doHSomething;
+
+    @Reference(group = "${dubbo.consumer.group}")
+    private DoSendKafka doSendKafka;
 
     @Reference(group = "${dubbo.consumer.group}", cache = "true")
     private DoWithAnnotation doWithAnnotation;
@@ -220,13 +224,17 @@ public class DoSomething {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test kafka");
 
-            String thing2 = doHSomething.remoteToKafka(name);
+            String thing2 = doSendKafka.remoteToKafka(name);
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void kafkaCustomProducer(String name) {
+        doSendKafka.kafkaCustomProducer(name);
     }
 
     public boolean dorabbitmq() {

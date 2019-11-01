@@ -4,8 +4,6 @@ public interface DoHSomething {
 
     public String remoteToDubboAsync(String name);
 
-    public String remoteToKafka(String name);
-
     public String remoteToRabbitmq(String name);
 
     public String remoteToDubboSync(String name);

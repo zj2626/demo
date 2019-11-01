@@ -1,27 +1,18 @@
 package hello.service;
 
-import com.alibaba.fastjson.JSON;
-import hello.service.model.Change;
-import hello.service.model.PushData;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.rpc.RpcContext;
-import org.apache.kafka.common.PartitionInfo;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.jms.Destination;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @Component
 @Service(group = "${dubbo.provider.group}",
@@ -31,12 +22,6 @@ import java.util.UUID;
                 @Method(name = "remoteToKafka", async = true),}
 )
 public class DoHSomethingImpl implements DoHSomething {
-    private String topicName_1 = "kfk-to-topic-zj-01";
-    private String topicName_2 = "kfk-to-topic-zj-02";
-    private String topicName_3 = "kfk-to-topic-zj-03";
-
-    @Autowired
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -80,42 +65,6 @@ public class DoHSomethingImpl implements DoHSomething {
         System.out.println("remoteToDubboAsync RpcContext dd > " + rpcContext.getAttachment("dd"));
 
         return "remoteToDubboAsync " + name;
-    }
-
-    @Override
-    public String remoteToKafka(String name) {
-        try {
-            if (StringUtils.isEmpty(name) || name.contains("1")) {
-                name = topicName_1;
-            } else if (name.contains("2")) {
-                name = topicName_2;
-            } else if (name.contains("3")) {
-                name = topicName_3;
-            } else {
-                name = "defaultTopic-zj";
-            }
-
-            System.out.println("KAFKA -> " + (null != kafkaTemplate));
-            if (null != kafkaTemplate) {
-                System.out.println(">>>");
-                List<PartitionInfo> partitionInfos = kafkaTemplate.partitionsFor(name);
-                System.out.println("topic[" + name + "]的partition: " + partitionInfos.size() + "\t" + partitionInfos);
-
-                PushData pushData = new PushData();
-                pushData.setId("my god");
-                pushData.setMsg(UUID.randomUUID().toString());
-                pushData.setCode("CHO-20190010");
-                pushData.setFlag(2);
-                pushData.setTime(new Date());
-                kafkaTemplate.send(name, Change.strToByteArray(JSON.toJSONString(pushData)));
-                System.out.println(">>>>>>>>>" + pushData);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("发送kafka消息完毕 ");
-        return "> KAFKA " + name;
     }
 
     @Override

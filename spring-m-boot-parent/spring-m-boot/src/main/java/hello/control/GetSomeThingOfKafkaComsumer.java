@@ -14,7 +14,7 @@ public class GetSomeThingOfKafkaComsumer {
     private static final Logger logger = LoggerFactory.getLogger(GetSomeThingOfKafkaComsumer.class);
 
     @KafkaListener(
-            topics = {"#{'${kafka.consumer.topic}'.split(',')[1]}", "#{'${kafka.consumer.topic}'.split(',')[2]}"},
+            topics = {"#{'${kafka.consumer.topic}'.split(',')[1]}", "#{'${kafka.consumer.topic}'.split(',')[0]}"},
             containerFactory = "kafkaBatchListener")
     public void listen(ConsumerRecord<String, byte[]> data) {
         logger.info("[第一个消费方法] 消息开始消费 " +
