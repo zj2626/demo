@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import service.cloud.client2.start.controller.api.ControllerApi;
+import service.cloud.client2.start.service.AsyncService;
 
 // 不重启更新配置信息需要用到消息中间件
 @RefreshScope // spring cloud bus配置自动刷新需要在包含更新的@Value的类加上 @RefreshScope
@@ -14,6 +15,9 @@ import service.cloud.client2.start.controller.api.ControllerApi;
 public class FunController implements ControllerApi {
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AsyncService asyncService;
 
     @Value("${server.port}")
     String port;
@@ -50,6 +54,15 @@ public class FunController implements ControllerApi {
         }
 
         return "fucking sorry doo 2";
+    }
+
+    @Override
+    public String asyncMethod(String name) {
+        System.out.println("asyncMethod");
+        name = null == name ? "ay2626" : name;
+        String result = asyncService.doDemo(name);
+        System.out.println(result);
+        return result;
     }
 
     @Override

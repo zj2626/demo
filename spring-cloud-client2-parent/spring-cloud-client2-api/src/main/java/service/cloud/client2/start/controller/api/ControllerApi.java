@@ -18,6 +18,9 @@ public interface ControllerApi {
         // 没有@RequestParam就变POST了 ????? 为啥
     String doHalfFailed(@RequestParam Boolean success);
 
+    @GetMapping("/async")
+    String asyncMethod(String name);
+
     @GetMapping("/zipkin2")
     String zipkinMethod2(String name);
 
