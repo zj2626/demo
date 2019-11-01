@@ -4,8 +4,6 @@ import org.redisson.Redisson;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RLock;
 import org.redisson.config.Config;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +25,7 @@ public class RedisLockDemo2 implements Runnable {
 
     private static Config config = new Config();
 
-    private static ApplicationContext applicationContext;
-
     static {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-redis.xml");
-
         try {
 //            config.useClusterServers() //这是用的集群server
 //                    .setScanInterval(2000) //设置集群状态扫描时间
@@ -39,16 +33,22 @@ public class RedisLockDemo2 implements Runnable {
 //                    .setSlaveConnectionPoolSize(30000)
 //                    .addNodeAddress("192.168.1.22:6379", "192.168.1.22:6380")
 //                    .setPassword("123456");
-            config.useSentinelServers()
-                    .setMasterName("logistics_01")
-                    .addSentinelAddress("192.168.1.21:26379")
+
+//            config.useSentinelServers()
+//                    .setMasterName("logistics_01")
+//                    .addSentinelAddress("192.168.1.21:26379")
+//                    .setConnectTimeout(5000)
+//                    .setTimeout(5000)
+//                    .setPassword("123456");
+
+            config.useSingleServer()
+                    .setAddress("127.0.0.1:6379")
                     .setConnectTimeout(5000)
                     .setTimeout(5000)
                     .setPassword("123456");
+
             redisson = (Redisson) Redisson.create(config);
-            //清空自增的ID数字
-//            RAtomicLong atomicLong = redisson.getAtomicLong(rAtomicName);
-//            atomicLong.set(1);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,17 +96,12 @@ public class RedisLockDemo2 implements Runnable {
         boolean ifLock = false;
         try {
             if (true) {
-                long start = System.currentTimeMillis();
-
                 RLock rLock = redisson.getLock(lockStr);
                 // lock提供带timeout参数，timeout结束强制解锁，防止死锁
                 // (不是等待锁时间而是最大执行时间, 方法会一直阻塞直到获得锁)
                 // 不设置则默认设置30s;
-                rLock.lock(4000, TimeUnit.MILLISECONDS); // 3000
+                rLock.lock(3000, TimeUnit.MILLISECONDS); // 3000
                 ifLock = true;
-
-                long end = System.currentTimeMillis();
-//                System.out.println(" > > > " + (end - start) + "  " + Thread.currentThread().getName());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,17 +140,17 @@ public class RedisLockDemo2 implements Runnable {
                             Thread.sleep(300);
                             sum = nt + 1;
                             System.out.println(Thread.currentThread().getName() + " B " + i);
-                            Thread.sleep(200);
-                            System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
-                            System.out.println(Thread.currentThread().getName() + " *-* " + 0);
-                            for (int j = 1; j <= 5; j++) {
+                            Thread.sleep(300);
+                            System.out.println(Thread.currentThread().getName() + " C " + i + "-------------------> " + sum);
+                            for (int j = 1; j <= 4; j++) {
                                 Thread.sleep(500);
-                                System.out.println(Thread.currentThread().getName() + " *-* " + j);
+                                System.out.print("*" + j + "\t");
                             }
+                            System.out.println();
 
                             // 当线程等待超时时间设置为3000ms,则上方执行完毕以后在这里等待的10ms处发生超时,此时第二个线程马上获得锁进入
                             // 所以第二个线程的"thread-A 0"会在第一个线程的"thread-release"日志前打印出来(实际情况可能有微小误差,因为线程执行开始时间不定)
-                            Thread.sleep(10);
+                            Thread.sleep(300);
 
                             break;
                         }

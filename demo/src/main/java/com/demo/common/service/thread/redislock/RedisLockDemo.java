@@ -77,7 +77,7 @@ public class RedisLockDemo implements Runnable {
         if (true) {
             ifLock = redisTemplate.opsForValue().setIfAbsent(lockStr, lockValue);
             if (ifLock) {
-//                redisTemplate.expire(lockStr, 4000, TimeUnit.MILLISECONDS);
+//                redisTemplate.expire(lockStr, 2500, TimeUnit.MILLISECONDS);
                 redisTemplate.expire(lockStr, 3000, TimeUnit.MILLISECONDS);
             }
         }
@@ -179,17 +179,17 @@ public class RedisLockDemo implements Runnable {
                             Thread.sleep(300);
                             sum = nt + 1;
                             System.out.println(Thread.currentThread().getName() + " B " + i);
-                            Thread.sleep(200);
-                            System.out.println(Thread.currentThread().getName() + " C " + i + "-" + sum);
-                            System.out.println(Thread.currentThread().getName() + " *-* " + 0);
-                            for (int j = 1; j <= 5; j++) {
+                            Thread.sleep(300);
+                            System.out.println(Thread.currentThread().getName() + " C " + i + "-------------------> " + sum);
+                            for (int j = 1; j <= 4; j++) {
                                 Thread.sleep(500);
-                                System.out.println(Thread.currentThread().getName() + " *-* " + j);
+                                System.out.print("*" + j + "\t");
                             }
+                            System.out.println();
 
                             // 当线程等待超时时间设置为3000ms,则上方执行完毕以后在这里等待的10ms处发生超时,此时第二个线程马上获得锁进入
                             // 所以第二个线程的"thread-A 0"会在第一个线程的"thread-release"日志前打印出来(实际情况可能有微小误差,因为线程执行开始时间不定)
-                            Thread.sleep(10);
+                            Thread.sleep(300);
 
                             break;
                         }
