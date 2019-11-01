@@ -63,12 +63,6 @@ public class FunController implements ControllerApi {
     }
 
     @Override
-    public String zipkinMethod3(String name) {
-        name = null == name ? "ay2626" : name;
-        return ribbonService.zipkinMethod3(name);
-    }
-
-    @Override
     public String ribbonRequestHi(String name) {
         name = null == name ? "ay2626" : name;
         return ribbonService.doServiceRequestHi(name);

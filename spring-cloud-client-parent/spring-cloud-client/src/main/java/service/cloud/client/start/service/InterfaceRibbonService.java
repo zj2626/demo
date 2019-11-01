@@ -5,8 +5,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 public interface InterfaceRibbonService {
     String zipkinMethod(String name);
 
-    String zipkinMethod3(String name);
-
     String doServiceRequestHi(String name);
 
     String doServiceRequestHalfFailed(Boolean success);

@@ -23,7 +23,4 @@ public interface ControllerApi {
 
     @GetMapping("/zipkin2")
     String zipkinMethod2(String name);
-
-    @GetMapping("/zipkin4")
-    String zipkinMethod4(String name);
 }

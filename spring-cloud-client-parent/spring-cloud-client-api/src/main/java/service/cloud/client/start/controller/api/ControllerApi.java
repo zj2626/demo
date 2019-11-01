@@ -1,10 +1,6 @@
 package service.cloud.client.start.controller.api;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public interface ControllerApi {
     // http://localhost:8090/hi?name=zj2626
@@ -17,9 +13,6 @@ public interface ControllerApi {
 
     @GetMapping("/ribbon/zipkin")
     String zipkinMethod(String name);
-
-    @GetMapping("/ribbon/zipkin3")
-    String zipkinMethod3(String name);
 
     @GetMapping("/ribbon/requestHi")
     String ribbonRequestHi(String name);

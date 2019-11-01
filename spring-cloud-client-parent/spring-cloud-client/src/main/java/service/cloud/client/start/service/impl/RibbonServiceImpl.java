@@ -18,13 +18,6 @@ public class RibbonServiceImpl implements InterfaceRibbonService {
         return restTemplate.getForObject("http://localhost:8091/zipkin2?name=" + name, String.class);
     }
 
-    @Override
-    public String zipkinMethod3(String name) {
-        System.out.println("client zipkin3");
-        name = null == name ? "ay2626" : name;
-        return restTemplate.getForObject("http://localhost:8091/zipkin4?name=" + name, String.class);
-    }
-
     // 各种请求怎么写 里面的get方法啥意思 post get delete put ?????????
     @Override
     public String doServiceRequestHi(String name) {
