@@ -3,15 +3,11 @@ package service.cloud.client.start.controller;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import service.cloud.client.start.service.InterfaceFeignService;
-import service.cloud.client.start.service.InterfaceRibbonService;
 import service.cloud.client.start.controller.api.ControllerApi;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import service.cloud.client.start.service.ControllerFeignApi;
+import service.cloud.client.start.service.InterfaceRibbonService;
 
 @RestController
 public class FunController implements ControllerApi {
@@ -19,7 +15,7 @@ public class FunController implements ControllerApi {
     private InterfaceRibbonService ribbonService;
 
     @Autowired
-    private InterfaceFeignService feignService;
+    private ControllerFeignApi feignApi;
 
     @Value("${server.port}")
     String port;
@@ -36,14 +32,14 @@ public class FunController implements ControllerApi {
     // http://localhost:8090/hi?name=zj2626
     // http://localhost:8190/actuator/bus-refresh
     @Override
-    public String hi(@RequestParam String name) {
+    public String hi(@RequestBody String name) {
         return "hi " + name + ", i am from port:" + port + ", active=" + active
                 + ", get config from git success? " + (StringUtils.isNotEmpty(foo) ? "success" : "failed")
                 + ", it is : " + foo;
     }
 
     @Override
-    public String half(@RequestParam Boolean success) {
+    public String half(@RequestBody Boolean success) {
         System.out.println("Here..... " + success);
         if (!success) {
             try {
@@ -57,47 +53,54 @@ public class FunController implements ControllerApi {
     }
 
     @Override
-    public String zipkinMethod(String name) {
+    public String zipkinMethod(@RequestBody String name) {
         name = null == name ? "ay2626" : name;
         return ribbonService.zipkinMethod(name);
     }
 
     @Override
-    public String ribbonRequestHi(String name) {
+    public String ribbonRequestHi(@RequestBody String name) {
         name = null == name ? "ay2626" : name;
         return ribbonService.doServiceRequestHi(name);
     }
 
     @Override
-    public String requestHalfFailed(Boolean success) {
+    public String requestHalfFailed(@RequestBody Boolean success) {
         success = null == success ? true : success;
         return ribbonService.doServiceRequestHalfFailed(success);
     }
 
     @Override
-    public String requestHalfFailed2(Boolean success) {
+    public String requestHalfFailed2(@RequestBody Boolean success) {
         success = null == success ? true : success;
         return ribbonService.doServiceRequestHalfFailed2(success);
     }
 
     @Override
-    public String fun(String name) {
+    public String fun(@RequestBody String name) {
         System.out.println("feign request");
         name = null == name ? "ay2626" : name;
-        return feignService.fun(name);
+        return feignApi.fun(name);
     }
 
     @Override
-    public String requestHi(String name) {
+    public String feignRequest(@RequestBody String name) {
+        System.out.println("feign feignRequest");
         name = null == name ? "ay2626" : name;
-        return feignService.hi(name);
+        return feignApi.feignRequest(name);
     }
 
     @Override
-    public String testHystrix(Boolean success) {
+    public String requestHi(@RequestBody String name) {
+        name = null == name ? "ay2626" : name;
+        return feignApi.hi(name);
+    }
+
+    @Override
+    public String testHystrix(@RequestBody Boolean success) {
         System.out.println("feign request");
         success = null == success ? true : success;
-        return feignService.doHalfFailed(success);
+        return feignApi.doHalfFailed(success);
     }
 }
 

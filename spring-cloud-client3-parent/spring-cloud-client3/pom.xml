@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>service.cloud</groupId>
-        <artifactId>spring-cloud-client2-parent</artifactId>
+        <artifactId>spring-cloud-client3-parent</artifactId>
         <version>0.1</version>
     </parent>
-    <artifactId>spring-cloud-client2</artifactId>
+    <artifactId>spring-cloud-client3</artifactId>
     <version>0.1</version>
-    <name>spring-cloud-client2</name>
+    <name>spring-cloud-client3</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -18,12 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>service.cloud</groupId>
-            <artifactId>spring-cloud-client2-api</artifactId>
-            <version>0.1</version>
-        </dependency>
-
         <dependency>
             <groupId>service.cloud</groupId>
             <artifactId>spring-cloud-client3-api</artifactId>

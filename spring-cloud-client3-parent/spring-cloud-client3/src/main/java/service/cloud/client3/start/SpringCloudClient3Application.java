@@ -1,4 +1,4 @@
-package service.cloud.client2.start;
+package service.cloud.client3.start;
 
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.springframework.boot.SpringApplication;
@@ -26,10 +26,10 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @EnableHystrix
 @EnableHystrixDashboard
-public class SpringCloudClient2Application {
+public class SpringCloudClient3Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudClient2Application.class, args);
+        SpringApplication.run(SpringCloudClient3Application.class, args);
     }
 
     @Bean
@@ -51,6 +51,6 @@ public class SpringCloudClient2Application {
 }
 
 /*
- * Dashboard 访问地址:http://127.0.0.1:8091/hystrix
- * Dashboard-Stream 地址:http://127.0.0.1:8091/hystrix.stream
+ * Dashboard 访问地址:http://127.0.0.1:8092/hystrix
+ * Dashboard-Stream 地址:http://127.0.0.1:8092/hystrix.stream
  * */

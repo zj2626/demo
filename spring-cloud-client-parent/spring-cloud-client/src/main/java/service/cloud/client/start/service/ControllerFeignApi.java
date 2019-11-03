@@ -5,5 +5,5 @@ import service.cloud.client2.start.controller.api.ControllerApi;
 
 @FeignClient(value = "spring-cloud-client02")
 //@FeignClient(value = "spring-cloud-client02", fallback = SchedualServiceHiHystric.class)
-public interface InterfaceFeignService extends ControllerApi {
+public interface ControllerFeignApi extends ControllerApi {
 }
