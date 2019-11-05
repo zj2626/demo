@@ -113,14 +113,10 @@ public class RedisLockDemo2 implements Runnable {
         return ifLock;
     }
 
-    // 当第一个线程超时 则第二个线程进入并设置redis, 然后第一个线程结束并删除redis值(这里存储使用的hash的hkey 并不会影响其他线程,但是会抛异常)
-    // 所以不会发生RedisLockDemo类中的问题
     private static void releaseLock(Redisson redisson, String lockStr) {
         RLock rLock = redisson.getLock(lockStr);
-        try {
+        if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
             rLock.unlock();
-        } catch (Exception e) {
-            System.err.println("由于超时导致该锁已经解除: " + e.getMessage());
         }
     }
 
