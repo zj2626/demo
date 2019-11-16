@@ -3,10 +3,13 @@ package com.demo.common.service.optional;
 import lombok.Data;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class MyOptionalDemo {
     Son son;
+    List<Son> sons;
 
     {
         Father father = new Father("[ father entity ]");
@@ -14,8 +17,12 @@ public class MyOptionalDemo {
         son = new Son("[ son entity ]");
         son.setFather(father);
 
+        sons = Collections.singletonList(son);
+        sons = Collections.emptyList();
+
         System.out.println("-----------------");
         System.out.println(son);
+        System.out.println(sons);
         System.out.println("-----------------");
         System.out.println("-----------------");
         System.out.println("-----------------");
@@ -211,6 +218,15 @@ public class MyOptionalDemo {
                 Optional.ofNullable(son)
                         .map(Son::getFather)
                         .equals(Optional.ofNullable(new Father("[ father entity ]")))
+        );
+    }
+
+    @Test
+    public void testList(){
+        print(
+                Optional.ofNullable(sons)
+                        .filter(s -> !s.isEmpty())
+                        .orElse(null)
         );
     }
 
