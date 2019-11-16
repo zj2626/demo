@@ -1,4 +1,4 @@
-package hello.control;
+package hello.config;
 
 import com.alibaba.fastjson.JSON;
 import hello.service.model.Change;
@@ -10,8 +10,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetSomeThingOfKafkaComsumer {
-    private static final Logger logger = LoggerFactory.getLogger(GetSomeThingOfKafkaComsumer.class);
+public class KafkaComsumerDefaultConfig {
+    private static final Logger logger = LoggerFactory.getLogger(KafkaComsumerDefaultConfig.class);
 
     @KafkaListener(
             topics = {"#{'${kafka.consumer.topic}'.split(',')[1]}", "#{'${kafka.consumer.topic}'.split(',')[0]}"},
