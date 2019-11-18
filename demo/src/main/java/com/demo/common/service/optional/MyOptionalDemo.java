@@ -4,12 +4,12 @@ import lombok.Data;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MyOptionalDemo {
     Son son;
-    List<Son> sons;
+    Map<String, Son> sons;
 
     {
         Father father = new Father("[ father entity ]");
@@ -17,8 +17,7 @@ public class MyOptionalDemo {
         son = new Son("[ son entity ]");
         son.setFather(father);
 
-        sons = Collections.singletonList(son);
-        sons = Collections.emptyList();
+        sons = Collections.singletonMap("aaa", son);
 
         System.out.println("-----------------");
         System.out.println(son);
@@ -222,11 +221,13 @@ public class MyOptionalDemo {
     }
 
     @Test
-    public void testList(){
+    public void testList() {
+        String key = "bbb";
         print(
                 Optional.ofNullable(sons)
-                        .filter(s -> !s.isEmpty())
-                        .orElse(null)
+                        .filter(s -> !s.isEmpty() && s.containsKey(key))
+                        .map(s -> s.get(key))
+                        .orElse(new Son("[ NULL entity ]"))
         );
     }
 
