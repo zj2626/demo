@@ -2,11 +2,11 @@ package hello.service;
 
 public interface DoHSomething {
 
-    public String remoteToDubboAsync(String name);
+    String remoteToDubboAsync(String name);
 
-    public String remoteToRabbitmq(String name);
+    String remoteToRabbitmq(String name);
 
-    public String remoteToDubboSync(String name);
+    String remoteToDubboSync(String name);
     
     String remoteToActivemq(String name);
 }
