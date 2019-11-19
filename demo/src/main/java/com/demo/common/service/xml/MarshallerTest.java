@@ -1,6 +1,6 @@
 package com.demo.common.service.xml;
 
-import com.demo.common.service.encryption.entity.Person;
+import com.demo.common.service.xml.entity.Person;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
@@ -10,8 +10,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
