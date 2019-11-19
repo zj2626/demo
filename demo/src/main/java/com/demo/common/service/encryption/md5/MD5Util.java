@@ -1,4 +1,4 @@
-package com.demo.common.service.encryption.password;
+package com.demo.common.service.encryption.md5;
 
 import org.apache.commons.codec.binary.Hex;
 
