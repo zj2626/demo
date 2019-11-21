@@ -138,7 +138,7 @@ public class HttpClientDemo {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                EntityDemo entity = doRequestOne("get");
+                EntityDemo entity = doMakeRequest(HttpPost.METHOD_NAME);
                 System.out.println(JSON.toJSONString(entity));
             });
         }
@@ -146,35 +146,26 @@ public class HttpClientDemo {
         Thread.sleep(20000);
     }
     
-    private EntityDemo doRequestOne(String requestType) {
+    private EntityDemo doMakeRequest(String requestType) {
         // 请求参数传入
         Map<String, Object> parameter = new HashMap<>();
         parameter.put("page", 5);
         parameter.put("size", 20);
         parameter.put("name", "test张");
-        
+        // 请求体参数传入
+        Map<String, String> postParameter = new HashMap<>();
+        postParameter.put("id", "9");
+        postParameter.put("age", "20");
+        postParameter.put("name", "demo张");
+
+        String responseStr = null;
         if (HttpGet.METHOD_NAME.equalsIgnoreCase(requestType)) {
-            
-            return doGetOne(parameter);
-            
+            responseStr = doGetOne(parameter);
         } else if (HttpPost.METHOD_NAME.equalsIgnoreCase(requestType)) {
             // post请求体信息  中文乱码问题 待解决 ???
-            Map<String, String> postParameter = new HashMap<>();
-            postParameter.put("id", "9");
-            postParameter.put("age", "20");
-            postParameter.put("name", "demo张");
-            
-            return doPostOne(parameter, postParameter);
-            
+            responseStr =  doPostOne(parameter, postParameter);
         } else {
             // 测试中文乱码问题 待解决 ???
-            
-            // post请求体信息
-            Map<String, String> postParameter = new HashMap<>();
-            postParameter.put("id", "9");
-            postParameter.put("age", "20");
-            postParameter.put("name", "demo张");
-            
             try {
                 ExterfaceInvokeHttpSender httpSender = new ExterfaceInvokeHttpSender();
                 Map<String, String> headerMap = new HashMap<>();
@@ -188,10 +179,10 @@ public class HttpClientDemo {
             }
             return null;
         }
+        return JSON.parseObject(responseStr, EntityDemo.class);
     }
     
-    private EntityDemo doGetOne(Map<String, Object> parameter) {
-        
+    private String doGetOne(Map<String, Object> parameter) {
         // 2. 设置请求参数 拼接请求地址
         URI uri = null;
         try {
@@ -199,7 +190,6 @@ public class HttpClientDemo {
             if (!CollectionUtils.isEmpty(parameter)) {
                 parameter.forEach((key, value) -> params.add(new BasicNameValuePair(key, value.toString())));
             }
-            
             uri = new URIBuilder()
                     .setScheme("http")
                     .setHost("localhost")
@@ -210,57 +200,31 @@ public class HttpClientDemo {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        
         // 3. 创建Get请求
         HttpGet httpGet = new HttpGet(uri);
-        
         // 设置响应模型
         CloseableHttpResponse httpResponse = null;
-        EntityDemo entity = null;
-        
         // 执行请求
         try {
             httpResponse = httpClient.execute(httpGet);
-            
             // 从响应中获得数据
             if (null != httpResponse) {
                 HttpEntity httpEntity = httpResponse.getEntity();
-                
                 // 状态码
                 if (200 == httpResponse.getStatusLine().getStatusCode()) {
                     // 响应数据字符串
-                    String responseStr = EntityUtils.toString(httpEntity);
-                    
-                    // 响应数据转对象
-                    entity = JSON.parseObject(responseStr, EntityDemo.class);
+                    return EntityUtils.toString(httpEntity);
                 }
             }
-            
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (null != httpResponse) {
-                try {
-                    httpResponse.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            if (null != httpClient) {
-                try {
-                    httpClient.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeClient(httpResponse);
         }
-        
-        return entity;
+        return null;
     }
-    
-    private EntityDemo doPostOne(Map<String, Object> parameter, Map<String, String> postParameter) {
-        
+
+    private String doPostOne(Map<String, Object> parameter, Map<String, String> postParameter) {
         // 2. 设置请求参数 拼接请求地址
         URI uri = null;
         try {
@@ -268,7 +232,6 @@ public class HttpClientDemo {
             if (!CollectionUtils.isEmpty(parameter)) {
                 parameter.forEach((key, value) -> params.add(new BasicNameValuePair(key, value.toString())));
             }
-            
             uri = new URIBuilder()
                     .setScheme("http")
                     .setHost("localhost")
@@ -279,59 +242,49 @@ public class HttpClientDemo {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        
         // 3. 创建Post请求
         HttpPost httpPost = new HttpPost(uri);
-        
         // 4. 设置请求体参数
         StringEntity requestEntity = new StringEntity(JSON.toJSONString(postParameter), ContentType.create("utf-8"));
         httpPost.setEntity(requestEntity);
-        
         // 5. 设置请求头信息
         httpPost.setHeader("Content-Type", "application/json");
-        
         // 设置响应模型
         CloseableHttpResponse httpResponse = null;
-        EntityDemo entity = null;
-        
         // 执行请求
         try {
             httpResponse = httpClient.execute(httpPost);
-            
             // 从响应中获得数据
             if (null != httpResponse) {
                 HttpEntity responseEntity = httpResponse.getEntity();
-                
                 // 状态码
                 if (200 == httpResponse.getStatusLine().getStatusCode()) {
                     // 响应数据字符串
-                    String responseStr = EntityUtils.toString(responseEntity);
-                    
-                    // 响应数据转对象
-                    entity = JSON.parseObject(responseStr, EntityDemo.class);
+                    return EntityUtils.toString(responseEntity);
                 }
             }
-            
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (null != httpResponse) {
-                try {
-                    httpResponse.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            if (null != httpClient) {
-                try {
-                    httpClient.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            closeClient(httpResponse);
+        }
+        return null;
+    }
+
+    private void closeClient(CloseableHttpResponse httpResponse) {
+        if (null != httpResponse) {
+            try {
+                httpResponse.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        
-        return entity;
+        if (null != httpClient) {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
