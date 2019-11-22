@@ -13,7 +13,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
-import org.apache.http.conn.DnsResolver;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -22,7 +21,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultHttpResponseParserFactory;
 import org.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
@@ -70,9 +68,9 @@ public class HttpClientDemo {
 
     static {
         // 1. 获得Http客户端 待完成 ???
-//        httpClient = HttpClientBuilder
-//                .create()
-//                .build();
+        //        httpClient = HttpClientBuilder
+        //                .create()
+        //                .build();
 
         // 2. 获得Http客户端
         try {
@@ -84,11 +82,10 @@ public class HttpClientDemo {
                     .register("https", sslsf)
                     .build();
             ManagedHttpClientConnectionFactory connFactory =
-                    new ManagedHttpClientConnectionFactory(DefaultHttpRequestWriterFactory.INSTANCE,
-                            DefaultHttpResponseParserFactory.INSTANCE);
-            DnsResolver dnsResolver = SystemDefaultDnsResolver.INSTANCE;
+                    new ManagedHttpClientConnectionFactory(
+                            DefaultHttpRequestWriterFactory.INSTANCE, DefaultHttpResponseParserFactory.INSTANCE);
             PoolingHttpClientConnectionManager manager =
-                    new PoolingHttpClientConnectionManager(socketFactoryRegistry, connFactory, dnsResolver);
+                    new PoolingHttpClientConnectionManager(socketFactoryRegistry, connFactory, SystemDefaultDnsResolver.INSTANCE);
             SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).build();
             manager.setDefaultSocketConfig(socketConfig);
             manager.setMaxTotal(maxTotalConnection);
