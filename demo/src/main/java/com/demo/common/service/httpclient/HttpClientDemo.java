@@ -31,16 +31,12 @@ URL: uniform resource locator    [统一资源定位符]
 URI: uniform resource identifier [统一资源标识符]
  */
 public class HttpClientDemo {
+    static CloseableHttpClient httpClient;
+    private static Request request;
 
-    public static CloseableHttpClient httpClient;
-    public static Request request;
-
-    static {
+    HttpClientDemo(Request request) {
         httpClient = HttpClientDemoFactory.getHttpsClient();
-    }
-
-    public HttpClientDemo(Request request) {
-        this.request = request;
+        HttpClientDemo.request = request;
     }
 
     public void execute() throws InterruptedException {
@@ -50,7 +46,7 @@ public class HttpClientDemo {
             Future future = service.submit(() -> {
                 try {
                     Thread.sleep(200);
-                    System.out.println(doMakeRequest());
+                    System.out.println(request.doRequest(makeRequestParam()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -60,16 +56,7 @@ public class HttpClientDemo {
         futureGet(futureList);
     }
 
-    private String doMakeRequest() throws Exception {
-        // 请求参数传入
-        Map<String, String> parameter = makeRequestParam();
-        // 请求体参数传入
-        Map<String, String> postParameter = makePostRequestParam();
-
-        return request.doRequest(postParameter);
-    }
-
-    private Map<String, String> makePostRequestParam() {
+    private Map<String, String> makeRequestParam() {
         Map<String, String> postParameter = new HashMap<>();
         postParameter.put("id", "m32nvpfaagcmf");
         postParameter.put("kitchenId", "metu8341dq0a5");
@@ -78,25 +65,16 @@ public class HttpClientDemo {
         return postParameter;
     }
 
-    private Map<String, String> makeRequestParam() {
-        Map<String, String> parameter = new HashMap<>();
-        parameter.put("page", "5");
-        parameter.put("size", "20");
-        parameter.put("id", "get-soooo");
-        parameter.put("name", "test张");
-        return parameter;
-    }
-
     /**
      * 设置请求头
      *
      * @param httpRequestBase
      */
-    public void makeJSONHeader(HttpRequestBase httpRequestBase) {
+    void makeJSONHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "application/json");
     }
 
-    public void makeFormHeader(HttpRequestBase httpRequestBase) {
+    void makeFormHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
@@ -104,7 +82,7 @@ public class HttpClientDemo {
         httpRequestBase.setHeader("Content-Type", "multipart/form-data");
     }
 
-    public void closeClient(CloseableHttpResponse httpResponse) {
+    void closeClient(CloseableHttpResponse httpResponse) {
         if (null != httpResponse) {
             try {
                 httpResponse.close();
