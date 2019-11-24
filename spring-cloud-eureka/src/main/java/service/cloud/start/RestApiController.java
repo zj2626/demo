@@ -7,6 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 import service.cloud.start.model.BatchEntity;
 import service.cloud.start.model.TestcModel;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +111,26 @@ public class RestApiController {
         System.out.println("name: " + name);
         for (MultipartFile multipartFile : multipartFileList) {
             System.out.println("files: " + multipartFile.getOriginalFilename());
+        }
+        return JSON.toJSONString(map);
+    }
+
+    @PostMapping("/stream")
+    public String stream(
+            @RequestParam(value="name", required=false) String name,
+            InputStream is
+    ) {
+        try {
+            System.out.println("name: " + name);
+            StringBuilder str = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                str.append(line);
+            }
+            System.out.println("InputStream: " + str);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return JSON.toJSONString(map);
     }
