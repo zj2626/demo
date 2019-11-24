@@ -1,4 +1,4 @@
-package com.demo.common.service.httpclient;
+package com.demo.common.service.httpclient.abs;
 
 public class EntityDemo {
     private boolean success;

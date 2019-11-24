@@ -1,17 +1,17 @@
 package service.cloud.start.model;
 
 public class TestcModel {
-    private Integer id;
+    private String id;
 
     private String name;
 
     private Integer age;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -3,6 +3,7 @@ package service.cloud.start;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import service.cloud.start.model.BatchEntity;
 import service.cloud.start.model.TestcModel;
 
@@ -25,7 +26,8 @@ public class RestApiController {
 
     // 获取所有 Product
     @GetMapping("/products")
-    public String products() {
+    public String products(TestcModel model) {
+        System.out.println("Get: " + model);
         return JSON.toJSONString(map);
     }
 
@@ -46,7 +48,8 @@ public class RestApiController {
     }
 
     // 新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]
-    @PostMapping(value = "/products", produces = "application/json;charset=utf-8")
+    @PostMapping("/products")
+    //  @PostMapping(value = "/products", produces = "application/json;charset=utf-8")
     public String create(@RequestBody TestcModel model) {
         System.out.println("create: " + model);
         return JSON.toJSONString(map);
@@ -89,5 +92,21 @@ public class RestApiController {
         }
 
         return "{\"success\":true, \"code\":200}";
+    }
+
+    @PostMapping("/files")
+    public String files(
+            @RequestHeader("Content-Type") String contentType,
+            @RequestParam("id") String id,
+            @RequestParam("name") String name,
+            @RequestParam("files") List<MultipartFile> multipartFileList
+    ) {
+        System.out.println("contentType: " + contentType);
+        System.out.println("id: " + id);
+        System.out.println("name: " + name);
+        for (MultipartFile multipartFile : multipartFileList) {
+            System.out.println("files: " + multipartFile.getOriginalFilename());
+        }
+        return JSON.toJSONString(map);
     }
 }
