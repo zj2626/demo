@@ -5,6 +5,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,10 +31,11 @@ public class RequestForm extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> postParameter) {
+    public String doRequest(Map<String, String> parameter) {
+        // 2. 设置请求参数 拼接请求地址
         List<NameValuePair> params = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(postParameter)) {
-            postParameter.forEach((key, value) -> params.add(new BasicNameValuePair(key, value)));
+        if (!CollectionUtils.isEmpty(parameter)) {
+            parameter.forEach((key, value) -> params.add(new BasicNameValuePair(key, value)));
         }
         URI uri = null;
         try {
@@ -42,29 +44,28 @@ public class RequestForm extends Request {
                     .setHost("localhost")
                     .setPort(18090)
                     .setPath("/api/products")
+                    .setParameters(params)
                     .build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        // 3. 创建Post请求
-        HttpPost httpPost = new HttpPost(uri);
-        // 4. 设置请求头信息
-        clientDemo.makeFormHeader(httpPost);
-        // 5. 设置请求体参数
-        httpPost.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
+        // 3. 创建Get请求
+        HttpGet httpGet = new HttpGet(uri);
+        // 设置请求头信息
+        clientDemo.makeFormHeader(httpGet);
 
         // 设置响应模型
         CloseableHttpResponse httpResponse = null;
         // 执行请求
         try {
-            System.out.println(httpPost.getURI());
-            httpResponse = httpClient.execute(httpPost);
+            System.out.println(httpGet.getURI());
+            httpResponse = httpClient.execute(httpGet);
             // 从响应中获得数据
             if (null != httpResponse) {
-                HttpEntity responseEntity = httpResponse.getEntity();
+                HttpEntity httpEntity = httpResponse.getEntity();
                 if (200 == httpResponse.getStatusLine().getStatusCode()) {
                     // 响应数据字符串
-                    return EntityUtils.toString(responseEntity);
+                    return EntityUtils.toString(httpEntity);
                 }
             }
         } catch (IOException e) {

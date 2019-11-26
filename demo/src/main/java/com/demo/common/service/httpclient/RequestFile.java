@@ -31,7 +31,7 @@ public class RequestFile extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> postParameter) throws Exception {
+    public String doRequest(Map<String, String> parameter) throws Exception {
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
         // 第一个文件
         String filesKey = "files";

@@ -26,7 +26,7 @@ public class RequestPost extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> postParameter) {
+    public String doRequest(Map<String, String> parameter) {
         // 2. 设置请求参数 拼接请求地址
         URI uri = null;
         try {
@@ -44,7 +44,7 @@ public class RequestPost extends Request {
         // 4. 设置请求头信息
         clientDemo.makeJSONHeader(httpPost);
         // 5. 设置请求体参数
-        httpPost.setEntity(new StringEntity(JSON.toJSONString(postParameter), StandardCharsets.UTF_8));
+        httpPost.setEntity(new StringEntity(JSON.toJSONString(parameter), StandardCharsets.UTF_8));
 
         // 设置响应模型
         CloseableHttpResponse httpResponse = null;

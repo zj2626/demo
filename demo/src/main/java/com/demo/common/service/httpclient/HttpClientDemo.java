@@ -57,12 +57,12 @@ public class HttpClientDemo {
     }
 
     private Map<String, String> makeRequestParam() {
-        Map<String, String> postParameter = new HashMap<>();
-        postParameter.put("id", "m32nvpfaagcmf");
-        postParameter.put("kitchenId", "metu8341dq0a5");
-        postParameter.put("name", "品类一001");
-        postParameter.put("skuStatus", "1");
-        return postParameter;
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("id", "m32nvpfaagcmf");
+        parameter.put("kitchenId", "metu8341dq0a5");
+        parameter.put("name", "品类一001");
+        parameter.put("skuStatus", "1");
+        return parameter;
     }
 
     /**

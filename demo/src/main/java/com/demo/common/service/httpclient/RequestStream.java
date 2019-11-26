@@ -35,8 +35,8 @@ public class RequestStream extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> postParameter) {
-        InputStream is = new ByteArrayInputStream(postParameter.toString().getBytes());
+    public String doRequest(Map<String, String> parameter) {
+        InputStream is = new ByteArrayInputStream(parameter.toString().getBytes());
         InputStreamEntity ise = new InputStreamEntity(is);
 
         URI uri = null;

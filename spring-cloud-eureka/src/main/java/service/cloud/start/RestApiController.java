@@ -31,8 +31,10 @@ public class RestApiController {
 
     // 获取所有 Product
     @GetMapping("/products")
-    public String products(TestcModel model) {
+    public String products(@RequestHeader(value = "Content-Type", required = false) String contentType,
+                           TestcModel model) {
         System.out.println("Get: " + model);
+        System.out.println("contentType: " + contentType);
         return JSON.toJSONString(map);
     }
 
@@ -117,7 +119,7 @@ public class RestApiController {
 
     @PostMapping("/stream")
     public String stream(
-            @RequestParam(value="name", required=false) String name,
+            @RequestParam(value = "name", required = false) String name,
             InputStream is
     ) {
         try {
