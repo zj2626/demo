@@ -78,6 +78,14 @@ public class HttpClientDemo {
         httpRequestBase.setHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
+    public void makeXMLHeader(HttpRequestBase httpRequestBase) {
+        httpRequestBase.setHeader("Content-Type", "text/xml");
+    }
+
+    /**
+     * 文件上传不需要手动设置该请求头
+     * @param httpRequestBase
+     */
     public void makeMultipartHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "multipart/form-data");
     }

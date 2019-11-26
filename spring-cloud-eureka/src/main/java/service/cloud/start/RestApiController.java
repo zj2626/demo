@@ -101,6 +101,15 @@ public class RestApiController {
         return "{\"success\":true, \"code\":200}";
     }
 
+    /**
+     * 文件上传
+     *
+     * @param contentType
+     * @param id
+     * @param name
+     * @param multipartFileList
+     * @return
+     */
     @PostMapping("/files")
     public String files(
             @RequestHeader("Content-Type") String contentType,
@@ -117,6 +126,13 @@ public class RestApiController {
         return JSON.toJSONString(map);
     }
 
+    /**
+     * 以流的形式请求
+     *
+     * @param name
+     * @param is
+     * @return
+     */
     @PostMapping("/stream")
     public String stream(
             @RequestParam(value = "name", required = false) String name,
