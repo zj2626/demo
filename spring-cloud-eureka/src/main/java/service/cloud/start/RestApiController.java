@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import service.cloud.start.model.BatchEntity;
 import service.cloud.start.model.TestcModel;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,10 +57,24 @@ public class RestApiController {
     }
 
     // 新建一个 Product, 内容放在请求体里 [默认Content-Type为application/json]
-    @PostMapping("/products")
-    //  @PostMapping(value = "/products", produces = "application/json;charset=utf-8")
-    public String create(@RequestBody TestcModel model) {
-        System.out.println("create: " + model);
+    @PostMapping(value = "/products", produces = "application/json;charset=utf-8")
+    public String create(
+            @RequestHeader(value = "Content-Type", required = false) String contentType,
+            @RequestHeader(value = "Host", required = false) String host,
+            @RequestHeader(value = "User-Agent", required = false) String agent,
+            HttpServletRequest request,
+            @RequestBody TestcModel model) {
+        System.out.println("Content-Type: == " + request.getHeader("Content-Type"));
+        System.out.println("RemoteAddr  : == " + request.getRemoteAddr());
+        System.out.println("RemoteUser  : == " + request.getRemoteUser());
+        System.out.println("Method      : == " + request.getMethod());
+        System.out.println("ContextPath : == " + request.getContextPath());
+        System.out.println("PathInfo    : == " + request.getPathInfo());
+        System.out.println("QueryString : == " + request.getQueryString());
+        System.out.println("RequestURI  : == " + request.getRequestURI());
+        System.out.println("ServletPath : == " + request.getServletPath());
+        System.out.println("RequestedSessionId: == " + request.getRequestedSessionId());
+        System.out.println("Create: " + " > " + model + " - " + contentType + " - " + host + " - " + agent);
         return JSON.toJSONString(map);
     }
 

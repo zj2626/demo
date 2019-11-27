@@ -42,7 +42,7 @@ public class HttpClientDemo {
     public void execute() throws InterruptedException {
         List<Future> futureList = new ArrayList<>();
         ExecutorService service = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             Future future = service.submit(() -> {
                 try {
                     Thread.sleep(200);

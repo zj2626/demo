@@ -43,6 +43,7 @@ public class RequestPost extends Request {
         HttpPost httpPost = new HttpPost(uri);
         // 4. 设置请求头信息
         clientDemo.makeJSONHeader(httpPost);
+        // httpPost.setHeader("Other", "xxx");
         // 5. 设置请求体参数
         httpPost.setEntity(new StringEntity(JSON.toJSONString(parameter), StandardCharsets.UTF_8));
 
