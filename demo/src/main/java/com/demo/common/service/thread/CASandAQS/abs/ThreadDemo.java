@@ -15,11 +15,11 @@ public class ThreadDemo {
     }
     
     public void execute() throws InterruptedException {
-        ExecutorService service = Executors.newFixedThreadPool(20);
+        ExecutorService service = Executors.newFixedThreadPool(50);
         for (int i = 0; i < 20; i++) {
             Future future = service.submit(() -> {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(5);
                     excutor.doExcute(makeRequestParam());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -43,6 +43,16 @@ public class ThreadDemo {
             try {
                 future.get();
             } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void futureCancel() throws InterruptedException {
+        for (Future future : futureList) {
+            try {
+                future.cancel(true);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

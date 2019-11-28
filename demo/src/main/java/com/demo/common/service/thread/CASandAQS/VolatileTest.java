@@ -5,6 +5,7 @@ import com.demo.common.service.thread.CASandAQS.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class VolatileTest extends Excutor {
     private volatile int number = 0;

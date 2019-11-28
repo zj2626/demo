@@ -5,11 +5,10 @@ import com.demo.common.service.thread.CASandAQS.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class SemaphoreTest extends Excutor {
+public class SemaphoreTryTest extends Excutor {
     private Semaphore semaphore = new Semaphore(5, true);
     
     @Test
@@ -21,16 +20,21 @@ public class SemaphoreTest extends Excutor {
     
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
+        boolean tryAcquire = false;
         try {
-            semaphore.acquire();
-            TimeUnit.MILLISECONDS.sleep(500);
-            System.out.println(Thread.currentThread().getName() + "=====> "
-                    + Thread.currentThread().isAlive() + " - "
-                    + Thread.currentThread().isInterrupted());
-            TimeUnit.MILLISECONDS.sleep(500);
+            tryAcquire = semaphore.tryAcquire(1, 2000, TimeUnit.MILLISECONDS);
+            if (tryAcquire) {
+                TimeUnit.MILLISECONDS.sleep(500);
+                System.out.println(Thread.currentThread().getName() + "=====>");
+                TimeUnit.MILLISECONDS.sleep(500);
+            } else {
+                System.out.println(Thread.currentThread().getName() + " < < ");
+            }
         } catch (InterruptedException ignored) {
-        } finally{
-            semaphore.release();
+        } finally {
+            if (tryAcquire) {
+                semaphore.release();
+            }
         }
         
         return null;
