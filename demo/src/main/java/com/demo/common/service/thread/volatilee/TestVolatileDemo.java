@@ -36,7 +36,7 @@ public class TestVolatileDemo implements Runnable {
         TestVolatileDemo rd = new TestVolatileDemo();
 
         // way one
-        ExecutorService service = Executors.newFixedThreadPool(5);
+        ExecutorService service = Executors.newFixedThreadPool(15);
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             futureTasks.add(service.submit(rd));

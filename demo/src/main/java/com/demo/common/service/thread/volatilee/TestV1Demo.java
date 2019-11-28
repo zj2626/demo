@@ -7,7 +7,7 @@ public class TestV1Demo extends Thread {
     private long i = 0;
 
     // 不加volatile则线程永远都不会停止
-    private boolean stop = false;
+    private volatile boolean stop = false;
 
     public void stopNow() {
         stop = true;
@@ -34,20 +34,20 @@ public class TestV1Demo extends Thread {
         demo.start();
         demo.setPriority(1);
 
-        System.out.println("--------" + demo.stop);
+        System.out.println("a--------" + demo.stop);
         Thread.sleep(100);
         demo.stopNow();
         System.out.println(demo.getI());
-        System.out.println("--------" + demo.stop);
+        System.out.println("b--------" + demo.stop);
         for (int i = 0; i < 10; i++) {
             Thread.sleep(100);
             System.out.println(demo.getI());
         }
         System.out.println("done\n");
 
-        System.out.println("--------" + demo.stop);
+        System.out.println("c--------" + demo.stop);
         demo.stopNow();
-        System.out.println("--------" + demo.stop);
+        System.out.println("d--------" + demo.stop);
         for (int i = 0; i < 10; i++) {
             Thread.sleep(100);
             System.out.println(demo.getI());

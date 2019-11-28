@@ -21,9 +21,6 @@ public class TestV2Demo extends Thread {
     public void run() {
         while (!aSwitch.isStop()) {
             i++;
-            for (int i = 0; i < 100000; i++) {
-                int k = i * 1234;
-            }
         }
         System.out.println("Stoped at " + i);
     }
@@ -33,11 +30,11 @@ public class TestV2Demo extends Thread {
         TestV2Demo demo = new TestV2Demo();
         demo.start();
 
-        System.out.println("--------" + demo.aSwitch.isStop());
+        System.out.println("a--------" + demo.aSwitch.isStop());
         Thread.sleep(100);
         demo.stopNow();
         System.out.println(demo.getI());
-        System.out.println("--------" + demo.aSwitch.isStop());
+        System.out.println("b--------" + demo.aSwitch.isStop());
 
         for (int i = 0; i < 20; i++) {
             Thread.sleep(100);
