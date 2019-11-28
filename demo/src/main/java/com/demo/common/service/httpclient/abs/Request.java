@@ -9,7 +9,5 @@ public abstract class Request {
     protected HttpClientDemo clientDemo;
     protected CloseableHttpClient httpClient;
 
-    public String doRequest(Map<String, String> parameter) throws Exception {
-        return null;
-    }
+    public abstract String doRequest(Map<String, String> parameter) throws Exception;
 }

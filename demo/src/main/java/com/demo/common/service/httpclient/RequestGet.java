@@ -27,6 +27,7 @@ public class RequestGet extends Request {
         clientDemo.execute();
     }
 
+    @Override
     public String doRequest(Map<String, String> parameter) {
         // 2. 设置请求参数 拼接请求地址
         List<NameValuePair> params = new ArrayList<>();
