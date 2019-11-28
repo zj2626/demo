@@ -13,7 +13,7 @@ public class VolatileTest extends Excutor {
     @Test
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute();
+        threadExcutor.execute(20);
         threadExcutor.futureGet();
         System.out.println("结果 " + number);
     }

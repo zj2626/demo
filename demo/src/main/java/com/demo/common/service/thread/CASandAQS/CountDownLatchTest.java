@@ -17,7 +17,7 @@ public class CountDownLatchTest extends Excutor {
     @Test
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute();
+        threadExcutor.execute(20);
         
         System.out.println("begin");
         boolean result = latch.await(3000, TimeUnit.MILLISECONDS);

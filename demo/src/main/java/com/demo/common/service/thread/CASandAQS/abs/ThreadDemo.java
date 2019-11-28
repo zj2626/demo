@@ -14,12 +14,11 @@ public class ThreadDemo {
         ThreadDemo.excutor = excutor;
     }
     
-    public void execute() throws InterruptedException {
+    public void execute(int size) {
         ExecutorService service = Executors.newFixedThreadPool(50);
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < size; i++) {
             Future future = service.submit(() -> {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(5);
                     excutor.doExcute(makeRequestParam());
                 } catch (Exception e) {
                     e.printStackTrace();

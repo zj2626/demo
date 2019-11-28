@@ -14,7 +14,7 @@ public class SemaphoreUninterruptiblyTest extends Excutor {
     @Test
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute();
+        threadExcutor.execute(20);
         threadExcutor.futureGet();
     }
     
