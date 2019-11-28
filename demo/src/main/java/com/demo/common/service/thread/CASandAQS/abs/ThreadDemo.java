@@ -4,25 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class ThreadDemo {
     private static Excutor excutor;
+    private static List<Future> futureList = new ArrayList<>();
     
     public ThreadDemo(Excutor excutor) {
         ThreadDemo.excutor = excutor;
     }
     
     public void execute() throws InterruptedException {
-        List<Future> futureList = new ArrayList<>();
-        ExecutorService service = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 10; i++) {
+        ExecutorService service = Executors.newFixedThreadPool(20);
+        for (int i = 0; i < 20; i++) {
             Future future = service.submit(() -> {
                 try {
-                    Thread.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(10);
                     excutor.doExcute(makeRequestParam());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -30,7 +27,6 @@ public class ThreadDemo {
             });
             futureList.add(future);
         }
-        futureGet(futureList);
     }
     
     private Map<String, String> makeRequestParam() {
@@ -42,7 +38,7 @@ public class ThreadDemo {
         return parameter;
     }
     
-    private void futureGet(List<Future> futureList) throws InterruptedException {
+    public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
                 future.get();

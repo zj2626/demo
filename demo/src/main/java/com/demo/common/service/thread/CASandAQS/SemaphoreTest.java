@@ -5,28 +5,30 @@ import com.demo.common.service.thread.CASandAQS.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
-public class VolatileTest extends Excutor {
-    private volatile int number = 0;
+public class SemaphoreTest extends Excutor {
+    private Semaphore semaphore = new Semaphore(5, true);
     
     @Test
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute();
         threadExcutor.futureGet();
-        System.out.println("结果 " + number);
     }
     
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
         try {
-            TimeUnit.MILLISECONDS.sleep(10);
+            semaphore.acquire();
+            TimeUnit.MILLISECONDS.sleep(500);
+            System.out.println(Thread.currentThread().getName() + "=====>");
+            TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException ignored) {
-        }
-        
-        synchronized (this) {
-            number++;
-            number++;
+        } finally{
+            semaphore.release();
         }
         
         return null;

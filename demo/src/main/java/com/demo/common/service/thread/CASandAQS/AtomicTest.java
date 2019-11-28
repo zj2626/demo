@@ -14,6 +14,7 @@ public class AtomicTest extends Excutor {
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute();
+        threadExcutor.futureGet();
         System.out.println("结果 " + number.get());
     }
     
@@ -22,7 +23,7 @@ public class AtomicTest extends Excutor {
         
         number.getAndIncrement();
         try {
-            Thread.sleep(10);
+            TimeUnit.MILLISECONDS.sleep(10);
         } catch (InterruptedException ignored) {
         }
         number.incrementAndGet();
