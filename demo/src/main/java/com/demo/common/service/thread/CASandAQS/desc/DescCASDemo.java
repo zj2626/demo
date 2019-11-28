@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS;
+package com.demo.common.service.thread.CASandAQS.desc;
 
 /**
  * CAS: Compare And Swap
@@ -23,5 +23,5 @@ package com.demo.common.service.thread.CASandAQS;
  * 一般来说在竞争不是特别激烈的时候，使用该包下的原子操作性能比使用 synchronized 关键字的方式高效的多(查看getAndSet()，
  * 可知如果资源竞争十分激烈的话，这个for循环可能换持续很久都不能成功跳出。不过这种情况可能需要考虑降低资源竞争才是)。
  */
-public class CASDemo {
+public class DescCASDemo {
 }

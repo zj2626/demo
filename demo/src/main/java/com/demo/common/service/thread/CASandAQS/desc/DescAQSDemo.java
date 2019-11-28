@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS;
+package com.demo.common.service.thread.CASandAQS.desc;
 
 /**
  * AQS: AbstractQueuedSynchronizer
@@ -27,5 +27,5 @@ package com.demo.common.service.thread.CASandAQS;
  * 1. 独占锁:ReentrantReadWriteLock.WriteLock
  * 2. 共享锁:ReentrantReadWriteLock.ReadLock, CountDownLatch
  */
-public class AQSDemo {
+public class DescAQSDemo {
 }

@@ -22,7 +22,7 @@ public class ThreadDemo {
         for (int i = 0; i < 10; i++) {
             Future future = service.submit(() -> {
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(10);
                     excutor.doExcute(makeRequestParam());
                 } catch (Exception e) {
                     e.printStackTrace();
