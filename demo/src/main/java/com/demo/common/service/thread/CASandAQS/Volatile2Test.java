@@ -1,7 +1,7 @@
 package com.demo.common.service.thread.CASandAQS;
 
-import com.demo.common.service.thread.CASandAQS.abs.Excutor;
-import com.demo.common.service.thread.CASandAQS.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;

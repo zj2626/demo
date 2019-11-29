@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.concurrent;
+package com.demo.common.service.thread.CASandAQS;
 
 public class TestCompareAndSwap {
     public static void main(String[] args) {

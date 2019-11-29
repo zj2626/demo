@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS.abs;
+package com.demo.common.service.thread.abs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class ThreadDemo {
     }
     
     public void execute(int size) {
-        ExecutorService service = Executors.newFixedThreadPool(50);
+        ExecutorService service = Executors.newFixedThreadPool(1000);
         for (int i = 0; i < size; i++) {
             Future future = service.submit(() -> {
                 try {

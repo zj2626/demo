@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS.abs;
+package com.demo.common.service.thread.abs;
 
 import java.util.Map;
 
