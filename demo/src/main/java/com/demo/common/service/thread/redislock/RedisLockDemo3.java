@@ -3,6 +3,7 @@ package com.demo.common.service.thread.redislock;
 import org.redisson.Redisson;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
 import java.util.ArrayList;
@@ -12,20 +13,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 分布式锁:
- * <p>
- * 基于缓存（Redis等）实现分布式锁； ! ***star*** !
- */
-public class RedisLockDemo2 implements Runnable {
+public class RedisLockDemo3 implements Runnable {
     private Integer sum = 0;
-    private static final String rAtomicName = "demo_atomic";
 
-    private static Redisson redisson = null;
+    private static RedissonClient redissonClient = null;
 
     static {
         try {
             Config config = new Config();
+
+//            config.useClusterServers() //这是用的集群server
+//                    .setScanInterval(2000) //设置集群状态扫描时间
+//                    .setMasterConnectionPoolSize(30000) //设置连接数
+//                    .setSlaveConnectionPoolSize(30000)
+//                    .addNodeAddress("redis://192.168.1.22:6379", "redis://192.168.1.22:6380")
+//                    .setPassword("123456");
+
+//            config.useSentinelServers()
+//                    .setMasterName("logistics_01")
+//                    .addSentinelAddress("redis://192.168.1.21:26379")
+//                    .setConnectTimeout(5000)
+//                    .setTimeout(5000)
+//                    .setPassword("123456");
 
             config.useSingleServer()
                     .setAddress("redis://127.0.0.1:6379")
@@ -33,15 +42,14 @@ public class RedisLockDemo2 implements Runnable {
                     .setTimeout(5000)
                     .setPassword("123456");
 
-            redisson = (Redisson) Redisson.create(config);
-
+            redissonClient = Redisson.create(config);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        RedisLockDemo2 rd = new RedisLockDemo2();
+        RedisLockDemo3 rd = new RedisLockDemo3();
         long start = System.currentTimeMillis();
 
         ExecutorService service = Executors.newFixedThreadPool(30);
@@ -65,24 +73,11 @@ public class RedisLockDemo2 implements Runnable {
     private static boolean getLock(String lockStr) {
         boolean ifLock = false;
         try {
-            RLock rLock = redisson.getLock(lockStr);
-            if (false) {
-                // lock提供带timeout参数，timeout结束强制解锁，防止死锁 (不是等待锁时间而是最大执行时间, 方法会一直阻塞直到获得锁)
-                // 不设置则默认设置30s;
-
-                rLock.lock(5, TimeUnit.SECONDS);
-                ifLock = true;
-            }
-
-            if (true) {
-                // 即使该锁是公平锁fairLock，使用tryLock()的方式获取锁也会是非公平的方式，只要获取锁时该锁可用那么就会直接获取并返回true。
-                // 这种直接插入的特性在一些特定场景是很有用的。但是如果就是想使用公平的方式的话，可以试一试tryLock(0, TimeUnit.SECONDS)，几乎跟公平锁没区别，只是会监测中断事件
-                /*
-                 * 在waitTime内 重复尝试获取锁 直到超过等待时间或成功获取锁(等待获得锁总时长:waitTime;每次获取锁时间:leaseTime)
-                 */
-                ifLock = rLock.tryLock(5, 3, TimeUnit.SECONDS);
-                // ifLock = rLock.tryLock();
-            }
+            RLock rLock = redissonClient.getLock(lockStr);
+            /*
+             * 在waitTime内 重复尝试获取锁 直到超过等待时间或成功获取锁(等待获得锁总时长:waitTime;每次获取锁时间:leaseTime)
+             */
+            ifLock = rLock.tryLock(5, 3, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,8 +85,8 @@ public class RedisLockDemo2 implements Runnable {
         return ifLock;
     }
 
-    private static void releaseLock(Redisson redisson, String lockStr) {
-        RLock rLock = redisson.getLock(lockStr);
+    private static void releaseLock(RedissonClient redissonClient, String lockStr) {
+        RLock rLock = redissonClient.getLock(lockStr);
         if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
             rLock.unlock();
         }
@@ -103,7 +98,7 @@ public class RedisLockDemo2 implements Runnable {
         System.out.println(lockStr);
 
         try {
-            boolean ifLock = RedisLockDemo2.getLock(lockStr);
+            boolean ifLock = RedisLockDemo3.getLock(lockStr);
             // total: 1000ms=1s
             if (ifLock) {
                 System.out.println(Thread.currentThread().getName() + " A ");
@@ -128,19 +123,10 @@ public class RedisLockDemo2 implements Runnable {
         } finally {
             try {
                 System.out.println(Thread.currentThread().getName() + " release " + "\n");
-                releaseLock(redisson, lockStr);
+                releaseLock(redissonClient, lockStr);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * 获取redis中的原子ID
-     */
-    public static Long nextID() {
-        RAtomicLong atomicLong = redisson.getAtomicLong(rAtomicName);
-        atomicLong.incrementAndGet();
-        return atomicLong.get();
     }
 }
