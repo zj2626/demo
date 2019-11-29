@@ -33,8 +33,6 @@ public class RedisLockDemo implements Runnable {
     private static final String SET_WITH_EXPIRE_TIME = "PX";
     private static final String OPTION = "set";
 
-    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
-
     private static ApplicationContext applicationContext;
 
     static {
@@ -66,7 +64,6 @@ public class RedisLockDemo implements Runnable {
          * 方法一  15105    11577   11691   11585   11148   10201
          * 方法二  36474    14244   7487    6106    5979    5505
          * 方法三  8298     6744    8550    6968    6949    8149
-         * 方法四  13132    10512   10944
          * */
     }
 
@@ -126,28 +123,7 @@ public class RedisLockDemo implements Runnable {
             }
         }
 
-        /* 方法四 有问题 不可用 bug ?????*/
-        if (false) {
-            ifLock = lock(redisTemplate, lockStr, lockValue);
-        }
-
         return ifLock;
-    }
-
-    public static boolean lock(RedisTemplate<String, Object> redisTemplate, String key, String value) {
-        if (redisTemplate.opsForValue().setIfAbsent(key, value)) {//setNX 返回boolean
-            return true;
-        }
-        //如果锁超时 ***
-        String currentValue = (String) redisTemplate.opsForValue().get(key);
-        if (!StringUtils.isEmpty(currentValue) && Long.parseLong(currentValue) < System.currentTimeMillis()) {
-            //获取上一个锁的时间
-            String oldvalue = (String) redisTemplate.opsForValue().getAndSet(key, value);
-            if (!StringUtils.isEmpty(oldvalue) && oldvalue.equals(currentValue)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // 当第一个线程超时 则第二个线程进入并设置redis, 然后第一个线程结束并删除redis值,会导致第三个等待的线程立即进入,此时第二个线程可能还没超时或结束
