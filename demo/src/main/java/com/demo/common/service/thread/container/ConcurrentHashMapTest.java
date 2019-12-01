@@ -12,8 +12,8 @@ public class ConcurrentHashMapTest extends Excutor {
     private static Map<String, String> map = null;
 
     static {
-        map = new ConcurrentHashMap<>(5);
-        map.put("test", "0");
+//        map = new HashMap<>(20);
+                map = new ConcurrentHashMap<>(20);
     }
 
     @Test
@@ -21,19 +21,16 @@ public class ConcurrentHashMapTest extends Excutor {
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute(500);
         threadExcutor.futureGet();
-        System.out.println("结果 ");
-        int i = 0;
-        for (String key : map.keySet()) {
-            System.out.println(++i + " > " + key);
-        }
-        System.out.println(map.get("test"));
+        System.out.println("ConcurrentHashMap 结果等于 1000; HashMap 结果不一定等于");
+        System.out.println(map.size());
     }
 
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
         // useless
-        map.put("test", Thread.currentThread().getName());
-        System.out.println(Thread.currentThread().getName() + " ==> " + map.get("test"));
+        for (int i = 0; i < 1000; i++) {
+            map.put(Integer.toString(i), String.valueOf(Math.random() * 100));
+        }
         return null;
     }
 
