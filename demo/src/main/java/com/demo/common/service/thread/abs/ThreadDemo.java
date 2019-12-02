@@ -1,25 +1,38 @@
 package com.demo.common.service.thread.abs;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ThreadDemo {
-    private static Excutor excutor;
+    private static MyExcutor excutor;
     private static List<Future> futureList = new ArrayList<>();
-    
-    public ThreadDemo(Excutor excutor) {
+
+    public ThreadDemo(MyExcutor excutor) {
         ThreadDemo.excutor = excutor;
     }
-    
+
     public void execute(int size) {
+        execute(Params.builder().size(size).build());
+    }
+
+    public void execute(Params param) {
         ExecutorService service = Executors.newFixedThreadPool(1000);
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < param.getSize(); i++) {
             Future future = service.submit(() -> {
                 try {
-                    excutor.doExcute(makeRequestParam());
+                    if (StringUtils.isNotEmpty(param.getType()) && param.getType().contains("2")) {
+                        excutor.doExcuteRead(makeRequestParam());
+                    } else {
+                        excutor.doExcute(makeRequestParam());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -27,7 +40,7 @@ public class ThreadDemo {
             futureList.add(future);
         }
     }
-    
+
     private Map<String, String> makeRequestParam() {
         Map<String, String> parameter = new HashMap<>();
         parameter.put("id", "m32nvpfaagcmf");
@@ -36,7 +49,7 @@ public class ThreadDemo {
         parameter.put("skuStatus", "1");
         return parameter;
     }
-    
+
     public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
@@ -46,7 +59,7 @@ public class ThreadDemo {
             }
         }
     }
-    
+
     public void futureCancel() throws InterruptedException {
         for (Future future : futureList) {
             try {

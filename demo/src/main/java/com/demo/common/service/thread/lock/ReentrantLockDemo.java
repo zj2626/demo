@@ -1,10 +1,13 @@
 package com.demo.common.service.thread.lock;
 
+import com.demo.common.service.thread.abs.MyExcutor;
+import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockDemo{
+public class ReentrantLockDemo extends MyExcutor {
     private static ReentrantLock lock = new ReentrantLock(); // true:公平或 false(默认):非公平
     private static int count = 0;
 
@@ -15,21 +18,18 @@ public class ReentrantLockDemo{
      */
     @Test
     public void test() throws InterruptedException {
-        new Thread(ReentrantLockDemo::increment).start();
-        new Thread(ReentrantLockDemo::increment).start();
-
-        Thread.sleep(200);
-
+        threadExcutor = new ThreadDemo(this);
+        threadExcutor.execute(200);
+        threadExcutor.futureGet();
         System.out.println(count);
     }
 
-
-
-    public static void increment(){
+    @Override
+    public String doExcute(Map<String, String> parameter) throws Exception {
         lock.lock();
 
         try {
-            Thread.sleep(10);
+            Thread.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -37,5 +37,6 @@ public class ReentrantLockDemo{
         count++;
 
         lock.unlock();
+        return null;
     }
 }

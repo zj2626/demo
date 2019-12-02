@@ -1,6 +1,6 @@
 package com.demo.common.service.thread.container;
 
-import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * CountDownLatch 功能等于join()
  */
-public class CountDownLatchTest extends Excutor {
+public class CountDownLatchTest extends MyExcutor {
     private CountDownLatch latch = new CountDownLatch(8);
     
     @Test

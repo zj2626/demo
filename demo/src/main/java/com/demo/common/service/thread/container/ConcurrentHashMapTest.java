@@ -1,6 +1,6 @@
 package com.demo.common.service.thread.container;
 
-import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ConcurrentHashMapTest extends Excutor {
+public class ConcurrentHashMapTest extends MyExcutor {
     private static Map<String, String> map = null;
 
     static {

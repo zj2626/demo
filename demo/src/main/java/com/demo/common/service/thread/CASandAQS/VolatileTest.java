@@ -1,13 +1,13 @@
 package com.demo.common.service.thread.CASandAQS;
 
-import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class VolatileTest extends Excutor {
+public class VolatileTest extends MyExcutor {
     private volatile int number = 0;
     
     @Test

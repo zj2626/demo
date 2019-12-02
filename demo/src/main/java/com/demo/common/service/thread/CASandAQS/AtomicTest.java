@@ -1,6 +1,6 @@
 package com.demo.common.service.thread.CASandAQS;
 
-import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AtomicTest extends Excutor {
+public class AtomicTest extends MyExcutor {
     private AtomicInteger number = new AtomicInteger(0);
     
     @Test

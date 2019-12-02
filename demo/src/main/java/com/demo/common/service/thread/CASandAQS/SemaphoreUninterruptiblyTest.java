@@ -1,6 +1,6 @@
 package com.demo.common.service.thread.CASandAQS;
 
-import com.demo.common.service.thread.abs.Excutor;
+import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class SemaphoreUninterruptiblyTest extends Excutor {
+public class SemaphoreUninterruptiblyTest extends MyExcutor {
     private Semaphore semaphore = new Semaphore(5, true);
     
     @Test
