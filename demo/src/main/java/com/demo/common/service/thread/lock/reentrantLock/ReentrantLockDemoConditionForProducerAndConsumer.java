@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.reentrantLock;
+package com.demo.common.service.thread.lock.reentrantLock;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

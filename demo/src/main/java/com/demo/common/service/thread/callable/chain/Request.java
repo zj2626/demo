@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.system.chain;
+package com.demo.common.service.thread.callable.chain;
 
 public class Request {
     private String name;

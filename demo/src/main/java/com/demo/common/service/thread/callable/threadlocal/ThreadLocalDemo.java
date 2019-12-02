@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.threadlocal;
+package com.demo.common.service.thread.callable.threadlocal;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.volatilee;
+package com.demo.common.service.thread.CASandAQS.volatilee;
 
 import java.util.ArrayList;
 import java.util.List;

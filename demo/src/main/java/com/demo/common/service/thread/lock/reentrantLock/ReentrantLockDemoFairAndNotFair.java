@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.reentrantLock;
+package com.demo.common.service.thread.lock.reentrantLock;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.volatilee;
+package com.demo.common.service.thread.CASandAQS.volatilee;
 
 import org.junit.Test;
 

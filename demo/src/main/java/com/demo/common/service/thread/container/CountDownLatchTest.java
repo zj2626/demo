@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS;
+package com.demo.common.service.thread.container;
 
 import com.demo.common.service.thread.abs.Excutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
