@@ -18,10 +18,10 @@ public class SaveProcessor extends Thread implements RequestProcessor {
 
     @Override
     public void run() {
-        while (true){
+        while (true) {
             try {
                 Request request = queue.take();
-                System.out.println("SaveProcessor : " + request);
+                System.out.println(Thread.currentThread().getName() + " SaveProcessor : " + request);
 
                 nextProcessor.processorRequest(request);
             } catch (InterruptedException e) {

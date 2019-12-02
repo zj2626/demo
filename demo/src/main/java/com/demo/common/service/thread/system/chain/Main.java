@@ -9,22 +9,17 @@ public class Main {
 
     @Test
     public void test() throws InterruptedException {
-        PrintProcessor pa = new PrintProcessor();
-        pa.start();
-        PrintProcessor pb = new PrintProcessor();
-        pb.setNextProcessor(pa);
-        pb.start();
-        SaveProcessor pc = new SaveProcessor();
-        pc.setNextProcessor(pb);
-        pc.start();
-        SaveProcessor pd = new SaveProcessor();
-        pd.setNextProcessor(pc);
-
         Request request = new Request();
         request.setName("FFFFFFFFFFFF");
-        pd.processorRequest(request);
 
-        pd.start();
+        PrintProcessor pa = new PrintProcessor();
+        pa.start();
+
+        SaveProcessor pb = new SaveProcessor();
+        pb.setNextProcessor(pa);
+        pb.start();
+
+        pb.processorRequest(request);
 
         Thread.sleep(500);
     }

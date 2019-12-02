@@ -21,7 +21,7 @@ public class PrintProcessor extends Thread implements RequestProcessor {
         while (true) {
             try {
                 Request request = queue.take();
-                System.out.println("PrintProcessor : " + request);
+                System.out.println(Thread.currentThread().getName() + " PrintProcessor : " + request);
 
                 if(nextProcessor != null) {
                     nextProcessor.processorRequest(request);
