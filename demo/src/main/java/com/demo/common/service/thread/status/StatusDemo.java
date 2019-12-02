@@ -48,7 +48,7 @@ public class StatusDemo {
                 synchronized (flag) {
                     flag.wait();
                 }
-                System.out.println("AAAA");
+                System.out.println("DONE~~~~~");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,7 +56,7 @@ public class StatusDemo {
         result.start();
 
         try {
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.MILLISECONDS.sleep(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,11 +64,9 @@ public class StatusDemo {
         synchronized (flag) {
             flag.notify();
         }
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("getState");
+        System.out.println(result.getState());
+        System.out.println(result.getState());
         System.out.println(result.getState());
     }
 
