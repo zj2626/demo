@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.concurrent.counter;
+package com.demo.common.service.thread.lock.concurrent.counter;
 
 /**
  * 可重入

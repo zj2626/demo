@@ -1,13 +1,12 @@
-package com.demo.common.service.thread.concurrent.counter;
+package com.demo.common.service.thread.lock.concurrent.counter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CounterUn {
-    LockUn lock = new LockUn();
+public class CounterCan {
+    LockCan lock = new LockCan();
 
-    //当调用print()方法时，获得了锁，这时就无法再调用doAdd()方法，这时必须先释放锁才能调用，所以称这种锁为不可重入锁，也叫自旋锁。
-    //同一个线程的锁只能获得一次
+    //同一个线程的锁对于本线程来说可以获得多次 每次有个count+1进行统计
     public void print() throws InterruptedException {
         lock.lock();
         System.out.println(Thread.currentThread().getName() + " start ");
@@ -28,20 +27,20 @@ public class CounterUn {
 
         cachedThreadPool.execute(() -> {
             try {
-                CounterUn counter = new CounterUn();
+                CounterCan counter = new CounterCan();
                 counter.print();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
-//        cachedThreadPool.execute(() -> {
-//            try {
-//                CounterUn counter = new CounterUn();
-//                counter.print();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
+        cachedThreadPool.execute(() -> {
+            try {
+                CounterCan counter = new CounterCan();
+                counter.print();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

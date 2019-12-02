@@ -1,6 +1,6 @@
-package com.demo.common.service.thread.concurrent;
+package com.demo.common.service.thread.lock.concurrent;
 
-import com.demo.common.service.thread.concurrent.entity.User;
+import com.demo.common.service.thread.lock.concurrent.entity.User;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.concurrent.entity;
+package com.demo.common.service.thread.lock.concurrent.entity;
 
 import lombok.Getter;
 import lombok.Setter;
