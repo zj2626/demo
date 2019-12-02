@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.callable.status;
+package com.demo.common.service.thread;
 
 import org.junit.Test;
 
