@@ -17,7 +17,7 @@ public class TestJavaTime {
     private static final String dateStr = "2019-01-21";
     private static final String timeStr = "11:11:11";
     private static final String dateTimeStr = "2019-01-21 11:11:11";
-    private static final String datetTimeStr = "2019-07-01T11:22:33";
+    private static final String datetTimeStr = "2019-12-01T17:26:33";
     
     @Test
     public void testTime() {
@@ -188,6 +188,27 @@ public class TestJavaTime {
         // 其他时间增减, 一看就知道啥意义
         System.out.println("\t\t" + now.minusHours(1));
         System.out.println("\t\t" + now.plusMonths(1));
+        // 其他时间对时间的增减
+        System.out.println("\n时间差1:" + dateTime + " |==| " + now);
+        Duration duration = Duration.between(dateTime, now); // start, end
+        System.out.println("\t\t" + duration.toDays()); // 两个时间相差天数
+        System.out.println("\t\t" + duration.toHours()); // 两个时间相差小时数
+        System.out.println("\t\t" + duration.toMinutes()); // 两个时间相差分钟数
+        System.out.println("\t\t" + duration.getSeconds()); // 两个时间相差秒数
+        System.out.println("\t\t" + duration.get(ChronoUnit.SECONDS));
+        System.out.println("\n时间差2:" + System.currentTimeMillis());
+        duration = Duration.ofDays(2L); // 2天
+        System.out.println("\t\t" + duration.toDays());
+        System.out.println("\t\t" + duration.toHours());
+        System.out.println("\t\t" + duration.getSeconds());
+        System.out.println("\t\t" + duration.toMillis());
+        System.out.println("\n时间差3:" + System.currentTimeMillis());
+        duration = Duration.ofMinutes(120L); // 120分钟
+        System.out.println("\t\t" + duration.toDays());
+        System.out.println("\t\t" + duration.toHours());
+        System.out.println("\t\t" + duration.getSeconds());
+        System.out.println("\t\t" + duration.toMillis());
+        System.out.println("\n时间差4: END===================");
         System.out.println("\n当前时间:" + now);
         // 替换时间 替换参数包含的部分, 参数为LocalDateTime则全部替换, LocalDate则替换年月日, LocalTime则替换时分秒
         System.out.println("\t\t" + now.with(dateTime));

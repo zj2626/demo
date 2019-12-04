@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 重入锁: 三种实现方式
  */
-public class LockWaysCompare {
+public class ReentrantLockFullDemo {
 
     /**
      * lock
@@ -21,7 +21,7 @@ public class LockWaysCompare {
     public void test() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWaysCompare.Job(reentrantLock));
+            Thread thread = new Thread(new ReentrantLockFullDemo.Job(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
@@ -69,7 +69,7 @@ public class LockWaysCompare {
 
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWaysCompare.Job2(reentrantLock));
+            Thread thread = new Thread(new ReentrantLockFullDemo.Job2(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
@@ -124,7 +124,7 @@ public class LockWaysCompare {
     public void test3() throws InterruptedException {
         ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 5; i++) {
-            Thread thread = new Thread(new LockWaysCompare.Job3(reentrantLock));
+            Thread thread = new Thread(new ReentrantLockFullDemo.Job3(reentrantLock));
             thread.setName("" + i);
             thread.start();
 
