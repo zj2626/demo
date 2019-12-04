@@ -2,7 +2,7 @@ package com.demo.common.service.thread.abs;
 
 public interface LockInterface {
 
-    boolean getLock();
+    boolean getLock() throws Exception;
 
     void releaseLock();
 }

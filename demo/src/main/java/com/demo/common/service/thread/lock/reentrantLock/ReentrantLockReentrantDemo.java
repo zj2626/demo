@@ -5,12 +5,12 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 重入锁 初试
  */
-public class ReentrantLockDemo implements Runnable {
+public class ReentrantLockReentrantDemo implements Runnable {
     private ReentrantLock lock = new ReentrantLock();
     private int i = 0;
 
     public static void main(String[] args) throws InterruptedException {
-        ReentrantLockDemo rd = new ReentrantLockDemo();
+        ReentrantLockReentrantDemo rd = new ReentrantLockReentrantDemo();
 
         Thread thread = new Thread(rd);
         Thread thread2 = new Thread(rd);

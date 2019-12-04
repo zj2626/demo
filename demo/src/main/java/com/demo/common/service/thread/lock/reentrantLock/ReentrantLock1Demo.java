@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.lock;
+package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.LockInterface;
 import com.demo.common.service.thread.abs.MyExcutor;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockDemo extends MyExcutor implements LockInterface {
+public class ReentrantLock1Demo extends MyExcutor implements LockInterface {
     private static ReentrantLock lock = new ReentrantLock(); // true:公平或 false(默认):非公平
     private static int count = 0;
 

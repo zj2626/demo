@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.lock;
+package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.Params;
@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * 读写锁是共享锁, so同一时刻可以多个线程获得锁
  */
-public class ReentrantReadWriteLockDemo extends MyExcutor {
+public class ReentrantLockRWDemo extends MyExcutor {
     private static ReentrantReadWriteLock rwlock = new ReentrantReadWriteLock();
     private static Lock readLock = rwlock.readLock();
     private static Lock writeLock = rwlock.writeLock();
@@ -63,12 +63,7 @@ public class ReentrantReadWriteLockDemo extends MyExcutor {
             try {
                 readLock.lock(); // 读锁
                 System.out.println(Thread.currentThread().getName() + " 读数据: 获得锁");
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(500);
                 System.out.println(Thread.currentThread().getName() + " 读数据: " + cacheList.size() + " >>> " + cacheList);
             } finally {
                 readLock.unlock();

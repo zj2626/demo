@@ -24,7 +24,7 @@ public abstract class MyExcutor {
     public void calculate(Long n){
         if(null != n){
             Duration duration = Duration.ofMillis(n);
-            System.out.println("expect: " + duration.toMillis());
+            System.out.println("theory: " + duration.toMillis());
         }
     }
 
