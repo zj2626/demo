@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantLock2TryDemo extends MyExcutor implements LockInterface {
-    private static ReentrantLock lock = new ReentrantLock(); // true:公平或 false(默认):非公平
+    private static ReentrantLock lock = new ReentrantLock();
     private static int count = 0;
 
     @Test
@@ -18,7 +18,6 @@ public class ReentrantLock2TryDemo extends MyExcutor implements LockInterface {
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute(20);
         threadExcutor.futureGet();
-        calculate(50L * 1 * 20);
         System.out.println(count);
     }
 

@@ -8,8 +8,8 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLock3InterruptDemo extends MyExcutor implements LockInterface {
-    private static ReentrantLock lock = new ReentrantLock(); // true:公平或 false(默认):非公平
+public class ReentrantLock3Interrupt1Demo extends MyExcutor implements LockInterface {
+    private static ReentrantLock lock = new ReentrantLock();
     private static int count = 0;
 
     @Test
@@ -17,7 +17,6 @@ public class ReentrantLock3InterruptDemo extends MyExcutor implements LockInterf
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute(20);
         threadExcutor.futureGet();
-        calculate(50L * 1 * 20);
         System.out.println(count);
     }
 

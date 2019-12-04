@@ -3,10 +3,7 @@ package com.demo.common.service.thread.abs;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class ThreadDemo {
     private MyExcutor excutor;
@@ -16,35 +13,46 @@ public class ThreadDemo {
     public ThreadDemo(MyExcutor excutor) {
         this.excutor = excutor;
 
-        if(excutor instanceof LockInterface){
+        if (excutor instanceof LockInterface) {
             this.lock = (LockInterface) excutor;
         }
     }
 
-    public void execute(int size) {
+    public void execute(int size) throws InterruptedException {
         execute(Params.builder().size(size).build());
     }
 
-    public void execute(Params param) {
+    public void execute(Params param) throws InterruptedException {
         lock = Optional.ofNullable(lock).orElse(new DefaultLock());
         ExecutorService service = Executors.newFixedThreadPool(300);
 
         for (int i = 0; i < param.getSize(); i++) {
-            Future future = service.submit(() -> {
+            if (param.isOrder()) {
+                Thread.sleep(2);
+            }
+            FutureTask<Object> future = new FutureTask<>(() -> {
                 try {
+                    if (param.isOrder()) {
+                        System.out.println(Thread.currentThread().getName() + "===>线程开始===>");
+                    }
                     if (lock.getLock()) {
                         if (StringUtils.isNotEmpty(param.getType()) && param.getType().contains("2")) {
-                            excutor.doExcuteRead(makeRequestParam());
+                            return excutor.doExcuteRead(makeRequestParam());
                         } else {
-                            excutor.doExcute(makeRequestParam());
+                            return excutor.doExcute(makeRequestParam());
                         }
+                    }else{
+                        System.out.println(Thread.currentThread().getName() + "===>获得锁失败===>");
+                        return null;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return null;
                 } finally {
                     lock.releaseLock();
                 }
             });
+            service.execute(future);
             futureList.add(future);
         }
     }
@@ -61,7 +69,9 @@ public class ThreadDemo {
     public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
-                future.get();
+                if(!future.isCancelled()) {
+                    future.get();
+                }
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
@@ -71,7 +81,7 @@ public class ThreadDemo {
     public void futureCancel() throws InterruptedException {
         for (Future future : futureList) {
             try {
-                future.cancel(false);
+                future.cancel(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

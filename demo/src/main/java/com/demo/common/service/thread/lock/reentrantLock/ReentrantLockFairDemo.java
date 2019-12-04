@@ -5,32 +5,22 @@ import com.demo.common.service.thread.abs.Params;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * 读写锁是共享锁, so同一时刻可以多个线程获得锁
+ * 公平锁和非公平锁 TODO ??? 没效果
  */
 public class ReentrantLockFairDemo extends MyExcutor {
     // true:公平或 false(默认):非公平
     private static ReentrantLock fairLock = new ReentrantLock(true);
-    private static ReentrantLock unfairLock = new ReentrantLock(false);
+    private static ReentrantLock unfairLock = new ReentrantLock();
     private static int count = 0;
 
-    /**
-     * 读锁和读锁不会阻塞 读锁和写锁会阻塞
-     *
-     * @throws InterruptedException
-     */
     @Test
     public void testFair() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(Params.builder().size(50).build());
+        threadExcutor.execute(Params.builder().size(30).isOrder(true).build());
         threadExcutor.futureGet();
         System.out.println(count);
     }
@@ -38,7 +28,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
     @Test
     public void testUnfair() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(Params.builder().size(50).type("2").build());
+        threadExcutor.execute(Params.builder().size(30).type("2").isOrder(true).build());
         threadExcutor.futureGet();
         System.out.println(count);
     }
@@ -48,14 +38,12 @@ public class ReentrantLockFairDemo extends MyExcutor {
     public String doExcute(Map<String, String> parameter) throws Exception {
         try {
             fairLock.lock();
-            Thread.sleep(1);
             System.out.println(Thread.currentThread().getName() + " 公平锁");
+            Thread.sleep(200);
             count++;
         } finally {
             fairLock.unlock();
         }
-
-        Thread.sleep(100);
         return null;
     }
 
@@ -63,14 +51,13 @@ public class ReentrantLockFairDemo extends MyExcutor {
     @Override
     public String doExcuteRead(Map<String, String> parameter) throws Exception {
         try {
-            unfairLock.lock(); // 读锁
+            unfairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 非公平锁");
-            Thread.sleep(1);
+            Thread.sleep(200);
             count++;
         } finally {
             unfairLock.unlock();
         }
-        Thread.sleep(100);
         return null;
     }
 }

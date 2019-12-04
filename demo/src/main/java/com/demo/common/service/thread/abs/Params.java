@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class Params {
     String type;
     Integer size;
+    boolean isOrder = false;
 }
