@@ -12,7 +12,7 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
     private static ReentrantLock reentrantLock = new ReentrantLock();
 
     /**
-     * 正在sleep的线程会抛出一个InterruptedException。
+     * 正在等待状态的的线程会抛出一个InterruptedException。
      * <p>
      * ReentrantLock.lockInterruptibly允许在等待时由其它线程调用等待线程的Thread.interrupt方法来中断等待线程的等待而直接返回，
      * 这时不用获取锁，而会抛出一个InterruptedException。
@@ -42,7 +42,7 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
     public String doExcute(Map<String, String> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
         int n = 0;
-        for (long i = 0; i < 3000000000L; i++) {
+        for (long i = 0; i < 5000000000L; i++) {
             n++;
         }
         System.out.println(Thread.currentThread().getName() + " reentrantLock inLock");
