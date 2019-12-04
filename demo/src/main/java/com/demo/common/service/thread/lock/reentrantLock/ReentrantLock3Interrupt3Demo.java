@@ -29,10 +29,20 @@ public class ReentrantLock3Interrupt3Demo extends MyExcutor implements LockInter
         threadExcutor.futureGet();
     }
 
+    /**
+     * lock
+     *
+     * @param parameter
+     * @return
+     * @throws Exception
+     */
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
-        Thread.sleep(1500);
+        int n=0;
+        for(long i=0; i<3000000000L; i++){
+            n++;
+        }
         System.out.println(Thread.currentThread().getName() + " reentrantLock inLock");
         return null;
     }
