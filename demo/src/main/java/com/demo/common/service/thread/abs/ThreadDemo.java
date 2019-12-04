@@ -46,6 +46,7 @@ public class ThreadDemo {
                         return null;
                     }
                 } catch (Exception e) {
+                    System.out.println(Thread.currentThread().getName() + " ERROR");
                     e.printStackTrace();
                     return null;
                 } finally {
@@ -69,7 +70,7 @@ public class ThreadDemo {
     public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
-                if(!future.isCancelled()) {
+                if(!isCancelled(future)) {
                     future.get();
                 }
             } catch (ExecutionException e) {
@@ -78,10 +79,14 @@ public class ThreadDemo {
         }
     }
 
+    public boolean isCancelled(Future future) {
+        return future.isCancelled();
+    }
+
     public void futureCancel() throws InterruptedException {
         for (Future future : futureList) {
             try {
-                future.cancel(true);
+                future.cancel(true); // true 会中断正在执行的线程
             } catch (Exception e) {
                 e.printStackTrace();
             }

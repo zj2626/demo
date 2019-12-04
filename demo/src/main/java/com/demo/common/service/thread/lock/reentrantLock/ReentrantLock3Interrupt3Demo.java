@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInterface {
+public class ReentrantLock3Interrupt3Demo extends MyExcutor implements LockInterface {
     private static ReentrantLock reentrantLock = new ReentrantLock();
 
     /**
@@ -39,7 +39,7 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
 
     @Override
     public boolean getLock() throws Exception {
-        reentrantLock.lockInterruptibly();
+        reentrantLock.lock();
         return true;
     }
 
