@@ -223,5 +223,11 @@ public class TestJavaTime {
         // 时间所在月最后一天
         int maxDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         System.out.println("\t\t" + now.withDayOfMonth(maxDay));
+        // 时间前一天的某个时间
+        LocalDateTime yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS).atTime(10, 0, 0);
+        System.out.println(yesterday);
+        ZoneId zoneId = ZoneId.systemDefault();
+        Date yesterdayDate = Date.from(yesterday.atZone(zoneId).toInstant());
+        System.out.println(yesterdayDate);
     }
 }
