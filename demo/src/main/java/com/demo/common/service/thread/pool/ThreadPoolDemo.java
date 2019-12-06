@@ -30,8 +30,8 @@ public class ThreadPoolDemo {
     @Test
     public void exampleOld() throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(5);
-//        ExecutorService executor = Executors.newCachedThreadPool();
-//        ExecutorService executor = Executors.newScheduledThreadPool(5);
+        //        ExecutorService executor = Executors.newCachedThreadPool();
+        //        ExecutorService executor = Executors.newScheduledThreadPool(5);
 
         for (int i = 0; i < 10; i++) {
             executor.execute(() -> {
@@ -133,5 +133,55 @@ public class ThreadPoolDemo {
         }
 
         Thread.sleep(1000);
+    }
+
+    @Test
+    public void example4() throws InterruptedException {
+        ThreadPoolExecutor executorService = new ThreadPoolExecutor(
+                5,
+                20,
+                100L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(30),
+                new ThreadFactoryBuilder().setNameFormat("zj-example-pool-%d").build(),
+                new ThreadPoolExecutor.AbortPolicy());
+
+        System.out.println(executorService);
+
+        /**
+         * 15 20 25 30 35 40 50 55(ERROR)
+         *
+         * 由此可得
+         *  1.如果核心线程数够用, 就只使用核心线程
+         *  2.超出核心线程数的任务, 在阻塞队列中等待
+         *  3.阻塞队列也不够用(corePoolSize+workQueue.size()),则启用再启动更多线程,直到总线程数等于最大线程数
+         *  4.最大线程数也不足(maximumPoolSize+workQueue.size()),则多余的线程被执行拒绝策略
+         */
+        for (int i = 0; i < 55; i++) {
+            try {
+                executorService.execute(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < 20; i++) {
+            Thread.sleep(2000);
+            getInfo(executorService);
+        }
+    }
+
+    private void getInfo(ThreadPoolExecutor executorService) {
+        System.out.println(" 启动的线程数 " + executorService.getLargestPoolSize());
+        System.out.println(" 最大线程数 " + executorService.getMaximumPoolSize());
+        System.out.println(" 总任务数 " + executorService.getTaskCount());
+        System.out.println(" 完成的任务数 " + executorService.getCompletedTaskCount());
+        System.out.println(" (待启动的任务)阻塞队列中的任务 " + executorService.getQueue().size());
+        System.out.println();
     }
 }
