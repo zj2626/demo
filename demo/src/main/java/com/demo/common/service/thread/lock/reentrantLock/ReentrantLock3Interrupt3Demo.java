@@ -23,9 +23,10 @@ public class ReentrantLock3Interrupt3Demo extends MyExcutor implements LockInter
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute(3);
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         System.out.println("Interrupt");
         threadExcutor.futureCancel();
+        System.out.println("Interrupted");
         threadExcutor.futureGet();
     }
 
@@ -39,8 +40,12 @@ public class ReentrantLock3Interrupt3Demo extends MyExcutor implements LockInter
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
-        int n = 0;
+        long n = 0;
         for (long i = 0; i < 5000000000L; i++) {
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println(Thread.currentThread().getName() + " reentrantLock interrupted " + n);
+                break;
+            }
             n++;
         }
         System.out.println(Thread.currentThread().getName() + " reentrantLock inLock");

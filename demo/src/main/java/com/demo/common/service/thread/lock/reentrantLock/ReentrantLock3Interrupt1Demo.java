@@ -38,7 +38,7 @@ public class ReentrantLock3Interrupt1Demo extends MyExcutor implements LockInter
      * *      2）其他某个线程中断当前线程。
      * 5）如果当前线程获得该锁，则将锁保持计数设置为 1。
      * 如果当前线程：
-     * *        1）在进入此方法时已经设置了该线程的中断状态(eq:sleep)；或者
+     * *        1）在进入此方法时已经设置了该线程的中断状态(eq:sleep,wait,join)；或者
      * *        2）在等待获取锁的同时被中断。
      * 则抛出 InterruptedException，并且清除当前线程的已中断状态。
      * 6）在此实现中，因为此方法是一个显式中断点，所以要优先考虑响应中断，而不是响应锁的普通获取或重入获取。

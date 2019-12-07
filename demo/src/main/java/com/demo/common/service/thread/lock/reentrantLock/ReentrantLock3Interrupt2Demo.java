@@ -16,9 +16,9 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
      * <p>
      * ReentrantLock.lockInterruptibly允许在等待时由其它线程调用等待线程的Thread.interrupt方法来中断等待线程的等待而直接返回，
      * 这时不用获取锁，而会抛出一个InterruptedException。
+     * 如果线程不是中断状态则只是变更中断而不抛异常
      * <p>
-     * ReentrantLock.lock方法不允许Thread.interrupt中断,
-     * 即使检测到Thread.isInterrupted,一样会继续尝试获取锁，失败则继续休眠。
+     * ReentrantLock.lock方法不允许Thread.interrupt中断, 即使检测到Thread.isInterrupted,一样会继续尝试获取锁，失败则继续休眠。
      * 只是在最后获取锁成功后再把当前线程置为interrupted状态,然后再中断线程。
      */
     @Test
@@ -26,8 +26,10 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
         threadExcutor = new ThreadDemo(this);
         threadExcutor.execute(3);
         Thread.sleep(2000);
+        Thread.sleep(3000);
         System.out.println("Interrupt");
         threadExcutor.futureCancel();
+        System.out.println("Interrupted");
         threadExcutor.futureGet();
     }
 
@@ -41,8 +43,12 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
     @Override
     public String doExcute(Map<String, String> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
-        int n = 0;
+        long n = 0;
         for (long i = 0; i < 5000000000L; i++) {
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println(Thread.currentThread().getName() + " reentrantLock interrupted " + n);
+                break;
+            }
             n++;
         }
         System.out.println(Thread.currentThread().getName() + " reentrantLock inLock");

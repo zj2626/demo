@@ -41,7 +41,7 @@ public class ThreadDemo {
                         } else {
                             return excutor.doExcute(makeRequestParam());
                         }
-                    }else{
+                    } else {
                         System.out.println(Thread.currentThread().getName() + "===>获得锁失败===>");
                         return null;
                     }
@@ -56,6 +56,7 @@ public class ThreadDemo {
             service.execute(future);
             futureList.add(future);
         }
+        System.out.println("线程已启动: " + futureList.size());
     }
 
     private Map<String, String> makeRequestParam() {
@@ -70,7 +71,7 @@ public class ThreadDemo {
     public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
-                if(!isCancelled(future)) {
+                if (!isCancelled(future)) {
                     future.get();
                 }
             } catch (ExecutionException e) {
@@ -84,12 +85,16 @@ public class ThreadDemo {
     }
 
     public void futureCancel() throws InterruptedException {
-        for (Future future : futureList) {
-            try {
-                future.cancel(true); // true 会中断正在执行的线程
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        for (int i = futureList.size() - 1; i >= 0; i--) {
+            futureCancel(i);
+        }
+    }
+
+    public void futureCancel(int num) throws InterruptedException {
+        try {
+            futureList.get(num).cancel(true); // true 会中断正在执行的线程
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
