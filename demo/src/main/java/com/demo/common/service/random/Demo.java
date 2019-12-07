@@ -39,6 +39,8 @@ public class Demo {
         System.out.println(random.nextInt(5));
         random = ThreadLocalRandom.current();
         System.out.println(random.nextInt(5));
+        System.out.println(random.nextInt(5));
+        System.out.println(random.nextInt(5));
     }
 
     /**
@@ -54,6 +56,8 @@ public class Demo {
         try {
             // 参数: 算法名
             random = SecureRandom.getInstance("SHA1PRNG");
+            System.out.println(random.nextInt(5));
+            System.out.println(random.nextInt(5));
             System.out.println(random.nextInt(5));
 
             // 参数: 算法名, 算法程序包

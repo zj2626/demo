@@ -21,6 +21,15 @@ public class ReentrantLock3Interrupt1Demo extends MyExcutor implements LockInter
     }
 
     @Override
+    public String doExcute(Map<String, String> parameter) throws Exception {
+        for (int i = 0; i < 50; i++) {
+            Thread.sleep(1);
+            count++;
+        }
+        return null;
+    }
+
+    @Override
     public boolean getLock() throws Exception {
         lock.lockInterruptibly();
         return true;
@@ -31,14 +40,5 @@ public class ReentrantLock3Interrupt1Demo extends MyExcutor implements LockInter
         if (lock.isLocked() && lock.isHeldByCurrentThread()) {
             lock.unlock();
         }
-    }
-
-    @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
-        for (int i = 0; i < 50; i++) {
-            Thread.sleep(1);
-            count++;
-        }
-        return null;
     }
 }
