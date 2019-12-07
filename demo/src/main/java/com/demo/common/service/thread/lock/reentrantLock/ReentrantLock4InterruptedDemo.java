@@ -8,24 +8,14 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInterface {
+public class ReentrantLock4InterruptedDemo extends MyExcutor implements LockInterface {
     private static ReentrantLock reentrantLock = new ReentrantLock();
 
-    /**
-     * 正在等待状态的的线程会抛出一个InterruptedException。
-     * <p>
-     * ReentrantLock.lockInterruptibly允许在等待时由其它线程调用等待线程的Thread.interrupt方法来中断等待线程的等待而直接返回，
-     * 这时不用获取锁，而会抛出一个InterruptedException。
-     * 如果线程不是中断状态则只是变更中断而不抛异常
-     * <p>
-     * ReentrantLock.lock方法不允许Thread.interrupt中断, 即使检测到Thread.isInterrupted,一样会继续尝试获取锁，失败则继续休眠。
-     * 只是在最后获取锁成功后再把当前线程置为interrupted状态,然后再中断线程。
-     */
     @Test
     public void test() throws InterruptedException {
         threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(3);
-        Thread.sleep(3000);
+        threadExcutor.execute(1);
+        Thread.sleep(200);
         System.out.println("Interrupt");
         threadExcutor.futureCancel();
         System.out.println("Interrupted");
@@ -43,12 +33,28 @@ public class ReentrantLock3Interrupt2Demo extends MyExcutor implements LockInter
     public String doExcute(Map<String, String> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
         long n = 0;
-        for (long i = 0; i < 5000000000L; i++) {
+        for (long i = 0; i < 1000000L; i++) {
+            n++;
+            System.out.println(Thread.currentThread().getName() + " "
+                    + Thread.currentThread().isInterrupted() + " - " + n);
             if (Thread.currentThread().isInterrupted()) {
-                System.out.println(Thread.currentThread().getName() + " reentrantLock interrupted " + n);
+                // true (返回当前线程的中断状态)
+                System.out.println("1>>>>>>>> "
+                        + Thread.currentThread().isInterrupted() + " - " + n);
+                // true (返回当前线程的中断状态, 同时清除中断状态)
+                System.out.println("2>>>>>>>> "
+                        + Thread.interrupted() + " - " + n);
+                // false (返回当前线程的中断状态)
+                System.out.println("3>>>>>>> "
+                        + Thread.currentThread().isInterrupted() + " - " + n);
+                // false
+                System.out.println("4>>>>>>> "
+                        + Thread.interrupted() + " - " + n);
+                // false
+                System.out.println("5>>>>>>> "
+                        + Thread.currentThread().isInterrupted() + " - " + n);
                 break;
             }
-            n++;
         }
         System.out.println(Thread.currentThread().getName() + " reentrantLock inLock");
         return null;
