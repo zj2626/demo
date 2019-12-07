@@ -5,8 +5,6 @@ import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,6 +27,23 @@ public class ReentrantLock1Demo extends MyExcutor implements LockInterface {
     }
 
     @Override
+    public String doExcute(Map<String, String> parameter) throws Exception {
+        for (int i = 0; i < 50; i++) {
+            Thread.sleep(1);
+            count++;
+        }
+        return null;
+    }
+
+    /**
+     * 获取锁。
+     * 如果该锁没有被另一个线程保持，则获取该锁并立即返回，将锁的保持计数设置为 1。
+     * 如果当前线程已经保持该锁，则将保持计数加 1，并且该方法立即返回。
+     * 如果该锁被另一个线程保持，则出于线程调度的目的，禁用当前线程，并且在获得锁之前，该线程将一直处于休眠状态，此时锁保持计数被设置为 1。
+     *
+     * @return
+     */
+    @Override
     public boolean getLock() {
         lock.lock();
         return true;
@@ -39,14 +54,5 @@ public class ReentrantLock1Demo extends MyExcutor implements LockInterface {
         if (lock.isLocked() && lock.isHeldByCurrentThread()) {
             lock.unlock();
         }
-    }
-
-    @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
-        for (int i = 0; i < 50; i++) {
-            Thread.sleep(1);
-            count++;
-        }
-        return null;
     }
 }
