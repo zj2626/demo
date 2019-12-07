@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.lock.concurrent;
+package com.demo.common.service.thread.queue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 

@@ -1,12 +1,24 @@
-package com.demo.common.service.thread.lock.concurrent;
+package com.demo.common.service.thread.queue;
 
-import com.demo.common.service.thread.lock.concurrent.entity.User;
+import com.demo.common.service.thread.queue.entity.User;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class BlockingQueueDemo {
+    /**
+     * ArrayBlockingQueue
+     * DelayQueue
+     * DelayedWorkQueue
+     * LinkedBlockingDeque
+     * LinkedBlockingQueue
+     * LinkedTransferQueue
+     * PriorityBlockingQueue
+     * SynchronousQueue
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         BlockingQueue blockingQueue = new ArrayBlockingQueue(10);
 
