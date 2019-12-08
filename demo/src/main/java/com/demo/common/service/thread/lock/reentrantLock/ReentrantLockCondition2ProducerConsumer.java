@@ -9,16 +9,17 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ReentrantLockCondition2Demo extends MyExcutor {
+public class ReentrantLockCondition2ProducerConsumer extends MyExcutor {
+    private static int count = 0;
+
     private static ReentrantLock lock = new ReentrantLock();
     private static Condition conditionProducer = lock.newCondition();
     private static Condition conditionConsumer = lock.newCondition();
-    private static int count = 0;
 
     @Test
     public void test() throws InterruptedException {
         ThreadDemo producerThread = new ThreadDemo(this);
-        producerThread.execute(Params.builder().size(5).build());
+        producerThread.execute(Params.builder().size(7).build());
         ThreadDemo consumerThread = new ThreadDemo(this);
         consumerThread.execute(Params.builder().size(5).type("2").build());
         producerThread.futureGet();
@@ -33,7 +34,7 @@ public class ReentrantLockCondition2Demo extends MyExcutor {
                 System.out.println(Thread.currentThread().getName() + " reentrantLock produce ---> " + count);
                 Thread.sleep(500);
                 if (count >= 0) {
-                    conditionConsumer.signal();
+                    conditionConsumer.signalAll();
                 }
                 if (count >= 10) {
                     conditionProducer.await();
@@ -57,11 +58,11 @@ public class ReentrantLockCondition2Demo extends MyExcutor {
                 lock.lock();
                 System.out.println(Thread.currentThread().getName() + " reentrantLock consume -> " + count);
                 Thread.sleep(500);
+                if (count <= 10) {
+                    conditionProducer.signalAll();
+                }
                 if (count <= 0) {
                     conditionConsumer.await();
-                }
-                if (count <= 10) {
-                    conditionProducer.signal();
                 }
                 count--;
             } catch (Exception e) {
