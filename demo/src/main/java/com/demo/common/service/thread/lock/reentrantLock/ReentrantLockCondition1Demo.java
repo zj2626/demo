@@ -26,7 +26,7 @@ public class ReentrantLockCondition1Demo extends MyExcutor {
     }
 
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         while(true){
             try {
                 lock.lock();
@@ -51,7 +51,7 @@ public class ReentrantLockCondition1Demo extends MyExcutor {
     }
 
     @Override
-    public String doExcuteRead(Map<String, String> ignore) throws Exception {
+    public Object doExcuteRead(Map<String, Object> parameterignore) throws Exception {
         while(true){
             try {
                 lock.lock();

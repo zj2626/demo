@@ -6,7 +6,6 @@ import com.demo.common.service.thread.abs.ThreadDemo;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class SynchronizedDemo extends MyExcutor implements LockInterface {
     private static Integer lock = 0;
@@ -31,7 +30,7 @@ public class SynchronizedDemo extends MyExcutor implements LockInterface {
     }
 
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         synchronized(lock){
             for (int i = 0; i < 50; i++) {
                 Thread.sleep(1);

@@ -11,8 +11,9 @@ public class ThreadDemo {
     private static List<Future> futureList = new ArrayList<>();
 
     public ThreadDemo(MyExcutor excutor) {
-        this.excutor = excutor;
+        System.out.println("CPU核心数" + Runtime.getRuntime().availableProcessors());
 
+        this.excutor = excutor;
         if (excutor instanceof LockInterface) {
             this.lock = (LockInterface) excutor;
         }
@@ -37,9 +38,9 @@ public class ThreadDemo {
                     }
                     if (lock.getLock()) {
                         if (StringUtils.isNotEmpty(param.getType()) && param.getType().contains("2")) {
-                            return excutor.doExcuteRead(makeRequestParam());
+                            return excutor.doExcuteRead(makeRequestParam(param));
                         } else {
-                            return excutor.doExcute(makeRequestParam());
+                            return excutor.doExcute(makeRequestParam(param));
                         }
                     } else {
                         System.out.println(Thread.currentThread().getName() + "===>获得锁失败===>");
@@ -59,13 +60,18 @@ public class ThreadDemo {
         System.out.println("线程已启动: " + futureList.size());
     }
 
-    private Map<String, String> makeRequestParam() {
-        Map<String, String> parameter = new HashMap<>();
+    private Map<String, Object> makeRequestParam(Params param) {
+        Map<String, Object> parameter = new HashMap<>();
         parameter.put("id", "m32nvpfaagcmf");
         parameter.put("kitchenId", "metu8341dq0a5");
         parameter.put("name", "wtf");
         parameter.put("skuStatus", "1");
+        parameter.put("requestParam", param);
         return parameter;
+    }
+
+    public List<Future> getFutureList(){
+        return futureList;
     }
 
     public void futureGet() throws InterruptedException {

@@ -26,7 +26,7 @@ public class BlockingQueueDemoProducerConsumer extends MyExcutor {
     }
 
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         while (true) {
             try {
                 System.out.println(Thread.currentThread().getName() + " reentrantLock produce ---> " + queue.size());
@@ -40,7 +40,7 @@ public class BlockingQueueDemoProducerConsumer extends MyExcutor {
     }
 
     @Override
-    public String doExcuteRead(Map<String, String> ignore) throws Exception {
+    public Object doExcuteRead(Map<String, Object> parameterignore) throws Exception {
         while (true) {
             try {
                 System.out.println(Thread.currentThread().getName() + " reentrantLock consume -> " + queue.size());

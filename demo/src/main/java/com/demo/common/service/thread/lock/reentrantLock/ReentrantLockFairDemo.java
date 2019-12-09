@@ -35,7 +35,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     /* 公平锁 */
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         try {
             fairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 公平锁");
@@ -49,7 +49,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     /* 非公平锁 */
     @Override
-    public String doExcuteRead(Map<String, String> parameter) throws Exception {
+    public Object doExcuteRead(Map<String, Object> parameterparameter) throws Exception {
         try {
             unfairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 非公平锁");

@@ -39,7 +39,7 @@ public class ReentrantLockRWDemo extends MyExcutor {
 
     /* 写数据使用写锁 */
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         while (true) {
             try {
                 writeLock.lock(); // 写锁
@@ -58,7 +58,7 @@ public class ReentrantLockRWDemo extends MyExcutor {
 
     /* 读数据使用读锁 */
     @Override
-    public String doExcuteRead(Map<String, String> parameter) throws Exception {
+    public Object doExcuteRead(Map<String, Object> parameterparameter) throws Exception {
         while (true) {
             try {
                 readLock.lock(); // 读锁

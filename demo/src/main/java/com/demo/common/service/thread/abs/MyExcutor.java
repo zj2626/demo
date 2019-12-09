@@ -12,9 +12,9 @@ public abstract class MyExcutor {
     private LocalDateTime end;
     protected ThreadDemo threadExcutor;
 
-    public abstract String doExcute(Map<String, String> parameter) throws Exception;
+    public abstract Object doExcute(Map<String, Object> parameter) throws Exception;
 
-    public String doExcuteRead(Map<String, String> ignore) throws Exception {
+    public Object doExcuteRead(Map<String, Object> ignore) throws Exception {
         return "error";
     }
 

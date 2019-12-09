@@ -19,7 +19,7 @@ public class SemaphoreUninterruptiblyTest extends MyExcutor {
     }
     
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         try {
             // acquireUninterruptibly()作用是使等待进入acquire()方法的线程，不允许被中断
             semaphore.acquireUninterruptibly();

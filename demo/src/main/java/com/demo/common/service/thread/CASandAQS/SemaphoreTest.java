@@ -19,7 +19,7 @@ public class SemaphoreTest extends MyExcutor {
     }
     
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         try {
             semaphore.acquire();
             TimeUnit.MILLISECONDS.sleep(500);

@@ -13,4 +13,7 @@ public class Params {
     String type;
     Integer size;
     boolean isOrder = false;
+    Object data;
+    int from;
+    int to;
 }

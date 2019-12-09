@@ -36,7 +36,7 @@ public class ReentrantLock3Interrupt4Demo extends MyExcutor implements LockInter
      * @throws Exception
      */
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
         long n = 0;
         for (long i = 0; i < 5000000000L; i++) {

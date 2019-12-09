@@ -10,15 +10,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ForkJoinDemo extends MyExcutor {
+public class ExecutorsDemo extends MyExcutor {
     private int[] numbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
     /**
-     * 求和  https://blog.csdn.net/m0_37542889/article/details/92640903
-     * <p>
-     * * ForkJoinPool
-     * * ForkJoinTask
-     * * ForkJoinWorkerThread
+     * 求和
      *
      * @throws InterruptedException
      */

@@ -20,7 +20,7 @@ public class AtomicTest extends MyExcutor {
     }
     
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         
         number.getAndIncrement();
         try {

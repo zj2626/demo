@@ -8,14 +8,14 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
 
 public class SynchronousQueueDemo extends MyExcutor {
     SynchronousQueue<Integer> queue = new SynchronousQueue<>();
 
     /**
      * SynchronousQueue没有容量，是无缓冲等待队列，是一个不存储元素的阻塞队列，会直接将任务交给消费者，
-     * 必须等队列中的添加元素被消费后才能继续添加新的元素。
+     * 1.必须等队列中的添加元素被消费后才能继续添加新的元素。
+     * 2.队列中没有元素则拉取队列进入阻塞状态直到有新的元素
      *
      * @throws InterruptedException
      */
@@ -30,7 +30,7 @@ public class SynchronousQueueDemo extends MyExcutor {
     }
 
     @Override
-    public String doExcute(Map<String, String> parameter) throws Exception {
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         while (true) {
             try {
                 boolean success = true;
@@ -46,7 +46,7 @@ public class SynchronousQueueDemo extends MyExcutor {
     }
 
     @Override
-    public String doExcuteRead(Map<String, String> ignore) throws Exception {
+    public Object doExcuteRead(Map<String, Object> parameterignore) throws Exception {
         while (true) {
             try {
                 Object obj = null;
