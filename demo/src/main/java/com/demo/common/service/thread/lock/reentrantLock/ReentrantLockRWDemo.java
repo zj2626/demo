@@ -2,7 +2,7 @@ package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.Params;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,10 +29,10 @@ public class ReentrantLockRWDemo extends MyExcutor {
      */
     @Test
     public void test() throws InterruptedException {
-        ThreadDemo readThread = new ThreadDemo(this);
+        ExcutorPoolDemo readThread = new ExcutorPoolDemo(this);
         readThread.execute(Params.builder().size(3).type("2").build());
 
-        ThreadDemo writeThread = new ThreadDemo(this);
+        ExcutorPoolDemo writeThread = new ExcutorPoolDemo(this);
         writeThread.execute(Params.builder().size(5).build());
         writeThread.futureGet();
     }

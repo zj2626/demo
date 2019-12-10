@@ -2,7 +2,7 @@ package com.demo.common.service.thread.queue;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.Params;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.Map;
@@ -19,13 +19,14 @@ public class LinkedTransferQueueDemo  extends MyExcutor {
      * 如果检测到就立即发送新增的数据给这个线程获取而不用放入队列。
      * 所以当使用tryTransfer和transfer往LinkedTransferQueue添加多个数据的时候，添加一个数据后，会先唤醒等待的获取数据的线程，再继续添加数据。
      * 1.tryTransfer会立即返回 tryTransfer(timeout)超时等待 transfer阻塞
+     * 2.xfer方法参数(..how.): 执行类型，有立即返回的NOW，有异步的ASYNC，有阻塞的SYNC， 有带超时的 TIMED
      * @throws InterruptedException
      */
     @Test
     public void test() throws InterruptedException {
-        ThreadDemo producerThread = new ThreadDemo(this);
+        ExcutorPoolDemo producerThread = new ExcutorPoolDemo(this);
         producerThread.execute(Params.builder().size(1).build());
-        ThreadDemo consumerThread = new ThreadDemo(this);
+        ExcutorPoolDemo consumerThread = new ExcutorPoolDemo(this);
         consumerThread.execute(Params.builder().size(1).type("2").build());
         producerThread.futureGet();
         consumerThread.futureGet();

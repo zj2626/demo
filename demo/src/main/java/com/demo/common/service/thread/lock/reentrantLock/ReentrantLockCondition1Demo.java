@@ -2,7 +2,7 @@ package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.Params;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.Map;
@@ -17,9 +17,9 @@ public class ReentrantLockCondition1Demo extends MyExcutor {
 
     @Test
     public void test() throws InterruptedException {
-        ThreadDemo aThread = new ThreadDemo(this);
+        ExcutorPoolDemo aThread = new ExcutorPoolDemo(this);
         aThread.execute(Params.builder().size(1).build());
-        ThreadDemo bThread = new ThreadDemo(this);
+        ExcutorPoolDemo bThread = new ExcutorPoolDemo(this);
         bThread.execute(Params.builder().size(1).type("2").build());
         aThread.futureGet();
         bThread.futureGet();

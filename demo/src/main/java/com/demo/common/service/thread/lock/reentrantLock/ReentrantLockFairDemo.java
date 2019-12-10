@@ -2,7 +2,7 @@ package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.Params;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.Map;
@@ -19,17 +19,17 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     @Test
     public void testFair() throws InterruptedException {
-        threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(Params.builder().size(30).isOrder(true).build());
-        threadExcutor.futureGet();
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(Params.builder().size(30).isOrder(true).build());
+        excutorPool.futureGet();
         System.out.println(count);
     }
 
     @Test
     public void testUnfair() throws InterruptedException {
-        threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(Params.builder().size(30).type("2").isOrder(true).build());
-        threadExcutor.futureGet();
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(Params.builder().size(30).type("2").isOrder(true).build());
+        excutorPool.futureGet();
         System.out.println(count);
     }
 

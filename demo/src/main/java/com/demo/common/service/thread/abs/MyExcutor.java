@@ -10,7 +10,8 @@ import java.util.Map;
 public abstract class MyExcutor {
     private LocalDateTime begin;
     private LocalDateTime end;
-    protected ThreadDemo threadExcutor;
+    protected ExcutorPoolDemo excutorPool;
+    protected ForkJoinPoolDemo forkJoinPool;
 
     public abstract Object doExcute(Map<String, Object> parameter) throws Exception;
 

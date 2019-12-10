@@ -5,12 +5,12 @@ import org.apache.commons.lang.StringUtils;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class ThreadDemo {
+public class ForkJoinPoolDemo {
     private MyExcutor excutor;
     private LockInterface lock;
     private static List<Future> futureList = new ArrayList<>();
 
-    public ThreadDemo(MyExcutor excutor) {
+    public ForkJoinPoolDemo(MyExcutor excutor) {
         System.out.println("CPU核心数" + Runtime.getRuntime().availableProcessors());
 
         this.excutor = excutor;
@@ -25,7 +25,7 @@ public class ThreadDemo {
 
     public void execute(Params param) throws InterruptedException {
         lock = Optional.ofNullable(lock).orElse(new DefaultLock());
-        ExecutorService service = Executors.newFixedThreadPool(300);
+        ForkJoinPool pool = ForkJoinPool.commonPool();
 
         for (int i = 0; i < param.getSize(); i++) {
             if (param.isOrder()) {
@@ -54,7 +54,7 @@ public class ThreadDemo {
                     lock.releaseLock();
                 }
             });
-            service.execute(future);
+            pool.execute(future);
             futureList.add(future);
         }
         System.out.println("线程已启动: " + futureList.size());

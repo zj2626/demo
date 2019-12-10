@@ -2,7 +2,7 @@ package com.demo.common.service.thread.lock.reentrantLock;
 
 import com.demo.common.service.thread.abs.LockInterface;
 import com.demo.common.service.thread.abs.MyExcutor;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.Map;
@@ -19,13 +19,13 @@ public class ReentrantLock3Interrupt4Demo extends MyExcutor implements LockInter
      */
     @Test
     public void test() throws InterruptedException {
-        threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(3);
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(3);
         Thread.sleep(3000);
         System.out.println("Interrupt");
-        threadExcutor.futureCancel();
+        excutorPool.futureCancel();
         System.out.println("Interrupted");
-        threadExcutor.futureGet();
+        excutorPool.futureGet();
     }
 
     /**

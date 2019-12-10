@@ -1,7 +1,7 @@
 package com.demo.common.service.thread.container;
 
 import com.demo.common.service.thread.abs.MyExcutor;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -18,9 +18,9 @@ public class ConcurrentHashMapTest extends MyExcutor {
 
     @Test
     public void test() throws InterruptedException {
-        threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(500);
-        threadExcutor.futureGet();
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(500);
+        excutorPool.futureGet();
         System.out.println("ConcurrentHashMap 结果等于 1000; HashMap 结果不一定等于");
         System.out.println(map.size());
     }

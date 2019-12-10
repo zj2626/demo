@@ -1,7 +1,7 @@
 package com.demo.common.service.thread.container;
 
 import com.demo.common.service.thread.abs.MyExcutor;
-import com.demo.common.service.thread.abs.ThreadDemo;
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
 import java.util.Map;
@@ -16,14 +16,14 @@ public class CountDownLatchTest extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        threadExcutor = new ThreadDemo(this);
-        threadExcutor.execute(20);
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(20);
         
         System.out.println("begin");
         boolean result = latch.await(3000, TimeUnit.MILLISECONDS);
         System.out.println("end: " + result + " == > " + latch.getCount());
         
-        threadExcutor.futureGet();
+        excutorPool.futureGet();
     }
     
     @Override
