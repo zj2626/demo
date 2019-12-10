@@ -12,8 +12,6 @@ import java.util.concurrent.Future;
 import java.util.stream.LongStream;
 
 public class ExecutorsDemo extends MyExcutor {
-    private long[] numbers = LongStream.rangeClosed(1, 10_000_000).toArray();
-
     /**
      * 求和
      *
@@ -21,12 +19,13 @@ public class ExecutorsDemo extends MyExcutor {
      */
     @Test
     public void test() throws InterruptedException, ExecutionException {
+        long[] data = LongStream.rangeClosed(1, 10_000_000).toArray();
         int size = 20;
-        int pipe = numbers.length / size;
+        int pipe = data.length / size;
 
         excutorPool = new ExcutorPoolDemo(this);
         for (int i = 0; i < size; i++) {
-            excutorPool.execute(Params.builder().size(1).data(numbers).from(i * pipe).to((i + 1) * pipe).build());
+            excutorPool.execute(Params.builder().size(1).data(data).from(i * pipe).to((i + 1) * pipe).build());
         }
 
         int result = 0;

@@ -6,11 +6,11 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ExcutorPoolDemo {
-    private MyExcutor excutor;
+    private ExcutorInterface excutor;
     private LockInterface lock;
     private static List<Future> futureList = new ArrayList<>();
 
-    public ExcutorPoolDemo(MyExcutor excutor) {
+    public ExcutorPoolDemo(ExcutorInterface excutor) {
         System.out.println("CPU核心数" + Runtime.getRuntime().availableProcessors());
 
         this.excutor = excutor;

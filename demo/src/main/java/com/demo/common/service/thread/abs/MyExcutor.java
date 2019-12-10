@@ -7,14 +7,15 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public abstract class MyExcutor {
+public abstract class MyExcutor implements ExcutorInterface {
     private LocalDateTime begin;
     private LocalDateTime end;
     protected ExcutorPoolDemo excutorPool;
-    protected ForkJoinPoolDemo forkJoinPool;
 
+    @Override
     public abstract Object doExcute(Map<String, Object> parameter) throws Exception;
 
+    @Override
     public Object doExcuteRead(Map<String, Object> ignore) throws Exception {
         return "error";
     }
@@ -22,20 +23,20 @@ public abstract class MyExcutor {
     /**
      * 自己计算的时长
      */
-    public void calculate(Long n){
-        if(null != n){
+    public void calculate(Long n) {
+        if (null != n) {
             Duration duration = Duration.ofMillis(n);
             System.out.println("theory: " + duration.toMillis());
         }
     }
 
     @Before
-    public void before(){
+    public void before() {
         begin = LocalDateTime.now();
     }
 
     @After
-    public void after(){
+    public void after() {
         end = LocalDateTime.now();
         Duration duration = Duration.between(begin, end);
         System.out.println("consequence: " + duration.toMillis());

@@ -1,18 +1,11 @@
 package com.demo.common.service.thread.forkjoin;
 
-import com.demo.common.service.thread.abs.ForkJoinPoolDemo;
-import com.demo.common.service.thread.abs.MyExcutor;
-import com.demo.common.service.thread.abs.Params;
-import org.junit.Test;
-
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
 import java.util.stream.LongStream;
 
-public class ForkJoinDemo extends MyExcutor {
-    private long[] numbers = LongStream.rangeClosed(1, 10_000_000).toArray();
+public class ForkJoinDemo  {
 
     /**
      * 求和  https://blog.csdn.net/m0_37542889/article/details/92640903
@@ -23,32 +16,46 @@ public class ForkJoinDemo extends MyExcutor {
      *
      * @throws InterruptedException
      */
-    @Test
-    public void test() throws InterruptedException, ExecutionException {
-        int size = 20;
-        int pipe = numbers.length / size;
+    public static void main(String args[]) throws InterruptedException, ExecutionException {
+        long[] data = LongStream.rangeClosed(1, 10_000_000).toArray();
 
-        forkJoinPool = new ForkJoinPoolDemo(this);
-        for (int i = 0; i < size; i++) {
-            forkJoinPool.execute(Params.builder().size(1).data(numbers).from(i * pipe).to((i + 1) * pipe).build());
-        }
-        int result = 0;
-        List<Future> futureList = forkJoinPool.getFutureList();
-        for (Future future : futureList) {
-            result = (int) future.get();
-        }
+        ForkJoinPool pool = ForkJoinPool.commonPool();
+        Long result = pool.invoke(new SumTask(data, 0, data.length));
+        pool.shutdown();
         System.out.println("求和 " + result);
     }
 
-    @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
-        Params param = (Params) parameter.get("requestParam");
-        long[] line = (long[]) param.getData();
-        System.out.println(Thread.currentThread().getName() + " => " + param.getFrom() + " " + param.getTo());
-        int sum = 0;
-        for (int i = param.getFrom(); i < param.getTo(); i++) {
-            sum += line[i];
+    //执行任务RecursiveTask：有返回值  RecursiveAction：无返回值
+    private static class SumTask extends RecursiveTask<Long> {
+        private long[] numbers;
+        private int from;
+        private int to;
+
+        public SumTask(long[] numbers, int from, int to) {
+            this.numbers = numbers;
+            this.from = from;
+            this.to = to;
         }
-        return sum;
+
+        //此方法为ForkJoin的核心方法：对任务进行拆分  拆分的好坏决定了效率的高低
+        @Override
+        protected Long compute() {
+
+            // 当需要计算的数字个数小于6时，直接采用for loop方式计算结果
+            if (to - from < 6) {
+                long total = 0;
+                for (int i = from; i <= to; i++) {
+                    total += numbers[i];
+                }
+                return total;
+            } else { // 否则，把任务一分为二，递归拆分(注意此处有递归)到底拆分成多少分 需要根据具体情况而定
+                int middle = (from + to) / 2;
+                SumTask taskLeft = new SumTask(numbers, from, middle);
+                SumTask taskRight = new SumTask(numbers, middle + 1, to);
+                taskLeft.fork();
+                taskRight.fork();
+                return taskLeft.join() + taskRight.join();
+            }
+        }
     }
 }
