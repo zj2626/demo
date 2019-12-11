@@ -1,7 +1,7 @@
-package com.demo.common.service.network.netty;
+package com.demo.common.service.network.netty.server;
 
+import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
-import com.demo.common.service.thread.abs.MyExcutor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -15,10 +15,9 @@ import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Random;
 
-public class DemoServer extends MyExcutor {
-    public static String serverHost = "127.0.0.1";
-    public static int serverPort = 18088;
+public class DemoServer extends MyNettyAddr {
 
     @Test
     public void test() {
@@ -45,7 +44,7 @@ public class DemoServer extends MyExcutor {
          * 配置服务端的 NIO 线程池,用于网络事件处理，实质上他们就是 Reactor 线程组
          * bossGroup 用于服务端接受客户端连接，workerGroup 用于进行 SocketChannel 网络读写*/
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(8);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(4);
 
         try {
             /*启动 NIO 服务端*/
@@ -57,7 +56,10 @@ public class DemoServer extends MyExcutor {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new TimeServerHandler());
+                            // 注册
+                            socketChannel.pipeline()
+                                    .addLast(new MyTimeServerHandler())
+                            ;
                         }
                     });
             ChannelFuture caChannelFuture = bootstrap.bind(serverPort).sync();
@@ -81,13 +83,20 @@ public class DemoServer extends MyExcutor {
         return null;
     }
 
-    static class TimeServerHandler extends ChannelInboundHandlerAdapter {
+    static class MyTimeServerHandler extends ChannelInboundHandlerAdapter {
+        private int version;
+
+        public MyTimeServerHandler() {
+            version = new Random().nextInt(100000);
+            System.out.println(Thread.currentThread().getName() + " 构造 " + version);
+        }
+
         /**
          * 收到客户端消息，自动触发
          */
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " channelRead");
+            System.out.println(Thread.currentThread().getName() + " channelRead " + version);
 
             /* 将 msg 转为 Netty 的 ByteBuf 对象，类似 JDK 中的 java.nio.ByteBuffer，不过 ButeBuf 功能更强，更灵活
              */
@@ -101,7 +110,8 @@ public class DemoServer extends MyExcutor {
              * */
             buf.readBytes(reg);
             String body = new String(reg, StandardCharsets.UTF_8);
-            System.out.println(Thread.currentThread().getName() + " 客户端发送消息 : " + body);
+            System.out.println(Thread.currentThread().getName() + " 客户端发送消息 : " + body + " " + version);
+            Thread.sleep(500);
 
             /* 回复消息
              * copiedBuffer：创建一个新的缓冲区，内容为里面的参数
@@ -114,7 +124,7 @@ public class DemoServer extends MyExcutor {
 
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " channelReadComplete");
+            System.out.println(Thread.currentThread().getName() + " channelReadComplete " + version);
             /*
              * flush：将消息发送队列中的消息写入到 SocketChannel 中发送给对方，为了频繁的唤醒 Selector 进行消息发送
              * Netty 的 write 方法并不直接将消息写如 SocketChannel 中，调用 write 只是把待发送的消息放到发送缓存数组中，再通过调用 flush
@@ -126,7 +136,7 @@ public class DemoServer extends MyExcutor {
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " exceptionCaught");
+            System.out.println(Thread.currentThread().getName() + " exceptionCaught " + version);
             cause.printStackTrace();
             /* 当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
             ctx.close();

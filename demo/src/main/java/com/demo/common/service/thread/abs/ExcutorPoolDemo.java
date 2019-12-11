@@ -74,13 +74,15 @@ public class ExcutorPoolDemo {
         return futureList;
     }
 
-    public void futureGet(Long timeOut) throws InterruptedException {
+    public void futureGet(Long timeOut) {
         for (Future future : futureList) {
             try {
                 if (!isCancelled(future)) {
                     future.get(timeOut, TimeUnit.SECONDS);
                 }
-            } catch (ExecutionException | TimeoutException e) {
+            } catch (TimeoutException e) {
+                System.out.println("* 线程超时等待异常: " + e.toString());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
