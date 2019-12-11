@@ -1,4 +1,4 @@
-package com.demo.common.service.toString;
+package com.demo.common.service.string;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
