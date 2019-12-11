@@ -1,5 +1,7 @@
 package com.demo.common.service.network.netty;
 
+import com.demo.common.service.thread.abs.ExcutorPoolDemo;
+import com.demo.common.service.thread.abs.MyExcutor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -7,22 +9,43 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.NettyRuntime;
+import io.netty.util.internal.SystemPropertyUtil;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
-public class DemoServer {
+public class DemoServer extends MyExcutor {
     public static String serverHost = "127.0.0.1";
     public static int serverPort = 18088;
 
     @Test
-    public void server() {
+    public void test() {
+        // cpu核心数
+        System.out.println(Runtime.getRuntime().availableProcessors());
+        System.out.println(NettyRuntime.availableProcessors());
+        // netty服务端启动线程数
+        System.out.println(SystemPropertyUtil.getInt("io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
+    }
+
+    @Test
+    public void server() throws InterruptedException {
+        excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(1);
+        excutorPool.futureGet(180L);
+        excutorPool.futureCancel();
+        System.out.println("canceled");
+    }
+
+    @Override
+    public Object doExcute(Map<String, Object> parameter) throws Exception {
         /**
          * interface EventLoopGroup extends EventExecutorGroup extends ScheduledExecutorService extends ExecutorService
          * 配置服务端的 NIO 线程池,用于网络事件处理，实质上他们就是 Reactor 线程组
          * bossGroup 用于服务端接受客户端连接，workerGroup 用于进行 SocketChannel 网络读写*/
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(8);
 
         try {
             /*启动 NIO 服务端*/
@@ -54,6 +77,8 @@ public class DemoServer {
             workerGroup.shutdownGracefully();
             System.out.println(Thread.currentThread().getName() + " 关闭");
         }
+
+        return null;
     }
 
     static class TimeServerHandler extends ChannelInboundHandlerAdapter {

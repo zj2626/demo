@@ -74,6 +74,18 @@ public class ExcutorPoolDemo {
         return futureList;
     }
 
+    public void futureGet(Long timeOut) throws InterruptedException {
+        for (Future future : futureList) {
+            try {
+                if (!isCancelled(future)) {
+                    future.get(timeOut, TimeUnit.SECONDS);
+                }
+            } catch (ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void futureGet() throws InterruptedException {
         for (Future future : futureList) {
             try {
@@ -98,6 +110,7 @@ public class ExcutorPoolDemo {
 
     public void futureCancel(int num) throws InterruptedException {
         try {
+            System.out.println(num + " isCancelled: " + isCancelled(futureList.get(num)));
             futureList.get(num).cancel(true); // true 会中断正在执行的线程
         } catch (Exception e) {
             e.printStackTrace();

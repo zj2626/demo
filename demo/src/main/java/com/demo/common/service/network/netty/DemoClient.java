@@ -21,7 +21,7 @@ public class DemoClient extends MyExcutor {
     @Test
     public void client() throws InterruptedException {
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(2);
+        excutorPool.execute(3);
         excutorPool.futureGet();
     }
 
