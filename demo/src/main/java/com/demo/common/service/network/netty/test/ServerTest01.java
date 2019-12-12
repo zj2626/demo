@@ -1,4 +1,4 @@
-package com.demo.common.service.network.netty.server;
+package com.demo.common.service.network.netty.test;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;

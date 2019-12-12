@@ -1,4 +1,4 @@
-package com.demo.common.service.network.netty.client;
+package com.demo.common.service.network.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class DemoClient extends MyNettyAddr {
 
@@ -73,8 +74,9 @@ public class DemoClient extends MyNettyAddr {
             System.out.println(Thread.currentThread().getName() + " channelActive");
 
             Map<String, Object> data = new HashMap<>();
-            data.put("ClientName", Thread.currentThread().getName());
-            data.put("Date", LocalDateTime.now());
+            data.put("source", UUID.randomUUID().toString());
+            data.put("clientName", Thread.currentThread().getName());
+            data.put("date", LocalDateTime.now());
             data.put("memo", "测试中文" + new Random().nextInt(100));
 
             byte[] reqMsgByte = JSON.toJSONString(data).getBytes(StandardCharsets.UTF_8);
