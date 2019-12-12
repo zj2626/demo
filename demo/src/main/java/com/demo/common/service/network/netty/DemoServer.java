@@ -32,7 +32,7 @@ public class DemoServer extends MyNettyAddr {
     public void server() throws InterruptedException {
         excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
-        excutorPool.futureGet(180L);
+        excutorPool.futureGet(1800L);
         excutorPool.futureCancel();
         System.out.println("canceled");
     }
@@ -62,9 +62,9 @@ public class DemoServer extends MyNettyAddr {
                             ;
                         }
                     });
-            ChannelFuture caChannelFuture = bootstrap.bind(serverPort).sync();
+            ChannelFuture future = bootstrap.bind(serverPort).sync();
             System.out.println(Thread.currentThread().getName() + " 阻塞");
-            caChannelFuture.channel().closeFuture().sync();
+            future.channel().closeFuture().sync();
             System.out.println(Thread.currentThread().getName() + " 结束");
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class DemoServer extends MyNettyAddr {
 
         public MyTimeServerHandler() {
             version = new Random().nextInt(100000);
-            System.out.println(Thread.currentThread().getName() + " 构造 " + version);
+            System.out.println("\n" + Thread.currentThread().getName() + " 构造 " + version);
         }
 
         /**

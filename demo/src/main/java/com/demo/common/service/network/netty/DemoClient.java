@@ -48,9 +48,9 @@ public class DemoClient extends MyNettyAddr {
                             ;
                         }
                     });
-            ChannelFuture caChannelFuture = bootstrap.connect(serverHost, serverPort).sync();
+            ChannelFuture future = bootstrap.connect(serverHost, serverPort).sync();
             System.out.println(Thread.currentThread().getName() + " 异步发送");
-            caChannelFuture.channel().closeFuture().sync();
+            future.channel().closeFuture().sync();
             System.out.println(Thread.currentThread().getName() + " 结束");
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +87,7 @@ public class DemoClient extends MyNettyAddr {
              */
             reqByteBuf.writeBytes(reqMsgByte);
             ctx.writeAndFlush(reqByteBuf);
+            System.out.println(Thread.currentThread().getName() + " channelActive done");
         }
 
         @Override
