@@ -59,13 +59,12 @@ public class ServerTest01 extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (!bossGroup.isShutdown()) {
-                bossGroup.shutdownGracefully();
-            }
             if (!workerGroup.isShutdown()) {
                 workerGroup.shutdownGracefully();
             }
-            workerGroup.shutdownGracefully();
+            if (!bossGroup.isShutdown()) {
+                bossGroup.shutdownGracefully();
+            }
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
         }
 

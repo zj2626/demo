@@ -71,13 +71,12 @@ public class DemoServer extends MyNettyAddr {
             e.printStackTrace();
         } finally {
             /*释放NIO线程组*/
-            if (!bossGroup.isShutdown()) {
-                bossGroup.shutdownGracefully();
-            }
             if (!workerGroup.isShutdown()) {
                 workerGroup.shutdownGracefully();
             }
-            workerGroup.shutdownGracefully();
+            if (!bossGroup.isShutdown()) {
+                bossGroup.shutdownGracefully();
+            }
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
         }
 

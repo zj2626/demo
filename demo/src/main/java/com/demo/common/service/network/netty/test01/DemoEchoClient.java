@@ -1,6 +1,5 @@
 package com.demo.common.service.network.netty.test01;
 
-import com.alibaba.fastjson.JSON;
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import io.netty.bootstrap.Bootstrap;
@@ -10,25 +9,29 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.CharsetUtil;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
-public class Demo01 extends MyNettyAddr {
+public class DemoEchoClient extends MyNettyAddr {
 
     @Test
     public void client() throws InterruptedException {
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(1);
+        excutorPool.execute(20);
         excutorPool.futureGet();
     }
 
+    /**
+     * https://www.w3cschool.cn/essential_netty_in_action/essential_netty_in_action-y24z289f.html
+     *
+     * @param parameter
+     * @return
+     * @throws Exception
+     */
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
@@ -36,25 +39,16 @@ public class Demo01 extends MyNettyAddr {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .option(ChannelOption.TCP_NODELAY, true)
+                    .remoteAddress(new InetSocketAddress(serverHost, serverPort))
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new MyTimeClientHandler())
+                                    .addLast(new EchoClientHandler())
                             ;
                         }
                     });
-            ChannelFuture future = bootstrap.connect(serverHost, serverPort).sync();
-            future.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " Listener");
-                    System.out.println(channelFuture.isDone());
-                    System.out.println(channelFuture.isSuccess());
-                    System.out.println(channelFuture.isCancelled());
-                }
-            });
+            ChannelFuture future = bootstrap.connect().sync();
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 异步发送");
             future.channel().closeFuture().sync();
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 结束");
@@ -62,7 +56,7 @@ public class Demo01 extends MyNettyAddr {
             e.printStackTrace();
         } finally {
             if (!group.isShutdown()) {
-                group.shutdownGracefully();
+                group.shutdownGracefully().sync();
             }
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
         }
@@ -70,32 +64,29 @@ public class Demo01 extends MyNettyAddr {
         return null;
     }
 
-    static class MyTimeClientHandler extends ChannelInboundHandlerAdapter {
+    /**
+     * @Sharable 标记这个类的实例可以在 channel 里共享
+     * <p>
+     * channelActive() - 服务器的连接被建立后调用
+     * channelRead0() - 数据后从服务器接收到调用
+     * exceptionCaught() - 捕获一个异常时调用
+     */
+//    @ChannelHandler.Sharable
+    static class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         @Override
-        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        public void channelActive(ChannelHandlerContext ctx) {
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
-
-            Map<String, Object> data = new HashMap<>();
-            data.put("source", UUID.randomUUID().toString());
-            data.put("clientName", Thread.currentThread().getName());
-            data.put("date", LocalDateTime.now());
-            data.put("memo", "测试中文" + new Random().nextInt(100));
-
-            byte[] reqMsgByte = JSON.toJSONString(data).getBytes(StandardCharsets.UTF_8);
-            ByteBuf reqByteBuf = Unpooled.buffer(reqMsgByte.length);
-            reqByteBuf.writeBytes(reqMsgByte);
-            ctx.writeAndFlush(reqByteBuf);
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive done");
+            ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
         }
 
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelRead");
-            ctx.close();
+        public void channelRead0(ChannelHandlerContext ctx, ByteBuf in) {
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelRead0");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " Client received: " + in.toString(CharsetUtil.UTF_8));
         }
 
         @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " exceptionCaught");
             cause.printStackTrace();
             ctx.close();
