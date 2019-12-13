@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,15 +68,15 @@ public class ClientTest01 extends MyNettyAddr {
                         }
                     });
             future = bootstrap.connect(serverHost, serverPort).sync();
-            System.out.println(Thread.currentThread().getName() + " 异步发送");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 异步发送");
 //            future.channel().closeFuture().sync();
-//            System.out.println(Thread.currentThread().getName() + " 结束");
+//            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 结束");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (!group.isShutdown() && isClosed) {
                 group.shutdownGracefully();
-                System.out.println(Thread.currentThread().getName() + " 关闭");
+                System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
             }
         }
 

@@ -14,6 +14,7 @@ import io.netty.util.internal.SystemPropertyUtil;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Random;
 
@@ -63,9 +64,9 @@ public class DemoServer extends MyNettyAddr {
                         }
                     });
             ChannelFuture future = bootstrap.bind(serverPort).sync();
-            System.out.println(Thread.currentThread().getName() + " 阻塞");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 阻塞");
             future.channel().closeFuture().sync();
-            System.out.println(Thread.currentThread().getName() + " 结束");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 结束");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -77,7 +78,7 @@ public class DemoServer extends MyNettyAddr {
                 workerGroup.shutdownGracefully();
             }
             workerGroup.shutdownGracefully();
-            System.out.println(Thread.currentThread().getName() + " 关闭");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
         }
 
         return null;
@@ -87,8 +88,12 @@ public class DemoServer extends MyNettyAddr {
         private int version;
 
         public MyTimeServerHandler() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
             version = new Random().nextInt(100000);
-            System.out.println("\n" + Thread.currentThread().getName() + " 构造 " + version);
+            System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " 构造 " + version);
         }
 
         /**
@@ -96,7 +101,7 @@ public class DemoServer extends MyNettyAddr {
          */
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " channelRead " + version);
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelRead " + version);
 
             /* 将 msg 转为 Netty 的 ByteBuf 对象，类似 JDK 中的 java.nio.ByteBuffer，不过 ButeBuf 功能更强，更灵活
              */
@@ -110,8 +115,8 @@ public class DemoServer extends MyNettyAddr {
              * */
             buf.readBytes(reg);
             String body = new String(reg, StandardCharsets.UTF_8);
-            System.out.println(Thread.currentThread().getName() + " 客户端发送消息 : " + body + " " + version);
-            Thread.sleep(500);
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 客户端发送消息 : " + body + " " + version);
+            Thread.sleep(1000);
 
             /* 回复消息
              * copiedBuffer：创建一个新的缓冲区，内容为里面的参数
@@ -124,7 +129,7 @@ public class DemoServer extends MyNettyAddr {
 
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " channelReadComplete " + version);
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelReadComplete " + version);
             /*
              * flush：将消息发送队列中的消息写入到 SocketChannel 中发送给对方，为了频繁的唤醒 Selector 进行消息发送
              * Netty 的 write 方法并不直接将消息写如 SocketChannel 中，调用 write 只是把待发送的消息放到发送缓存数组中，再通过调用 flush
@@ -136,7 +141,7 @@ public class DemoServer extends MyNettyAddr {
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            System.out.println(Thread.currentThread().getName() + " exceptionCaught " + version);
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " exceptionCaught " + version);
             cause.printStackTrace();
             /* 当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
             ctx.close();

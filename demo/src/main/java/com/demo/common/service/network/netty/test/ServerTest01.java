@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -52,9 +53,9 @@ public class ServerTest01 extends MyNettyAddr {
                         }
                     });
             ChannelFuture caChannelFuture = bootstrap.bind(serverPort).sync();
-            System.out.println(Thread.currentThread().getName() + " 阻塞");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 阻塞");
             caChannelFuture.channel().closeFuture().sync();
-            System.out.println(Thread.currentThread().getName() + " 结束");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 结束");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -65,7 +66,7 @@ public class ServerTest01 extends MyNettyAddr {
                 workerGroup.shutdownGracefully();
             }
             workerGroup.shutdownGracefully();
-            System.out.println(Thread.currentThread().getName() + " 关闭");
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
         }
 
         return null;
