@@ -29,9 +29,9 @@ public class SocketServerDemo {
                 System.out.println("连接请求地址: " + socket.getInetAddress() + " : " + socket.getPort());
                 DataInputStream input = new DataInputStream(socket.getInputStream());
                 // 接收数据
-                byte[] byteArray = new byte[4096];
+                byte[] byteArray = new byte[1024];
                 while (true) {
-                    int nread = input.read(byteArray, 0, 1024);
+                    int nread = input.read(byteArray, 0, 256);
                     if (-1 == nread) {
                         break;
                     }

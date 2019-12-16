@@ -2,37 +2,53 @@ package com.demo.common.service.network.socket;
 
 import org.junit.Test;
 
-import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 
 public class NettyClientDemo {
 
     @Test
-    public void client()  {
-        Socket socket = null;
+    public void client() {
+        SocketChannel socketChannel = null;
         try {
-            SocketChannel socketChannel = SocketChannel.open();
+            socketChannel = SocketChannel.open();
             socketChannel.connect(new InetSocketAddress("localhost", 18081));
             socketChannel.configureBlocking(true);// 设置阻塞
-            socket = new Socket("localhost", 10801);
 
-            String data = " this is my 数据 \n\t\t\t\t~~~ 啦啦 done";
+            FileInputStream inputStream = new FileInputStream("F:\\code\\demo\\demo\\src\\main\\java\\com\\demo\\common\\service\\network" +
+                    "\\socket\\data.txt");
 
+            FileChannel fileChannel = inputStream.getChannel();
+            int offset = 4096;
+            long size = fileChannel.size();
+            int pos = 0;
+            while (pos < size) {
+                fileChannel.transferTo(pos, offset, socketChannel);
+                pos += offset;
+            }
+            inputStream.close();
+            socketChannel.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
-            if(null != socket){
+        } finally {
+            if (null != socketChannel) {
                 try {
-                    socket.close();
+                    socketChannel.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    private String makeData() {
+        StringBuilder data = new StringBuilder();
+        for (int i = 0; i < 1024; i++) {
+            data.append(" this is my 数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据 ~~~ 啦啦 done..\n");
+        }
+        return data.toString();
     }
 }

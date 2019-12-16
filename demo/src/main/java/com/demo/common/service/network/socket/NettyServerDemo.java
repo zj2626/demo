@@ -33,20 +33,15 @@ public class NettyServerDemo {
                 System.out.println("连接请求地址: " + channel.getRemoteAddress());
                 channel.configureBlocking(true);// 设置阻塞，接不到就停
                 // 接收数据
-                //byte[] byteArray = new byte[4096];
-                // 接收数据
-                ByteBuffer byteBuffer = ByteBuffer.allocate(4096);
+                ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                 while (true) {
                     int nread = channel.read(byteBuffer);
-                    if (-1 == nread) {
+                    if (0 == nread) {
                         break;
                     }
-                    byte[] array = byteBuffer.array();
-                    String string = new String(array, 0, byteBuffer.position());
-                    System.out.print(string);
-                    byteBuffer.clear();
                 }
-                //System.out.println("接收到的数据: " + new String(byteArray, StandardCharsets.UTF_8));
+                System.out.println("接收到的数据: " + new String(byteBuffer.array(), 0, byteBuffer.position(), StandardCharsets.UTF_8));
+                byteBuffer.clear();
             }
         } catch (IOException e) {
             e.printStackTrace();
