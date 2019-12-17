@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantLock1Demo extends MyExcutor implements LockInterface {
-    private static ReentrantLock lock = new ReentrantLock(); // true:公平或 false(默认):非公平
+    private static ReentrantLock lock = new ReentrantLock();
     private static int count = 0;
 
     /**
