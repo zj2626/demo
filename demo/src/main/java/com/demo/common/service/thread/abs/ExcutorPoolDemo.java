@@ -54,8 +54,10 @@ public class ExcutorPoolDemo {
                     lock.releaseLock();
                 }
             });
-            service.execute(future);
             futureList.add(future);
+        }
+        for (Future future : futureList) {
+            service.execute((FutureTask) future);
         }
         System.out.println("线程已启动: " + futureList.size());
     }
@@ -70,7 +72,7 @@ public class ExcutorPoolDemo {
         return parameter;
     }
 
-    public List<Future> getFutureList(){
+    public List<Future> getFutureList() {
         return futureList;
     }
 
