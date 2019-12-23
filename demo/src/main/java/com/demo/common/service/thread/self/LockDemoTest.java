@@ -16,15 +16,15 @@ public class LockDemoTest extends MyExcutor implements LockInterface {
     @Test
     public void test() throws InterruptedException {
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(1);
+        excutorPool.execute(50);
         excutorPool.futureGet();
         System.out.println(count);
     }
 
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(100);
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(5);
             count++;
         }
         return null;
@@ -35,7 +35,7 @@ public class LockDemoTest extends MyExcutor implements LockInterface {
         System.out.println(Thread.currentThread().getName() + " ====> getLock");
         lock.lock();
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class LockDemoTest extends MyExcutor implements LockInterface {
         System.out.println(Thread.currentThread().getName() + " ====> releaseLock");
         lock.unlock();
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

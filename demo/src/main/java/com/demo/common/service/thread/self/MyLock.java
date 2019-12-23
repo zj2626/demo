@@ -44,8 +44,10 @@ public class MyLock implements Lock {
         protected boolean tryAcquire(int arg) {
             // 获取当前state 0表示没有线程占用锁 >0表示有
             int state = getState();
-            System.out.println(Thread.currentThread().getName() + " ==> " + state);
-            if (state == 0) {
+            if (getExclusiveOwnerThread() == Thread.currentThread()) {
+                setState(state + arg);
+                return true;
+            } else if (state == 0) {
                 if (compareAndSetState(0, arg)) {
                     // 修改成功
                     setExclusiveOwnerThread(Thread.currentThread());
@@ -57,11 +59,13 @@ public class MyLock implements Lock {
 
         @Override
         protected boolean tryRelease(int arg) {
-            // 获取当前state 0表示没有线程占用锁 >0表示有
             int state = getState();
-            if (state > 0) {
+            // 只有获得锁的线程能进入
+            if (getExclusiveOwnerThread() != Thread.currentThread()) {
+                return false;
+            } else if (state > 0) {
                 state = state - arg;
-                if (compareAndSetState(getState(), state) && 0 == state) {
+                if (0 == state) {
                     setExclusiveOwnerThread(null);
                 }
             }
@@ -69,7 +73,7 @@ public class MyLock implements Lock {
             return true;
         }
 
-        protected Condition newCondition() {
+        Condition newCondition() {
             return new ConditionObject();
         }
     }
