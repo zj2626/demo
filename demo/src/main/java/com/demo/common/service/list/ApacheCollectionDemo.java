@@ -8,6 +8,7 @@ public class ApacheCollectionDemo extends ListInfo {
 
     @Test
     public void test() {
-        System.out.println("判断空:\t" + CollectionUtils.isNotEmpty(listA));
+        System.out.println(CollectionUtils.isNotEmpty(listA));
+        System.out.println(CollectionUtils.isSubCollection(listA, listF));
     }
 }

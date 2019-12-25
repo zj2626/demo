@@ -21,6 +21,7 @@ public class SpringCollectionDemo extends ListInfo {
         System.out.println("得到第一个:\t" + Optional.ofNullable(listE).filter(a -> !a.isEmpty()).map(a -> a.get(0)).orElse("default"));
 
         System.out.println("数组转List:\t" + CollectionUtils.arrayToList(arrayE));
+
         CollectionUtils.mergeArrayIntoCollection(arrayE, listB);
         System.out.println("数组加入List:\t" + listB);
     }
