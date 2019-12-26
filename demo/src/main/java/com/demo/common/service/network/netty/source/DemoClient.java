@@ -18,7 +18,7 @@ public class DemoClient extends MyNettyAddr {
     @Test
     public void client() throws InterruptedException {
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(2);
+        excutorPool.execute(1);
         excutorPool.futureGet();
     }
 

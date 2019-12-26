@@ -1,11 +1,13 @@
 package com.demo.common.service.network.netty.source;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 
 public class MyDemoServer01Handler extends ChannelInboundHandlerAdapter {
-    private void log(String str){
-        System.out.println("MyDemoServer01Handler " + Thread.currentThread().getName() + " " + str);
+    private void log(String str) {
+        System.out.println("\nMyDemoServer01Handler " + Thread.currentThread().getName() + " " + str);
     }
 
     @Override
@@ -35,8 +37,10 @@ public class MyDemoServer01Handler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         log("channelRead");
-        System.out.println(msg);
+        ByteBuf in = (ByteBuf) msg;
+        System.out.println(in.toString(CharsetUtil.UTF_8));
         super.channelRead(ctx, msg);
+        ctx.write(msg);
     }
 
     @Override
