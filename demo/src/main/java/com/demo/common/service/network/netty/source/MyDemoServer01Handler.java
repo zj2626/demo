@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
+import io.netty.util.ReferenceCountUtil;
 
 public class MyDemoServer01Handler extends ChannelInboundHandlerAdapter {
     private void log(String str) {
@@ -39,8 +40,11 @@ public class MyDemoServer01Handler extends ChannelInboundHandlerAdapter {
         log("channelRead");
         ByteBuf in = (ByteBuf) msg;
         System.out.println(in.toString(CharsetUtil.UTF_8));
-        super.channelRead(ctx, msg);
-        ctx.write(msg);
+        try {
+            ctx.write(in);
+        } finally {
+            ReferenceCountUtil.release(in);
+        }
     }
 
     @Override

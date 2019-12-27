@@ -3,7 +3,9 @@ package com.demo.common.service.network.netty.source;
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -23,7 +25,6 @@ public class DemoClient extends MyNettyAddr {
     }
 
     /**
-     *
      * @param parameter
      * @return
      * @throws Exception
@@ -36,9 +37,11 @@ public class DemoClient extends MyNettyAddr {
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .remoteAddress(new InetSocketAddress(serverHost, serverPort))
+                    // 设置主通道的处理器， 对于服务端而言就是ServerSocketChannel，也就是用来处理Acceptor的操作；对于客户端的SocketChannel，主要是用来处理 业务操作；
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            System.out.println("\n" + Thread.currentThread().getName() + " initChannel ------>");
                             socketChannel.pipeline()
                                     .addLast(new MyDemoClient01Handler())
                             ;
