@@ -70,6 +70,9 @@ public class DemoServer extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (!workerGroup.isShutdown()) {
+                workerGroup.shutdownGracefully();
+            }
             if (!bossGroup.isShutdown()) {
                 bossGroup.shutdownGracefully().sync();
             }
