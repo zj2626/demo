@@ -1,9 +1,10 @@
-package com.demo.common.service.network.netty.learn0.discard;
+package com.demo.common.service.network.netty.learn2.time;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -24,8 +25,6 @@ public class DemoServer extends MyNettyAddr {
     }
 
     /**
-     * https://www.w3cschool.cn/netty4userguide/3ban1mtr.html
-     *
      * @param parameter
      * @return
      * @throws Exception
@@ -66,18 +65,27 @@ public class DemoServer extends MyNettyAddr {
         return null;
     }
 
-    // 丢弃服务器 + 收到的数据
+    // 时间服务器 (忽略任何接收到的数据)
     static class MyServerHandler extends ChannelInboundHandlerAdapter {
 
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelRead");
-            ByteBuf in = ((ByteBuf) msg);
-            System.out.println(in.isReadable());
-            System.out.println(in.toString(CharsetUtil.UTF_8));
+        public void channelActive(ChannelHandlerContext ctx) {
+            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
 
-            // 丢弃收到的数据; ByteBuf 是一个引用计数对象，这个对象必须显示地调用 release() 方法来释放
-            in.release(); // 等同于 ReferenceCountUtil.release(msg);
+            ByteBuf time = ctx.alloc().buffer(16);
+            time.writeLong(System.currentTimeMillis());
+
+            ChannelFuture f = ctx.writeAndFlush(time);
+            f.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " operationComplete");
+                    // assert f == channelFuture;
+                    ctx.close();
+                }
+            });
+
+//            f.addListener(ChannelFutureListener.CLOSE);
         }
 
         @Override
