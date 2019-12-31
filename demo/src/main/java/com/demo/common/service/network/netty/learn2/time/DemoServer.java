@@ -70,10 +70,32 @@ public class DemoServer extends MyNettyAddr {
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
+            System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
 
-            ByteBuf time = ctx.alloc().buffer(16);
-            time.writeLong(System.currentTimeMillis());
+            ByteBuf time = ctx.alloc().buffer(10240);
+            byte[] out = ("" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a0\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
+                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
+                    "").getBytes();
+            System.out.println(Thread.currentThread().getName() + " : " + out.length);
+            time.writeBytes(out);
 
             ChannelFuture f = ctx.writeAndFlush(time);
             f.addListener(new ChannelFutureListener() {
@@ -81,6 +103,8 @@ public class DemoServer extends MyNettyAddr {
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " operationComplete");
                     // assert f == channelFuture;
+
+                    // 完成时关闭 Channel
                     ctx.close();
                 }
             });

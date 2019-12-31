@@ -43,7 +43,7 @@ public class DemoClient extends MyNettyAddr {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new DiscardHandler())
+                                    .addLast(new ClientHandler())
                             ;
                         }
                     });
@@ -63,7 +63,7 @@ public class DemoClient extends MyNettyAddr {
         return null;
     }
 
-    static class DiscardHandler extends SimpleChannelInboundHandler<ByteBuf> {
+    static class ClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
             System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
