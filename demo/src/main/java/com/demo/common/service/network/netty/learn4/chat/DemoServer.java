@@ -14,12 +14,14 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class DemoServer extends MyNettyAddr {
+    private static Logger logger = Logger.getLogger(DemoServer.class);
 
     @Test
     public void server() throws InterruptedException {
@@ -28,14 +30,22 @@ public class DemoServer extends MyNettyAddr {
         excutorPool.futureGet();
     }
 
+    /**
+     * https://www.w3cschool.cn/netty4userguide/ip8w1mu8.html
+     *
+     * @param parameter
+     * @return
+     * @throws Exception
+     */
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread);
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap
-                    .group(bossGroup)
+                    .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -46,7 +56,7 @@ public class DemoServer extends MyNettyAddr {
                                     .addLast("encoder", new StringEncoder())
                                     .addLast("handler", new SimpleChatServerHandler())
                             ;
-                            System.out.println("SimpleChatClient:" + socketChannel.remoteAddress() + "连接上");
+                            System.out.println("SimpleChatClient:" + socketChannel.remoteAddress() + " 上线");
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -59,6 +69,7 @@ public class DemoServer extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            workerGroup.shutdownGracefully().sync();
             bossGroup.shutdownGracefully().sync();
         }
 
@@ -102,21 +113,20 @@ public class DemoServer extends MyNettyAddr {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
             Channel incoming = ctx.channel();
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + "在线");
+            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 在线");
         }
 
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
             Channel incoming = ctx.channel();
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + "掉线");
+            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 掉线");
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (7)
             Channel incoming = ctx.channel();
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + "异常");
             // 当出现异常就关闭连接
-            cause.printStackTrace();
+            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 异常: " + cause.getMessage());
             ctx.close();
         }
     }

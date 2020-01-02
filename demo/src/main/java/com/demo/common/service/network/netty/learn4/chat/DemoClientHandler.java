@@ -1,7 +1,6 @@
 package com.demo.common.service.network.netty.learn4.chat;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
-import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -11,21 +10,13 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class DemoClient extends MyNettyAddr {
-
-    @Test
-    public void client() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(1);
-        excutorPool.futureGet();
-    }
+public class DemoClientHandler extends MyNettyAddr {
 
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {

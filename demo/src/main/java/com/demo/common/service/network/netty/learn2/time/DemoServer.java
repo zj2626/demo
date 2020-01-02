@@ -30,11 +30,11 @@ public class DemoServer extends MyNettyAddr {
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread);
-
+        EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread);
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap
-                    .group(bossGroup)
+                    .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -54,6 +54,7 @@ public class DemoServer extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            workerGroup.shutdownGracefully().sync();
             bossGroup.shutdownGracefully().sync();
         }
 

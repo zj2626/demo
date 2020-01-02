@@ -1,6 +1,11 @@
 package com.demo.common.service.log;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.core.util.StatusPrinter;
 import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +16,20 @@ public class LogTest {
     private static Logger logger = Logger.getLogger(LogTest.class);
 
     public static void main(String[] args) throws Exception {
+//        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+//        JoranConfigurator configurator = new JoranConfigurator();
+//        configurator.setContext(lc);
+//        lc.reset();
+//        try {
+//            configurator.doConfigure("logback.xml");
+//        } catch (JoranException e) {
+//            e.printStackTrace();
+//        }
+//        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
+//        System.out.println("===================");
+
+
+
         // 记录debug级别的信息
         logger.debug("This is debug message.");
         // 记录info级别的信息
