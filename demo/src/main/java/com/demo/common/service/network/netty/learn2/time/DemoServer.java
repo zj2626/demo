@@ -54,10 +54,7 @@ public class DemoServer extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (!bossGroup.isShutdown()) {
-                bossGroup.shutdownGracefully().sync();
-            }
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
+            bossGroup.shutdownGracefully().sync();
         }
 
         return null;
@@ -70,7 +67,7 @@ public class DemoServer extends MyNettyAddr {
         public void channelActive(ChannelHandlerContext ctx) {
             System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
 
-            ByteBuf time = ctx.alloc().buffer(10240);
+            ByteBuf data = ctx.alloc().buffer(10240);
             byte[] out = (
                     "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
                             "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
@@ -112,9 +109,9 @@ public class DemoServer extends MyNettyAddr {
                             "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a000\n"
             ).getBytes();
             System.out.println(Thread.currentThread().getName() + " : " + out.length);
-            time.writeBytes(out);
+            data.writeBytes(out);
 
-            ChannelFuture f = ctx.writeAndFlush(time);
+            ChannelFuture f = ctx.writeAndFlush(data);
             f.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {

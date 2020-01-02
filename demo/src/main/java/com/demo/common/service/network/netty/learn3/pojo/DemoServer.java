@@ -8,6 +8,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.MessageToByteEncoder;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class DemoServer extends MyNettyAddr {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new MyServerHandler())
+                                    .addLast(new ServerToByteEncoderHandler(), new MyServerHandler())
                             ;
                         }
                     })
@@ -54,10 +55,7 @@ public class DemoServer extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (!bossGroup.isShutdown()) {
-                bossGroup.shutdownGracefully().sync();
-            }
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
+            bossGroup.shutdownGracefully().sync();
         }
 
         return null;
@@ -70,68 +68,86 @@ public class DemoServer extends MyNettyAddr {
         public void channelActive(ChannelHandlerContext ctx) {
             System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " channelActive");
 
-            ByteBuf time = ctx.alloc().buffer(10240);
-            byte[] out = (
-                    "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a0\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a0\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a1\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a2\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a3\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a4\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a5\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a6\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a7\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a8\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a9\n" +
-                            "赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞赞a000\n"
-            ).getBytes();
-            System.out.println(Thread.currentThread().getName() + " : " + out.length);
-            time.writeBytes(out);
+            String out =
+                    ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a1\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a2\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a2\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a3\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a3\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a4\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a4\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a5\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a5\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a6\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a6\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a7\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a7\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a8\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a8\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a9\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a9\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a0\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a0\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a1\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a1\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a2\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a2\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a3\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a3\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a4\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a4\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a5\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a5\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a6\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a6\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a7\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a7\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a8\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a8\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a9\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a9\n" +
+                            ">赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞-赞a000\n";
+            Entity entity = new Entity(out);
+            System.out.println(Thread.currentThread().getName());
 
-            ChannelFuture f = ctx.writeAndFlush(time);
-            f.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " operationComplete");
-                    // assert f == channelFuture;
+            ChannelFuture f = ctx.writeAndFlush(entity);
+            f.addListener(ChannelFutureListener.CLOSE);
+        }
+    }
 
-                    // 完成时关闭 Channel
-                    ctx.close();
-                }
-            });
-
-//            f.addListener(ChannelFutureListener.CLOSE);
+    static class ServerEncoderHandler extends ChannelOutboundHandlerAdapter {
+        /**
+         * 编码
+         *
+         * @param ctx
+         * @param msg
+         * @param promise
+         */
+        @Override
+        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+            System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " write");
+            Entity entity = (Entity) msg;
+            ByteBuf data = ctx.alloc().buffer(10240);
+            data.writeBytes(entity.getName().getBytes());
+            ctx.write(data, promise);
         }
 
         @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " exceptionCaught");
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            cause.printStackTrace();
+            ctx.close();
+        }
+    }
+
+    static class ServerToByteEncoderHandler extends MessageToByteEncoder<Entity> {
+        @Override
+        protected void encode(ChannelHandlerContext ctx, Entity msg, ByteBuf out) {
+            System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " encode");
+            out.writeBytes(msg.getName().getBytes());
+        }
+
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             cause.printStackTrace();
             ctx.close();
         }

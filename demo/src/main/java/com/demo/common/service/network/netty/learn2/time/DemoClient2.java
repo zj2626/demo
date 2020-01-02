@@ -59,10 +59,7 @@ public class DemoClient2 extends MyNettyAddr {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (!group.isShutdown()) {
-                group.shutdownGracefully().sync();
-            }
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 关闭");
+            group.shutdownGracefully().sync();
         }
 
         return null;
@@ -83,6 +80,7 @@ public class DemoClient2 extends MyNettyAddr {
             System.out.println("\n" + LocalDateTime.now() + " " + Thread.currentThread().getName() + " decode");
             if (in.readableBytes() < 512) {
                 out.add(in.readBytes(in.readableBytes()));
+                System.out.println("out final : " + out.size());
                 return;
             }
             out.add(in.readBytes(512));
