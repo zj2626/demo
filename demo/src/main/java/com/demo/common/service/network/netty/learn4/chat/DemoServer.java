@@ -2,6 +2,7 @@ package com.demo.common.service.network.netty.learn4.chat;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;
@@ -39,8 +40,8 @@ public class DemoServer extends MyNettyAddr {
      */
     @Override
     public Object doExcute(Map<String, Object> parameter) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread);
+        EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread, new ThreadFactoryBuilder().setNameFormat("zj-bossGroup-%d").build());
+        EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread, new ThreadFactoryBuilder().setNameFormat("zj-workerGroup-%d").build());
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -56,16 +57,16 @@ public class DemoServer extends MyNettyAddr {
                                     .addLast("encoder", new StringEncoder())
                                     .addLast("handler", new SimpleChatServerHandler())
                             ;
-                            System.out.println("SimpleChatClient:" + socketChannel.remoteAddress() + " 上线");
+                            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + socketChannel.remoteAddress() + " 上线");
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ;
             ChannelFuture caChannelFuture = bootstrap.bind(serverPort).sync();
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 启动");
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] 启动");
             caChannelFuture.channel().closeFuture().sync();
-            System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " 结束");
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] 结束");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -101,6 +102,7 @@ public class DemoServer extends MyNettyAddr {
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String s) throws Exception { // (4)
             Channel incoming = ctx.channel();
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + incoming.remoteAddress() + " 发言");
             for (Channel channel : channels) {
                 if (channel != incoming) {
                     channel.writeAndFlush("[" + incoming.remoteAddress() + "]" + s + "\n");
@@ -113,20 +115,20 @@ public class DemoServer extends MyNettyAddr {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
             Channel incoming = ctx.channel();
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 在线");
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + incoming.remoteAddress() + " 在线");
         }
 
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
             Channel incoming = ctx.channel();
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 掉线");
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + incoming.remoteAddress() + " 掉线");
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (7)
             Channel incoming = ctx.channel();
             // 当出现异常就关闭连接
-            System.out.println("SimpleChatClient:" + incoming.remoteAddress() + " 异常: " + cause.getMessage());
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + incoming.remoteAddress() + " 异常: " + cause.getMessage());
             ctx.close();
         }
     }

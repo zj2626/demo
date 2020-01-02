@@ -1,4 +1,4 @@
-package com.demo.common.service.network.netty.learn3.pojo;
+package com.demo.common.service.network.netty.learn3.pojo.test1;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;

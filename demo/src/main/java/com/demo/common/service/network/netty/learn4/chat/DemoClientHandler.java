@@ -58,5 +58,13 @@ public class DemoClientHandler extends MyNettyAddr {
         protected void channelRead0(ChannelHandlerContext ctx, String s) throws Exception {
             System.out.println(s);
         }
+
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (7)
+            Channel incoming = ctx.channel();
+            // 当出现异常就关闭连接
+            System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] " + incoming.remoteAddress() + " 异常: " + cause.getMessage());
+            ctx.close();
+        }
     }
 }
