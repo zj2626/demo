@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BeanAwareDemo {
     public static void main(String args[]) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:framework/spring-aware.xml");
 
         System.out.println("\n>>>>>>>>>>>>>>>>>>>>>");
 
