@@ -1,4 +1,4 @@
-package com.demo.common.service.network.netty.learn5.chat;
+package com.demo.common.service.network.netty.learn5.websocketchat;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

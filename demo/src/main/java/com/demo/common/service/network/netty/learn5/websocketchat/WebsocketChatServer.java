@@ -1,4 +1,4 @@
-package com.demo.common.service.network.netty.learn5.chat;
+package com.demo.common.service.network.netty.learn5.websocketchat;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
