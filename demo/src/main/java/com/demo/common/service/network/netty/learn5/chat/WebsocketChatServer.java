@@ -1,28 +1,25 @@
-package com.demo.common.service.network.netty.learn4.chat;
+package com.demo.common.service.network.netty.learn5.chat;
 
 import com.demo.common.service.network.netty.abs.MyNettyAddr;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class DemoServer extends MyNettyAddr {
-    private static Logger logger = Logger.getLogger(DemoServer.class);
+public class WebsocketChatServer extends MyNettyAddr {
+    private static Logger logger = Logger.getLogger(WebsocketChatServer.class);
 
     @Test
     public void server() throws InterruptedException {
@@ -32,7 +29,7 @@ public class DemoServer extends MyNettyAddr {
     }
 
     /**
-     * https://www.w3cschool.cn/netty4userguide/ip8w1mu8.html
+     * https://www.w3cschool.cn/netty4userguide/sjy41mub.html
      *
      * @param parameter
      * @return
@@ -52,12 +49,13 @@ public class DemoServer extends MyNettyAddr {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline()
-                                    .addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
-                                    .addLast("decoder", new StringDecoder())
-                                    .addLast("encoder", new StringEncoder())
-                                    .addLast("handler", new SimpleChatServerHandler())
-                            ;
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new HttpServerCodec());
+                            pipeline.addLast(new HttpObjectAggregator(64 * 1024));
+                            pipeline.addLast(new ChunkedWriteHandler());
+                            pipeline.addLast(new HttpRequestHandler("/ws"));
+                            pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
+                            pipeline.addLast(new TextWebSocketFrameHandler());
                             System.out.println("[" + LocalDateTime.now() + " " + Thread.currentThread().getName() + "] SimpleChatClient:" + socketChannel.remoteAddress() + " 上线");
                         }
                     })
