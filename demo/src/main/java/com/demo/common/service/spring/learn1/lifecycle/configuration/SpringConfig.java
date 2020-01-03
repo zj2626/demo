@@ -1,4 +1,4 @@
-package com.demo.common.service.spring.learn0.injection.configuration;
+package com.demo.common.service.spring.learn1.lifecycle.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
