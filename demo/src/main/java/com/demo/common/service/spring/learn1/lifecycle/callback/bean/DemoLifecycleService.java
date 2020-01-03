@@ -1,13 +1,15 @@
-package com.demo.common.service.spring.learn1.lifecycle.bean;
+package com.demo.common.service.spring.learn1.lifecycle.callback.bean;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Service
-public class DemoLifecycleService implements InitializingBean {
+public class DemoLifecycleService implements InitializingBean, DisposableBean {
     @Autowired
     private DemoLifecycleDao lifecycleDao;
 
@@ -38,5 +40,15 @@ public class DemoLifecycleService implements InitializingBean {
 
     public void getDaoInfo() {
         System.out.println("注解注入:           " + lifecycleDao);
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        System.out.println("preDestroy");
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("destroy");
     }
 }

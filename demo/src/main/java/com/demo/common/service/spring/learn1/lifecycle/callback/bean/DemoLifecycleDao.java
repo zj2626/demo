@@ -1,4 +1,4 @@
-package com.demo.common.service.spring.learn1.lifecycle.bean;
+package com.demo.common.service.spring.learn1.lifecycle.callback.bean;
 
 import org.springframework.stereotype.Repository;
 
