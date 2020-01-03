@@ -1,6 +1,7 @@
 package com.demo.common.service.spring.learn0.injection.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class DemoService {
     private DemoDao demoThreeDao;
     private DemoDao demoFourDao;
     @Autowired
+    // @Qualifier("demoDao")
     private DemoDao demoFiveDao;
     @Autowired
     private DemoAnnotationDao annoDao;
