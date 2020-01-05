@@ -1,5 +1,6 @@
 package com.demo.common.service.spring.learn0.injection;
 
+import com.demo.common.service.spring.learn0.injection.bean.DemoJavaBasedService;
 import com.demo.common.service.spring.learn0.injection.bean.DemoService;
 import com.demo.common.service.spring.learn0.injection.configuration.SpringConfig;
 import com.demo.common.service.spring.learn0.injection.configuration.SpringConfig2;
@@ -76,6 +77,10 @@ public class Demo {
         System.out.println("SERVICE          :" + service);
         System.out.println(">>> SERVICE依赖的DAO :");
         service.getDaoInfo();
+
+        DemoJavaBasedService javaBasedService = context.getBean(DemoJavaBasedService.class);
+        System.out.println("SERVICE          :" + javaBasedService);
+        javaBasedService.getDaoInfo();
     }
 
     /**
@@ -89,5 +94,21 @@ public class Demo {
         System.out.println("SERVICE          :" + service);
         System.out.println(">>> SERVICE依赖的DAO :");
         service.getDaoInfo();
+    }
+
+    /**
+     * 加上@Profile注解之后,只会实例化设置setActiveProfiles的bean
+     * 1.也可以把@Profile加到配置类(@Configuration)上, 可针对全局bean
+     */
+    @Test
+    public void testProfile() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.getEnvironment().setActiveProfiles("prod");
+        context.register(SpringConfig2.class);
+        context.refresh();
+
+        DemoJavaBasedService javaBasedService = context.getBean(DemoJavaBasedService.class);
+        System.out.println("SERVICE          :" + javaBasedService);
+        javaBasedService.getDaoInfo();
     }
 }
