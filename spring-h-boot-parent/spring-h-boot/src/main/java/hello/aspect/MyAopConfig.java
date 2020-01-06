@@ -15,11 +15,11 @@ public class MyAopConfig {
     private static final Logger logger = LoggerFactory.getLogger(MyAopConfig.class);
 
 
-    @Pointcut("execution(* hello.service.impl..DoHSomethingImpl.*(..))")
+    @Pointcut("execution(* hello.service..DoHSomethingImpl.*(..))")
     public void checkData() {
     }
 
-    @Pointcut("execution(* hello.service.impl..DoHSomethingImpl.*(..))")
+    @Pointcut("execution(* hello.service..DoHSomethingImpl.*(..))")
     private void writeLog() {
     }
 
