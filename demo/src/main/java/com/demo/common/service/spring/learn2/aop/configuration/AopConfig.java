@@ -90,7 +90,7 @@ public class AopConfig {
     }
 
     /**
-     * target: 定义到指定目标对象(被代理对象,JDK动态代理和cglib动态代理都可以匹配)
+     * target: 定义到指定目标对象(被代理对象DemoServiceImpl,JDK动态代理和cglib动态代理都可以匹配)
      */
     @Before("target(com.demo.common.service.spring.learn2.aop.bean.DemoService)")
     public void before7(JoinPoint joinPoint) {
@@ -98,7 +98,7 @@ public class AopConfig {
     }
 
     /**
-     * target: 定义到指定目标对象(被代理对象,JDK动态代理和cglib动态代理都可以匹配)
+     * target: 定义到指定目标对象(被代理对象DemoServiceImpl,JDK动态代理和cglib动态代理都可以匹配)
      */
     @Before("target(com.demo.common.service.spring.learn2.aop.bean.DemoServiceImpl)")
     public void before8(JoinPoint joinPoint) {
