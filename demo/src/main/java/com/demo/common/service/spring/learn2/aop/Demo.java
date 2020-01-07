@@ -3,6 +3,7 @@ package com.demo.common.service.spring.learn2.aop;
 import com.demo.common.service.spring.learn2.aop.bean.DemoService;
 import com.demo.common.service.spring.learn2.aop.bean.DemoServiceImpl;
 import com.demo.common.service.spring.learn2.aop.configuration.SpringConfig;
+import com.demo.common.service.spring.learn2.aop.configuration.SpringConfig2;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -43,6 +44,17 @@ public class Demo {
                 System.out.println("SERVICE  instanceof    :" + (service2 instanceof Proxy)); //使用cglib代理则为false
             }
         }
+        System.out.println("-------end---------");
+    }
+
+    @Test
+    public void testDemo2() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig2.class);
+        System.out.println("-------start---------");
+        DemoService service = context.getBean(DemoService.class);
+        System.out.println(">>> Spring容器中的对象:");
+        System.out.println("SERVICE          :" + service);
+        service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
         System.out.println("-------end---------");
     }
 }

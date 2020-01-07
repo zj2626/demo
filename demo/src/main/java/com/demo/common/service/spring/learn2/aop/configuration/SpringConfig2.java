@@ -7,8 +7,8 @@ import org.springframework.context.annotation.FilterType;
 @Configuration
 @ComponentScan(value = {"com.demo.common.service.spring.learn2.aop"},
         excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = AopConfig2.class),
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = SpringConfig2.class)
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = AopConfig.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = SpringConfig.class)
         })
-public class SpringConfig {
+public class SpringConfig2 {
 }

@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+@EnableAspectJAutoProxy
 @Aspect
 @Component
 public class AopConfig2 {
@@ -18,14 +19,14 @@ public class AopConfig2 {
 
     @Before("pointCutExecution()")
     public void before(JoinPoint joinPoint) {
-        System.out.println("@Before: 前置通知");
+        System.out.println("@Before: 前置通知-");
     }
 
     @Around("pointCutExecution()")
     public Object doAroundMethod(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("\n@Around:进入方法---环绕通知");
+        System.out.println("\n@Around:进入方法---环绕通知-");
         Object o = joinPoint.proceed();
-        System.out.println("@Around:退出方法---环绕通知");
+        System.out.println("@Around:退出方法---环绕通知-");
         return o;
     }
 }
