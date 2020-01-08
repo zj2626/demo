@@ -50,11 +50,12 @@ public class Demo {
     @Test
     public void testDemo2() {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig2.class);
-        System.out.println("-------start---------");
+        System.out.println("-------start---------\n");
         DemoService service = context.getBean(DemoService.class);
-        System.out.println(">>> Spring容器中的对象:");
-        System.out.println("SERVICE          :" + service);
+        DemoService service2 = context.getBean(DemoService.class);
         service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
+        System.out.println("-------____---------");
+        service2.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
         System.out.println("-------end---------");
     }
 }
