@@ -22,8 +22,8 @@ public class AopConfig2 {
     @Pointcut("execution(public * com.demo.common.service.spring.learn2..*.query*(..))")
     public void pointCutExecution() {}
 
-    @Before("pointCutExecution()")
-    public void before(JoinPoint joinPoint) {
+    @Before("pointCutExecution() && args(requestParam, ..)")
+    public void before(JoinPoint joinPoint, String requestParam) {
         System.out.println("@Before: 前置通知-" + " >>> " + this.hashCode());
     }
 

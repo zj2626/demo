@@ -19,7 +19,7 @@ public class Demo {
         DemoService service = context.getBean(DemoService.class);
         System.out.println(">>> Spring容器中的对象:");
         System.out.println("SERVICE          :" + service);
-        service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
+        service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
         System.out.println("------------代理--------------");
 
         // 默认情况下context.getBean(DemoServiceImpl.class)会报错因为默认使用JDK动态代理,
@@ -53,9 +53,9 @@ public class Demo {
         System.out.println("-------start---------\n");
         DemoService service = context.getBean(DemoService.class);
         DemoService service2 = context.getBean(DemoService.class);
-        service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
+        service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
         System.out.println("-------____---------");
-        service2.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0);
+        service2.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
         System.out.println("-------end---------");
     }
 }
