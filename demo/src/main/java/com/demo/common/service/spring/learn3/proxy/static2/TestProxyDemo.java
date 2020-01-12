@@ -6,7 +6,7 @@ public class TestProxyDemo {
     /*
     静态代理实现方式: 聚合
 
-    缺点: 类爆炸
+    缺点: 类爆炸, 只能代理指定对象
      */
 
     @Test
