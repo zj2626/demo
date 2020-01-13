@@ -23,7 +23,8 @@ public class TestProxyDemo {
     @Test
     public void testJDK() {
         TargetInterface target = new TargetClass();
-        TargetInterface proxy = (TargetInterface) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(),
+
+        TargetInterface proxy = (TargetInterface) Proxy.newProxyInstance(TargetInterface.class.getClassLoader(), new Class[]{TargetInterface.class},
                 new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -31,6 +32,18 @@ public class TestProxyDemo {
                         return method.invoke(target, args);
                     }
                 });
+        proxy.action2("this is fucking message", 999, new Person("bitch"));
+        System.out.println(proxy.action1());
+    }
+
+    /**
+     * 根据JDK动态代理进行优化
+     */
+    @Test
+    public void test2() {
+        TargetInterface target = new TargetClass();
+//        TargetInterface proxy = new Proxy$01(new MyProxyInvocationHandler(target));
+        TargetInterface proxy = (TargetInterface) ProxyUtil2.newInstance(TargetInterface.class, new MyProxyInvocationHandler(target));
         proxy.action2("this is fucking message", 999, new Person("bitch"));
         System.out.println(proxy.action1());
     }

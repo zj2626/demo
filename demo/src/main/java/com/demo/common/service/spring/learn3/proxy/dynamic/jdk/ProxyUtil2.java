@@ -7,13 +7,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class ProxyUtil {
+public class ProxyUtil2 {
 
     /**
      * .java -> .class -> new
@@ -26,8 +25,7 @@ public class ProxyUtil {
      *
      * @return
      */
-    public static Object newInstance(Object target) {
-        Class interfaceClass = target.getClass().getInterfaces()[0];
+    public static Object newInstance(Class interfaceClass, ProxyInvocationHandler handler) {
         String packageName = "com.google";
         String importName = interfaceClass.getName();
         String className = "Proxy$01";
@@ -49,11 +47,11 @@ public class ProxyUtil {
         content.append(" {").append(line);
 
         /*成员属性->目标对象*/
-        content.append(tab).append("private ").append(interfaceClass.getSimpleName()).append(" target;").append(line);
+        content.append(tab).append("private ").append(handler.getClass().getName()).append(" handler;").append(line);
 
         /*构造方法*/
-        content.append(tab).append("public ").append(className).append(" (").append(interfaceClass.getSimpleName()).append(" target){").append(line);
-        content.append(tab).append(tab).append("this.target = target;").append(line).append(tab).append("}").append(line);
+        content.append(tab).append("public ").append(className).append(" (").append(handler.getClass().getName()).append(" handler){").append(line);
+        content.append(tab).append(tab).append("this.handler = handler;").append(line).append(tab).append("}").append(line);
 
         /*重写的方法*/
         Method[] methods = interfaceClass.getDeclaredMethods();
@@ -65,22 +63,35 @@ public class ProxyUtil {
             /*方法参数*/
             StringBuilder params = new StringBuilder();
             StringBuilder paramNames = new StringBuilder();
+            StringBuilder paramClassNames = new StringBuilder();
             Class<?>[] paraClasses = method.getParameterTypes();
             for (int i = 0; i < method.getParameterCount(); i++) {
                 params.append(paraClasses[i].getName()).append(" v").append(i);
                 paramNames.append(" v").append(i);
+                paramClassNames.append(paraClasses[i].getName()).append(".class");
                 if (i < method.getParameterCount() - 1) {
                     params.append(",");
                     paramNames.append(",");
+                    paramClassNames.append(",");
                 }
             }
             content.append(params);
             content.append("){").append(line);
-            content.append(tab).append(tab);
+            content.append(tab).append(tab).append("try {").append(line);
+
+            content.append(tab).append(tab).append(tab).append("Object[] args = new Object[]{").append(paramNames).append("};").append(line);
+            content.append(tab).append(tab).append(tab).append("Class[] paraClassess = new Class[]{").append(paramClassNames).append("};").append(line);
+            content.append(tab).append(tab).append(tab).append(Method.class.getName()).append(" method = this.getClass()" +
+                    ".getDeclaredMethod(\"").append(method.getName()).append("\", paraClassess);").append(line);
+            content.append(tab).append(tab).append(tab);
             if (!"void".equals(returnType)) {
-                content.append("return ");
+                content.append("return ").append("(").append(returnType).append(")");
             }
-            content.append("this.target.").append(method.getName()).append("(").append(paramNames).append(");").append(line);
+            content.append("handler.invoke(method, args);").append(line);
+
+            content.append(tab).append(tab).append("} catch (Throwable e) {\n" +
+                    "            throw new RuntimeException(e);\n" +
+                    "        }").append(line);
             content.append(tab).append("}").append(line);
         }
 
@@ -131,8 +142,8 @@ public class ProxyUtil {
         try {
             URLClassLoader urlClassLoader = new URLClassLoader(urls);
             Class clazz = urlClassLoader.loadClass(packageName + "." + className);
-            Constructor constructor = clazz.getConstructor(interfaceClass);
-            return constructor.newInstance(target);
+            Constructor constructor = clazz.getConstructor(handler.getClass());
+            return constructor.newInstance(handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
