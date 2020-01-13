@@ -42,8 +42,8 @@ public class TestProxyDemo {
     @Test
     public void test2() {
         TargetInterface target = new TargetClass();
-//        TargetInterface proxy = new Proxy$01(new MyProxyInvocationHandler(target));
         TargetInterface proxy = (TargetInterface) ProxyUtil2.newInstance(TargetInterface.class, new MyProxyInvocationHandler(target));
+//        TargetInterface proxy = new Proxy$01(new MyProxyInvocationHandler(target));
         proxy.action2("this is fucking message", 999, new Person("bitch"));
         System.out.println(proxy.action1());
     }

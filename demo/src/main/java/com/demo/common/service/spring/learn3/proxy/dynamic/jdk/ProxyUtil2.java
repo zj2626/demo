@@ -81,7 +81,7 @@ public class ProxyUtil2 {
 
             content.append(tab).append(tab).append(tab).append("Object[] args = new Object[]{").append(paramNames).append("};").append(line);
             content.append(tab).append(tab).append(tab).append("Class[] paraClassess = new Class[]{").append(paramClassNames).append("};").append(line);
-            content.append(tab).append(tab).append(tab).append(Method.class.getName()).append(" method = this.getClass()" +
+            content.append(tab).append(tab).append(tab).append(Method.class.getName()).append(" method = Class.forName(\"" + importName + "\")" +
                     ".getDeclaredMethod(\"").append(method.getName()).append("\", paraClassess);").append(line);
             content.append(tab).append(tab).append(tab);
             if (!"void".equals(returnType)) {
