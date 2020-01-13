@@ -13,5 +13,6 @@ public class TestProxyDemo {
         TargetInterface target = new TargetClass();
         TargetInterface proxy = (TargetInterface) ProxyUtil.newInstance(target);
         proxy.action2("this is fucking message", 999, new Person("bitch"));
+        System.out.println(proxy.action1());
     }
 }

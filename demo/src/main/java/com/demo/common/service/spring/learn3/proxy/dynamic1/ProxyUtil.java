@@ -59,7 +59,8 @@ public class ProxyUtil {
         Method[] methods = interfaceClass.getDeclaredMethods();
         for (Method method : methods) {
             content.append(line).append(tab).append("@Override").append(line);
-            content.append(tab).append("public ").append(method.getReturnType()).append(" ").append(method.getName()).append("(");
+            String returnType = method.getReturnType().getName();
+            content.append(tab).append("public ").append(returnType).append(" ").append(method.getName()).append("(");
 
             /*方法参数*/
             StringBuilder params = new StringBuilder();
@@ -75,7 +76,11 @@ public class ProxyUtil {
             }
             content.append(params);
             content.append("){").append(line);
-            content.append(tab).append(tab).append("this.target.").append(method.getName()).append("(").append(paramNames).append(");").append(line);
+            content.append(tab).append(tab);
+            if (!"void".equals(returnType)) {
+                content.append("return ");
+            }
+            content.append("this.target.").append(method.getName()).append("(").append(paramNames).append(");").append(line);
             content.append(tab).append("}").append(line);
         }
 

@@ -5,8 +5,8 @@ import com.demo.common.service.spring.learn3.proxy.dynamic1.bean.Person;
 public class TargetClass implements TargetInterface {
 
     @Override
-    public void action1() {
-        System.out.println("AAAAAAAAAAA");
+    public String action1() {
+        return "AAAAAAAAAAA";
     }
 
     @Override
