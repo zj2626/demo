@@ -1,6 +1,6 @@
-package com.demo.common.service.spring.learn3.proxy.dynamic1;
+package com.demo.common.service.spring.learn3.proxy.dynamic.jdk;
 
-import com.demo.common.service.spring.learn3.proxy.dynamic1.bean.Person;
+import com.demo.common.service.spring.learn3.proxy.dynamic.jdk.bean.Person;
 
 public class TargetClass implements TargetInterface {
 

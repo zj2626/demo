@@ -1,4 +1,4 @@
-package com.demo.common.service.spring.learn3.proxy.dynamic1.bean;
+package com.demo.common.service.spring.learn3.proxy.dynamic.jdk.bean;
 
 public class Person {
     private String kind;

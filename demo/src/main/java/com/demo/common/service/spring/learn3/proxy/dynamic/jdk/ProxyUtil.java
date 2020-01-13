@@ -1,4 +1,4 @@
-package com.demo.common.service.spring.learn3.proxy.dynamic1;
+package com.demo.common.service.spring.learn3.proxy.dynamic.jdk;
 
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
