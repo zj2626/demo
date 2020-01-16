@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans default-autowire="byType">
 
-    <bean id="demoBeanService" class="com.demo.common.service.spring.learn5.ioc.bean.DemoBeanServiceImpl">
-
+    <bean id="insertDao" class="com.demo.common.service.spring.learn5.ioc.bean.DemoInsertBeanDaoImpl"/>
+    <bean id="demoDao" class="com.demo.common.service.spring.learn5.ioc.bean.DemoDaoImpl">
+        <property name="id" value="998"/>
     </bean>
-    <bean id="demoDao" class="com.demo.common.service.spring.learn5.ioc.bean.DemoDaoImpl"/>
+    <bean id="demoBeanService" class="com.demo.common.service.spring.learn5.ioc.bean.DemoBeanServiceImpl">
+        <property name="codeName" value="hello world"/>
+        <property name="iDao" ref="insertDao"/>
+        <constructor-arg name="dDao" ref="demoDao"/>
+    </bean>
 </beans>

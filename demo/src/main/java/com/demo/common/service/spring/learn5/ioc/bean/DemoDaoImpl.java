@@ -5,7 +5,7 @@ public class DemoDaoImpl implements DemoDao {
 
     @Override
     public void doQuery() {
-        System.out.println("OHHHHHHHHH");
+        System.out.println("OHHHHHHHHH " + id);
     }
 
     public void setId(Integer id) {

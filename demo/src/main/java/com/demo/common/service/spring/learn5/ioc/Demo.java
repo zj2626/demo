@@ -11,6 +11,9 @@ public class Demo {
     @Test
     public void test() throws Exception {
         MyBeanFactory beanFactory = new MyBeanFactory("spring-learn5-ioc.xml");
+        System.out.println("_________start__________");
+        System.out.println(beanFactory.getBeans());
+        System.out.println("_________start__________");
         DemoBeanService beanService = (DemoBeanService) beanFactory.getBean("demoBeanService");
         System.out.println(beanService.getMsg("EEEEEEEEEEEEE"));
     }
