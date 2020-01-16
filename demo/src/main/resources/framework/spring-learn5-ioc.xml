@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-autowire="byType">
+
+    <bean id="demoBeanService" class="com.demo.common.service.spring.learn5.ioc.bean.DemoBeanServiceImpl">
+
+    </bean>
+    <bean id="demoDao" class="com.demo.common.service.spring.learn5.ioc.bean.DemoDaoImpl"/>
+</beans>
