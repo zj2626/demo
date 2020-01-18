@@ -9,7 +9,6 @@ import org.dom4j.io.SAXReader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -120,9 +119,19 @@ public class MyBeanFactory {
                         }
                     }
                     try {
-                        Field field = classObject.getField(setterName);
+                        Field field = classObject.getDeclaredField(setterName);
                         field.setAccessible(true); // TODO ???
-                        field.set(object, value);
+                        String fieldType = field.getType().getName();
+                        switch (fieldType) {
+                            case "java.lang.Integer":
+                                field.set(object, Integer.valueOf(value + ""));
+                                break;
+                            case "java.lang.Double":
+                                field.set(object, Double.valueOf(value + ""));
+                                break;
+                            default:
+                                field.set(object, value);
+                        }
                     } catch (Exception e) {
                         throw new RuntimeException("找不到对应的方法", e);
                     }

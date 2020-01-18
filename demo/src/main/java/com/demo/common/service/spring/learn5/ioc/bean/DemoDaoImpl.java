@@ -7,8 +7,4 @@ public class DemoDaoImpl implements DemoDao {
     public void doQuery() {
         System.out.println("OHHHHHHHHH " + id);
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

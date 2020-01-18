@@ -16,12 +16,4 @@ public class DemoBeanServiceImpl implements DemoBeanService {
         dDao.doQuery();
         return "Got Message " + msg;
     }
-
-    public void setiDao(DemoInsertBeanDao iDao) {
-        this.iDao = iDao;
-    }
-
-    public void setCodeName(String codeName) {
-        this.codeName = codeName;
-    }
 }
