@@ -5,6 +5,6 @@ public class DemoDaoImpl implements DemoDao {
 
     @Override
     public void doQuery() {
-        System.out.println("OHHHHHHHHH " + id);
+        System.out.println("query sql " + id);
     }
 }

@@ -53,6 +53,9 @@ public class MyBeanFactory {
      * @throws DocumentException
      */
     private Map<String, Object> getBean(Element rootElement) throws Exception {
+        String autowired = rootElement.attributeValue("default-autowire");
+        boolean ifAutowired = StringUtils.isNotEmpty(autowired);
+
         List<Element> beanElementList = rootElement.elements("bean");
         Iterator<Element> elementIterator = beanElementList.iterator();
         for (; elementIterator.hasNext(); ) {
@@ -76,20 +79,26 @@ public class MyBeanFactory {
             // 判断有没有构造方法, 有则使用构造器进行反射 没有就直接使用Class反射生成对象
             List<Element> constructorElementList = element.elements("constructor-arg");
             if (CollectionUtils.isNotEmpty(constructorElementList)) {
-                // TODO 暂时只得到第一个 ???
-                Element constructorElement = constructorElementList.get(0);
-                // 获得构造方法标签的name和ref
-                String setterName = constructorElement.attributeValue("name");
-                String refClass = constructorElement.attributeValue("ref");
-                // 从生成的beanMap(容器)中获得对应的ref的对象进行赋值
-                Object refObject = beanMap.get(refClass);
-                if (null == refObject) {
-                    throw new RuntimeException("找不到对应的类3");
+                Object[] refObjects = new Object[constructorElementList.size()];
+                Iterator<Element> conElementIterator = constructorElementList.iterator();
+                int i=0;
+                for (; conElementIterator.hasNext(); ) {
+                    Element constructorElement = conElementIterator.next();
+                    // 获得构造方法标签的name和ref
+                    String setterName = constructorElement.attributeValue("name");
+                    String refClass = constructorElement.attributeValue("ref");
+                    // 从生成的beanMap(容器)中获得对应的ref的对象进行赋值
+                    Object refObject = beanMap.get(refClass);
+                    if (null == refObject) {
+                        throw new RuntimeException("找不到对应的类3");
+                    }
+                    refObjects[i] = refObject;
+                    i++;
                 }
                 // 得到类的构造方法 反射创建对应的对象 TODO 暂时只得到第一个 ???
                 Constructor constructor = classObject.getConstructors()[0];
                 try {
-                    object = constructor.newInstance(refObject);
+                    object = constructor.newInstance(refObjects);
                 } catch (Exception e) {
                     throw new RuntimeException("构建对象失败", e);
                 }
@@ -134,6 +143,24 @@ public class MyBeanFactory {
                         }
                     } catch (Exception e) {
                         throw new RuntimeException("找不到对应的方法", e);
+                    }
+                }
+            }
+
+            // 查找自动注入的属性-byType
+            if (ifAutowired && "byType".equals(autowired)) {
+
+            }
+            // byName
+            if (ifAutowired && "byName".equals(autowired)) {
+                Field[] fields = classObject.getDeclaredFields();
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i].setAccessible(true);
+                    if (null == fields[i].get(object)) {
+                        Object value = beanMap.get(fields[i].getName());
+                        if (null != value) {
+                            fields[i].set(object, value);
+                        }
                     }
                 }
             }
