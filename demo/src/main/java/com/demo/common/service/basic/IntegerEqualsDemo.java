@@ -28,6 +28,18 @@ public class IntegerEqualsDemo {
         System.out.println(c == f);
         System.out.println(c.equals(d));
         System.out.println(c.equals(f));
+        System.out.println();
+
+        System.out.println(Integer.valueOf(e) == a);
+        System.out.println(Integer.valueOf(e) == b);
+        System.out.println(Integer.valueOf(e) == e);
+        System.out.println(Integer.valueOf(e) == Integer.valueOf(e));
+        System.out.println();
+
+        System.out.println(Integer.valueOf(f) == c);
+        System.out.println(Integer.valueOf(f) == d);
+        System.out.println(Integer.valueOf(f) == f);
+        System.out.println(Integer.valueOf(f) == Integer.valueOf(f));
 
     }
 }

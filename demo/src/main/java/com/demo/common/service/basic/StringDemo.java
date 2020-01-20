@@ -15,14 +15,18 @@ public class StringDemo {
         String a = "abcde";
         String b = "abcde";
         String c = new String("abcde");
+        String d = new String("abcde");
 
         System.out.println(a == b);
-        System.out.println(a.equals(b));
-        System.out.println(a.intern() == b.intern());
-        System.out.println();
-
         System.out.println(a == c);
-        System.out.println(a.equals(c));
-        System.out.println(a.intern() == c.intern());
+        System.out.println(c == d);
+        System.out.println();
+        System.out.println(b.intern() == a);
+        System.out.println(b.intern() == b);
+        System.out.println(b.intern() == c);
+        System.out.println();
+        System.out.println(c.intern() == a);
+        System.out.println(c.intern() == c);
+        System.out.println(c.intern() == d);
     }
 }
