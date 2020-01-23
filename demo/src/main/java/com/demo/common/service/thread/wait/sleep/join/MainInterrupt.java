@@ -2,8 +2,7 @@ package com.demo.common.service.thread.wait.sleep.join;
 
 public class MainInterrupt {
     public static void main(String[] args) {
-        RunClass runClass = new RunClass();
-        Thread thread = new Thread(runClass);
+        Thread thread = new Thread(new RunClass2());
         thread.start();
 
         try {
@@ -12,7 +11,7 @@ public class MainInterrupt {
             e.printStackTrace();
         }
         System.out.println("interrupt");
-        thread.interrupt();
+        thread.interrupt(); // set true
     }
 
     /**
@@ -24,26 +23,22 @@ public class MainInterrupt {
 
         @Override
         public void run() {
-            while (true) {
-                if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("Interruted!");
-                    // Thread.interrupt()方法不会中断一个正在运行的线程,这里通过break结束循环来结束线程
-                    break;
-                }
-
-                System.out.println(" running ...");
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-
-                    //设置中断状态，抛出异常后会清除中断标记位
-                    Thread.currentThread().interrupt();
-                }
-
-                Thread.yield();
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.println(" running ... " + Thread.currentThread().isInterrupted()); // false
             }
+            System.out.println("Interruted! " + Thread.currentThread().isInterrupted()); // true
+        }
+    }
+
+    static class RunClass2 implements Runnable {
+
+        @Override
+        public void run() {
+            // ClearInterrupted为true时，中断状态会被重置，为false则不会被重置
+            while (!Thread.interrupted()) {
+                System.out.println(" running ... " + Thread.currentThread().isInterrupted()); // false
+            }
+            System.out.println("Interruted! " + Thread.currentThread().isInterrupted()); // false
         }
     }
 }
