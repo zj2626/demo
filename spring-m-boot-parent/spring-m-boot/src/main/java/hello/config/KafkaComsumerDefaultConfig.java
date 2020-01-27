@@ -19,11 +19,6 @@ public class KafkaComsumerDefaultConfig {
     public void listen(ConsumerRecord<String, byte[]> data) {
         KafkaComsumerDefaultConfig.getRecordInfo("第一个消费方法", data);
     }
-    //        try {
-    //            Thread.sleep(999000);
-    //        } catch (Exception e) {
-    //            e.printStackTrace();
-    //        }
 
     /*
      * 当thread有10个 partation有5个
@@ -53,15 +48,21 @@ public class KafkaComsumerDefaultConfig {
             containerFactory = "kafkaBatchListener2")
     public void onMessage(ConsumerRecord<String, byte[]> data) {
         KafkaComsumerDefaultConfig.getRecordInfo("第二个消费方法", data);
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void getRecordInfo(String msg, ConsumerRecord<String, byte[]> data) {
         logger.info("[" + msg + "] 消息开始消费 " +
                 "\nTopic        [" + data.topic() + "]" +
-                "\n消费者偏移量   [" + data.offset() + "]" +
+                "\n消费者offset  [" + data.offset() + "]" +
                 "\npartition    [" + data.partition() + "]" +
+                "\nKey          [" + data.key() + "] " +
                 "\n线程名称      [" + Thread.currentThread().getName() + "] " +
-                "\n收到消息      [" + JSON.parseObject(Change.byteArrayToStr((byte[]) data.value()), PushData.class) + "]" +
+                "\n收到消息      [" + JSON.parseObject(Change.byteArrayToStr(data.value()), PushData.class) + "]" +
                 "\n");
     }
 }

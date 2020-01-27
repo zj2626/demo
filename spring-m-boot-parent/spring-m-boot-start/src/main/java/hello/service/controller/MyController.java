@@ -6,6 +6,7 @@ import hello.control.template.InvokeCallback;
 import hello.control.template.InvokeTemplate;
 import hello.lock.LockServiceA;
 import hello.lock.LockServiceB;
+import hello.service.model.KafkaRequest;
 import hello.spring.scope.DemoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -100,15 +101,21 @@ public class MyController {
     @GetMapping("/kafka")
     @ApiOperation(value = "kafka")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", defaultValue = "topic-2")
+            @ApiImplicitParam(paramType = "query", dataType = "Integer", name = "times", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "name", defaultValue = "topic-4"),
+            @ApiImplicitParam(paramType = "query", dataType = "Boolean", name = "needSort", defaultValue = "false")
     })
-    public BaseResult kafka(String name) {
+    public BaseResult kafka(Integer times, String name, Boolean needSort) {
         final BaseResult result = new BaseResult();
         result.setSuccess(false);
         this.template.invoke(result, new InvokeCallback() {
             @Override
             public void doInvoke() {
-                result.setSuccess(doSomething.dokafka(name));
+                KafkaRequest request = new KafkaRequest();
+                request.setNeedSort(needSort);
+                request.setTimes(times);
+                request.setTopic(name);
+                result.setSuccess(doSomething.dokafka(request));
             }
         });
 

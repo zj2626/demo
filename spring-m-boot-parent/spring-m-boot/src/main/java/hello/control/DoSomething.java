@@ -7,6 +7,7 @@ import hello.request.ExterfaceInvokeIOHttpSender;
 import hello.service.DoHSomething;
 import hello.service.DoSendKafka;
 import hello.service.DoWithAnnotation;
+import hello.service.model.KafkaRequest;
 import hello.util.MQTTUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.common.Constants;
@@ -219,12 +220,12 @@ public class DoSomething {
         return false;
     }
 
-    public boolean dokafka(String name) {
+    public boolean dokafka(KafkaRequest request) {
         try {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
                     "  getting test kafka");
 
-            String thing2 = doSendKafka.remoteToKafka(name);
+            String thing2 = doSendKafka.remoteToKafka(request);
             System.out.println("\n调用发消息结束 >>>> end " + thing2);
             return true;
         } catch (Exception e) {

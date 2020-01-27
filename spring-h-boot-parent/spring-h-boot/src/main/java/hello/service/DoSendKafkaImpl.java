@@ -3,6 +3,7 @@ package hello.service;
 import com.alibaba.fastjson.JSON;
 import hello.bean.KafkaProducerBeanConfig;
 import hello.service.model.Change;
+import hello.service.model.KafkaRequest;
 import hello.service.model.PushData;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Service;
@@ -35,6 +36,8 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
     private String topicName_3 = "kfk-to-topic-zj-03";
     private String topicName_4 = "kfk-to-topic-zj-04";
 
+    private Integer count = 8;
+
     private static Properties producerProps = new Properties();
     private KafkaProducer<K, V> producer;
 
@@ -61,19 +64,32 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Override
-    public String remoteToKafka(String topic) {
+    public String remoteToKafka(KafkaRequest request) {
+        String topic = getTopic(request.getTopic());
+        PushData pushData = makeData();
         try {
-            topic = getTopic(topic);
-            String pushData = makeData();
-
             System.out.println("KAFKA -> " + (null != kafkaTemplate));
             if (null != kafkaTemplate) {
                 System.out.println(">>>");
                 List<PartitionInfo> partitionInfos = kafkaTemplate.partitionsFor(topic);
                 System.out.println("topic[" + topic + "]的partition: " + partitionInfos.size() + "\t" + partitionInfos);
-
-                kafkaTemplate.send(topic, Change.strToByteArray(pushData));
-                System.out.println(">>>>>>>>>" + pushData);
+                int i = 0;
+                while (i < request.getTimes()) {
+                    if (i % count == 0) {
+                        pushData.setMsg(UUID.randomUUID().toString());
+                    }
+                    pushData.setPart(i % count);
+                    String pushDataStr = JSON.toJSONString(pushData);
+                    if (request.getNeedSort()) {
+                        int hash = (pushData.getMsg().hashCode() % partitionInfos.size()) & Integer.MAX_VALUE; // & Integer.MAX_VALUE 可保证取正数
+                        kafkaTemplate.send(topic, Integer.toString(hash), Change.strToByteArray(pushDataStr));
+                        System.out.println(">>>>>>>>>" + hash + " - " + pushDataStr);
+                    } else {
+                        kafkaTemplate.send(topic, Change.strToByteArray(pushDataStr));
+                        System.out.println(">>>>>>>>>" + pushDataStr);
+                    }
+                    i++;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,10 +103,10 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
     public String kafkaCustomProducer(String topic) {
         try {
             topic = getTopic(topic);
-            String pushData = makeData();
+            PushData pushData = makeData();
 
             // 自定义kafka生产者
-            ProducerRecord<K, V> producerRecord = new ProducerRecord<K, V>(topic, (V) Change.strToByteArray(pushData));
+            ProducerRecord<K, V> producerRecord = new ProducerRecord<K, V>(topic, (V) Change.strToByteArray(JSON.toJSONString(pushData)));
             Future future = producer.send(producerRecord);
 
         } catch (Exception e) {
@@ -117,14 +133,13 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
         return topic;
     }
 
-    private String makeData() {
+    private PushData makeData() {
         PushData pushData = new PushData();
         pushData.setId("my god");
-        pushData.setMsg(UUID.randomUUID().toString());
         pushData.setCode("CHO-20190010");
-        pushData.setFlag(2);
+        pushData.setMsg(UUID.randomUUID().toString());
         pushData.setTime(new Date());
 
-        return JSON.toJSONString(pushData);
+        return pushData;
     }
 }

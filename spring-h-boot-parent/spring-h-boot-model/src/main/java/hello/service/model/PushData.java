@@ -9,7 +9,7 @@ public class PushData {
 
     private String code;
 
-    private Integer flag;
+    private Integer part;
 
     private Date time;
 
@@ -37,20 +37,20 @@ public class PushData {
         this.code = code;
     }
 
-    public Integer getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Integer flag) {
-        this.flag = flag;
-    }
-
     public Date getTime() {
         return time;
     }
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Integer getPart() {
+        return part;
+    }
+
+    public void setPart(Integer part) {
+        this.part = part;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class PushData {
                 .append(msg).append('\"');
         sb.append(",\"code\":\"")
                 .append(code).append('\"');
-        sb.append(",\"flag\":")
-                .append(flag);
+        sb.append(",\"part\":")
+                .append(part);
         sb.append(",\"time\":\"")
                 .append(time).append('\"');
         sb.append('}');
