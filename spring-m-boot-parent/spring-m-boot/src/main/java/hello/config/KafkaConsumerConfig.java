@@ -43,7 +43,16 @@ public class KafkaConsumerConfig {
     @ConditionalOnMissingBean(name = "kafkaListenerContainerFactory-001")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaBatchListener() {
         System.out.println("********************************配置的第一个消费者***************************");
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory();
+        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        //批量消费
+        //        factory.setBatchListener(batchListener);
+        //如果消息队列中没有消息，等待timeout毫秒后，调用poll()方法。
+        // 如果队列中有消息，立即消费消息，每次消费的消息的多少可以通过max.poll.records配置。
+        //手动提交无需配置
+        //        factory.getContainerProperties().setPollTimeout(pollTimeout);
+        //设置提交偏移量的方式， MANUAL_IMMEDIATE 表示消费一条提交一次；MANUAL表示批量提交一次
+        //        factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL_IMMEDIATE);
         factory.setConcurrency(concurrency);
         //        factory.setMessageConverter();
         return factory;
@@ -65,20 +74,6 @@ public class KafkaConsumerConfig {
         return props;
     }
 
-    private ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        //批量消费
-        //        factory.setBatchListener(batchListener);
-        //如果消息队列中没有消息，等待timeout毫秒后，调用poll()方法。
-        // 如果队列中有消息，立即消费消息，每次消费的消息的多少可以通过max.poll.records配置。
-        //手动提交无需配置
-        //        factory.getContainerProperties().setPollTimeout(pollTimeout);
-        //设置提交偏移量的方式， MANUAL_IMMEDIATE 表示消费一条提交一次；MANUAL表示批量提交一次
-        //        factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL_IMMEDIATE);
-        return factory;
-    }
-
     private ConsumerFactory<String, byte[]> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
@@ -96,7 +91,8 @@ public class KafkaConsumerConfig {
     @ConditionalOnMissingBean(name = "concurrentMessageListenerContainer-002")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaBatchListener2() {
         System.out.println("********************************配置的第二个消费者***************************");
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory2();
+        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory2());
         factory.setConcurrency(5);
         return factory;
     }
@@ -115,12 +111,6 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, consumerBeanConfig.getKeyDeserializer());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, consumerBeanConfig.getValueDeserializer());
         return props;
-    }
-
-    private ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory2() {
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory2());
-        return factory;
     }
 
     private ConsumerFactory<String, byte[]> consumerFactory2() {

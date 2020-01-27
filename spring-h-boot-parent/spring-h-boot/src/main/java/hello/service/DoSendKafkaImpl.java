@@ -33,6 +33,7 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
     private String topicName_1 = "kfk-to-topic-zj-01";
     private String topicName_2 = "kfk-to-topic-zj-02";
     private String topicName_3 = "kfk-to-topic-zj-03";
+    private String topicName_4 = "kfk-to-topic-zj-04";
 
     private static Properties producerProps = new Properties();
     private KafkaProducer<K, V> producer;
@@ -107,6 +108,8 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
             topic = topicName_2;
         } else if (topic.contains("3")) {
             topic = topicName_3;
+        } else if (topic.contains("4")) { // 拥有三个 partition
+            topic = topicName_4;
         } else {
             topic = "defaultTopic-zj";
         }

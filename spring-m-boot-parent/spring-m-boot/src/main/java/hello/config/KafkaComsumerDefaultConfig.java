@@ -17,23 +17,13 @@ public class KafkaComsumerDefaultConfig {
             topics = {"#{'${kafka.consumer.topic}'.split(',')[1]}", "#{'${kafka.consumer.topic}'.split(',')[0]}"},
             containerFactory = "kafkaBatchListener")
     public void listen(ConsumerRecord<String, byte[]> data) {
-        logger.info("[第一个消费方法] 消息开始消费 " +
-                "\t[" + Thread.currentThread().getName() + "] " +
-                "\t[" + data.topic() + "]" +
-                "\t[" + data.offset() + "]" +
-                "\t[" + data.partition() + "]" +
-                "\t[" + data.key() + "]" +
-                "");
-
-
-        PushData pushData = JSON.parseObject(Change.byteArrayToStr(data.value()), PushData.class);
-        logger.info(" [第一个消费方法] 收到消息: " + pushData);
-        //        try {
-        //            Thread.sleep(999000);
-        //        } catch (InterruptedException e) {
-        //            e.printStackTrace();
-        //        }
+        KafkaComsumerDefaultConfig.getRecordInfo("第一个消费方法", data);
     }
+    //        try {
+    //            Thread.sleep(999000);
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //        }
 
     /*
      * 当thread有10个 partation有5个
@@ -59,18 +49,19 @@ public class KafkaComsumerDefaultConfig {
      * */
 
     @KafkaListener(
-            topics = {"#{'${kafka.consumer.topic}'.split(',')[2]}"},
+            topics = {"#{'${kafka.consumer.topic}'.split(',')[2]}", "kfk-to-topic-zj-04"},
             containerFactory = "kafkaBatchListener2")
     public void onMessage(ConsumerRecord<String, byte[]> data) {
-        logger.info("[第二个消费方法] 消息开始消费 " +
-                "\t[" + Thread.currentThread().getName() + "] " +
-                "\t[" + data.topic() + "]" +
-                "\t[" + data.offset() + "]" +
-                "\t[" + data.partition() + "]" +
-                "\t[" + data.key() + "]" +
-                "");
+        KafkaComsumerDefaultConfig.getRecordInfo("第二个消费方法", data);
+    }
 
-        PushData pushData = JSON.parseObject(Change.byteArrayToStr(data.value()), PushData.class);
-        logger.info(" [第二个消费方法] 收到消息: " + pushData);
+    public static void getRecordInfo(String msg, ConsumerRecord<String, byte[]> data) {
+        logger.info("[" + msg + "] 消息开始消费 " +
+                "\nTopic        [" + data.topic() + "]" +
+                "\n消费者偏移量   [" + data.offset() + "]" +
+                "\npartition    [" + data.partition() + "]" +
+                "\n线程名称      [" + Thread.currentThread().getName() + "] " +
+                "\n收到消息      [" + JSON.parseObject(Change.byteArrayToStr((byte[]) data.value()), PushData.class) + "]" +
+                "\n");
     }
 }

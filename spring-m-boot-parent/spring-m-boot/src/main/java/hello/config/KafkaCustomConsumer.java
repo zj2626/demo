@@ -76,16 +76,7 @@ public class KafkaCustomConsumer<K, V> {
                 ConsumerRecords<K, V> consumerRecords = consumer.poll(Duration.ZERO.plusMillis(pollTimeout));
                 if (null != consumerRecords) {
                     for (ConsumerRecord<K, V> data : consumerRecords) {
-                        logger.info("[第三个消费方法] 消息开始消费 " +
-                                "\t[" + Thread.currentThread().getName() + "] " +
-                                "\t[" + data.topic() + "]" +
-                                "\t[" + data.offset() + "]" +
-                                "\t[" + data.partition() + "]" +
-                                "\t[" + data.key() + "]" +
-                                "");
-
-                        PushData pushData = JSON.parseObject(Change.byteArrayToStr((byte[]) data.value()), PushData.class);
-                        logger.info(" [第三个消费方法] 收到消息: " + pushData);
+                        KafkaComsumerDefaultConfig.getRecordInfo("第三个消费方法", (ConsumerRecord<String, byte[]>) data);
                     }
                 }
             } catch (Exception e) {
@@ -101,4 +92,6 @@ public class KafkaCustomConsumer<K, V> {
             }
         }
     }
+
+
 }
