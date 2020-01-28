@@ -82,6 +82,11 @@ public class DoSendKafkaImpl<K, V> implements DoSendKafka<K, V> {
                     String pushDataStr = JSON.toJSONString(pushData);
                     if (request.getNeedSort()) {
                         int hash = (pushData.getMsg().hashCode() % partitionInfos.size()) & Integer.MAX_VALUE; // & Integer.MAX_VALUE 可保证取正数
+                        /*
+                        * key默认是null，但是大多数应用程序会用到key，key的两个作用：
+                        * （1）作为消息的附加信息
+                        * （2）决定消息该被写到Topic的哪个partition，拥有相同key的消息会被写到同一个partition。
+                        * */
                         kafkaTemplate.send(topic, Integer.toString(hash), Change.strToByteArray(pushDataStr));
                         System.out.println(">>>>>>>>>" + hash + " - " + pushDataStr);
                     } else {

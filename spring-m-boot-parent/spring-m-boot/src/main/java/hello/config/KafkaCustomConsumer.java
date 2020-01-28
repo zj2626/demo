@@ -2,8 +2,6 @@ package hello.config;
 
 import com.alibaba.fastjson.JSON;
 import hello.bean.KafkaConsumerBeanConfig;
-import hello.service.model.Change;
-import hello.service.model.PushData;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

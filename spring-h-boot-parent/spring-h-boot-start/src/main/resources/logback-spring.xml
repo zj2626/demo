@@ -8,7 +8,7 @@
 
     <appender name="SH-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%-20thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
     <appender name="SH-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -18,7 +18,7 @@
             <maxHistory>5</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%-20thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -35,7 +35,7 @@
             <MaxFileSize>1MB</MaxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%-20thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -51,7 +51,7 @@
             <MaxIndex>2</MaxIndex>
         </rollingPolicy>
         <encoder>
-            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>
+            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%-20thread] %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -67,7 +67,7 @@
             <MaxIndex>2</MaxIndex>
         </rollingPolicy>
         <encoder>
-            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[spring-h] %d{yyyy-MM-dd HH:mm:ss} [%-20thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
