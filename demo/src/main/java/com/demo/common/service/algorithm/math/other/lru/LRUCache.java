@@ -1,4 +1,4 @@
-package com.demo.common.service.lru;
+package com.demo.common.service.algorithm.math.other.lru;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.demo.common.service.math.algorithm;
+package com.demo.common.service.math;
 
 import org.junit.Test;
 
