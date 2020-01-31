@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
-public class ZookeeperLockMain {
+public class InterProcessMutexConsumerTest {
     public static void main(String[] args) throws Exception {
         //创建zookeeper客户端
         CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new ExponentialBackoffRetry(1000, 3));
