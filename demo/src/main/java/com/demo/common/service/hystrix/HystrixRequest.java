@@ -1,9 +1,6 @@
 package com.demo.common.service.hystrix;
 
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.netflix.hystrix.HystrixCommandKey;
-import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.*;
 
 public class HystrixRequest extends HystrixCommand<String> {
     private final String name;
@@ -14,19 +11,24 @@ public class HystrixRequest extends HystrixCommand<String> {
     public HystrixRequest(String name, String groupName, long beginTime) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupName))
                 .andCommandKey(HystrixCommandKey.Factory.asKey(name))
-                /* 配置信号量隔离方式(默认(上面的)采用线程池隔离), 此时 发起请求的线程和真实执行的线程是同一个线程*/
+                /* 使用HystrixThreadPoolKey工厂定义线程池名称 如不设置,Hystrix会为每一个CommandGroup建立一个线程池, 如果这里设置固定值, 则所有的CommandGroup都使用同一个线城池*/
+                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(groupName))
+                /* 线程池属性 */
+                .andThreadPoolPropertiesDefaults(
+                        HystrixThreadPoolProperties.Setter()
+                                /* 线程池大小 默认10*/
+                                .withCoreSize(20)
+                                /* 线程池队列大小 默认-1 如果超了就直接执行降级策略:getFallback*/
+                                .withMaxQueueSize(100)
+                )
                 .andCommandPropertiesDefaults(
                         HystrixCommandProperties.Setter()
-                                /* 设置使用信号量隔离策略 */
-                                .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
-                                /* 设置信号量隔离时的最大并发请求数 如果超了就直接执行降级策略:getFallback*/
-                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(100)
                                 /* 设置fallback的最大并发数 如果超了就直接抛异常*/
                                 .withFallbackIsolationSemaphoreMaxConcurrentRequests(200)
                                 /* 设置启用超时时间 默认true*/
                                 .withExecutionTimeoutEnabled(true)
                                 /* 设置超时时间 默认1000ms*/
-                                .withExecutionTimeoutInMilliseconds(5000)
+                                .withExecutionTimeoutInMilliseconds(1000)
                                 /* 设置启用断路器(熔断器) 默认true*/
                                 .withCircuitBreakerEnabled(true)
                                 /* 设置错误百分比，超过该值打开断路器 默认50*/
@@ -69,10 +71,10 @@ public class HystrixRequest extends HystrixCommand<String> {
     protected String run() {
         printTime("RUN    ->   ");
 
-        try{
+        try {
             Integer groupNumber = Integer.valueOf(groupName.substring(groupName.length() - 3));
             System.out.println(groupNumber);
-        }catch(Exception ignore){
+        } catch (Exception ignore) {
 
         }
 

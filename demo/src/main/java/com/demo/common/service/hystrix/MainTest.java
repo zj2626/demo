@@ -43,7 +43,7 @@ public class MainTest {
         ExecutorService service = Executors.newFixedThreadPool(10); // 一共10个线程
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            futureTasks.add(service.submit(new MyExecutor("n" + i, "g" + i, System.currentTimeMillis())));
+            futureTasks.add(service.submit(new MyExecutor("n" + i, "jk", System.currentTimeMillis())));
         }
 
         for (Future<?> futureTask : futureTasks) {
