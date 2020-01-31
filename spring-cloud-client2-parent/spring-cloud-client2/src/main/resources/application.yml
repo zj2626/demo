@@ -30,6 +30,16 @@ management:
 feign:
   hystrix:
     enabled: true
+#  compression:
+#    request:
+#      # 开启feign请求时的压缩， application client -> application service
+#      enabled: true
+#      # 设置可以压缩的请求/响应的类型。
+#      mime-types: text/xml,application/xml,application/json
+#      # 当请求的数据容量达到多少的时候，使用压缩。默认是2048字节。
+#      min-request-size: 512
+#    response:
+#      enabled: true
 
 eureka:
   instance:
