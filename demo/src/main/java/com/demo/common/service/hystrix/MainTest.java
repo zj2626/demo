@@ -13,19 +13,20 @@ import java.util.concurrent.*;
  * 断路器 Hystrix
  */
 public class MainTest {
+    long startTime = System.currentTimeMillis();
 
     /**
      * 同步调用使用
      */
     @Test
     public void test() throws InterruptedException {
-        HystrixRequest hystrixRequest = new HystrixRequest("aka", "shitGroupNameBitch", System.currentTimeMillis());
+        HystrixRequest hystrixRequest = new HystrixRequest("aka", "shitGroupNameBitch", startTime);
         String result = hystrixRequest.execute();
         System.out.println("Result > " + result);
 
         System.out.println("\n###\n");
 
-        HystrixRequest hystrixRequest2 = new HystrixRequest("zzz", "fuckGroupNameBitch2-", System.currentTimeMillis());
+        HystrixRequest hystrixRequest2 = new HystrixRequest("zzz", "fuckGroupNameBitch2-", startTime);
         String result2 = hystrixRequest2.execute();
         System.out.println("Result > " + result2);
 
@@ -40,10 +41,10 @@ public class MainTest {
      */
     @Test
     public void testMoreLine() throws InterruptedException, ExecutionException {
-        ExecutorService service = Executors.newFixedThreadPool(10); // 一共10个线程
+        ExecutorService service = Executors.newFixedThreadPool(50); // 一共10个线程
         List<Future<?>> futureTasks = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            futureTasks.add(service.submit(new MyExecutor("n" + i, "jk", System.currentTimeMillis())));
+        for (int i = 0; i < 20; i++) {
+            futureTasks.add(service.submit(new MyExecutor("n" + i, "jk", startTime)));
         }
 
         for (Future<?> futureTask : futureTasks) {
@@ -60,7 +61,7 @@ public class MainTest {
     @Test
     public void test3() throws InterruptedException {
         try {
-            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", System.currentTimeMillis());
+            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", startTime);
             Future<String> future = hystrixRequest.queue();
             System.out.println("#######0");
             for (int i = 1; i <= 3; i++) {
@@ -93,7 +94,7 @@ public class MainTest {
         ExecutorService service = Executors.newFixedThreadPool(10); // 一共10个线程
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            futureTasks.add(service.submit(new MyExecutorAsync("n" + i, "g" + i, System.currentTimeMillis())));
+            futureTasks.add(service.submit(new MyExecutorAsync("n" + i, "g" + i, startTime)));
         }
 
         for (Future<?> futureTask : futureTasks) {
@@ -118,7 +119,7 @@ public class MainTest {
         ExecutorService service = Executors.newFixedThreadPool(100); // 一共100个线程
         List<Future<?>> futureTasks = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            futureTasks.add(service.submit(new MyExecutorAsync("n" + i, "g" + (i % 2), System.currentTimeMillis())));
+            futureTasks.add(service.submit(new MyExecutorAsync("n" + i, "g" + (i % 2), startTime)));
             Thread.sleep(1000);
         }
 
@@ -138,7 +139,7 @@ public class MainTest {
     @Test
     public void test4() throws InterruptedException {
         try {
-            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", System.currentTimeMillis());
+            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", startTime);
             System.out.println("#######0");
             Observable<String> fs = hystrixRequest.observe();
             for (int i = 1; i <= 4; i++) {
@@ -188,7 +189,7 @@ public class MainTest {
     @Test
     public void test5() throws InterruptedException {
         try {
-            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", System.currentTimeMillis());
+            HystrixRequest hystrixRequest = new HystrixRequest("aName", "aGroup", startTime);
             System.out.println("#######0");
             Observable<String> fs = hystrixRequest.toObservable();
             for (int i = 1; i <= 4; i++) {
@@ -240,31 +241,31 @@ public class MainTest {
     public void test2() {
         HystrixRequestContext context = HystrixRequestContext.initializeContext();
         try {
-            HystrixRequest hystrixRequest = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", System.currentTimeMillis());
+            HystrixRequest hystrixRequest = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", startTime);
             String result = hystrixRequest.execute();
             System.out.println("Result1 > " + result + " | " + hystrixRequest.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest2 = new HystrixRequest("zzzbitc", "bGroupNameBitch002", System.currentTimeMillis());
+            HystrixRequest hystrixRequest2 = new HystrixRequest("zzzbitc", "bGroupNameBitch002", startTime);
             String result2 = hystrixRequest2.execute();
             System.out.println("Result2 > " + result2 + " | " + hystrixRequest2.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest3 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", System.currentTimeMillis());
+            HystrixRequest hystrixRequest3 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", startTime);
             String result3 = hystrixRequest3.execute();
             System.out.println("Result3 > " + result3 + " | " + hystrixRequest3.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest4 = new HystrixRequest("zzzshit", "dGroupNameBitch003", System.currentTimeMillis());
+            HystrixRequest hystrixRequest4 = new HystrixRequest("zzzshit", "dGroupNameBitch003", startTime);
             String result4 = hystrixRequest4.execute();
             System.out.println("Result4 > " + result4 + " | " + hystrixRequest4.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest5 = new HystrixRequest("zzzfuckYYYY", "aGroupNameBitch001", System.currentTimeMillis());
+            HystrixRequest hystrixRequest5 = new HystrixRequest("zzzfuckYYYY", "aGroupNameBitch001", startTime);
             String result5 = hystrixRequest5.execute();
             System.out.println("Result5 > " + result5 + " | " + hystrixRequest5.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest6 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch999", System.currentTimeMillis());
+            HystrixRequest hystrixRequest6 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch999", startTime);
             String result6 = hystrixRequest6.execute();
             System.out.println("Result6 > " + result6 + " | " + hystrixRequest6.isResponseFromCache() + "\n");
 
-            HystrixRequest hystrixRequest7 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", System.currentTimeMillis());
+            HystrixRequest hystrixRequest7 = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", startTime);
             String result7 = hystrixRequest7.execute();
             System.out.println("Result7 > " + result7 + " | " + hystrixRequest7.isResponseFromCache() + "\n");
         } finally {
@@ -274,7 +275,7 @@ public class MainTest {
         System.out.println("##########################");
         HystrixRequestContext context2 = HystrixRequestContext.initializeContext();
         try {
-            HystrixRequest hystrixRequest = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", System.currentTimeMillis());
+            HystrixRequest hystrixRequest = new HystrixRequest("zzzfuckIIII", "aGroupNameBitch001", startTime);
             String result = hystrixRequest.execute();
             System.out.println("Result > " + result + " | " + hystrixRequest.isResponseFromCache() + "\n");
         } finally {

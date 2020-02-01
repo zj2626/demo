@@ -49,9 +49,6 @@ public class HystrixRequest extends HystrixCommand<String> {
         this.groupName = groupName;
         this.startTime = System.currentTimeMillis();
         this.staticStartTIme = beginTime;
-
-        System.out.println("  构造       " + groupName + " * " + name + " *                *  " + staticStartTIme + " < " + startTime);
-
     }
 
     private long getThreadTotal() {
@@ -71,17 +68,10 @@ public class HystrixRequest extends HystrixCommand<String> {
     protected String run() {
         printTime("RUN    ->   ");
 
-        try {
-            Integer groupNumber = Integer.valueOf(groupName.substring(groupName.length() - 3));
-            System.out.println(groupNumber);
-        } catch (Exception ignore) {
-
-        }
-
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 6; i++) {
             try {
-                printTime("DOING       ");
-                Thread.sleep(1000);
+                // printTime("DOING       ");
+                Thread.sleep(200);
             } catch (Exception ignore) {
 
             }

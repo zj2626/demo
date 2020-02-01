@@ -99,17 +99,15 @@ public class HystrixRequestDefault extends HystrixCommand<String> {
         // 信号量隔离使用用户请求线程，没有格外线程切换开销，使用与执行时间和执行逻辑都比较短的本地计算。比如CPU密集型的任务
 
         /*
-         * groupName : 用来实现依赖隔离, 不同group的请求分配不同的资源,同一group的资源可以使用同一资源(比如线程池及其配置)
-         * name      : 用来实现熔断器的隔离, 不同name的熔断互不影响(比如namea的请求被熔断不会影响nameb的请求继续)
+         * command group name : 用来实现依赖隔离, 不同group的请求分配不同的资源,同一group的资源可以使用同一资源(比如线程池及其配置)
+         * 1. command group 是一个非常重要的概念，默认情况下，就是通过 command group 来定义一个线程池的，而且还会通过 command group 来聚合一些监控和报警信息。同一个 command group 中的请求，都会进入同一个线程池中。
+         * command name      : 用来实现熔断器的隔离, 不同name的熔断互不影响(比如namea的请求被熔断不会影响nameb的请求继续)
          * */
 
         this.name = name;
         this.groupName = groupName;
         this.startTime = System.currentTimeMillis();
         this.staticStartTIme = beginTime;
-
-        System.out.println("  构造       " + groupName + " * " + name + " *                *  " + staticStartTIme + " < " + startTime);
-
     }
 
     /*
@@ -194,7 +192,7 @@ public class HystrixRequestDefault extends HystrixCommand<String> {
 
         for (int i = 0; i < 8; i++) {
             try {
-                printTime("DOING       ");
+                // printTime("DOING       ");
                 Thread.sleep(200);
             } catch (Exception ignore) {
 

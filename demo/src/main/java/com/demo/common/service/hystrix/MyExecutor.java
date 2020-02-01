@@ -18,6 +18,6 @@ public class MyExecutor implements Runnable {
 
         HystrixRequest hystrixRequest = new HystrixRequest(name, groupName, time);
         String result = hystrixRequest.execute();
-        System.out.println("Result > " + Thread.currentThread().getName() + " [" + result + "]\n");
+        System.out.println("Result > " + Thread.currentThread().getName() + " [" + result + "]");
     }
 }
