@@ -1,10 +1,16 @@
-package hello.util;
+package hello.config;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class PushCallback implements MqttCallback {
+public class MyMqttCallback implements MqttCallback {
+    
+    private String name;
+    
+    public MyMqttCallback(String name) {
+        this.name = name;
+    }
     
     /**
      * 接收到消息
@@ -14,7 +20,8 @@ public class PushCallback implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) {
-        System.out.printf("PushCallback 接收到消息 主题:[%s] Qos:[%s] 内容:[%s] \n", topic, message.getQos(), new String(message.getPayload()));
+        System.out.printf("MyMqttCallback 接收到消息 订阅clientId:[%s] 主题:[%s] Qos:[%s] 内容:[%s] \n", name, topic, message.getQos(),
+                new String(message.getPayload()));
     }
     
     /**
@@ -24,7 +31,7 @@ public class PushCallback implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        System.out.printf("PushCallback 发送成功 内容:[%s] \n", token);
+        System.out.printf("MyMqttCallback 发送成功 内容:[%s] \n", token);
     }
     
     /**
@@ -34,7 +41,7 @@ public class PushCallback implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable cause) {
-        System.out.printf("PushCallback 连接丢失 原因:[%s] \n", cause);
+        System.out.printf("MyMqttCallback 连接丢失 原因:[%s] \n", cause);
         cause.printStackTrace();
     }
     

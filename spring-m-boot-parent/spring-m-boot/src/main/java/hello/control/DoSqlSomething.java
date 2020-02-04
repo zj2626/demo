@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Random;
+
 @Service
 public class DoSqlSomething {
     private static final Logger logger = LoggerFactory.getLogger(DoSqlSomething.class);
@@ -24,6 +26,11 @@ public class DoSqlSomething {
 
         for (int i = 0; i < 5; i++) {
             dao.insert(msg);
+
+            // 0 7 14
+            if (i == 3 && new Random().nextInt(20) % 7 == 0) {
+                throw new RuntimeException("系统异常m~~~~~~~");
+            }
         }
         return 1;
     }

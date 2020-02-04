@@ -2,9 +2,8 @@ package hello.control;
 
 import hello.service.DoHSomething;
 import hello.service.DoSendKafka;
-import hello.service.DoWithAnnotation;
 import hello.service.model.KafkaRequest;
-import hello.util.MQTTUtil;
+import hello.config.MqttUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ public class DoMQSomething {
     private static final Logger logger = LoggerFactory.getLogger(DoMQSomething.class);
 
     @Autowired
-    private MQTTUtil mqtt;
+    private MqttUtil mqtt;
 
     @Reference(group = "${dubbo.consumer.group}")
     private DoHSomething doHSomething;

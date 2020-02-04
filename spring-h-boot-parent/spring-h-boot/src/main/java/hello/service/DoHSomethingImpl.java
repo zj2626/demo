@@ -82,17 +82,17 @@ public class DoHSomethingImpl implements DoHSomething {
     }
 
     @Override
-    public String remoteToActivemq(String name) {
+    public String remoteToActivemq(String msg) {
         System.out.println("ACTIVEMQ -> " + (null != jmsMessagingTemplate));
         if (null != jmsMessagingTemplate) {
-            System.out.println(">>>>");
-            Destination destination = new ActiveMQQueue("test.spring.active.queue");
-
-            jmsMessagingTemplate.convertAndSend(destination, name);
+            String topic = "test.spring.active.queue";
+            System.out.println(">>>> " + topic);
+            Destination destination = new ActiveMQQueue(topic);
+            jmsMessagingTemplate.convertAndSend(destination, msg);
             System.out.println(">>>>>>>>>");
         }
 
-        String result = "> ACTIVEMQ " + name;
+        String result = "> ACTIVEMQ " + msg;
         System.out.println("发送activemq消息完毕 " + result);
         return result;
     }

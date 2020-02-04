@@ -2,38 +2,10 @@ package hello.control;
 
 import hello.annotation.MovieRecommender;
 import hello.annotation.SimpleMovieLister;
-import hello.hystrix.HystrixUtil;
-import hello.request.ExterfaceInvokeIOHttpSender;
-import hello.service.DoHSomething;
-import hello.service.DoSendKafka;
-import hello.service.DoWithAnnotation;
-import hello.service.model.KafkaRequest;
-import hello.service.model.RedisRequest;
-import hello.util.MQTTUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.dubbo.common.Constants;
-import org.apache.dubbo.common.URL;
-import org.apache.dubbo.config.annotation.Reference;
-import org.apache.dubbo.rpc.RpcContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class DoSomething {

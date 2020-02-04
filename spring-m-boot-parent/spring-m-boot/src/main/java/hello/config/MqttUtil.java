@@ -1,10 +1,9 @@
-package hello.util;
+package hello.config;
 
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 /**
@@ -13,25 +12,27 @@ import org.springframework.util.StringUtils;
  *
  * @author
  */
-public class MQTTUtil {
+public class MqttUtil {
+    private static final Logger logger = LoggerFactory.getLogger(MqttUtil.class);
+
     //tcp://MQTT安装的服务器地址:MQTT定义的端口号
     private static final String HOST = "tcp://127.0.0.1:1883";
     //定义MQTT的ID，可以在MQTT服务配置中指定
     private static final String CLIENT_ID = "client-01";
-    
+
     private static MqttClient client;
-    
+
     private String userName = "paho";  //非必须
     private String passWord = "";  //非必须
-    
-    public MQTTUtil(String clientId) {
+
+    public MqttUtil(String clientId) {
         try {
             client = new MqttClient(HOST, StringUtils.isEmpty(clientId) ? CLIENT_ID : clientId, new MemoryPersistence());
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * 连接服务器
      */
@@ -45,7 +46,7 @@ public class MQTTUtil {
         options.setKeepAliveInterval(20);
         // options.setUserName(userName);
         // options.setPassword(passWord.toCharArray());
-        
+
         try {
             client.setCallback(callBack);
             client.connect(options);
@@ -53,7 +54,7 @@ public class MQTTUtil {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * @param topics
      * @param qos    Quality of Service,服务质量 [发布者的Qos, 订阅者的Qos]
@@ -64,5 +65,23 @@ public class MQTTUtil {
      */
     public void subscribe(String[] topics, int[] qos) throws MqttException {
         client.subscribe(topics, qos);
+    }
+
+    public void publish(String topic, String message, int qos) throws MqttException {
+        MqttTopic mqttTopic = client.getTopic(topic);
+
+        if (null != mqttTopic) {
+            MqttMessage mqttMessage = new MqttMessage();
+            //保证消息能到达一次
+            mqttMessage.setQos(qos);
+            //设置保留消息，为true，后来的订阅者订阅该主题时仍可接收到该消息
+            mqttMessage.setRetained(false);
+            mqttMessage.setPayload(message.getBytes());
+
+            MqttDeliveryToken token = mqttTopic.publish(mqttMessage);
+            token.waitForCompletion();
+            logger.info("MQTT >>> publish message : " + token.isComplete() +
+                    ",{topic : " + topic + ", messageId : " + token.getMessageId() + ", message : " + message + "}");
+        }
     }
 }

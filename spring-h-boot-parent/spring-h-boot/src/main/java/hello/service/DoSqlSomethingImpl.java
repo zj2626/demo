@@ -34,9 +34,9 @@ public class DoSqlSomethingImpl implements DoSqlSomething {
             model.setAge(765);
             testcDao.insert(Testc.modelToTestC(model));
 
-            // 0 3 6 9
-            if (i == 3 && new Random().nextInt(10) % 3 == 0) {
-                throw new RuntimeException("系统异常~~~~~~~");
+            // 0 7 14
+            if (i == 3 && new Random().nextInt(20) % 7 == 0) {
+                throw new RuntimeException("系统异常h~~~~~~~");
             }
         }
         return 1;
