@@ -3,6 +3,7 @@ package hello.service.controller;
 import hello.control.*;
 import hello.control.template.InvokeCallback;
 import hello.control.template.InvokeTemplate;
+import hello.database.entity.Person;
 import hello.lock.LockServiceA;
 import hello.lock.LockServiceB;
 import hello.service.model.KafkaRequest;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +32,8 @@ public class MyController {
     private DoRedisSomething doRedisSomething;
     @Autowired
     private DoMQSomething doMQSomething;
+    @Autowired
+    private DoSqlSomething doSqlSomething;
     @Autowired
     private DoHttpSomething doHttpSomething;
     @Autowired
@@ -205,6 +210,11 @@ public class MyController {
     public String geta() {
         System.out.println(demoService.hashCode());
         return "" + demoService.getNum();
+    }
+
+    @PostMapping("/doJdbcTemplate")
+    public String doJdbcTemplate(@RequestBody Person msg) {
+        return "" + doSqlSomething.doSql(msg);
     }
 
     /***********************************/

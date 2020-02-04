@@ -1,6 +1,6 @@
-package hello.data.mapper;
+package hello.database.mapper;
 
-import hello.data.model.UCAreaDO;
+import hello.database.model.UCAreaDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

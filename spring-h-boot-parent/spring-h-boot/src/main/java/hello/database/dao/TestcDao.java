@@ -2,11 +2,11 @@
  * Kdniao.com Inc.
  * Copyright (c) 2014-2017 All Rights Reserved.
  */
-package hello.data.service;
+package hello.database.dao;
 
 import com.alibaba.fastjson.JSON;
-import hello.data.mapper.TestcMapper;
-import hello.data.model.Testc;
+import hello.database.mapper.TestcMapper;
+import hello.database.model.Testc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

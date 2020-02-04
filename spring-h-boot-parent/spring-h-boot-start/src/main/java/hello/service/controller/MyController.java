@@ -168,4 +168,10 @@ public class MyController {
 
         return "god";
     }
+
+    @GetMapping("/createBatch")
+    public String createBatch(@RequestParam String name) {
+        doSqlSomething.createBatch(name);
+        return "god";
+    }
 }

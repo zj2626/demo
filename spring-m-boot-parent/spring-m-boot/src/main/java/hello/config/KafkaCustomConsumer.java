@@ -1,7 +1,6 @@
 package hello.config;
 
 import com.alibaba.fastjson.JSON;
-import hello.bean.KafkaConsumerBeanConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -24,7 +23,7 @@ public class KafkaCustomConsumer<K, V> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCustomConsumer.class);
 
     @Autowired
-    private KafkaConsumerBeanConfig consumerBeanConfig;
+    private KafkaConsumerBean consumerBeanConfig;
 
     @Value("#{'${kafka.consumer.topic}'.split(',')}")
     private List<String> topics;

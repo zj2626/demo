@@ -1,4 +1,4 @@
-package hello.bean;
+package hello.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "spring.kafka.consumer")
 //@PropertySource(value = "application.properties")
-public class KafkaConsumerBeanConfig {
+public class KafkaConsumerBean {
     private String bootstrapServers;
     private String groupId;
     private Boolean enableAutoCommit;

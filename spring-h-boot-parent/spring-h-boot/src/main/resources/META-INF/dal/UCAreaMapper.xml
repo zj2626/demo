@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hello.data.mapper.UCAreaDOMapper">
-    <resultMap id="BaseResultMap" type="hello.data.model.UCAreaDO">
+<mapper namespace="hello.database.mapper.UCAreaDOMapper">
+    <resultMap id="BaseResultMap" type="hello.database.model.UCAreaDO">
         <id column="ID" jdbcType="BIGINT" property="id"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
@@ -18,7 +18,7 @@
     </sql>
 
     <!-- 单个插入 -->
-    <insert id="insertUCArea" parameterType="hello.data.model.UCAreaDO"
+    <insert id="insertUCArea" parameterType="hello.database.model.UCAreaDO"
             useGeneratedKeys="true" keyProperty="id">
         insert into uc_area
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -64,7 +64,7 @@
     </insert>
 
     <!-- 单个更新 -->
-    <update id="updateUCArea" parameterType="hello.data.model.UCAreaDO">
+    <update id="updateUCArea" parameterType="hello.database.model.UCAreaDO">
         update uc_area
         <set>
             area_name=#{areaName,jdbcType=VARCHAR},
@@ -87,7 +87,7 @@
     </update>
 
     <!-- 删除 -->
-    <update id="deleteUCArea" parameterType="hello.data.model.UCAreaDO">
+    <update id="deleteUCArea" parameterType="hello.database.model.UCAreaDO">
         delete from uc_area where area_code = #{areaCode,jdbcType=VARCHAR}
     </update>
 
@@ -102,7 +102,7 @@
 
 
     <!-- 单个查询 -->
-    <select id="getUCArea" parameterType="hello.data.model.UCAreaDO"
+    <select id="getUCArea" parameterType="hello.database.model.UCAreaDO"
             resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -113,7 +113,7 @@
         </if>
     </select>
 
-    <select id="findByEntity" parameterType="hello.data.model.UCAreaDO"
+    <select id="findByEntity" parameterType="hello.database.model.UCAreaDO"
             resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

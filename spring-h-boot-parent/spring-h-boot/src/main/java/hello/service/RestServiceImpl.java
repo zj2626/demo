@@ -1,8 +1,7 @@
 package hello.service;
 
-import hello.data.model.Testc;
-import hello.data.service.TestcDao;
-import hello.service.RestService;
+import hello.database.model.Testc;
+import hello.database.dao.TestcDao;
 import hello.service.model.TestcModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

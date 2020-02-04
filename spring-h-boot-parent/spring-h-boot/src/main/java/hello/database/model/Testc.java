@@ -1,4 +1,4 @@
-package hello.data.model;
+package hello.database.model;
 
 import hello.service.model.TestcModel;
 

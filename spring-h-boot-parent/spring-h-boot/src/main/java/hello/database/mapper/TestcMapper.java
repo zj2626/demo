@@ -1,7 +1,7 @@
-package hello.data.mapper;
+package hello.database.mapper;
 
-import hello.data.model.Testc;
-import hello.data.model.TestcExample;
+import hello.database.model.Testc;
+import hello.database.model.TestcExample;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

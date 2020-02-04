@@ -1,6 +1,5 @@
 package hello.config;
 
-import hello.bean.KafkaConsumerBeanConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Autowired
-    private KafkaConsumerBeanConfig consumerBeanConfig;
+    private KafkaConsumerBean consumerBeanConfig;
 
     @Value("${spring.kafka.listener.concurrency}")
     private Integer concurrency;

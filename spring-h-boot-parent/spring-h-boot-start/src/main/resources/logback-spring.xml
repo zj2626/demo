@@ -73,7 +73,7 @@
     </appender>
 
     <!-- 实现mybatis日志打印 -->
-    <logger name="hello.data.mapper" level="DEBUG"/>
+    <logger name="hello.database.mapper" level="DEBUG"/>
 
     <logger name="SH.test">
         <level value="INFO"/>
