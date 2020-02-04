@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -169,9 +170,9 @@ public class MyController {
         return "god";
     }
 
-    @GetMapping("/createBatch")
+    @PostMapping("/createBatch")
     public String createBatch(@RequestParam String name) {
-        doSqlSomething.createBatch(name);
-        return "god";
+        int result = doSqlSomething.createBatch(name);
+        return "god " + result;
     }
 }

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DoSqlSomething {
@@ -14,13 +15,16 @@ public class DoSqlSomething {
     @Autowired
     private PersonDao dao;
 
+    @Transactional(rollbackFor = Exception.class)
     public Integer doSql(Person msg) {
-        try{
-            System.out.println(dao.select(msg.getId()));
-        }catch(Exception e){
-            logger.error("查询异常~ ",  e);
+        for (int i = 0; i < 3; i++) {
+            Person person = dao.select(msg.getId() + i);
+            System.out.println("查询操作" + i + ": " + person);
         }
 
-        return dao.insert(msg);
+        for (int i = 0; i < 5; i++) {
+            dao.insert(msg);
+        }
+        return 1;
     }
 }

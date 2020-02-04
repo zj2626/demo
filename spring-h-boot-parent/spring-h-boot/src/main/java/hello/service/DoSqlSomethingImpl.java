@@ -27,7 +27,7 @@ public class DoSqlSomethingImpl implements DoSqlSomething {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createBatch(String msg) {
+    public int createBatch(String msg) {
         for (int i = 0; i < 5; i++) {
             TestcModel model = new TestcModel();
             model.setName(msg + "|" + UUID.randomUUID().toString());
@@ -39,5 +39,6 @@ public class DoSqlSomethingImpl implements DoSqlSomething {
                 throw new RuntimeException("系统异常~~~~~~~");
             }
         }
+        return 1;
     }
 }
