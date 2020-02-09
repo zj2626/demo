@@ -1,5 +1,8 @@
 package com.demo.common.service.basic;
 
+import com.demo.common.service.basic.bean.BeanA;
+import org.junit.Test;
+
 public class TryTest {
     public static void main(String[] args) {
         System.out.println(fun());
@@ -7,38 +10,38 @@ public class TryTest {
         System.out.println(fun3());
     }
 
-    private static int fun(){
+    private static int fun() {
         int result = 10;
-        try{
+        try {
             return result;
-        }finally {
+        } finally {
             result = result + 10;
             return result + 100;    // 有return会生效, 没有return则不会生效
         }
     }
 
-    private static StringBuilder fun2(){
+    private static StringBuilder fun2() {
         StringBuilder result = new StringBuilder("2");
-        try{
+        try {
             return result;
-        }finally {
+        } finally {
             result.append("333");   // 会生效
             result = null;          // 不会生效
         }
     }
 
-    private static Person fun3(){
+    private static Person fun3() {
         Person result = new Person();
-        try{
+        try {
             result.name = "zj";
             return result;
-        }finally {
+        } finally {
             result.name = "ay"; // 会生效
             result = null;      // 不会生效
         }
     }
 
-    private static class Person{
+    private static class Person {
         String name;
 
         @Override
@@ -49,5 +52,12 @@ public class TryTest {
             sb.append('}');
             return sb.toString();
         }
+    }
+
+    /****************************/
+    @Test
+    public void test() {
+        Class<?>[] clazz = new Class<?>[]{BeanA.class};
+        System.out.println(clazz.length);
     }
 }
