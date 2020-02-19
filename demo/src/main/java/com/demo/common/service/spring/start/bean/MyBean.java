@@ -10,25 +10,25 @@ public class MyBean implements BeanInterface{
 
     @Override
     public int getId() {
-        System.out.println(this.getClass().getSimpleName() + " | getId");
+        System.out.println(this.getClass().getName() + " | getId");
         return id;
     }
 
     @Override
     public void setId(int id) {
-        System.out.println(this.getClass().getSimpleName() + " | setId");
+        System.out.println(this.getClass().getName() + " | setId");
         this.id = id;
     }
 
     @Override
     public String getName() {
-        System.out.println(this.getClass().getSimpleName() + " | getName");
+        System.out.println(this.getClass().getName() + " | getName");
         return name;
     }
 
     @Override
     public void setName(String name) {
-        System.out.println(this.getClass().getSimpleName() + " | setName");
+        System.out.println(this.getClass().getName() + " | setName");
         this.name = name;
     }
 
