@@ -58,7 +58,7 @@
         <logback_version>1.0.6</logback_version>
         <testng_version>6.8.8</testng_version>
         <spring_version>5.1.8.RELEASE</spring_version>
-        <fasterxml.jackson_version>2.8.7</fasterxml.jackson_version>
+        <fasterxml.jackson_version>2.10.2</fasterxml.jackson_version>
         <commons-collections_version>3.2.1</commons-collections_version>
         <commons-beanutils_version>1.9.2</commons-beanutils_version>
         <commons-lang_version>2.6</commons-lang_version>
