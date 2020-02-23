@@ -157,7 +157,7 @@ public class ThreadPoolDemo {
          *  3.阻塞队列也不够用(corePoolSize+workQueue.size()),则启用再启动更多线程,直到总线程数等于最大线程数
          *  4.最大线程数也不足(maximumPoolSize+workQueue.size()),则多余的线程被执行拒绝策略
          */
-        for (int i = 0; i < 55; i++) {
+        for (int i = 0; i < 40; i++) {
             try {
                 executorService.execute(() -> {
                     try {
@@ -177,6 +177,7 @@ public class ThreadPoolDemo {
     }
 
     private void getInfo(ThreadPoolExecutor executorService) {
+        System.out.println(" 正在执行的线程数 " + executorService.getActiveCount());
         System.out.println(" 启动的线程数 " + executorService.getLargestPoolSize());
         System.out.println(" 最大线程数 " + executorService.getMaximumPoolSize());
         System.out.println(" 总任务数 " + executorService.getTaskCount());
