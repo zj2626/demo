@@ -46,7 +46,7 @@
         <json-lib_version>1.0.2</json-lib_version>
         <ezmorph_version>1.0.6</ezmorph_version>
         <spring-kafka.version>1.1.1.RELEASE</spring-kafka.version>
-        <fastjson_version>1.2.7</fastjson_version>
+        <fastjson_version>1.2.25</fastjson_version>
         <hystrix.version>1.5.9</hystrix.version>
         <jfreechart_version>1.0.13</jfreechart_version>
         <activemq_version>5.10.0</activemq_version>
