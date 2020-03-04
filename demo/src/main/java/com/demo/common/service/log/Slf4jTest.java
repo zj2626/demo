@@ -1,33 +1,27 @@
 package com.demo.common.service.log;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.util.Date;
 
-public class LogTest {
-    private static Logger logger = Logger.getLogger(LogTest.class);
+public class Slf4jTest {
+    private static Logger logger = LoggerFactory.getLogger(Slf4jTest.class);
 
     public static void main(String[] args) throws Exception {
-//        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-//        JoranConfigurator configurator = new JoranConfigurator();
-//        configurator.setContext(lc);
-//        lc.reset();
-//        try {
-//            configurator.doConfigure("logback.xml");
-//        } catch (JoranException e) {
-//            e.printStackTrace();
-//        }
-//        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
-//        System.out.println("===================");
-
+        //        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        //        JoranConfigurator configurator = new JoranConfigurator();
+        //        configurator.setContext(lc);
+        //        lc.reset();
+        //        try {
+        //            configurator.doConfigure("logback.xml");
+        //        } catch (JoranException e) {
+        //            e.printStackTrace();
+        //        }
+        //        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
+        //        System.out.println("===================");
 
 
         // 记录debug级别的信息
@@ -51,15 +45,14 @@ public class LogTest {
         ke();
     }
 
-    public static void ke(){
+    public static void ke() {
         abc();
     }
 
-    public static void abc(){
+    public static void abc() {
         try {
             new InputStreamReader(new FileInputStream("/c/k.jpg"));
         } catch (FileNotFoundException e) {
-            logger.error(new Date());
             logger.error(e.getMessage(), e);
         }
     }

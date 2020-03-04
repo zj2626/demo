@@ -54,8 +54,6 @@
         <zookeeper_version>3.4.6</zookeeper_version>
         <spring_data_redis_version>1.8.1.RELEASE</spring_data_redis_version>
         <spring_data_solr_version>2.0.3.RELEASE</spring_data_solr_version>
-        <slf4j_version>1.6.2</slf4j_version>
-        <logback_version>1.0.6</logback_version>
         <testng_version>6.8.8</testng_version>
         <spring_version>5.1.8.RELEASE</spring_version>
         <fasterxml.jackson_version>2.8.7</fasterxml.jackson_version>
@@ -282,25 +280,34 @@
             <artifactId>testng</artifactId>
             <version>${testng_version}</version>
         </dependency>
+
+        <!--slf4j配置-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j_version}</version>
+            <version>1.6.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>${zxing_version}</version>
-        </dependency>
+        <!--<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+        </dependency>-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback_version}</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback_version}</version>
+            <version>1.2.2</version>
+        </dependency>
+        <!--slf4j配置-->
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing_version}</version>
         </dependency>
         <dependency>
             <groupId>dom4j</groupId>
@@ -399,12 +406,13 @@
             <artifactId>javax.servlet</artifactId>
             <version>3.0</version>
         </dependency>
-        <dependency>
+
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>2.1.6.RELEASE</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>

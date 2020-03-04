@@ -3,6 +3,12 @@ package com.demo.common.service.list;
 import com.demo.common.service.list.abs.ListInfo;
 import org.junit.Test;
 
+import java.util.Arrays;
+
+/**
+ * list 自定义实现见:
+ * @see com.demo.common.service.algorithm.math.list
+ */
 public class ListDemo extends ListInfo {
     @Test
     public void isEmpty() {
@@ -30,5 +36,15 @@ public class ListDemo extends ListInfo {
     public void containsAll() {
         boolean b = listA.containsAll(listB);
         System.out.println(b);
+    }
+
+    /**
+     * 数组复制
+     */
+    @Test
+    public void copyOf() {
+        System.out.println(arrayE.length);
+        arrayE = Arrays.copyOf(arrayE, 9);
+        System.out.println(arrayE.length);
     }
 }
