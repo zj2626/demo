@@ -22,13 +22,11 @@
         <dependency>
             <groupId>service.cloud</groupId>
             <artifactId>spring-cloud-client-api</artifactId>
-            <version>0.1</version>
         </dependency>
 
         <dependency>
             <groupId>service.cloud</groupId>
             <artifactId>spring-cloud-client2-api</artifactId>
-            <version>0.1</version>
         </dependency>
 
         <dependency>

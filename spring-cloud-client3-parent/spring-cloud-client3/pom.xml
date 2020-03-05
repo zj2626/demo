@@ -21,7 +21,6 @@
         <dependency>
             <groupId>service.cloud</groupId>
             <artifactId>spring-cloud-client3-api</artifactId>
-            <version>0.1</version>
         </dependency>
 
         <dependency>
