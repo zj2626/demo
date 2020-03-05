@@ -4,9 +4,12 @@
 	<!-- 控制台输出日志 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<pattern>aka logback %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+			<pattern>aka logback %d{yyyy-MM-dd HH:mm:ss.SSS} [%-16thread] [%-5level] - %msg%n</pattern>
 		</layout>
 	</appender>
+
+	<logger name="com.demo.common.service.mysql.dal.mapper" level="DEBUG"/>
+
 	<root>
 		<level value="INFO" />
 		<appender-ref ref="STDOUT" />

@@ -15,14 +15,15 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class DemoServer extends MyNettyAddr {
-    private static Logger logger = Logger.getLogger(DemoServer.class);
+    private static Logger logger = LoggerFactory.getLogger(DemoServer.class);
 
     @Test
     public void server() throws InterruptedException {

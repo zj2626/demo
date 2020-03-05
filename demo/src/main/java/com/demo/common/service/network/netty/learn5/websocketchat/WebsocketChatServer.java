@@ -12,14 +12,15 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class WebsocketChatServer extends MyNettyAddr {
-    private static Logger logger = Logger.getLogger(WebsocketChatServer.class);
+    private static Logger logger = LoggerFactory.getLogger(WebsocketChatServer.class);
 
     @Test
     public void server() throws InterruptedException {
