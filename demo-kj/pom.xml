@@ -31,7 +31,7 @@
         <jfreechart_version>1.0.13</jfreechart_version>
         <activemq_version>5.10.0</activemq_version>
         <curator_version>2.6.0</curator_version>
-        <zookeeper_version>3.4.6</zookeeper_version>
+        <zookeeper_version>3.4.14</zookeeper_version>
         <spring_data_redis_version>1.8.1.RELEASE</spring_data_redis_version>
         <spring_data_solr_version>2.0.3.RELEASE</spring_data_solr_version>
         <slf4j_version>1.6.2</slf4j_version>
