@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 @Scope("singleton")
 /*
@@ -20,7 +22,7 @@ public class DemoService {
     @Autowired
     // @Qualifier("demoDao")
     private DemoDao demoFiveDao;
-    @Autowired
+    @Resource
     private DemoAnnotationDao annoDao;
 
     public void getDaoInfo(){
@@ -37,46 +39,47 @@ public class DemoService {
     }
 
     // 通过<constructor-arg ref="demoDao01"/>注入
-    public DemoService(DemoDao dao) {
-        this.demoTwoDao = dao;
+    public DemoService(DemoDao dao0) {
+        this.demoTwoDao = dao0;
     }
 
     // 通过<property name="demoOneDao" ref="demoDao01"/>注入
-    public void setDemoOneDao(DemoDao dao) {
-        this.demoOneDao = dao;
+    public void setDemoOneDao(DemoDao daoa) {
+        System.out.println("--------------------> 1 setDemoOneDao");
+        this.demoOneDao = daoa;
     }
 
     /**
      * 通过default-autowire="byType"注入, 如果不设置或者设置为[default-autowire="no"]则不会注入
      * 查找所有的set方法，将符合符合参数类型的bean注入
-     * @param dao
      */
-    public void setaAaA(DemoDao dao) {
-        this.demoTwoDao = dao;
+    public void setaAaA(DemoDao daob) {
+        System.out.println("--------------------> 2 setaAaA");
+        this.demoTwoDao = daob;
     }
 
     /**
      * 通过default-autowire="byName"注入, 如果不设置或者设置为[default-autowire="no"]则不会注入
      * 被注入bean的id名必须与set方法相匹配
-     * @param dao
      */
-    public void setDemoDao01(DemoDao dao) {
-        this.demoThreeDao = dao;
+    public void setDemoDao01(DemoDao daoc) {
+        System.out.println("--------------------> 3 setDemoDao01");
+        this.demoThreeDao = daoc;
     }
 
     /**
      * 通过default-autowire="byType"注入
-     * @param dao
      */
-    public void setDemoFourDao(DemoDao dao) {
-        this.demoFourDao = dao;
+    public void setDemoFourDao(DemoDao daod) {
+        System.out.println("--------------------> 4 setDemoFourDao");
+        this.demoFourDao = daod;
     }
 
     /**
      * 通过default-autowire="byType"注入
-     * @param resource
      */
-    public void setResource(DemoResource resource) {
-        this.resource = resource;
+    public void setResource(DemoResource resourcee) {
+        System.out.println("--------------------> 5 setResource");
+        this.resource = resourcee;
     }
 }
