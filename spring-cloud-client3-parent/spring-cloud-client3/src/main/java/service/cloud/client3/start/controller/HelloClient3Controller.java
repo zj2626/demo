@@ -9,8 +9,8 @@ import java.io.IOException;
 
 @RestController
 public class HelloClient3Controller {
-    @ApiOperation(value = "/")
-    @GetMapping("/")
+    @ApiOperation(value = "/swagger")
+    @GetMapping("/swagger")
     public void index(HttpServletResponse response) throws IOException {
         response.sendRedirect("swagger-ui.html");
     }
