@@ -15,7 +15,7 @@ public class FunController implements ControllerApi {
     private RestTemplate restTemplate;
 
     @Override
-    public String fun(@RequestBody String name) {
+    public String fun(String name) {
         return "hi fun  this is client 3 by " + name;
     }
 }

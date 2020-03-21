@@ -5,7 +5,13 @@
 </head>
 <body>
 <h1>Welcome!</h1>
-​
-<p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<p>Click <a th:href="@{/user}">VIEW</a> to see a greeting.</p>
+<p>Click <a th:href="@{/user/add}">ADD</a> to see a greeting.</p>
+<p>Click <a th:href="@{/admin/delete}">DELETE</a> to see a greeting.</p>
+<p>Click <a th:href="@{/db}">Database</a> to see a greeting.</p>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
 </body>
 </html>
