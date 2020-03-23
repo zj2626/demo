@@ -80,7 +80,7 @@
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
                 <!--3.4.9版本之上的会启动报错-->
-                <version>3.4.7</version>
+                <version>3.4.14</version>
                 <exclusions>
                     <exclusion>
                         <groupId>log4j</groupId>
