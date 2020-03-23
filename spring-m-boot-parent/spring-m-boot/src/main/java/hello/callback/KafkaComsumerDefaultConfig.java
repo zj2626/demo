@@ -1,4 +1,4 @@
-package hello.config;
+package hello.callback;
 
 import com.alibaba.fastjson.JSON;
 import hello.service.model.Change;

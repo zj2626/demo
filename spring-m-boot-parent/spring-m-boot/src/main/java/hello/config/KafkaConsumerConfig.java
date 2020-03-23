@@ -1,5 +1,6 @@
 package hello.config;
 
+import hello.vo.KafkaConsumerBean;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

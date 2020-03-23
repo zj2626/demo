@@ -1,4 +1,4 @@
-package hello.config;
+package hello.vo;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

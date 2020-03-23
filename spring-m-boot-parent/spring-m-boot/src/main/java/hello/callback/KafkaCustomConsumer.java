@@ -1,6 +1,7 @@
-package hello.config;
+package hello.callback;
 
 import com.alibaba.fastjson.JSON;
+import hello.vo.KafkaConsumerBean;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
