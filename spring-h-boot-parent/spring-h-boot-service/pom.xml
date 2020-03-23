@@ -23,7 +23,6 @@
         <dependency>
             <groupId>service.zj</groupId>
             <artifactId>spring-h-boot-model</artifactId>
-            <version>0.1</version>
         </dependency>
     </dependencies>
 

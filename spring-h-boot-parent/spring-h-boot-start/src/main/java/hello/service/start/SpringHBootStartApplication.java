@@ -21,12 +21,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * ********************
  */
 @SpringBootApplication(scanBasePackages = "hello")
-@EnableConfigurationProperties
 @ImportResource({"classpath:transaction.xml"}) // , "classpath:dubbo-provider.xml"
 @MapperScan("hello.database.mapper")
 @EnableTransactionManagement
 @EnableJms //启动消息队列
 @EnableDubbo(scanBasePackages = "hello.service")
+@EnableConfigurationProperties
 //@Import(ServiceConfiguration.class)
 public class SpringHBootStartApplication extends SpringBootServletInitializer {
     

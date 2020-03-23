@@ -23,7 +23,6 @@
         <dependency>
             <groupId>service.ay</groupId>
             <artifactId>spring-m-boot-model</artifactId>
-            <version>0.1</version>
         </dependency>
     </dependencies>
 

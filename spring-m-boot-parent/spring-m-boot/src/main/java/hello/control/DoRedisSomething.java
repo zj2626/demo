@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -22,19 +21,12 @@ public class DoRedisSomething {
     private static final Logger logger = LoggerFactory.getLogger(DoRedisSomething.class);
 
     @Autowired
-    private Jedis jedis;
-
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     public boolean doredis(RedisRequest request) {
         if (null != redisTemplate) {
             try {
                 redisTemplate.opsForValue().set("a", "B");
-                jedis.zadd("queue_00", 1, "a");
-                jedis.zadd("queue_00", 2, "b");
-                jedis.zadd("queue_00", 3, "c");
-                jedis.zadd("queue_00", 3, "d");
                 System.out.println("---------------------------");
 
                 System.out.println("\nexecute -> RedisCallback");
