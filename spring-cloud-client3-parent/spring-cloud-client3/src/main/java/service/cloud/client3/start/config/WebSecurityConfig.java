@@ -29,15 +29,11 @@ import java.util.Set;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MyAuthenticationFailureHandler failureHandler;
-    @Autowired
-    private MyAuthenticationSuccessHandler successHandler;
-    @Autowired
     private MyUserDetailsService myUserDetailsService;
     @Autowired
     private Database database;
     @Autowired
-    private CustomerRequestFilter myRequestFilter;
+    private CustomerLoginFilter myLoginFilter;
     @Autowired
     private CustomLogoutHandler logoutHandler;
     @Autowired
@@ -46,6 +42,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
     private MyAccessDeniedHandler accessDeniedHandler;
+
+    private static String[] ignoreUrl =
+            ("/swagger-ui.html,/swagger-resources/**,/swagger/**,/**/springfox-swagger-ui/**," +
+                    "/**/v2/api-docs," +
+                    "/v2/api-docs" +
+                    "/**/*.js,/**/*.css,/**/*.ico,/**/*.png," +
+                    "/login,/doLogin,/signup,/api/**")
+                    .split(",", 99);
 
     /**
      * 配置用户认证信息+权限
@@ -69,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
 
-        registry.antMatchers("/login", "/doLogin", "/signup", "/api/**").permitAll();
+        registry.antMatchers(ignoreUrl).permitAll();
         Set<String> urls = database.getUrls();
         for (String url : urls) {
             String permission = database.getPermission(url);
@@ -79,15 +83,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         registry.and().authorizeRequests().anyRequest().authenticated()
 
                 // 允许用户进行基于表单的认证-指定登录页的路径-允许所有用户访问登录页
-//                .and().formLogin().loginPage("/login")
-//                .successHandler(successHandler).failureHandler(failureHandler).permitAll()
-//                .and().httpBasic()
+                //                .and().formLogin().loginPage("/login")
+                //                .successHandler(successHandler).failureHandler(failureHandler).permitAll()
+                //                .and().httpBasic()
 
-                // 登出
-                .and().logout().logoutUrl("/logout")
-                .addLogoutHandler(logoutHandler).logoutSuccessHandler(logoutSuccessHandler)
+                // 登出, 即使不设置,也有默认的LogoutFilter执行, 其中有一个默认的handler(SecurityContextLogoutHandler)进行退出登录处理: 执行SecurityContextHolder.clearContext();
+                //                .and().logout().logoutUrl("/logout")
+                //                .addLogoutHandler(logoutHandler).logoutSuccessHandler(logoutSuccessHandler)
 
-                /**
+                /*
                  * AuthenticationEntryPoint 该类用来统一处理 AuthenticationException (401 错误 - 未授权) 异常
                  * AccessDeniedHandler 该类用来统一处理 AccessDeniedException (403 错误 - 被禁止)异常
                  */
@@ -99,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 
-                .and().addFilterBefore(myRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .and().addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
         ;
     }
 

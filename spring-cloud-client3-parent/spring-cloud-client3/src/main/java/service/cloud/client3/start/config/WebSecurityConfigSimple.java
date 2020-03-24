@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import service.cloud.client3.start.filter.CustomerRequestFilter;
+import service.cloud.client3.start.filter.CustomerLoginFilter;
 
 /**
  * security认证的两种模式:
@@ -105,7 +105,7 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 // 要移除的cookie
                 .deleteCookies("cookie_Names").and()
 
-                .addFilterBefore(new CustomerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomerLoginFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
     }
 

@@ -6,12 +6,17 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 
 public class StringDemo {
-    String[] result = StringUtils.split("aa .b b. cc. d d ", ".");
+    String[] result = "aa .b b. cc. d d ".split("\\.", 99);
+
+    @Test
+    public void tes() {
+        System.out.println(result.length);
+        System.out.println(Arrays.toString(result));
+        System.out.println(">" + Arrays.toString(StringUtils.trimArrayElements(result)) + "<");
+    }
 
     @Test
     public void test() {
-        System.out.println(Arrays.toString(result));
-
         System.out.println(StringUtils.getFilename("D:/data/log/apis-fengdong-impl/apis-funfun-impl.txt"));
 
         System.out.println(StringUtils.getFilenameExtension("D:/data/log/apis-fengdong-impl/apis-funfun-impl.txt"));
@@ -35,7 +40,6 @@ public class StringDemo {
 
     @Test
     public void test2() {
-        System.out.println(">" + Arrays.toString(StringUtils.trimArrayElements(result)) + "<");
         // 去除两边空格
         System.out.println(">" + StringUtils.trimWhitespace(" a a . b b . ") + "<");
         // 去除所有空格

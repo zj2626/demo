@@ -5,15 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AuthorityController {
 
-    @RequestMapping("/error/{code}")
+    @GetMapping("/error/{code}")
     public String error(@PathVariable String code) {
         return "/error/" + code;
     }
+
+    // 可有可无
+    //    @GetMapping("/login")
+    //    public String login() {
+    //        return "login";
+    //    }
 
     @PostMapping("/doLogin")
     public String myLogin(String username, String password) {

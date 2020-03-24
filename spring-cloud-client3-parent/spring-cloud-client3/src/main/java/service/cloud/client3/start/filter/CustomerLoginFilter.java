@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomerRequestFilter extends OncePerRequestFilter {
+public class CustomerLoginFilter extends OncePerRequestFilter {
     private RequestMatcher requestMatcher;
 
     @Autowired
@@ -30,7 +30,7 @@ public class CustomerRequestFilter extends OncePerRequestFilter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CustomerRequestFilter() {
+    public CustomerLoginFilter() {
         requestMatcher = new AntPathRequestMatcher("/doLogin", "POST");
     }
 
