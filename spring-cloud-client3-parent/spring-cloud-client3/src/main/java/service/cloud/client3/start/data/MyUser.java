@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class User implements UserDetails {
+public class MyUser implements UserDetails {
     private Integer id;
     private String username;
     private String password;

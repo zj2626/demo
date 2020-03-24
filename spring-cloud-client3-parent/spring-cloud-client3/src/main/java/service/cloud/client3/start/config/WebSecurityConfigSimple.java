@@ -4,22 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import service.cloud.client3.start.filter.MyLoginFilter;
+import service.cloud.client3.start.filter.CustomerRequestFilter;
 
 /**
  * security认证的两种模式:
  * 1. formLogin: 表单提交认证模式
  * 2. httpBasic: 浏览器与服务器作认证授权
  */
-@EnableWebSecurity
+//@EnableWebSecurity
 public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
     // https://blog.csdn.net/qq_22172133/article/details/86503223
+    // https://www.jianshu.com/p/4468a2fff879
 
     @Autowired
     private MyAuthenticationFailureHandler failureHandler;
@@ -66,7 +65,7 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 每个macher按照他们的声明顺序执行
                 // 任何用户都可以访问的URL
-                .antMatchers("/login", "/signup", "/process", "/api/**").permitAll()
+                .antMatchers("/login", "/signup", "/api/**").permitAll()
                 // 同时拥有两个角色的用户可以访问的URL
                 .antMatchers("/home").hasAnyAuthority("home")
                 .antMatchers("/user").hasAnyAuthority("user")
@@ -104,10 +103,9 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 // 添加一个LogoutHandler; 默认SecurityContextLogoutHandler会被添加为最后一个LogoutHandler
                 //                .addLogoutHandler(logoutHandler)
                 // 要移除的cookie
-                .deleteCookies("cookie_Names")
+                .deleteCookies("cookie_Names").and()
 
-                .and()
-                .addFilterBefore(new MyLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomerRequestFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
     }
 

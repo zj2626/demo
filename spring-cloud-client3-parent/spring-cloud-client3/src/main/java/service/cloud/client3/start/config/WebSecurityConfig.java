@@ -3,18 +3,29 @@ package service.cloud.client3.start.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import service.cloud.client3.start.data.Database;
+import service.cloud.client3.start.filter.*;
 import service.cloud.client3.start.utils.MyPasswordEncoder;
 
 import java.util.Set;
 
-//@EnableWebSecurity
+/**
+ * EnableGlobalMethodSecurity 参数:
+ * 1. prePostEnabled: 开启了基于表达式的方法安全控制 @PreAuthorize, @PostAuthorize, @PreFilter, @PostFilter
+ * 2. securedEnabled: 开启了角色注解 @Secured
+ * 3. jsr250Enabled:  启用 JSR-250 安全控制注解 @DenyAll @PermitAll @RolesAllowed
+ */
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -25,6 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailsService myUserDetailsService;
     @Autowired
     private Database database;
+    @Autowired
+    private CustomerRequestFilter myRequestFilter;
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
+    @Autowired
+    private CustomLogoutSuccessHandler logoutSuccessHandler;
+    @Autowired
+    private MyAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private MyAccessDeniedHandler accessDeniedHandler;
 
     /**
      * 配置用户认证信息+权限
@@ -48,21 +69,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
 
-        registry.antMatchers("/login", "/signup", "/api/**").permitAll();
+        registry.antMatchers("/login", "/doLogin", "/signup", "/api/**").permitAll();
         Set<String> urls = database.getUrls();
         for (String url : urls) {
             String permission = database.getPermission(url);
             registry.antMatchers(url).hasAnyAuthority(permission);
         }
 
-        registry.anyRequest().authenticated().and()
+        registry.and().authorizeRequests().anyRequest().authenticated()
 
                 // 允许用户进行基于表单的认证-指定登录页的路径-允许所有用户访问登录页
-                .formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and()
-                .csrf().disable()
+//                .and().formLogin().loginPage("/login")
+//                .successHandler(successHandler).failureHandler(failureHandler).permitAll()
+//                .and().httpBasic()
 
                 // 登出
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("cookie_Names")
+                .and().logout().logoutUrl("/logout")
+                .addLogoutHandler(logoutHandler).logoutSuccessHandler(logoutSuccessHandler)
+
+                /**
+                 * AuthenticationEntryPoint 该类用来统一处理 AuthenticationException (401 错误 - 未授权) 异常
+                 * AccessDeniedHandler 该类用来统一处理 AccessDeniedException (403 错误 - 被禁止)异常
+                 */
+                .and().exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+
+                // 防跨站点攻击
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+
+                .and().addFilterBefore(myRequestFilter, UsernamePasswordAuthenticationFilter.class)
         ;
     }
 

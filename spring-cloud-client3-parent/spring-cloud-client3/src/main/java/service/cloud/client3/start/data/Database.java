@@ -84,21 +84,23 @@ public class Database implements InitializingBean {
         urlPermission.put("/db/**", "db");
     }
 
-    public User getUserInfoByName(String username) {
+    public MyUser getUserInfoByName(String username) {
         String password = userInfo.get(username);
         List<String> roles = userRoles.get(username);
-        Set<String> permissions = new HashSet<>();
-        for (String role : roles) {
-            permissions.addAll(rolePermissions.get(role));
-        }
         List<Permission> permissionList = new ArrayList<>();
-        for (String permission : permissions) {
-            Permission p = new Permission();
-            p.setName(permission);
-            permissionList.add(p);
+        if (null != roles) {
+            Set<String> permissions = new HashSet<>();
+            for (String role : roles) {
+                permissions.addAll(rolePermissions.get(role));
+            }
+            for (String permission : permissions) {
+                Permission p = new Permission();
+                p.setName(permission);
+                permissionList.add(p);
+            }
         }
 
-        User user = new User();
+        MyUser user = new MyUser();
         user.setId(new Random().nextInt(100));
         user.setUsername(username);
         user.setPassword(password);
@@ -113,6 +115,10 @@ public class Database implements InitializingBean {
 
     public boolean getUserByName(String username) {
         return null != userInfo.get(username);
+    }
+
+    public String getPasswordByName(String username) {
+        return userInfo.get(username);
     }
 
     public List<String> getUserRolesById(String username) {
