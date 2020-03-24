@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -13,7 +14,7 @@ import service.cloud.client3.start.utils.MyPasswordEncoder;
 
 import java.util.Set;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -26,7 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Database database;
 
     /**
-     * 配置用户认证信息何权限
+     * 配置用户认证信息+权限
+     * 配置认证管理器 AuthenticationManager
      *
      * @param auth
      * @throws Exception
@@ -37,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 配置拦截请求资源
+     * 安全过滤器链配置
      *
      * @param http
      * @throws Exception
@@ -62,6 +64,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 登出
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("cookie_Names")
         ;
+    }
+
+    /**
+     * 核心过滤器配置 一般不会过多来自定义
+     *
+     * @param web
+     * @throws Exception
+     */
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
     }
 
     @Bean

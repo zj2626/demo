@@ -4,16 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import service.cloud.client3.start.filter.MyLoginFilter;
 
 /**
  * security认证的两种模式:
  * 1. formLogin: 表单提交认证模式
  * 2. httpBasic: 浏览器与服务器作认证授权
  */
-//@EnableWebSecurity
+@EnableWebSecurity
 public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
     // https://blog.csdn.net/qq_22172133/article/details/86503223
 
@@ -23,7 +27,8 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
     private MyAuthenticationSuccessHandler successHandler;
 
     /**
-     * 配置用户认证信息何权限
+     * 配置用户认证信息+权限
+     * 配置认证管理器 AuthenticationManager
      *
      * @param auth
      * @throws Exception
@@ -61,7 +66,7 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 每个macher按照他们的声明顺序执行
                 // 任何用户都可以访问的URL
-                .antMatchers("/login", "/signup", "/api/**").permitAll()
+                .antMatchers("/login", "/signup", "/process", "/api/**").permitAll()
                 // 同时拥有两个角色的用户可以访问的URL
                 .antMatchers("/home").hasAnyAuthority("home")
                 .antMatchers("/user").hasAnyAuthority("user")
@@ -73,11 +78,18 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 //                .antMatchers("/**").fullyAuthenticated().and()
 
                 // 允许用户进行基于表单的认证-指定登录页的路径-允许所有用户访问登录页
-                .formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and()
+                .formLogin()
+                .loginPage("/login")
+//                .loginProcessingUrl("/process")
+                .usernameParameter("username").passwordParameter("password")
+                .successHandler(successHandler).failureHandler(failureHandler)
+                .permitAll().and()
+//                .oauth2Login().loginPage("/login").successHandler(successHandler).failureHandler(failureHandler).permitAll().and()
+                // 允许用户使用HTTP基于验证进行认证
+                .httpBasic().and()
+
                 // 防跨站点攻击
                 .csrf().disable()
-                // 允许用户使用HTTP基于验证进行认证
-                //                .httpBasic().and()
 
                 // 登出
                 .logout()
@@ -93,6 +105,9 @@ public class WebSecurityConfigSimple extends WebSecurityConfigurerAdapter {
                 //                .addLogoutHandler(logoutHandler)
                 // 要移除的cookie
                 .deleteCookies("cookie_Names")
+
+                .and()
+                .addFilterBefore(new MyLoginFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
     }
 
