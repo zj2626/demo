@@ -3,6 +3,8 @@ package service.cloud.client3.start.data;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -139,5 +141,17 @@ public class Database implements InitializingBean {
 
     public String getPermission(String url) {
         return urlPermission.get(url);
+    }
+
+    public Map<String, String> getAllPermission() {
+        return urlPermission;
+    }
+
+    public Map<String, ConfigAttribute> getUrlPermission() {
+        Map<String, ConfigAttribute> result = new HashMap<>();
+        for (Map.Entry<String, String> entry : urlPermission.entrySet()) {
+            result.put(entry.getKey(), new SecurityConfig(entry.getValue()));
+        }
+        return result;
     }
 }

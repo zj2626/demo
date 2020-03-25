@@ -26,7 +26,6 @@ public class CustomerLoginFilter extends OncePerRequestFilter {
     @Autowired
     private Database database;
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -47,11 +46,13 @@ public class CustomerLoginFilter extends OncePerRequestFilter {
     public void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("AAAA > " + request.getRequestURI() + " _ " + header);
+        System.out.println("\n" +
+                Thread.currentThread().getName() + " AAAA > 请求地址: " + request.getRequestURI() + " --[ " + header + " ]");
+        System.out.println(
+                Thread.currentThread().getName() + " AAAA > 用户信息: " + (SecurityContextHolder.getContext().getAuthentication()));
 
-        System.out.println("BBBB > " + (SecurityContextHolder.getContext().getAuthentication()));
         // 验证登录信息 + 保存登录信息
-        if (requestMatcher.matches(request)) {
+        if (requestMatcher.matches(request) && null == SecurityContextHolder.getContext().getAuthentication()) {
             // 验证登录信息
             String username = request.getParameter("username");
             String password = request.getParameter("password");

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import service.cloud.client3.start.data.Database;
 import service.cloud.client3.start.filter.*;
@@ -35,6 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomerLoginFilter myLoginFilter;
     @Autowired
+    private CustomerPermissionFilter myPermissionFilter;
+    @Autowired
     private CustomLogoutHandler logoutHandler;
     @Autowired
     private CustomLogoutSuccessHandler logoutSuccessHandler;
@@ -43,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAccessDeniedHandler accessDeniedHandler;
 
-    private static String[] ignoreUrl =
+    public static String[] ignoreUrl =
             ("/swagger-ui.html,/swagger-resources/**,/swagger/**,/**/springfox-swagger-ui/**," +
                     "/**/v2/api-docs," +
                     "/v2/api-docs" +
@@ -73,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
 
+        // ignoreUrl地址不会验证登录状态 但是还是会经过filter
         registry.antMatchers(ignoreUrl).permitAll();
         Set<String> urls = database.getUrls();
         for (String url : urls) {
@@ -101,9 +105,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 防跨站点攻击
                 .and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-                .and().addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
+        // 用户登录信息验证
+        registry.and().addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class);
+        // 用户权限信息验证
+        registry.and().addFilterBefore(myPermissionFilter, FilterSecurityInterceptor.class);
         ;
     }
 
