@@ -105,8 +105,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 防跨站点攻击
                 .and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+//                .and().anonymous().disable()
+        ;
+
+        /**
+         * 默认过滤器之间的order距离都是100
+         * addFilterBefore, 会把自定义过滤器插入过滤器链中, 顺序是第二个参数指定的过滤器的前, (排序用的order-1)
+         * addFilterBefore(A, B.class) 给A的序号比B小1，addFilterAfter(A, B.class) 给A的序号比B大1
+         */
         // 用户登录信息验证
         registry.and().addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class);
         // 用户权限信息验证

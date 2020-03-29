@@ -35,6 +35,9 @@ public class CustomerPermissionFilter extends AbstractSecurityInterceptor implem
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         CustomerFilterInvocation fi = new CustomerFilterInvocation(request, response, chain);
 
+        /**
+         * 白名单的请求, 用户是匿名用户(经过AnonymousAuthenticationFilter设置的, 这样后面的filter就不需要进行特殊处理)
+         */
         PathMatcher pathMatcher = new AntPathMatcher();
         for (String path : WebSecurityConfig.ignoreUrl) {
             if (pathMatcher.match(path, fi.getRequest().getRequestURI())) {
