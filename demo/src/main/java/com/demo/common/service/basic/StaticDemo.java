@@ -2,7 +2,11 @@ package com.demo.common.service.basic;
 
 import com.demo.common.service.basic.bean.A;
 import com.demo.common.service.basic.bean.BeanA;
+import com.demo.common.service.basic.bean.ResultInfo;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 初始化顺序
@@ -46,5 +50,21 @@ public class StaticDemo {
         System.out.println(beanA.getB().getSingle());
         System.out.println(beanB.getB().getSingle());
         System.out.println(BeanA.BeanB.getSingle());
+    }
+
+    @Test
+    public void test2(){
+        ResultInfo info = new ResultInfo();
+        info.setResult(1);
+        List<ResultInfo.SendDetail> sendDetails = new ArrayList<>();
+        info.setSendDetails(sendDetails);
+
+        ResultInfo info2 = new ResultInfo();
+        info2.setResult(1);
+        List<ResultInfo.SendDetail> sendDetails2 = new ArrayList<>();
+        info2.setSendDetails(sendDetails2);
+
+        System.out.println(info.getSendDetails().hashCode());
+        System.out.println(info2.getSendDetails().hashCode());
     }
 }

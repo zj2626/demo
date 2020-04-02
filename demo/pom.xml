@@ -513,5 +513,17 @@
             <version>5.2.2.RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <!--mybatis generator-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.28</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

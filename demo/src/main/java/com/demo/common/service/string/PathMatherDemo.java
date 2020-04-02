@@ -1,8 +1,8 @@
 package com.demo.common.service.string;
 
 import org.junit.Test;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+//import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -40,7 +40,7 @@ public class PathMatherDemo {
 
     @Test
     public void testRequest() {
-        RequestMatcher pathMatcher = new AntPathRequestMatcher("/com/abc/**/service", "POST");
+//        RequestMatcher pathMatcher = new AntPathRequestMatcher("/com/abc/**/service", "POST");
         // 底层用的也是 AntPathMatcher, 封装了些其他功能
     }
 }
