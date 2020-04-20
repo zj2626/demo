@@ -8,11 +8,15 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.UUID;
 
-public class ThreadLocalDemo extends MyExcutor {
+public class ThreadLocalDemo2 extends MyExcutor {
     // ThreadLocal的作用就是省的传参数 其保证每个线程中的某对象的独立--独享变量;(不像成员属性可能由于注入(共享)而导致线程安全问题), 可以理解为局部变量(形参)
 
     // ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用，也即变量在线程间隔离而在方法或类间共享的场景
-    private static ThreadLocal<SqlConnection> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<SqlConnection> threadLocal = ThreadLocal.withInitial(() -> {
+        System.out.println('\n' + Thread.currentThread().getName() + " >>>> initialValue");
+        SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
+        return sqlConnection;
+    });
 
     @Test
     public void test() throws InterruptedException {
@@ -34,20 +38,11 @@ public class ThreadLocalDemo extends MyExcutor {
         return null;
     }
 
-    // 每一个Thread对象都有一个ThreadLocalMap对象，这个ThreadLocalMap持有对象的引用
-    // ThreadLocalMap以当前的threadlocal对象为key，以真正的存储对象为value。get时通过threadlocal实例就可以找到绑定在当前线程上的对象。
-    // 每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来
     private void optionOne() {
         try {
-            // set的部分可以放到initialValue方法中执行
-            if (null == ThreadLocalDemo.threadLocal.get()) {
-                SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
-                ThreadLocalDemo.threadLocal.set(sqlConnection);
-            }
-
             for (int i = 0; i < 5; i++) {
                 // get得到null的时候会调用setInitialValue方法，从而调用initialValue方法，所以要set的值可以直接在initialValue中返回
-                SqlConnection sqlConnection = ThreadLocalDemo.threadLocal.get();
+                SqlConnection sqlConnection = ThreadLocalDemo2.threadLocal.get();
                 Thread.sleep(100);
                 System.out.println(Thread.currentThread().getName() + " -get--" + sqlConnection);
 
@@ -59,23 +54,23 @@ public class ThreadLocalDemo extends MyExcutor {
         } finally {
             //            int a = (int) (1 + Math.random() * (10 - 1 + 1));
             //            if (a % 2 == 0) {
-            ThreadLocalDemo.threadLocal.remove();
+            ThreadLocalDemo2.threadLocal.remove();
             //            }
         }
     }
 
     private void show() {
-        System.out.println(Thread.currentThread().getName() + " - show 1 -" + ThreadLocalDemo.threadLocal.get());
-        ThreadLocalDemo.threadLocal.remove();
+        System.out.println(Thread.currentThread().getName() + " - show 1 -" + ThreadLocalDemo2.threadLocal.get());
+        ThreadLocalDemo2.threadLocal.remove();
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 2 -" + ThreadLocalDemo.threadLocal.get());
-        SqlConnection sqlConnection = ThreadLocalDemo.threadLocal.get();
-        System.out.println(Thread.currentThread().getName() + " - show 3 -" + ThreadLocalDemo.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 2 -" + ThreadLocalDemo2.threadLocal.get());
+        SqlConnection sqlConnection = ThreadLocalDemo2.threadLocal.get();
+        System.out.println(Thread.currentThread().getName() + " - show 3 -" + ThreadLocalDemo2.threadLocal.get());
         System.out.println(Thread.currentThread().getName() + " - show 4 -" + sqlConnection);
-        ThreadLocalDemo.threadLocal.remove();
+        ThreadLocalDemo2.threadLocal.remove();
         System.out.println(Thread.currentThread().getName() + " - show 5 -" + sqlConnection);
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 6 -" + ThreadLocalDemo.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 6 -" + ThreadLocalDemo2.threadLocal.get());
     }
 
     @Data

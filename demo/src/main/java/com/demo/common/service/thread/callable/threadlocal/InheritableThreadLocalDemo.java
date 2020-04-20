@@ -8,17 +8,36 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.UUID;
 
-public class ThreadLocalDemo extends MyExcutor {
-    // ThreadLocal的作用就是省的传参数 其保证每个线程中的某对象的独立--独享变量;(不像成员属性可能由于注入(共享)而导致线程安全问题), 可以理解为局部变量(形参)
+/**
+ * @name: InheritableThreadLocalDemo
+ * @description: InheritableThreadLocal
+ * @author: zhangj
+ * @create: 2020-04-20 19:56
+ **/
+public class InheritableThreadLocalDemo extends MyExcutor {
 
-    // ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用，也即变量在线程间隔离而在方法或类间共享的场景
-    private static ThreadLocal<SqlConnection> threadLocal = new ThreadLocal<>();
+    private static InheritableThreadLocal<InheritableThreadLocalDemo.SqlConnection> threadLocal = new InheritableThreadLocal();
 
     @Test
     public void test() throws InterruptedException {
+        InheritableThreadLocalDemo.SqlConnection sqlConnection =
+                new InheritableThreadLocalDemo.SqlConnection(Thread.currentThread().getName());
+        InheritableThreadLocalDemo.threadLocal.set(sqlConnection);
+        System.out.println(Thread.currentThread().getName() + " -get--" + InheritableThreadLocalDemo.threadLocal.get());
+
         excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
+
+        for (int i = 0; i < 15; i++) {
+            Thread.sleep(100);
+            System.out.println(Thread.currentThread().getName() + " -get--" + InheritableThreadLocalDemo.threadLocal.get());
+            if(i >= 5){
+                InheritableThreadLocalDemo.threadLocal.remove();
+            }
+        }
         excutorPool.futureGet();
+        System.out.println(Thread.currentThread().getName() + " -get--" + InheritableThreadLocalDemo.threadLocal.get());
+
     }
 
     @Override
@@ -39,15 +58,9 @@ public class ThreadLocalDemo extends MyExcutor {
     // 每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来
     private void optionOne() {
         try {
-            // set的部分可以放到initialValue方法中执行
-            if (null == ThreadLocalDemo.threadLocal.get()) {
-                SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
-                ThreadLocalDemo.threadLocal.set(sqlConnection);
-            }
-
             for (int i = 0; i < 5; i++) {
                 // get得到null的时候会调用setInitialValue方法，从而调用initialValue方法，所以要set的值可以直接在initialValue中返回
-                SqlConnection sqlConnection = ThreadLocalDemo.threadLocal.get();
+                InheritableThreadLocalDemo.SqlConnection sqlConnection = InheritableThreadLocalDemo.threadLocal.get();
                 Thread.sleep(100);
                 System.out.println(Thread.currentThread().getName() + " -get--" + sqlConnection);
 
@@ -57,25 +70,22 @@ public class ThreadLocalDemo extends MyExcutor {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            //            int a = (int) (1 + Math.random() * (10 - 1 + 1));
-            //            if (a % 2 == 0) {
-            ThreadLocalDemo.threadLocal.remove();
-            //            }
+            InheritableThreadLocalDemo.threadLocal.remove();
         }
     }
 
     private void show() {
-        System.out.println(Thread.currentThread().getName() + " - show 1 -" + ThreadLocalDemo.threadLocal.get());
-        ThreadLocalDemo.threadLocal.remove();
+        System.out.println(Thread.currentThread().getName() + " - show 1 -" + InheritableThreadLocalDemo.threadLocal.get());
+        InheritableThreadLocalDemo.threadLocal.remove();
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 2 -" + ThreadLocalDemo.threadLocal.get());
-        SqlConnection sqlConnection = ThreadLocalDemo.threadLocal.get();
-        System.out.println(Thread.currentThread().getName() + " - show 3 -" + ThreadLocalDemo.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 2 -" + InheritableThreadLocalDemo.threadLocal.get());
+        InheritableThreadLocalDemo.SqlConnection sqlConnection = InheritableThreadLocalDemo.threadLocal.get();
+        System.out.println(Thread.currentThread().getName() + " - show 3 -" + InheritableThreadLocalDemo.threadLocal.get());
         System.out.println(Thread.currentThread().getName() + " - show 4 -" + sqlConnection);
-        ThreadLocalDemo.threadLocal.remove();
+        InheritableThreadLocalDemo.threadLocal.remove();
         System.out.println(Thread.currentThread().getName() + " - show 5 -" + sqlConnection);
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 6 -" + ThreadLocalDemo.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 6 -" + InheritableThreadLocalDemo.threadLocal.get());
     }
 
     @Data
