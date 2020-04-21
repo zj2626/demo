@@ -133,15 +133,26 @@ public class StreamDemo {
                         TreeMap::new)
                 );
         System.out.println(map);
-        
+
         System.out.println("###### list数据 根据type分组");
         Map<String, List<ToEntity>> listMap = to.stream()
                 .collect(Collectors.groupingBy(ToEntity::getType));
         System.out.println(listMap);
-    
+
+        System.out.println("###### set数据 根据type分组");
+        Map<String, Set<ToEntity>> setMap = to.stream()
+                .collect(Collectors.groupingBy(ToEntity::getType, Collectors.toSet()));
+        System.out.println(setMap);
+
+        System.out.println("###### set数据 根据type分组");
+        Map<String, Set<Integer>> listAgeMap = to.stream()
+                .collect(Collectors.groupingBy(ToEntity::getType, Collectors.mapping(ToEntity::getAge, Collectors.toSet())));
+        System.out.println(listAgeMap);
+
         System.out.println("###### list数据 根据type分组,然后根据name分组");
         Map<String, Map<String, List<ToEntity>>> mapMap = to.stream()
                 .collect(Collectors.groupingBy(ToEntity::getType, Collectors.groupingBy(ToEntity::getName)));
         System.out.println(mapMap);
+
     }
 }
