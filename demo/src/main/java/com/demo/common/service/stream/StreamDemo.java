@@ -149,6 +149,11 @@ public class StreamDemo {
                 .collect(Collectors.groupingBy(ToEntity::getType, Collectors.mapping(ToEntity::getAge, Collectors.toSet())));
         System.out.println(listAgeMap);
 
+        System.out.println("###### 数据 合计个数");
+        Map<String, Long> countMap = to.stream()
+                .collect(Collectors.groupingBy(ToEntity::getType, Collectors.counting()));
+        System.out.println(countMap);
+
         System.out.println("###### list数据 根据type分组,然后根据name分组");
         Map<String, Map<String, List<ToEntity>>> mapMap = to.stream()
                 .collect(Collectors.groupingBy(ToEntity::getType, Collectors.groupingBy(ToEntity::getName)));
