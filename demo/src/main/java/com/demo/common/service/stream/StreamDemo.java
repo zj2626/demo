@@ -107,6 +107,13 @@ public class StreamDemo {
                         toEntity -> toEntity)
                 );
         System.out.println(map);
+
+        System.out.println("###### list转HashMap value为另一个属性");
+        Map<String, Integer> mapTemp = to.stream()
+                .collect(Collectors.toMap(
+                        ToEntity::getType,
+                        ToEntity::getAge)
+                );
         
         System.out.println("###### list转HashMap 在有重复key情况下 (Key冲突, 引入一个合并函数,设定保留哪个条目)");
         // Function.identity() 就等同于 toEntity -> toEntity
