@@ -88,6 +88,12 @@ public class StreamDemo {
         System.out.println("###### 转换类型 打印");
         to.forEach(System.out::println);
         
+        System.out.println("###### list数据 原生简单排序");
+        to.sort(Comparator.comparing(ToEntity::getType));
+        to.sort(Comparator.comparing(ToEntity::getType).reversed());
+        to.sort(Comparator.comparing(ToEntity::getType).thenComparing(ToEntity::getName));
+        to.sort(Comparator.comparing(ToEntity::getType).reversed().thenComparing(ToEntity::getName));
+
         System.out.println("###### list数据 排序");
         to = to.stream()
                 .sorted(Comparator.comparing(ToEntity::getType).reversed())
