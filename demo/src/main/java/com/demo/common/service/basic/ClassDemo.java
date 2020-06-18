@@ -29,6 +29,14 @@ public class ClassDemo {
         System.out.println(Father.class.isAssignableFrom(Father.class));
     }
 
+    /**
+     * 使用反射的方式设置默认值
+     *
+     * @param o
+     * @return void
+     * @author zj2626
+     * @date 2020/6/18
+     */
     public static void applyDefaultValue(Object o) {
         Class sourceClass = o.getClass();
         //获取对象所有字段 包括父类
