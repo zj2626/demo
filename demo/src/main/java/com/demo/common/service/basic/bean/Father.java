@@ -1,6 +1,6 @@
 package com.demo.common.service.basic.bean;
 
-public class B {
+public class Father {
     static {
         System.out.println("B--static");
     }
@@ -9,11 +9,11 @@ public class B {
         System.out.println("B--not static");
     }
 
-    public B() {
+    public Father() {
         System.out.println("B--constructor");
     }
 
-    public static class D {
+    public static class StaticInFather {
         static {
             System.out.println("D--static");
         }
@@ -22,7 +22,7 @@ public class B {
             System.out.println("D--not static");
         }
 
-        public D() {
+        public StaticInFather() {
             System.out.println("D--constructor");
         }
     }

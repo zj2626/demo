@@ -1,6 +1,6 @@
 package com.demo.common.service.basic;
 
-import com.demo.common.service.basic.bean.A;
+import com.demo.common.service.basic.bean.Son;
 import com.demo.common.service.basic.bean.BeanA;
 import com.demo.common.service.basic.bean.ResultInfo;
 import org.junit.Test;
@@ -23,11 +23,11 @@ import java.util.List;
 public class StaticDemo {
 
     public static void main(String[] args) {
-        A a = new A();
+        Son a = new Son();
         System.out.println("--------------");
-        A a1 = new A();
+        Son a1 = new Son();
         System.out.println("--------------");
-        A.C c = new A.C();
+        Son.StaticInSon c = new Son.StaticInSon();
     }
 
     @Test
