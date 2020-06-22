@@ -1,5 +1,0 @@
-myFirstFilter=hello.service.filter.FirstFilter
-mySecondFilter=hello.service.filter.SecondFilter
-myOtherFilter=hello.service.filter.OtherFilter
-annotationFirstFilter=hello.service.filter.AnnotationFirstFilter
-annotationSecondFilter=hello.service.filter.AnnotationSecondFilter
