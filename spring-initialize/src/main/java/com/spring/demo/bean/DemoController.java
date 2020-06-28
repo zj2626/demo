@@ -3,12 +3,12 @@ package com.spring.demo.bean;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/demo")
 public class DemoController {
     private static Map<String, Object> map;
 
@@ -28,5 +28,13 @@ public class DemoController {
         System.out.println("product");
         System.out.println(JSON.toJSONString(map));
         return "index";
+    }
+
+    @RequestMapping("/productJson")
+    @ResponseBody
+    public Map<String, Object> productJson() {
+        System.out.println("productJson");
+        System.out.println(JSON.toJSONString(map));
+        return map;
     }
 }
