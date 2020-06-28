@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,4 +16,6 @@ public class ToEntity {
     Double score;
     int age;
     String type;
+    Long longSize;
+    BigDecimal price;
 }
