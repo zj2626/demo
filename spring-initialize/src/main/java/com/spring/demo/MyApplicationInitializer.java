@@ -14,6 +14,7 @@ import javax.servlet.ServletRegistration;
  * <p>
  * 在容器启动的时候会调用到SpringServletContainerInitializer#onStartup方法
  * 其会通过注解@HandlesTypes({WebApplicationInitializer.class})把所有的WebApplicationInitializer实现都赋值到onStartup的参数Set<>webAppInitializerClasses中
+ * SpringServletContainerInitializer#onStartup方法是通过SPI机制: 当启动web容器的时候，会自动到添加的相应jar包下找到META-INF/services下以ServletContainerInitializer的全路径名称命名的文件，它的内容为ServletContainerInitializer实现类的全路径，将它们实例化
  */
 public class MyApplicationInitializer implements WebApplicationInitializer {
     @Override
