@@ -72,7 +72,8 @@ public class StreamDemo {
         List<FromEntity> from = Lists.newArrayList(
                 new FromEntity("zj", 1.2, 5, "b"),
                 new FromEntity("eq", 1.1, 2, "a"),
-                new FromEntity("ay", 1.0, 7, "c")
+                new FromEntity("ay", 1.0, 7, "c"),
+                new FromEntity("HHH", 9.0, 7, "c")
         );
 
         List<ToEntity> to = from.stream().map(fromEntity -> {
@@ -81,6 +82,8 @@ public class StreamDemo {
                     .score(fromEntity.getScore())
                     .age(fromEntity.getAge())
                     .type(fromEntity.getType())
+                    .longSize(2L)
+                    .price(BigDecimal.ONE)
                     .build();
 
             return toEntity;
@@ -101,20 +104,18 @@ public class StreamDemo {
                 .collect(Collectors.toList());
         to.forEach(System.out::println);
 
+        Map<String, ToEntity> map;
         System.out.println("###### list转HashMap 在没有重复key情况下");
-        Map<String, ToEntity> map = to.stream()
-                .collect(Collectors.toMap(
-                        ToEntity::getType,
-                        toEntity -> toEntity)
-                );
-        System.out.println(map);
-
-        System.out.println("###### list转HashMap value为另一个属性");
-        Map<String, Integer> mapTemp = to.stream()
-                .collect(Collectors.toMap(
-                        ToEntity::getType,
-                        ToEntity::getAge)
-                );
+        try{
+            map = to.stream()
+                    .collect(Collectors.toMap(
+                            ToEntity::getType,
+                            toEntity -> toEntity)
+                    );
+            System.out.println(map);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("###### list转HashMap 在有重复key情况下 (Key冲突, 引入一个合并函数,设定保留哪个条目)");
         // Function.identity() 就等同于 toEntity -> toEntity
@@ -126,6 +127,14 @@ public class StreamDemo {
                         (existing, replacement) -> replacement)
                 );
         System.out.println(map);
+
+        System.out.println("###### list转HashMap value为另一个属性");
+        Map<String, Integer> mapTemp = to.stream()
+                .collect(Collectors.toMap(
+                        ToEntity::getType,
+                        ToEntity::getAge,
+                        (k1, k2) -> k1)
+                );
 
         System.out.println("###### list转ConcurrentMap");
         map = to.stream()
@@ -188,5 +197,13 @@ public class StreamDemo {
 
         Map<String, DoubleSummaryStatistics> volumesMap2 = to.stream()
                 .collect(Collectors.groupingBy(ToEntity::getType, Collectors.summarizingDouble(ToEntity::getScore)));
+
+        System.out.println("###### list数据 去重");
+        System.out.println(to.size());
+        to = to.stream().collect(
+                Collectors.collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getType() + ":" + o.getAge()))), ArrayList::new)
+        );
+        System.out.println(to.size());
     }
 }
