@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property resource="application.properties"/>
+    <property name="application.name" value="${spring.application.name}"/>
+    <property name="mapper.packages" value="${ecbp.mapper.packages}"/>
+    <property name="logDir" value="C:/logs/"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出日志到文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/${application.name}/${application.name}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15thread] %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出到error -->
+    <appender name="ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${application.name}/${application.name}-error.log</File>
+        <append>true</append>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>5MB</MaxFileSize>
+        </triggeringPolicy>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${logDir}/${application.name}/${application.name}-error.log.%i</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>20</MaxIndex>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%15thread] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 实现mybatis日志打印 -->
+    <logger name="${mapper.packages}" level="DEBUG"/>
+
+    <logger name="err" level="ERROR">
+        <appender-ref ref="ERR"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="ERR"/>-->
+    </root>
+</configuration>
