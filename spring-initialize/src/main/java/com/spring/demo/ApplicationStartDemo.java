@@ -9,9 +9,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 /**
  * 模拟tomcat通过main方法启动
  */
-public class MyApplicationStartDemo {
+public class ApplicationStartDemo {
     public static void main(String[] args) {
-        MyApplicationStartDemo.run(MyApplicationStartDemo.class, args);
+        ApplicationStartDemo.run(ApplicationStartDemo.class, args);
     }
 
     public static void run(Class<?> primarySource, String... args) {
@@ -19,7 +19,8 @@ public class MyApplicationStartDemo {
         try {
             // tomcat.setHostname("localhost");
             tomcat.setPort(8080);
-            tomcat.addWebapp("/", "C:/Users/AY180/code/demo/spring-initialize/src/main/resources/html/");
+//            tomcat.addWebapp("/", "C:/Users/AY180/code/demo/spring-initialize/src/main/resources/html/");
+            tomcat.addWebapp("/", "F:/demo/spring-initialize/src/main/resources/html/");
 
             //            initContext(tomcat);
             tomcat.start();

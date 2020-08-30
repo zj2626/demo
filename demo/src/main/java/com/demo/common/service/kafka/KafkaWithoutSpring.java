@@ -26,9 +26,12 @@ public class KafkaWithoutSpring {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 100; i++) {
-                String msg = i + "";
-                producer.send(new ProducerRecord<>("kfk-to-ay-08", msg));
+            for (int i = 0; i < 2; i++) {
+                String msg = "{}";
+//                producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
+                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
+//                producer.send(new ProducerRecord<>("dingding-talk-text-notify-topic", msg));
+//                producer.send(new ProducerRecord<>("reload-permission-user-topic", msg));
                 System.out.println("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -57,7 +60,7 @@ public class KafkaWithoutSpring {
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList("kfk-to-ay-08"));
+        kafkaConsumer.subscribe(Arrays.asList("gs-upload-fuel-order-topic"));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
             System.out.println(records.count());
