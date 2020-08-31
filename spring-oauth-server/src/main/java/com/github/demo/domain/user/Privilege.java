@@ -9,5 +9,6 @@ public enum Privilege {
 
     ADMIN,     //admin
     UNITY,
+    DEMO,
     MOBILE
 }

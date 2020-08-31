@@ -10,12 +10,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import static com.github.demo.utils.OAuth2ServerKey.RESOURCE_ID;
 
 /**
- * // unity resource
- * UNITY 资源的访问权限配置
+ * // mobile resource
+ * MOBILE 资源的访问权限配置
  */
 @Configuration
 @EnableResourceServer
-public class UnityResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class DemoResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -29,11 +29,11 @@ public class UnityResourceServerConfiguration extends ResourceServerConfigurerAd
                 // session creation to be allowed (it's disabled by default in 2.0.6)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                // 所有以 /unity/  开头的 URL属于此资源
-                .requestMatchers().antMatchers("/unity/**")
+                // 所有以 /m/  开头的 URL属于此资源
+                .requestMatchers().antMatchers("/demo/**")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/unity/**").access("#oauth2.hasScope('read') and hasRole('UNITY')");
+                .antMatchers("/demo/**").access("#oauth2.hasScope('read') and hasRole('DEMO')");
 
     }
 }

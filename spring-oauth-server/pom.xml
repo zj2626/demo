@@ -227,17 +227,6 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.sitemesh</groupId>
-            <artifactId>sitemesh</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-
         <!--Test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -287,28 +276,6 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-            <!--<plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warSourceExcludes>*/classes/application.properties</warSourceExcludes>
-                    <packagingExcludes>*/classes/application.properties</packagingExcludes>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                        <manifestEntries>
-                            <Implementation-BuildNumber>${project.version}</Implementation-BuildNumber>
-                            <Implementation-Title>spring-oauth-server-bak(boot)</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-URL>http://monkeyk.com</Implementation-URL>
-                            <Implementation-Vendor>Not Vendor Yet, Inc.</Implementation-Vendor>
-                        </manifestEntries>
-                        <manifest>
-                            &lt;!&ndash;<mainClass>${start-class}</mainClass>&ndash;&gt;
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>-->
         </plugins>
     </build>
 
