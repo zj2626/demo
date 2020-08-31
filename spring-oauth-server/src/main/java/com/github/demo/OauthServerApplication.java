@@ -1,28 +1,24 @@
 package com.github.demo;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 
+
+/**
+ * 2017-12-05
+ *
+ * @author Shengzhao Li
+ */
 @SpringBootApplication
-@EnableDiscoveryClient
-@MapperScan({"com.github.demo.mapper"})
-@EnableFeignClients("com.github.demo.feignapi")
-@ComponentScan("com.github.demo")
-@EnableConfigurationProperties
-@PropertySource("classpath:application.properties")
 public class OauthServerApplication {
 
+    /**
+     * 不能直接运行 main
+     * 详细 请参考 others/how_to_use.txt 文件
+     *
+     * @param args args
+     */
     public static void main(String[] args) {
-        final SpringApplicationBuilder applicationBuilder =
-                new SpringApplicationBuilder(OauthServerApplication.class).web(WebApplicationType.SERVLET);
-        applicationBuilder.run(args);
+        SpringApplication.run(OauthServerApplication.class, args);
     }
-
 }
