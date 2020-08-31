@@ -89,7 +89,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .authorizationCodeServices(authorizationCodeServices)
                 .userDetailsService(userDetailsService)
                 .userApprovalHandler(userApprovalHandler())
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+        ;
     }
 
     @Bean
@@ -108,8 +109,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         // real 值可自定义
         oauthServer.realm("spring-oauth-server")
-                // 支持 client_credentials 的配置
-                .allowFormAuthenticationForClients();
+                // 支持 client_credentials 的配置 (允许表单认证)
+                .allowFormAuthenticationForClients()
+                .checkTokenAccess("permitAll()")
+        ;
     }
 
     @Bean
