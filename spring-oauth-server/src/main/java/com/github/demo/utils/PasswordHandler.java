@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author Shengzhao Li
  */
-public abstract class PasswordHandler {
+public class PasswordHandler {
 
 
 //    private PasswordEncoder passwordEncoder = SpringBeanHolder.getBean(PasswordEncoder.class);
