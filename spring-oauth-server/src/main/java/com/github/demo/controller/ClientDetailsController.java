@@ -1,7 +1,7 @@
 package com.github.demo.controller;
 
 import com.github.demo.service.OauthService;
-import com.github.demo.service.dto.OauthClientDetailsDto;
+import com.github.demo.dto.OauthClientDetailsDto;
 import com.github.demo.utils.OauthClientDetailsDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

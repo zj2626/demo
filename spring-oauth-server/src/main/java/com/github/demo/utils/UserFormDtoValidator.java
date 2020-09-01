@@ -2,7 +2,7 @@ package com.github.demo.utils;
 
 import com.github.demo.entity.Privilege;
 import com.github.demo.service.UserService;
-import com.github.demo.service.dto.UserFormDto;
+import com.github.demo.dto.UserFormDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

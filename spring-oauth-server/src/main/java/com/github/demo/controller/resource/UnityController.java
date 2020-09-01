@@ -1,9 +1,8 @@
 package com.github.demo.controller.resource;
 
 import com.github.demo.service.UserService;
-import com.github.demo.service.dto.UserJsonDto;
+import com.github.demo.dto.UserJsonDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;

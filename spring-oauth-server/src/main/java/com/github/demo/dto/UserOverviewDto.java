@@ -1,4 +1,4 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;

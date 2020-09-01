@@ -1,8 +1,8 @@
 package com.github.demo.service;
 
-import com.github.demo.service.dto.UserFormDto;
-import com.github.demo.service.dto.UserJsonDto;
-import com.github.demo.service.dto.UserOverviewDto;
+import com.github.demo.dto.UserFormDto;
+import com.github.demo.dto.UserJsonDto;
+import com.github.demo.dto.UserOverviewDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**

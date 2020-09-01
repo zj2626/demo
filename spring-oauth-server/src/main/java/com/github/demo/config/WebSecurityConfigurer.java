@@ -55,6 +55,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/oauth/rest_token*").permitAll()
                 .antMatchers("/login*").permitAll()
+                .antMatchers("/u1/**").permitAll()
 
                 // /user/ 开头的URL需要 ADMIN 权限
                 .antMatchers("/user/**").hasAnyRole("ADMIN")

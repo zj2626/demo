@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Shengzhao Li
  */
-public class SOSUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 3957586021470480642L;
 
@@ -24,10 +24,10 @@ public class SOSUserDetails implements UserDetails {
 
     protected List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-    public SOSUserDetails() {
+    public MyUserDetails() {
     }
 
-    public SOSUserDetails(User user) {
+    public MyUserDetails(User user) {
         this.user = user;
         initialAuthorities();
     }

@@ -1,8 +1,8 @@
 package com.github.demo.controller;
 
 import com.github.demo.service.UserService;
-import com.github.demo.service.dto.UserFormDto;
-import com.github.demo.service.dto.UserOverviewDto;
+import com.github.demo.dto.UserFormDto;
+import com.github.demo.dto.UserOverviewDto;
 import com.github.demo.utils.UserFormDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

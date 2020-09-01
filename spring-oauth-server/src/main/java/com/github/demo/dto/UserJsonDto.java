@@ -1,4 +1,4 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
 import com.github.demo.entity.Privilege;
 import com.github.demo.entity.User;

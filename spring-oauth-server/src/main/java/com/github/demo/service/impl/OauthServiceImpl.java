@@ -3,7 +3,7 @@ package com.github.demo.service.impl;
 import com.github.demo.entity.OauthClientDetails;
 import com.github.demo.repository.OauthRepository;
 import com.github.demo.service.OauthService;
-import com.github.demo.service.dto.OauthClientDetailsDto;
+import com.github.demo.dto.OauthClientDetailsDto;
 import com.github.demo.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

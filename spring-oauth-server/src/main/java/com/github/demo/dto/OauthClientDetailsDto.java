@@ -1,4 +1,4 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
 import com.github.demo.entity.OauthClientDetails;
 import com.github.demo.domain.shared.GuidGenerator;

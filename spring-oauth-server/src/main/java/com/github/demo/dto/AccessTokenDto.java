@@ -1,4 +1,4 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.StringUtils;

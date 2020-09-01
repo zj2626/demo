@@ -1,13 +1,13 @@
 package com.github.demo.service.impl;
 
-import com.github.demo.domain.security.SOSUserDetails;
+import com.github.demo.domain.security.MyUserDetails;
 import com.github.demo.entity.User;
 import com.github.demo.repository.UserRepository;
 import com.github.demo.service.UserService;
-import com.github.demo.service.dto.UserDto;
-import com.github.demo.service.dto.UserFormDto;
-import com.github.demo.service.dto.UserJsonDto;
-import com.github.demo.service.dto.UserOverviewDto;
+import com.github.demo.dto.UserDto;
+import com.github.demo.dto.UserFormDto;
+import com.github.demo.dto.UserJsonDto;
+import com.github.demo.dto.UserOverviewDto;
 import com.github.demo.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Not found any user for username[" + username + "]");
         }
 
-        return new SOSUserDetails(user);
+        return new MyUserDetails(user);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 (principal instanceof String || principal instanceof org.springframework.security.core.userdetails.User)) {
             return loadOauthUserJsonDto((OAuth2Authentication) authentication);
         } else {
-            final SOSUserDetails userDetails = (SOSUserDetails) principal;
+            final MyUserDetails userDetails = (MyUserDetails) principal;
             return new UserJsonDto(userRepository.findByGuid(userDetails.user().guid()));
         }
     }
