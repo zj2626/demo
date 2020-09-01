@@ -1,8 +1,8 @@
 package com.github.demo.service.dto;
 
-import com.github.demo.domain.user.Privilege;
-import com.github.demo.domain.user.User;
-import com.github.demo.filter.PasswordHandler;
+import com.github.demo.entity.Privilege;
+import com.github.demo.entity.User;
+import com.github.demo.utils.PasswordHandler;
 
 /**
  * 2016/3/25

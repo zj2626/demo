@@ -1,7 +1,7 @@
-package com.github.demo.domain.shared.security;
+package com.github.demo.domain.security;
 
-import com.github.demo.domain.user.Privilege;
-import com.github.demo.domain.user.User;
+import com.github.demo.entity.Privilege;
+import com.github.demo.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

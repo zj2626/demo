@@ -1,4 +1,4 @@
-package com.github.demo.domain.user;
+package com.github.demo.entity;
 
 /**
  * @author Shengzhao Li

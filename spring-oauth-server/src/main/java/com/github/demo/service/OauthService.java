@@ -1,6 +1,6 @@
 package com.github.demo.service;
 
-import com.github.demo.domain.oauth.OauthClientDetails;
+import com.github.demo.entity.OauthClientDetails;
 import com.github.demo.service.dto.OauthClientDetailsDto;
 
 import java.util.List;

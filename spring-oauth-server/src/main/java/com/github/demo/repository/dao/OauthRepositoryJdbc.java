@@ -9,11 +9,11 @@
  * it only in accordance with the terms of the license agreement you
  * entered into with MONKEYK Information Technology Co. Ltd.
  */
-package com.github.demo.dao;
+package com.github.demo.repository.dao;
 
-import com.github.demo.dao.mapper.OauthClientDetailsRowMapper;
-import com.github.demo.domain.oauth.OauthClientDetails;
-import com.github.demo.domain.oauth.OauthRepository;
+import com.github.demo.repository.dao.mapper.OauthClientDetailsRowMapper;
+import com.github.demo.entity.OauthClientDetails;
+import com.github.demo.repository.OauthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

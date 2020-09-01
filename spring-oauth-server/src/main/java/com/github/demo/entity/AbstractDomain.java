@@ -1,4 +1,4 @@
-package com.github.demo.domain;
+package com.github.demo.entity;
 
 import com.github.demo.domain.shared.GuidGenerator;
 import com.github.demo.utils.DateUtils;

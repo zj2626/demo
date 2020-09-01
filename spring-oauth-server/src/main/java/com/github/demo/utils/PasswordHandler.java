@@ -1,4 +1,4 @@
-package com.github.demo.filter;
+package com.github.demo.utils;
 
 import com.github.demo.utils.SpringBeanHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -9,9 +9,9 @@
  * it only in accordance with the terms of the license agreement you
  * entered into with MONKEYK Information Technology Co. Ltd.
  */
-package com.github.demo.dao.mapper;
+package com.github.demo.repository.dao.mapper;
 
-import com.github.demo.domain.oauth.OauthClientDetails;
+import com.github.demo.entity.OauthClientDetails;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

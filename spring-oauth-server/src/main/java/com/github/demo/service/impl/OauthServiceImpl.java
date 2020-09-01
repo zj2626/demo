@@ -1,7 +1,7 @@
 package com.github.demo.service.impl;
 
-import com.github.demo.domain.oauth.OauthClientDetails;
-import com.github.demo.domain.oauth.OauthRepository;
+import com.github.demo.entity.OauthClientDetails;
+import com.github.demo.repository.OauthRepository;
 import com.github.demo.service.OauthService;
 import com.github.demo.service.dto.OauthClientDetailsDto;
 import com.github.demo.utils.WebUtils;
@@ -35,6 +35,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     @Transactional(readOnly = true)
     public List<OauthClientDetailsDto> loadAllOauthClientDetailsDtos() {
+        LOG.info("loadAllOauthClientDetailsDtos");
         List<OauthClientDetails> clientDetailses = oauthRepository.findAllOauthClientDetails();
         return OauthClientDetailsDto.toDtos(clientDetailses);
     }
@@ -42,6 +43,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void archiveOauthClientDetails(String clientId) {
+        LOG.info("archiveOauthClientDetails {}", clientId);
         oauthRepository.updateOauthClientDetailsArchive(clientId, true);
         LOG.debug("{}|Update OauthClientDetails(clientId: {}) archive = true", WebUtils.getIp(), clientId);
     }
@@ -49,6 +51,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     @Transactional(readOnly = true)
     public OauthClientDetailsDto loadOauthClientDetailsDto(String clientId) {
+        LOG.info("loadOauthClientDetailsDto {}", clientId);
         final OauthClientDetails oauthClientDetails = oauthRepository.findOauthClientDetails(clientId);
         return oauthClientDetails != null ? new OauthClientDetailsDto(oauthClientDetails) : null;
     }
@@ -56,6 +59,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void registerClientDetails(OauthClientDetailsDto formDto) {
+        LOG.info("registerClientDetails {}", formDto);
         OauthClientDetails clientDetails = formDto.createDomain();
         oauthRepository.saveOauthClientDetails(clientDetails);
         LOG.debug("{}|Save OauthClientDetails: {}", WebUtils.getIp(), clientDetails);
