@@ -186,6 +186,9 @@ public class StreamDemo {
         BigDecimal result = to.stream().map(ToEntity::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println(result);
 
+        System.out.println("###### list数据 max");
+        System.out.println(to.stream().max(Comparator.comparing(ToEntity::getPrice)).orElse(null));
+
         System.out.println("###### list数据 根据type分组,求和");
         Map<String, LongSummaryStatistics> volumesMap = to.stream()
                 .collect(Collectors.groupingBy(ToEntity::getType, Collectors.summarizingLong(ToEntity::getLongSize)));
