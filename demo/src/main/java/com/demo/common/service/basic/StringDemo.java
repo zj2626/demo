@@ -29,4 +29,14 @@ public class StringDemo {
         System.out.println(c.intern() == c);
         System.out.println(c.intern() == d);
     }
+
+    @Test
+    public void test2() {
+        String a = "abcde";
+        String b = "abcde";
+        char[] c = {'a', 'b', 'c', 'd', 'e'};
+
+        System.out.println(a.equals(b));
+        System.out.println(a.equals(c.toString()));
+    }
 }
