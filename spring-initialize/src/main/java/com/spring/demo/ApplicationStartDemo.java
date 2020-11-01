@@ -22,7 +22,7 @@ public class ApplicationStartDemo {
 //            tomcat.addWebapp("/", "C:/Users/AY180/code/demo/spring-initialize/src/main/resources/html/");
             tomcat.addWebapp("/", "F:/demo/spring-initialize/src/main/resources/html/");
 
-            //            initContext(tomcat);
+            initContext(tomcat);
             tomcat.start();
             tomcat.getServer().await();
         } catch (Exception e) {
