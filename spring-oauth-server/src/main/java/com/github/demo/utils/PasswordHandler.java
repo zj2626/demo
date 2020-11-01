@@ -1,4 +1,4 @@
-package com.github.demo.filter;
+package com.github.demo.utils;
 
 import com.github.demo.utils.SpringBeanHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author Shengzhao Li
  */
-public abstract class PasswordHandler {
+public class PasswordHandler {
 
 
 //    private PasswordEncoder passwordEncoder = SpringBeanHolder.getBean(PasswordEncoder.class);

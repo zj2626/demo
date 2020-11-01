@@ -1,7 +1,7 @@
-package com.github.demo.domain.shared.security;
+package com.github.demo.domain.security;
 
-import com.github.demo.domain.user.Privilege;
-import com.github.demo.domain.user.User;
+import com.github.demo.entity.Privilege;
+import com.github.demo.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Shengzhao Li
  */
-public class SOSUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 3957586021470480642L;
 
@@ -24,10 +24,10 @@ public class SOSUserDetails implements UserDetails {
 
     protected List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-    public SOSUserDetails() {
+    public MyUserDetails() {
     }
 
-    public SOSUserDetails(User user) {
+    public MyUserDetails(User user) {
         this.user = user;
         initialAuthorities();
     }

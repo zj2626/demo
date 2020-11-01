@@ -1,4 +1,4 @@
-package com.github.demo.domain.shared;
+package com.github.demo.repository;
 
 /**
  * @author Shengzhao Li

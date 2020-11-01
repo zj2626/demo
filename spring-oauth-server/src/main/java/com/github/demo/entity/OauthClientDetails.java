@@ -1,4 +1,4 @@
-package com.github.demo.domain.oauth;
+package com.github.demo.entity;
 
 import com.github.demo.utils.DateUtils;
 

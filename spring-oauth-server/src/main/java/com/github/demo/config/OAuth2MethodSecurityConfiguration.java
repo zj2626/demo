@@ -19,6 +19,7 @@ public class OAuth2MethodSecurityConfiguration extends GlobalMethodSecurityConfi
 
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
+        // 提供oauth表达式方式的支持
         return new OAuth2MethodSecurityExpressionHandler();
     }
 

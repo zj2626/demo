@@ -1,8 +1,8 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
-import com.github.demo.domain.oauth.OauthClientDetails;
+import com.github.demo.entity.OauthClientDetails;
 import com.github.demo.domain.shared.GuidGenerator;
-import com.github.demo.filter.PasswordHandler;
+import com.github.demo.utils.PasswordHandler;
 import com.github.demo.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 

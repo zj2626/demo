@@ -9,10 +9,10 @@
  * it only in accordance with the terms of the license agreement you
  * entered into with MONKEYK Information Technology Co. Ltd.
  */
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
-import com.github.demo.domain.user.Privilege;
-import com.github.demo.domain.user.User;
+import com.github.demo.entity.Privilege;
+import com.github.demo.entity.User;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;

@@ -1,13 +1,13 @@
 package com.github.demo.service.impl;
 
-import com.github.demo.domain.shared.security.SOSUserDetails;
-import com.github.demo.domain.user.User;
-import com.github.demo.domain.user.UserRepository;
+import com.github.demo.domain.security.MyUserDetails;
+import com.github.demo.entity.User;
+import com.github.demo.repository.UserRepository;
 import com.github.demo.service.UserService;
-import com.github.demo.service.dto.UserDto;
-import com.github.demo.service.dto.UserFormDto;
-import com.github.demo.service.dto.UserJsonDto;
-import com.github.demo.service.dto.UserOverviewDto;
+import com.github.demo.dto.UserDto;
+import com.github.demo.dto.UserFormDto;
+import com.github.demo.dto.UserJsonDto;
+import com.github.demo.dto.UserOverviewDto;
 import com.github.demo.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,17 +41,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LOG.info("loadUserByUsername {}", username);
         User user = userRepository.findByUsername(username);
         if (user == null || user.archived()) {
             throw new UsernameNotFoundException("Not found any user for username[" + username + "]");
         }
 
-        return new SOSUserDetails(user);
+        return new MyUserDetails(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserJsonDto loadCurrentUserJsonDto() {
+        LOG.info("loadCurrentUserJsonDto");
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final Object principal = authentication.getPrincipal();
 
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 (principal instanceof String || principal instanceof org.springframework.security.core.userdetails.User)) {
             return loadOauthUserJsonDto((OAuth2Authentication) authentication);
         } else {
-            final SOSUserDetails userDetails = (SOSUserDetails) principal;
+            final MyUserDetails userDetails = (MyUserDetails) principal;
             return new UserJsonDto(userRepository.findByGuid(userDetails.user().guid()));
         }
     }
@@ -67,6 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserOverviewDto loadUserOverviewDto(UserOverviewDto overviewDto) {
+        LOG.info("loadUserOverviewDto {}", overviewDto);
         List<User> users = userRepository.findUsersByUsername(overviewDto.getUsername());
         overviewDto.setUserDtos(UserDto.toDtos(users));
         return overviewDto;
@@ -75,6 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean isExistedUsername(String username) {
+        LOG.info("isExistedUsername {}", username);
         final User user = userRepository.findByUsername(username);
         return user != null;
     }
@@ -82,14 +86,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public String saveUser(UserFormDto formDto) {
+        LOG.info("saveUser {}", formDto);
         User user = formDto.newUser();
         userRepository.saveUser(user);
-        LOG.debug("{}|Save User: {}", WebUtils.getIp(), user);
+        LOG.info("{}|Save User: {}", WebUtils.getIp(), user);
         return user.guid();
     }
 
 
     private UserJsonDto loadOauthUserJsonDto(OAuth2Authentication oAuth2Authentication) {
+        LOG.info("loadOauthUserJsonDto {}", oAuth2Authentication);
         UserJsonDto userJsonDto = new UserJsonDto();
         userJsonDto.setUsername(oAuth2Authentication.getName());
 

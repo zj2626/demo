@@ -1,6 +1,6 @@
-package com.github.demo.domain.user;
+package com.github.demo.repository;
 
-import com.github.demo.domain.shared.Repository;
+import com.github.demo.entity.User;
 
 import java.util.List;
 

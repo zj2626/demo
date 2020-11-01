@@ -1,7 +1,7 @@
-package com.github.demo.service.dto;
+package com.github.demo.dto;
 
-import com.github.demo.domain.user.Privilege;
-import com.github.demo.domain.user.User;
+import com.github.demo.entity.Privilege;
+import com.github.demo.entity.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;

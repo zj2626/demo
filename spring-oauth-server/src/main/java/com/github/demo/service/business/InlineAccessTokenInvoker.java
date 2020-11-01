@@ -1,6 +1,6 @@
 package com.github.demo.service.business;
 
-import com.github.demo.service.dto.AccessTokenDto;
+import com.github.demo.dto.AccessTokenDto;
 import com.github.demo.utils.SpringBeanHolder;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

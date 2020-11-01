@@ -1,6 +1,6 @@
 package com.github.demo.config;
 
-import com.github.demo.domain.oauth.OauthClientDetails;
+import com.github.demo.entity.OauthClientDetails;
 import com.github.demo.service.OauthService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;

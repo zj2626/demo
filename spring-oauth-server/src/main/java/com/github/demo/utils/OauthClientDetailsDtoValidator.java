@@ -1,7 +1,7 @@
 package com.github.demo.utils;
 
 import com.github.demo.service.OauthService;
-import com.github.demo.service.dto.OauthClientDetailsDto;
+import com.github.demo.dto.OauthClientDetailsDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,4 @@
-package com.github.demo.domain.user;
-
-import com.github.demo.domain.AbstractDomain;
+package com.github.demo.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
