@@ -35,8 +35,13 @@ public class StringDemo {
         String a = "abcde";
         String b = "abcde";
         char[] c = {'a', 'b', 'c', 'd', 'e'};
+        String d = "ab" + "cde";
+        String e = 'a' + 'b' + 'c' + 'd' + 'e' + "";
 
-        System.out.println(a.equals(b));
-        System.out.println(a.equals(c.toString()));
+        System.out.println(a == b); // true
+        System.out.println(a == c.toString());
+        System.out.println(a == d); // true
+        System.out.println(a == e);
+        System.out.println(a == "ab" + "cde"); // true
     }
 }

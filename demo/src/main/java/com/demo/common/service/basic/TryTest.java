@@ -1,13 +1,12 @@
 package com.demo.common.service.basic;
 
-import com.demo.common.service.basic.bean.BeanA;
-import org.junit.Test;
-
 public class TryTest {
     public static void main(String[] args) {
-        System.out.println(fun());
-        System.out.println(fun2());
-        System.out.println(fun3());
+        //        System.out.println(fun());
+        //        System.out.println(fun2());
+        //        System.out.println(fun3());
+        //        System.out.println(fun4());
+        System.out.println(fun5());
     }
 
     private static int fun() {
@@ -41,6 +40,18 @@ public class TryTest {
         }
     }
 
+    private static Person fun4() {
+        Person result = new Person();
+        try {
+            result.name = "zj";
+            return result;
+        } finally {
+            result.name = "ay"; // 会生效
+            result = null;      // 会生效
+            return result;
+        }
+    }
+
     private static class Person {
         String name;
 
@@ -54,10 +65,21 @@ public class TryTest {
         }
     }
 
-    /****************************/
-    @Test
-    public void test() {
-        Class<?>[] clazz = new Class<?>[]{BeanA.class};
-        System.out.println(clazz.length);
+    private static Object fun5() {
+//        String result = "[";
+//        try {
+//            result += "a";
+//            return result += "b";
+//        } finally {
+//            result += "c";
+//        }
+
+        Person result2 = new Person();
+        try {
+            result2.name = "a";
+            return result2;
+        } finally {
+            result2.name = "b";
+        }
     }
 }

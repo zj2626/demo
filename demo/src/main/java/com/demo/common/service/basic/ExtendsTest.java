@@ -26,6 +26,6 @@ class P {
 
 class C extends P {
     static {
-        System.out.println("CCCC");
+        System.out.println("CCCC"); // 不执行
     }
 }
