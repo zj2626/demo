@@ -19,22 +19,16 @@ import javax.servlet.ServletRegistration;
 public class MyApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        // 初始化非web的spring环境
-        //        System.out.println("SPRING-INITIALIZE ...");
-        //        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
-        //        applicationContext.register(SpringConfig.class);
-        //        applicationContext.refresh();
-
         // 初始化web的spring环境
         System.out.println("SPRING-WEB-INITIALIZE ...");
         AnnotationConfigWebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext();
         webApplicationContext.register(AppConfig.class);
-        //        webApplicationContext.refresh();
+                webApplicationContext.refresh();
 
         // Create and register the DispatcherServlet
         DispatcherServlet servlet = new DispatcherServlet(webApplicationContext);
         ServletRegistration.Dynamic registration = servletContext.addServlet("mvc", servlet);
         registration.setLoadOnStartup(1);
-        registration.addMapping("/*");
+        registration.addMapping("/");
     }
 }
