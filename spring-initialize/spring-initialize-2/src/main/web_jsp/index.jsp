@@ -5,6 +5,6 @@
 </head>
 <body>
 <h1>Welcome!</h1>
-<h1 th:inline="text">Hello AAAA 1</h1>
+<h1 th:inline="text">Hello AAAA 2</h1>
 </body>
 </html>

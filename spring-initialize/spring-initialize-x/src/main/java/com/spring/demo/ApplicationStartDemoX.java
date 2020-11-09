@@ -13,13 +13,13 @@ import org.springframework.web.servlet.DispatcherServlet;
 /**
  * 模拟tomcat通过main方法启动
  */
-public class ApplicationStartDemo {
+public class ApplicationStartDemoX {
     public static void main(String[] args) {
-        ApplicationStartDemo.run(ApplicationStartDemo.class, args);
+        ApplicationStartDemoX.run(ApplicationStartDemoX.class, args);
     }
 
     public static void run(Class<?> primarySource, String... args) {
-        String sourcePath = ApplicationStartDemo.class.getResource("/").getPath();
+        String sourcePath = ApplicationStartDemoX.class.getResource("/").getPath();
         String path = "/C:/Users/AY180/code/demo/spring-initialize/spring-initialize-x/src/main/resources";
 
         Tomcat tomcat = new Tomcat();
