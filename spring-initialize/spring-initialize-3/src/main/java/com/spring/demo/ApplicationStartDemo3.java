@@ -26,7 +26,6 @@ public class ApplicationStartDemo3 {
             // tomcat.setHostname("localhost");
             tomcat.setPort(8080);
             Context context = tomcat.addWebapp("/", path);
-            //            tomcat.addWebapp("/", "F:/demo/spring-initialize/spring-initialize-3/src/main/resources/html/");
 
             WebResourceRoot webResourceRoot = new StandardRoot(context);
             webResourceRoot.addPreResources(new DirResourceSet(webResourceRoot, "/WEB-INF/classes", sourcePath, "/"));
