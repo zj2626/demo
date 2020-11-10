@@ -52,7 +52,7 @@ public class ApplicationStartDemoX {
 
         // Create and register the DispatcherServlet
         DispatcherServlet servlet = new DispatcherServlet(webApplicationContext);
-        Wrapper mvc = tomcat.addServlet("/", "mvc", servlet);
+        Wrapper mvc = tomcat.addServlet("/", "my_mvc", servlet);
         mvc.setLoadOnStartup(1);
         mvc.addMapping("/");
     }

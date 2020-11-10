@@ -9,14 +9,14 @@ import org.apache.catalina.webresources.StandardRoot;
 /**
  * 模拟tomcat通过main方法启动
  */
-public class ApplicationStartDemo2 {
+public class ApplicationStartDemo4 {
     public static void main(String[] args) {
-        ApplicationStartDemo2.run(ApplicationStartDemo2.class, args);
+        ApplicationStartDemo4.run(ApplicationStartDemo4.class, args);
     }
 
     public static void run(Class<?> primarySource, String... args) {
-        String sourcePath = ApplicationStartDemo2.class.getResource("/").getPath();
-        String path = "/C:/Users/AY180/code/demo/spring-initialize/spring-initialize-2/src/main/web_jsp";
+        String sourcePath = ApplicationStartDemo4.class.getResource("/").getPath();
+        String path = "/C:/Users/AY180/code/demo/spring-initialize/spring-initialize-4/src/main/web";
 
         Tomcat tomcat = new Tomcat();
         try {
@@ -37,5 +37,7 @@ public class ApplicationStartDemo2 {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // http://localhost:8080/index.html
     }
 }

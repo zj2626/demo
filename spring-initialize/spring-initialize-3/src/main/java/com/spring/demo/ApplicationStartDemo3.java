@@ -36,5 +36,7 @@ public class ApplicationStartDemo3 {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // http://localhost:8080/product
     }
 }
