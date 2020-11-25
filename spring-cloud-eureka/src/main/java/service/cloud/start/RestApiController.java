@@ -28,7 +28,7 @@ public class RestApiController {
         map = new HashMap<>();
         map.put("success", true);
         map.put("code", 200);
-        map.put("msg", "成功");
+        map.put("msg", "yes");
     }
 
     // 获取所有 Product

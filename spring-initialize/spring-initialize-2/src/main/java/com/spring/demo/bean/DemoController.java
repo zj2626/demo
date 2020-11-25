@@ -16,7 +16,7 @@ public class DemoController {
         map = new HashMap<>();
         map.put("success", true);
         map.put("code", 200);
-        map.put("msg", "成功");
+        map.put("msg", "yes");
     }
 
     public DemoController() {
@@ -32,9 +32,9 @@ public class DemoController {
 
     @RequestMapping("/productJson")
     @ResponseBody
-    public Map<String, Object> productJson() {
+    public String productJson() {
         System.out.println("productJson");
         System.out.println(JSON.toJSONString(map));
-        return map;
+        return map.toString();
     }
 }
