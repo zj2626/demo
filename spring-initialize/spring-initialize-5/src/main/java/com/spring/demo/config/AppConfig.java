@@ -10,6 +10,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(value = "com.spring.demo")
 public class AppConfig {
 
+    @Bean
+    public InternalResourceViewResolver internalResourceViewResolver(){
+        InternalResourceViewResolver resourceViewResolver = new InternalResourceViewResolver();
+        //        resourceViewResolver.setViewClass(JstlView.class);
+        resourceViewResolver.setPrefix("/");
+        resourceViewResolver.setSuffix(".jsp");
+        return resourceViewResolver;
+    }
+
     @Bean("multipartResolver")
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();

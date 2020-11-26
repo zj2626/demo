@@ -19,7 +19,7 @@ public class MyApplicationInitializer implements WebApplicationInitializer {
         System.out.println("SPRING-WEB-INITIALIZE ...");
         AnnotationConfigWebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext();
         webApplicationContext.register(AppConfig.class);
-                webApplicationContext.refresh();
+        webApplicationContext.refresh();
 
         // Create and register the DispatcherServlet
         DispatcherServlet servlet = new DispatcherServlet(webApplicationContext);

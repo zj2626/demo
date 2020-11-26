@@ -31,7 +31,7 @@ public class DemoController {
     public String product() {
         System.out.println("product");
         System.out.println(JSON.toJSONString(map));
-        return "index.html";
+        return "index";
     }
 
     @PostMapping("/upload/img")
@@ -39,6 +39,8 @@ public class DemoController {
     public String upload(@RequestPart("file") MultipartFile upload) {
         System.out.println("upload " + upload.getOriginalFilename());
         System.out.println(JSON.toJSONString(map));
+
+        // FileCopyUtils.copy(upload.getInputStream(), outputStream);
         return map.toString();
     }
 
