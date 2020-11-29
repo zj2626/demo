@@ -19,6 +19,9 @@ public class AppConfig {
         return resourceViewResolver;
     }
 
+    /*
+    模拟springboot文件上传配置 实际的springboot中配置的是 StandardMultipartResolver 也不需要引入任何包(内置)
+     */
     @Bean("multipartResolver")
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
