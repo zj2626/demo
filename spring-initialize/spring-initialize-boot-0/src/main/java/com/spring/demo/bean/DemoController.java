@@ -31,7 +31,7 @@ public class DemoController {
     public String product() {
         System.out.println("product");
         System.out.println(JSON.toJSONString(map));
-        return "index";
+        return "index.html";
     }
 
     @PostMapping("/upload/img")
