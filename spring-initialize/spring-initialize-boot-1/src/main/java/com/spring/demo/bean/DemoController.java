@@ -25,18 +25,11 @@ public class DemoController {
         map.put("msg", "yes");
     }
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
+    @MessageMapping("/bilibili")
+    @SendTo("/topic_zj/acfun")
+    public Greeting bilibili(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-    }
-
-    @RequestMapping("/product")
-    public String product() {
-        System.out.println("product");
-        System.out.println(JSON.toJSONString(map));
-        return "index.html";
     }
 
     @RequestMapping("/productJson")
