@@ -15,8 +15,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * <p>
  * ********************
  * 高可用的服务注册中心 启动
- * java -jar spring-cloud-eureka-0.1.jar --spring.profiles.active=peer1
- * java -jar spring-cloud-eureka-0.1.jar --spring.profiles.active=peer2
+ * java -jar spring-cloud-eureka-0.1.jar --spring.profiles.active=test
  * ********************
  *
  *
@@ -27,10 +26,10 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  */
 @EnableEurekaServer
 @SpringBootApplication
-public class SpringCloudEurekaApplication {
+public class SpringCloudEureka1Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudEurekaApplication.class, args);
+        SpringApplication.run(SpringCloudEureka1Application.class, args);
     }
 
 }

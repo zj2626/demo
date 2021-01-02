@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>service.cloud</groupId>
-    <artifactId>spring-cloud-eureka</artifactId>
+    <artifactId>spring-cloud-eureka-1</artifactId>
     <version>0.1</version>
-    <name>spring-cloud-eureka</name>
+    <name>spring-cloud-eureka-1</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
@@ -30,18 +30,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-        </profile>
-        <profile>
-            <id>peer1</id>
-            <properties>
-                <profiles.active>peer1</profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>peer2</id>
-            <properties>
-                <profiles.active>peer2</profiles.active>
-            </properties>
         </profile>
     </profiles>
 
