@@ -28,4 +28,4 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://localhost:18090/eureka
+      defaultZone: http://localhost:18080/eureka,http://localhost:18081/eureka,http://localhost:18082/eureka,http://localhost:18081/eureka

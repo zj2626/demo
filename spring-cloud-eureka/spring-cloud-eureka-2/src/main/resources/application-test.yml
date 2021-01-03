@@ -1,5 +1,5 @@
 server:
-  port: 18080
+  port: 18082
 
 spring:
   application:
@@ -25,5 +25,5 @@ eureka:
     register-with-eureka: true # 把自己所谓一个客户端注册到自己身上
     fetch-registry: true       # 需要从服务器获取注册信息
     service-url:
-#      defaultZone: http://${eureka.instance.hostname}:18080/eureka/
-      defaultZone: http://127.0.0.1:18081/eureka/,http://127.0.0.1:18082/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:18081/eureka/
+      defaultZone: http://127.0.0.1:18080/eureka/,http://127.0.0.1:18081/eureka/

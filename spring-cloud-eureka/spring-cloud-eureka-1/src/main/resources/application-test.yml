@@ -1,5 +1,5 @@
 server:
-  port: 18091
+  port: 18081
 
 spring:
   application:
@@ -22,8 +22,8 @@ eureka:
     eviction-interval-timer-in-ms: 20000 # 清理间隔时间
 
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true # 把自己所谓一个客户端注册到自己身上
+    fetch-registry: true       # 需要从服务器获取注册信息
     service-url:
-#      defaultZone: http://${eureka.instance.hostname}:18091/eureka/
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:18081/eureka/
+      defaultZone: http://127.0.0.1:18080/eureka/,http://127.0.0.1:18082/eureka/
