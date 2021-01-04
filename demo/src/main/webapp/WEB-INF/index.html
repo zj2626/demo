@@ -98,7 +98,7 @@
             };
 
             $.ajax({
-                url: "http://localhost:18090/api/products",
+                url: "http://localhost:18080/api/products",
                 type: "GET",
                 error: function () {
                     alert("报错1");
@@ -116,7 +116,7 @@
             console.log("AA");
 
             $.ajax({
-                url: "http://localhost:18090/api/products",
+                url: "http://localhost:18080/api/products",
                 type: "POST",
                 data: JSON.stringify(json),
                 dataType: "json",
@@ -137,7 +137,7 @@
             console.log("BB");
 
             $.get(
-                "http://localhost:18090/api/products/1234/reviews",
+                "http://localhost:18080/api/products/1234/reviews",
                 json,
                 function (result) {
                     console.log(result);

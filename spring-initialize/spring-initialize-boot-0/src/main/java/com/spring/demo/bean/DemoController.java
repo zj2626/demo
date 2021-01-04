@@ -22,16 +22,11 @@ public class DemoController {
         map.put("msg", "yes");
     }
 
-    public DemoController() {
-        System.out.println("DemoController Constructor");
-    }
-
-
     @RequestMapping("/product")
     public String product() {
         System.out.println("product");
         System.out.println(JSON.toJSONString(map));
-        return "index";
+        return "index.html";
     }
 
     @PostMapping("/upload/img")

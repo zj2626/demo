@@ -33,7 +33,7 @@ public class RequestPost extends Request {
             uri = new URIBuilder()
                     .setScheme("http")
                     .setHost("localhost")
-                    .setPort(18090)
+                    .setPort(18080)
                     .setPath("/api/products")
                     .build();
         } catch (URISyntaxException e) {

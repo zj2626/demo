@@ -81,7 +81,7 @@ public class FunController implements ControllerApi {
     public String zipkinMethod2(@RequestBody String name) {
         System.out.println("client2 zipkin");
         name = null == name ? "ay2626" : name;
-        return restTemplate.getForObject("http://localhost:18090/api/products", String.class);
+        return restTemplate.getForObject("http://localhost:18080/api/products", String.class);
     }
 }
 

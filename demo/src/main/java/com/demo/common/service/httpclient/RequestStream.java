@@ -44,7 +44,7 @@ public class RequestStream extends Request {
             uri = new URIBuilder()
                     .setScheme("http")
                     .setHost("localhost")
-                    .setPort(18090)
+                    .setPort(18080)
                     .setPath("/api/stream")
                     .build();
         } catch (URISyntaxException e) {
