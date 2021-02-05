@@ -4,11 +4,8 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.HashMap;
@@ -25,11 +22,17 @@ public class DemoController {
         map.put("msg", "yes");
     }
 
-    @MessageMapping("/bilibili")
-    @SendTo("/topic_zj/acfun")
-    public Greeting bilibili(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
+    @MessageMapping("/login")
+    @SendTo("/subscribeData/userList")
+    public Greeting login(HelloMessage message) {
+        System.out.println("登录提醒: " + JSON.toJSONString(message));
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+    }
+
+    @MessageMapping("/sendMsg")
+    public String sendMsg(HelloMessage message) {
+        System.out.println("发送内容: " + JSON.toJSONString(message));
+        return "success";
     }
 
     @RequestMapping("/productJson")
