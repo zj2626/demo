@@ -9,5 +9,5 @@ public class HelloMessage {
 
 	private String sendFrom;
 
-	private String name;
+	private String msg;
 }
