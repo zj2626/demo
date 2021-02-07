@@ -33,11 +33,19 @@ function disconnect() {
 }
 
 function doLogin() {
+    $("#name").attr("disabled", true);
+    $("#login").attr("disabled", true);
     stompClient.send("/communication/login", {}, JSON.stringify({'name': $("#name").val()}));
+
+    stompClient.subscribe('/user/' + $("#name").val() + "/receiveMsg", function (greeting) {
+        $("#greetings").prepend("<tr><td style='text-align: left;'>" + greeting.body + "</td></tr>");
+    });
+
 }
 
 function sendMsg() {
-    showMsg($("#message").val())
+    $("#greetings").prepend("<tr><td style='text-align: right;'>" + $("#message").val() + "</td></tr>");
+
     stompClient.send("/communication/sendMsg", {}, JSON.stringify({'sendFrom': $("#name").val(), 'sendTo': 'zj2626', 'msg': $("#message").val()}));
 }
 
@@ -48,12 +56,10 @@ function showUser(list) {
     }
 
     $(".userInfo").on("click", function (data) {
-        $("#sendTo").val($(this).text());
+        if ($("#name").val() !== $(this).text()) {
+            $("#sendTo").val($(this).text());
+        }
     });
-}
-
-function showMsg(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
 }
 
 $(function () {
