@@ -35,18 +35,19 @@ function disconnect() {
 function doLogin() {
     $("#name").attr("disabled", true);
     $("#login").attr("disabled", true);
+
     stompClient.send("/communication/login", {}, JSON.stringify({'name': $("#name").val()}));
 
     stompClient.subscribe('/user/' + $("#name").val() + "/receiveMsg", function (greeting) {
-        $("#greetings").prepend("<tr><td style='text-align: left;'>" + greeting.body + "</td></tr>");
+        $("#greetings").append("<tr><td style='text-align: left;'>" + greeting.body + "</td></tr>");
     });
 
 }
 
 function sendMsg() {
-    $("#greetings").prepend("<tr><td style='text-align: right;'>" + $("#message").val() + "</td></tr>");
+    $("#greetings").append("<tr><td style='text-align: right;'>" + $("#message").val() + "</td></tr>");
 
-    stompClient.send("/communication/sendMsg", {}, JSON.stringify({'sendFrom': $("#name").val(), 'sendTo': 'zj2626', 'msg': $("#message").val()}));
+    stompClient.send("/communication/sendMsg", {}, JSON.stringify({'sendFrom': $("#name").val(), 'sendTo': $("#sendTo").val(), 'msg': $("#message").val()}));
 }
 
 function showUser(list) {
@@ -77,9 +78,6 @@ $(function () {
     });
     $("#send").click(function () {
         sendMsg();
-    });
-    $(".userInfo").click(function () {
-        selectUser();
     });
 });
 
