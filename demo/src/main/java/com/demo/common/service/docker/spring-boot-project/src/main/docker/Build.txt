@@ -1,0 +1,31 @@
+#!/bin/bash
+case ${moudle_name} in
+project_service)
+
+set -x
+
+cd ./${moudle_name}
+mvn clean install
+
+rm -rf ${WORKSPACE}/Dockerfile
+mkdir ${WORKSPACE}/Dockerfile
+cp -r ${WORKSPACE}/${moudle_name}/target/${moudle_name}.jar ${WORKSPACE}/Dockerfile
+cp -r ${WORKSPACE}/${moudle_name}/src/main/docker/dockerfile ${WORKSPACE}/Dockerfile
+cd ${WORKSPACE}/Dockerfile
+docker build -t $REPOSITORY/${moudle_name}:${tag} .
+docker push $REPOSITORY/${moudle_name}:${tag}
+if [ "${tag}" != "latest" ]
+then
+   docker tag $REPOSITORY/${moudle_name}:${tag} $REPOSITORY/${moudle_name}:latest
+   docker push $REPOSITORY/${moudle_name}:latest
+   docker rmi $REPOSITORY/${moudle_name}:latest
+fi
+docker rmi $REPOSITORY/${moudle_name}:${tag}
+
+;;
+project_apis)
+cd ./${moudle_name}
+set +x
+mvn clean install deploy
+;;
+esac
