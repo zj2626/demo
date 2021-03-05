@@ -1,0 +1,70 @@
+<configuration>
+    <property name="app.name" value="project_service"/>
+    <property name="app.log.dir" value="/data/log/"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>|~ ${app.name} -| %d{yyyy-MM-dd HH:mm:ss.SSS} -| %-5level -| [%thread] -| %logger{26}:%L -| %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+    <!--error -->
+    <appender name="FILEIERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${app.log.dir}/${app.name}/${app.name}.error.log</file>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${app.log.dir}/${app.name}/${app.name}-%d{yyyy-MM-dd}.%i.error.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder>
+            <pattern>|~ ${app.name} -| %d{yyyy-MM-dd HH:mm:ss.SSS} -| %-5level -| [%thread] -| %logger{26}:%L -| %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!--info or debug -->
+    <appender name="FILEINFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${app.log.dir}/${app.name}/${app.name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${app.log.dir}/${app.name}/${app.name}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>|~ ${app.name} -| %d{yyyy-MM-dd HH:mm:ss.SSS} -| %-5level -| [%thread] -| %logger{26}:%L -| %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="springfox.documentation.spring.web" level="ERROR" />
+    <logger name="org.springframework.test" level="ERROR" />
+    <logger name="org.springframework" level="ERROR" />
+    <logger name="com.netflix" level="ERROR" />
+    <logger name="io.undertow" level="ERROR" />
+    <logger name="io.lettuce" level="ERROR" />
+    <logger name="io.netty" level="ERROR" />
+    <logger name="org.apache.http" level="ERROR" />
+    <logger name="org.dozer" level="ERROR" />
+    <logger name="org.apache.commons" level="ERROR" />
+    <logger name="org.quartz" level="INFO" />
+    <logger name="jdbc.connection" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.sqlonly" level="OFF" />
+    <logger name="jdbc.sqltiming" level="INFO" />
+    <logger name="springfox.documentation" level="OFF"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEIERROR"/>
+        <appender-ref ref="FILEINFO"/>
+    </root>
+</configuration>
