@@ -44,7 +44,7 @@ Docker 提供了两个版本：社区版 (CE) 和企业版 (EE)。
 4.加入以下配置
     #填写自己的加速器地址
     {
-        "registry-mirrors": ["https://hub-mirror.c.163.com/"]
+        "registry-mirrors": ["https://9cpn8tt6.mirror.aliyuncs.com"]
     }
 
 5.通知systemd重载此配置文件；
