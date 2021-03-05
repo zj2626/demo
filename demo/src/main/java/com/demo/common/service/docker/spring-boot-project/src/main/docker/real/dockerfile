@@ -1,0 +1,7 @@
+FROM java8.0_251:v1.0
+VOLUME /tmp
+ARG JAR_FILE
+ADD ./project_service.jar /app.jar
+EXPOSE 9001
+ENV TZ "Asia/Shanghai"
+ENTRYPOINT ["sh","-c","java -jar /app.jar -Xms512m -Xmx1024m -XX:PermSize=64m -XX:MaxPermSize=128m -Xss512k --spring.profiles.active=$envType --jasypt.encryptor.password=$secretKey"]
