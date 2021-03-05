@@ -1,0 +1,21 @@
+if [ ${moudle_name} == 'project_service' ]
+then 
+touch /tmp/health_check.pid
+
+#删除容器
+docker ps -a | grep "$REPOSITORY/${moudle_name}" | awk '{print $1}'| xargs docker rm -f
+#删除镜像
+docker images | grep "$REPOSITORY/${moudle_name}" | awk '{print $3}'| xargs docker rmi -f
+
+docker run --name ${moudle_name} -d -p 9001:9001 -e envType="test" -e secretKey="Dk3hPhUzDZ" \
+    --restart=always --privileged=true \
+    --net=host \
+    -m 3200M \
+    --memory-swap=0 \
+    -v /data/dockerapp/xxl-job/jobhandler:/docker-mirror/log/xxl-job/jobhandler \
+    -v /data/dockerapp/log/${moudle_name}:/data/log/${moudle_name} \
+    $REPOSITORY/${moudle_name}:${tag}
+
+rm -rf /tmp/health_check.pid
+
+fi
