@@ -1,0 +1,14 @@
+version: '1'
+  services:
+    eureka:
+      image: eureka:v1
+      ports:
+        - 8080:8080
+    user:
+      image: user:v1
+      ports:
+        - 8081:8081
+    power:
+      image: power:v1
+      ports:
+        - 8082:8082

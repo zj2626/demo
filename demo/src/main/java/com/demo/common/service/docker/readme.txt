@@ -117,3 +117,25 @@ Docker服务在启动的时候会创建三种网络，bridge、host和none，还
 # Host: host类型的网络就是主机网络的意思，绑定到这种网络上面的容器，内部使用的端口直接绑定在主机上对应的端口，而如果容器服务没有使用端口，则无影响。
 # None: 从某种意义上来说，none应该算不上网络了，因为它不使用任何网络，会形成一个封闭网络的容器
 # container: 共享另外一个容器的network namespace，和host模式差不多，只是这里不是使用宿主机网络，而是使用的容器网络
+
+################## < Docker Compose > ##################
+
+Compose的作用是“定义和运行多个Docker容器的应用”。使用Compose，你可以在一个配置文件（yaml格式）中配置你应用的服务，然后使用一个命令，即可创建并启动配置中引用的所有服务。
+Compose中两个重要概念：
+* 服务 (service)：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。
+* 项目 (project)：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml文件中定义。
+
+安装 两种方法:
+1. 通过Python-pip安装
+# yum install -y epel-release
+# yum install -y python-pip
+# pip install docker-compose
+# docker-compose version
+# (卸载) pip uninstall docker-compose
+
+2. github
+# curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# chmod +x /usr/local/bin/docker-compose
+# ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# docker-compose version
+# (卸载) rm /usr/local/bin/docker-compose
