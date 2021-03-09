@@ -1,9 +1,12 @@
-package com.demo.common.service.httpclient;
+package com.demo.common.service.httpclient.client;
 
+import com.demo.common.service.httpclient.HttpClientDemoFactory;
 import com.demo.common.service.httpclient.abs.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,13 +33,14 @@ import java.util.concurrent.Future;
 URL: uniform resource locator    [统一资源定位符]
 URI: uniform resource identifier [统一资源标识符]
  */
-public class HttpClientDemo {
-    static CloseableHttpClient httpClient;
+public class HttpClientAsyncDemo {
+    public static CloseableHttpAsyncClient httpClient;
     private static Request request;
 
-    HttpClientDemo(Request request) {
-        httpClient = HttpClientDemoFactory.getHttpsClient();
-        HttpClientDemo.request = request;
+    public HttpClientAsyncDemo(Request request) {
+        // 这里简化了 其实也可以像 @see:com.demo.common.service.httpclient.HttpClientDemoFactory 一样
+        httpClient = HttpAsyncClients.custom().build();;
+        HttpClientAsyncDemo.request = request;
     }
 
     public void execute() throws InterruptedException {
@@ -70,11 +74,11 @@ public class HttpClientDemo {
      *
      * @param httpRequestBase
      */
-    void makeJSONHeader(HttpRequestBase httpRequestBase) {
+    public void makeJSONHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "application/json");
     }
 
-    void makeFormHeader(HttpRequestBase httpRequestBase) {
+    public void makeFormHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
@@ -90,7 +94,7 @@ public class HttpClientDemo {
         httpRequestBase.setHeader("Content-Type", "multipart/form-data");
     }
 
-    void closeClient(CloseableHttpResponse httpResponse) {
+    public void closeClient(CloseableHttpResponse httpResponse) {
         if (null != httpResponse) {
             try {
                 httpResponse.close();

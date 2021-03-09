@@ -2,28 +2,39 @@ package com.demo.common.service.httpclient;
 
 import com.demo.common.service.httpclient.abs.Request;
 import com.demo.common.service.httpclient.client.HttpClientDemo;
-import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.FutureRequestExecutionService;
+import org.apache.http.impl.client.HttpRequestFutureTask;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class RequestGet extends Request {
+/**
+ * 异步调用httpClient (假异步)
+ */
+public class RequestGet_FutureRequestExecutionService extends Request {
+    private static ExecutorService executorService = Executors.newFixedThreadPool(5);
+    private FutureRequestExecutionService futureRequestExecutionService = null;
+
+
     @Test
     public void test() throws InterruptedException {
         clientDemo = new HttpClientDemo(this);
         httpClient = HttpClientDemo.httpClient;
+        futureRequestExecutionService = new FutureRequestExecutionService(httpClient, executorService);
 
         clientDemo.execute();
     }
@@ -53,23 +64,28 @@ public class RequestGet extends Request {
         clientDemo.makeJSONHeader(httpGet);
 
         // 设置响应模型
-        CloseableHttpResponse httpResponse = null;
+        String httpResponse = null;
         // 执行请求
         try {
             System.out.println(httpGet.getURI());
-            httpResponse = httpClient.execute(httpGet);
+            HttpRequestFutureTask<String> task = futureRequestExecutionService.execute(httpGet, HttpClientContext.create(), new BasicResponseHandler());
+            System.out.println("done ~~~");
+            System.out.println("done ~~~");
+            System.out.println("done ~~~");
+            System.out.println("done ~~~");
+            System.out.println("done ~~~");
+
+            httpResponse = task.get();
             // 从响应中获得数据
             if (null != httpResponse) {
-                HttpEntity httpEntity = httpResponse.getEntity();
-                if (200 == httpResponse.getStatusLine().getStatusCode()) {
-                    // 响应数据字符串
-                    return EntityUtils.toString(httpEntity);
-                }
+                return httpResponse;
             }
-        } catch (IOException e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } finally {
-            clientDemo.closeClient(httpResponse);
+
         }
         return null;
     }

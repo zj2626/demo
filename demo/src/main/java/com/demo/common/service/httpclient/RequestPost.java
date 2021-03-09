@@ -2,6 +2,7 @@ package com.demo.common.service.httpclient;
 
 import com.alibaba.fastjson.JSON;
 import com.demo.common.service.httpclient.abs.Request;
+import com.demo.common.service.httpclient.client.HttpClientDemo;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;

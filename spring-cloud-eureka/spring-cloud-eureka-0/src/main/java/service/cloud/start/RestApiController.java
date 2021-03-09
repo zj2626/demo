@@ -36,6 +36,13 @@ public class RestApiController {
     public String products(@RequestHeader(value = "Content-Type", required = false) String contentType,
                            TestcModel model) {
         System.out.println("Get: " + model);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("contentType: " + contentType);
         return JSON.toJSONString(map);
     }
