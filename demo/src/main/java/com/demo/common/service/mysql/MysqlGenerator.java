@@ -62,7 +62,7 @@ public class MysqlGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.0.1:3306/nyh_user?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://192.168.0.1:3306/demo?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
@@ -99,7 +99,7 @@ public class MysqlGenerator {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
 //        strategy.setInclude(scanner("表名"));
-         strategy.setInclude("nyh_institution");
+         strategy.setInclude("demo_institution");
         strategy.setEntityBuilderModel(true);
 
         // entity
