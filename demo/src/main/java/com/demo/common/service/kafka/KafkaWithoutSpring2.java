@@ -1,20 +1,20 @@
 package com.demo.common.service.kafka;
 
-import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
-public class KafkaWithoutSpring {
+public class KafkaWithoutSpring2 {
     @Test
     public void startProducter() {
         Properties properties = new Properties();
@@ -29,7 +29,7 @@ public class KafkaWithoutSpring {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 2; i++) {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
@@ -62,7 +62,7 @@ public class KafkaWithoutSpring {
     }
 
     /*
-    组消费
+    独立消费
      */
     @Test
     public void consummer() {
@@ -75,39 +75,29 @@ public class KafkaWithoutSpring {
         properties.put("auto.commit.interval.ms", "60000");
 
         properties.put("fetch.max.wait.ms", "5000");
-        properties.put("session.timeout.ms", "10000");
-        properties.put("max.poll.interval.ms", "30000");
+        properties.put("session.timeout.ms", "30000");
         properties.put("max.poll.records", "10");
 
         properties.put("auto.offset.reset", "latest");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
-        properties.put("group.id", "group-11");
+        // 不指定分组
+        // properties.put("group.id", "group-13");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(
-                Arrays.asList(
-                        "gs-upload-fuel-order-topic",
-                        "send-auth-order-message-topic"
-                ), new ConsumerRebalanceListener() {
-                    @Override
-                    public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                        System.out.println("分区再均衡之前");
-                        for (TopicPartition p : partitions) {
-                            System.out.println("分配之前消费的分区: " + p.topic() + " => " + p.partition());
-                        }
-//                        kafkaConsumer.commitSync();
-                    }
 
-                    @Override
-                    public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                        System.out.println("分区再均衡之后");
-                        for (TopicPartition p : partitions) {
-                            System.out.println("分配之后消费的分区: " + p.topic() + " => " + p.partition());
-                        }
-                    }
-                });
+        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("gs-upload-fuel-order-topic");
+        partitionInfos.forEach(partitionInfo -> {
+            System.out.println(partitionInfo.topic() + " => " + partitionInfo.partition());
+        });
+
+        kafkaConsumer.assign(
+                Arrays.asList(
+                        new TopicPartition("gs-upload-fuel-order-topic", 0),
+                        new TopicPartition("gs-upload-fuel-order-topic", 1),
+                        new TopicPartition("send-auth-order-message-topic", 1)
+                ));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
             // System.out.println("接收到消息个数: " + records.count());
