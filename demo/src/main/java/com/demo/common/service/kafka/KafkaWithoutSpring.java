@@ -1,5 +1,6 @@
 package com.demo.common.service.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
 
+@Slf4j
 public class KafkaWithoutSpring {
     @Test
     public void startProducter() {
@@ -29,13 +31,13 @@ public class KafkaWithoutSpring {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 8; i++) {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
                 //                producer.send(new ProducerRecord<>("dingding-talk-text-notify-topic", msg));
                 //                producer.send(new ProducerRecord<>("reload-permission-user-topic", msg));
-                System.out.println("Sent:" + msg);
+                log.info("Sent:" + msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,27 +48,11 @@ public class KafkaWithoutSpring {
 
     }
 
-    @Test
-    public void startConsummer1() {
-        consummer();
-    }
-
-    @Test
-    public void startConsummer2() {
-        consummer();
-    }
-
-    @Test
-    public void startConsummer3() {
-        consummer();
-    }
-
     /*
     组消费
      */
     @Test
-    public void consummer() {
-        int total = 0;
+    public void consummer() throws InterruptedException {
 
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "127.0.0.1:9092");
@@ -76,68 +62,66 @@ public class KafkaWithoutSpring {
 
         properties.put("fetch.max.wait.ms", "5000");
         properties.put("session.timeout.ms", "10000");
-        properties.put("max.poll.interval.ms", "30000");
+        properties.put("max.poll.interval.ms", "300000");
         properties.put("max.poll.records", "10");
 
         properties.put("auto.offset.reset", "latest");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
-        properties.put("group.id", "group-11");
+        properties.put("group.id", "group-1");
 
-        KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+        new Thread(() -> doCunsumer(properties)) {}.start();
+        new Thread(() -> doCunsumer(properties)) {}.start();
+        Thread.sleep(5000);
+        //        log.info("加入第三个消费者 ~~~"); // TODO 为啥一加入就不听的再均衡
+        //        new Thread(() -> doCunsumer(properties)) {}.start();
+        Thread.sleep(1000000);
+    }
+
+    private void doCunsumer(Properties properties) {
+        final KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(
                 Arrays.asList(
-                        "gs-upload-fuel-order-topic",
-                        "send-auth-order-message-topic"
+                        // "send-auth-order-message-topic",
+                        "gs-upload-fuel-order-topic"
                 ), new ConsumerRebalanceListener() {
                     @Override
                     public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                        System.out.println("分区再均衡之前");
+                        log.info("分区再均衡之前");
                         for (TopicPartition p : partitions) {
-                            System.out.println("分配之前消费的分区: " + p.topic() + " => " + p.partition());
+                            log.info("分配之前消费的分区: " + p.topic() + " => " + p.partition());
                         }
-//                        kafkaConsumer.commitSync();
+                        //                        kafkaConsumer.commitSync();
                     }
 
                     @Override
                     public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                        System.out.println("分区再均衡之后");
+                        log.info("分区再均衡之后");
                         for (TopicPartition p : partitions) {
-                            System.out.println("分配之后消费的分区: " + p.topic() + " => " + p.partition());
+                            log.info("分配之后消费的分区: " + p.topic() + " => " + p.partition());
                         }
                     }
                 });
         while (true) {
-            ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
-            // System.out.println("接收到消息个数: " + records.count());
+            ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
+            // log.info("接收到消息个数: " + records.count());
             for (ConsumerRecord<String, String> record : records) {
                 try {
-                    total++;
-                    System.out.print("    " + total + " === ");
-                    System.out.printf("topic = %s, partition = %d, offset = %d, value = %s", record.topic(), record.partition(), record.offset(), record.value());
-                    System.out.println();
+                    log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
-                    String value = record.value();
-                    if (Integer.valueOf(value) == 20) {
-                        //                    System.out.println("提交");
-                        //                    kafkaConsumer.commitAsync();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                     kafkaConsumer.commitAsync();
                 } catch (Exception e) {
                     e.printStackTrace();
                     kafkaConsumer.commitSync();
                 }
             }
-
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
-                kafkaConsumer.commitSync();
-            }
         }
     }
-
-
 }

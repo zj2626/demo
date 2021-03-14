@@ -1,19 +1,19 @@
 package com.demo.common.service.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
+@Slf4j
 public class KafkaWithoutSpring2 {
     @Test
     public void startProducter() {
@@ -29,13 +29,13 @@ public class KafkaWithoutSpring2 {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 8; i++) {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
                 //                producer.send(new ProducerRecord<>("dingding-talk-text-notify-topic", msg));
                 //                producer.send(new ProducerRecord<>("reload-permission-user-topic", msg));
-                System.out.println("Sent:" + msg);
+                log.info("Sent:" + msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,28 +46,11 @@ public class KafkaWithoutSpring2 {
 
     }
 
-    @Test
-    public void startConsummer1() {
-        consummer();
-    }
-
-    @Test
-    public void startConsummer2() {
-        consummer();
-    }
-
-    @Test
-    public void startConsummer3() {
-        consummer();
-    }
-
     /*
     独立消费
      */
     @Test
-    public void consummer() {
-        int total = 0;
-
+    public void consummer() throws InterruptedException {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "127.0.0.1:9092");
 
@@ -85,49 +68,50 @@ public class KafkaWithoutSpring2 {
         // 不指定分组
         // properties.put("group.id", "group-13");
 
-        KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+        new Thread(() -> doCunsumer(properties)) {}.start();
+        new Thread(() -> doCunsumer(properties)) {}.start();
+        Thread.sleep(5000);
+        //        log.info("加入第三个消费者 ~~~");
+        //        new Thread(() -> doCunsumer(properties)) {}.start();
+        Thread.sleep(1000000);
+    }
 
-        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("gs-upload-fuel-order-topic");
-        partitionInfos.forEach(partitionInfo -> {
-            System.out.println(partitionInfo.topic() + " => " + partitionInfo.partition());
-        });
+    private void doCunsumer(Properties properties) {
+        final KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+
+        // topic 有几个分区
+        //        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("gs-upload-fuel-order-topic");
+        //        partitionInfos.forEach(partitionInfo -> {
+        //            log.info(partitionInfo.topic() + " => " + partitionInfo.partition());
+        //        });
 
         kafkaConsumer.assign(
                 Arrays.asList(
+                        // new TopicPartition("send-auth-order-message-topic", 1),
                         new TopicPartition("gs-upload-fuel-order-topic", 0),
-                        new TopicPartition("gs-upload-fuel-order-topic", 1),
-                        new TopicPartition("send-auth-order-message-topic", 1)
+                        new TopicPartition("gs-upload-fuel-order-topic", 1)
                 ));
+
         while (true) {
-            ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
-            // System.out.println("接收到消息个数: " + records.count());
+            ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
+            // log.info("接收到消息个数: " + records.count());
             for (ConsumerRecord<String, String> record : records) {
                 try {
-                    total++;
-                    System.out.print("    " + total + " === ");
-                    System.out.printf("topic = %s, partition = %d, offset = %d, value = %s", record.topic(), record.partition(), record.offset(), record.value());
-                    System.out.println();
+                    log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
-                    String value = record.value();
-                    if (Integer.valueOf(value) == 20) {
-                        //                    System.out.println("提交");
-                        //                    kafkaConsumer.commitAsync();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                     kafkaConsumer.commitAsync();
                 } catch (Exception e) {
                     e.printStackTrace();
                     kafkaConsumer.commitSync();
                 }
             }
-
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
-                kafkaConsumer.commitSync();
-            }
         }
     }
-
 
 }
