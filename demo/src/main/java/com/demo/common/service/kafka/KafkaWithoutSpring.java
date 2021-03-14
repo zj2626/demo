@@ -1,19 +1,14 @@
 package com.demo.common.service.kafka;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Properties;
+import java.util.*;
 
 @Slf4j
 public class KafkaWithoutSpring {
@@ -31,7 +26,7 @@ public class KafkaWithoutSpring {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
@@ -48,6 +43,8 @@ public class KafkaWithoutSpring {
 
     /*
     组消费
+
+    https://www.cnblogs.com/sodawoods-blogs/p/8969774.html
      */
     @Test
     public void consummer() throws InterruptedException {
@@ -101,13 +98,13 @@ public class KafkaWithoutSpring {
                         }
                     }
                 });
-        while (true) {
-            ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
-            if (records.count() > 0) {
-                log.info("接收到消息个数: " + records.count());
-            }
-            for (ConsumerRecord<String, String> record : records) {
-                try {
+        try {
+            while (true) {
+                ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
+                if (records.count() > 0) {
+                    log.info("接收到消息个数: " + records.count());
+                }
+                for (ConsumerRecord<String, String> record : records) {
                     log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
                     try {
@@ -116,12 +113,23 @@ public class KafkaWithoutSpring {
                         e.printStackTrace();
                     }
 
+                    // 异步提交 (采用)
                     kafkaConsumer.commitAsync();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    kafkaConsumer.commitSync();
+
+                    // 同步提交
+                    // kafkaConsumer.commitSync();
+
+                    // 指定偏移量提交
+                    // 1. 如果提交的偏移量小于客户端处理的最后一个消息的偏移量，那么处于两个偏移量之间的消息就会被重复处理(当消费重设的时候)
+                    // 2. 如果提交的偏移量大于客户端处理的最后一个消息的偏移量，那么处于两个偏移量之间的消息将会丢失(实际测试中, 会检测到offset异常而重设offset： Fetch offset xx is out of range for partition xxx, resetting offset)
+                    // Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+                    // currentOffsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() == 81 ? 100 : record.offset() + 1, "no matadata"));
+                    // kafkaConsumer.commitAsync(currentOffsets, null);
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            kafkaConsumer.commitSync();
         }
     }
 }

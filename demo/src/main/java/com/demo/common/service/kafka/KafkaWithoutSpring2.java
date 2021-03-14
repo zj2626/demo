@@ -29,7 +29,7 @@ public class KafkaWithoutSpring2 {
         Producer<String, String> producer = null;
         try {
             producer = new KafkaProducer<String, String>(properties);
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
@@ -90,13 +90,13 @@ public class KafkaWithoutSpring2 {
                         new TopicPartition("gs-upload-fuel-order-topic", 1)
                 ));
 
-        while (true) {
-            ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
-            if (records.count() > 0) {
-                log.info("接收到消息个数: " + records.count());
-            }
-            for (ConsumerRecord<String, String> record : records) {
-                try {
+        try {
+            while (true) {
+                ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
+                if (records.count() > 0) {
+                    log.info("接收到消息个数: " + records.count());
+                }
+                for (ConsumerRecord<String, String> record : records) {
                     log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
                     try {
@@ -106,11 +106,11 @@ public class KafkaWithoutSpring2 {
                     }
 
                     kafkaConsumer.commitAsync();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    kafkaConsumer.commitSync();
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            kafkaConsumer.commitSync();
         }
     }
 
