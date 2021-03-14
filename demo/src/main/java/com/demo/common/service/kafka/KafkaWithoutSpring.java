@@ -35,8 +35,6 @@ public class KafkaWithoutSpring {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
-                //                producer.send(new ProducerRecord<>("dingding-talk-text-notify-topic", msg));
-                //                producer.send(new ProducerRecord<>("reload-permission-user-topic", msg));
                 log.info("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -74,7 +72,7 @@ public class KafkaWithoutSpring {
         new Thread(() -> doCunsumer(properties)) {}.start();
         new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(5000);
-        //        log.info("加入第三个消费者 ~~~"); // TODO 为啥一加入就不听的再均衡
+        //        log.info("加入第三个消费者 ~~~"); // TODO 为啥一加入就不停的再均衡
         //        new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(1000000);
     }
@@ -92,7 +90,7 @@ public class KafkaWithoutSpring {
                         for (TopicPartition p : partitions) {
                             log.info("分配之前消费的分区: " + p.topic() + " => " + p.partition());
                         }
-                        //                        kafkaConsumer.commitSync();
+                        //        kafkaConsumer.commitSync(); // TODO 添加该语句的效果如何
                     }
 
                     @Override
@@ -105,13 +103,15 @@ public class KafkaWithoutSpring {
                 });
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
-            // log.info("接收到消息个数: " + records.count());
+            if (records.count() > 0) {
+                log.info("接收到消息个数: " + records.count());
+            }
             for (ConsumerRecord<String, String> record : records) {
                 try {
                     log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

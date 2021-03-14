@@ -33,8 +33,6 @@ public class KafkaWithoutSpring2 {
                 String msg = "" + i;
                 producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
-                //                producer.send(new ProducerRecord<>("dingding-talk-text-notify-topic", msg));
-                //                producer.send(new ProducerRecord<>("reload-permission-user-topic", msg));
                 log.info("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -94,7 +92,9 @@ public class KafkaWithoutSpring2 {
 
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(1500);
-            // log.info("接收到消息个数: " + records.count());
+            if (records.count() > 0) {
+                log.info("接收到消息个数: " + records.count());
+            }
             for (ConsumerRecord<String, String> record : records) {
                 try {
                     log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
