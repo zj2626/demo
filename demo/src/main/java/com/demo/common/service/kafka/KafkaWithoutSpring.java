@@ -87,7 +87,7 @@ public class KafkaWithoutSpring {
                         for (TopicPartition p : partitions) {
                             log.info("分配之前消费的分区: " + p.topic() + " => " + p.partition());
                         }
-                        //        kafkaConsumer.commitSync(); // TODO 添加该语句的效果如何
+                        kafkaConsumer.commitSync(); // TODO 添加该语句的效果如何
                     }
 
                     @Override
