@@ -63,7 +63,7 @@ public class KafkaWithoutSpring2 {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
-        // 不指定分组
+        // 不指定分组 (指定了同一个分组也没用)
         // properties.put("group.id", "group-13");
 
         new Thread(() -> doCunsumer(properties)) {}.start();
@@ -100,7 +100,7 @@ public class KafkaWithoutSpring2 {
                     log.info("接收到消息: topic = {}, partition = {}, offset = {}, value = {}", record.topic(), record.partition(), record.offset(), record.value());
 
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
