@@ -28,8 +28,8 @@ public class KafkaWithoutSpring {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
-                producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
-                //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
+                producer.send(new ProducerRecord<>("demo-upload-fuel-order-topic", msg));
+                //                producer.send(new ProducerRecord<>("demo-auth-order-message-topic", msg));
                 log.info("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -78,8 +78,8 @@ public class KafkaWithoutSpring {
         final KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(
                 Arrays.asList(
-                        // "send-auth-order-message-topic",
-                        "gs-upload-fuel-order-topic"
+                        // "demo-auth-order-message-topic",
+                        "demo-upload-fuel-order-topic"
                 ), new ConsumerRebalanceListener() {
                     @Override
                     public void onPartitionsRevoked(Collection<TopicPartition> partitions) {

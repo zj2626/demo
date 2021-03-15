@@ -31,8 +31,8 @@ public class KafkaWithoutSpring2 {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
-                producer.send(new ProducerRecord<>("gs-upload-fuel-order-topic", msg));
-                //                producer.send(new ProducerRecord<>("send-auth-order-message-topic", msg));
+                producer.send(new ProducerRecord<>("demo-upload-fuel-order-topic", msg));
+                //                producer.send(new ProducerRecord<>("demo-auth-order-message-topic", msg));
                 log.info("Sent:" + msg);
             }
         } catch (Exception e) {
@@ -78,16 +78,16 @@ public class KafkaWithoutSpring2 {
         final KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
 
         // topic 有几个分区
-        //        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("gs-upload-fuel-order-topic");
+        //        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("demo-upload-fuel-order-topic");
         //        partitionInfos.forEach(partitionInfo -> {
         //            log.info(partitionInfo.topic() + " => " + partitionInfo.partition());
         //        });
 
         kafkaConsumer.assign(
                 Arrays.asList(
-                        // new TopicPartition("send-auth-order-message-topic", 1),
-                        new TopicPartition("gs-upload-fuel-order-topic", 0),
-                        new TopicPartition("gs-upload-fuel-order-topic", 1)
+                        // new TopicPartition("demo-auth-order-message-topic", 1),
+                        new TopicPartition("demo-upload-fuel-order-topic", 0),
+                        new TopicPartition("demo-upload-fuel-order-topic", 1)
                 ));
 
         try {
