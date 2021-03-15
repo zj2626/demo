@@ -31,7 +31,7 @@ public class KafkaWithoutSpring2 {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
-                producer.send(new ProducerRecord<>("demo-upload-fuel-order-topic", msg));
+                producer.send(new ProducerRecord<>("demo-upload-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("demo-auth-order-message-topic", msg));
                 log.info("Sent:" + msg);
             }
@@ -68,8 +68,9 @@ public class KafkaWithoutSpring2 {
 
         new Thread(() -> doCunsumer(properties)) {}.start();
         new Thread(() -> doCunsumer(properties)) {}.start();
+        new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(5000);
-        //        log.info(">>>> 加入第三个消费者 ~~~");
+        //        log.info(">>>> 再加入一个消费者 ~~~");
         //        new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(10000000);
     }
@@ -78,7 +79,7 @@ public class KafkaWithoutSpring2 {
         final KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
 
         // topic 有几个分区
-        //        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("demo-upload-fuel-order-topic");
+        //        List<PartitionInfo> partitionInfos = kafkaConsumer.partitionsFor("demo-upload-order-topic");
         //        partitionInfos.forEach(partitionInfo -> {
         //            log.info(partitionInfo.topic() + " => " + partitionInfo.partition());
         //        });
@@ -86,8 +87,8 @@ public class KafkaWithoutSpring2 {
         kafkaConsumer.assign(
                 Arrays.asList(
                         // new TopicPartition("demo-auth-order-message-topic", 1),
-                        new TopicPartition("demo-upload-fuel-order-topic", 0),
-                        new TopicPartition("demo-upload-fuel-order-topic", 1)
+                        new TopicPartition("demo-upload-order-topic", 0),
+                        new TopicPartition("demo-upload-order-topic", 1)
                 ));
 
         try {

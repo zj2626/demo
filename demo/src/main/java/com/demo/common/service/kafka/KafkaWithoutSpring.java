@@ -11,8 +11,8 @@ import org.junit.Test;
 import java.util.*;
 
 /*
-kafka-topics.bat --create --zookeeper 127.0.0.1:2181 --topic demo-upload-fuel-order-topic --partitions 3
-kafka-topics.bat --alter --zookeeper 127.0.0.1:2181 --topic demo-upload-fuel-order-topic --partitions 3
+kafka-topics.bat --create --zookeeper 127.0.0.1:2181 --topic demo-upload-order-topic --partitions 4 --replication-factor 1
+kafka-topics.bat --alter --zookeeper 127.0.0.1:2181 --topic demo-upload-order-topic --partitions 4
  */
 @Slf4j
 public class KafkaWithoutSpring {
@@ -32,7 +32,7 @@ public class KafkaWithoutSpring {
             producer = new KafkaProducer<String, String>(properties);
             for (int i = 0; i < 3; i++) {
                 String msg = "" + i;
-                producer.send(new ProducerRecord<>("demo-upload-fuel-order-topic", msg));
+                producer.send(new ProducerRecord<>("demo-upload-order-topic", msg));
                 //                producer.send(new ProducerRecord<>("demo-auth-order-message-topic", msg));
                 log.info("Sent:" + msg);
             }
@@ -72,12 +72,13 @@ public class KafkaWithoutSpring {
 
         new Thread(() -> doCunsumer(properties)) {}.start();
         new Thread(() -> doCunsumer(properties)) {}.start();
+        new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(10000);
-        log.info(">>>> 加入第三个消费者 ~~~"); // TODO 为啥一加入就不停的再均衡
+        log.info(">>>> 再加入一个消费者 ~~~"); // TODO 为啥一加入就不停的再均衡
         final Thread thread = new Thread(() -> doCunsumer(properties)) {};
         thread.start();
         Thread.sleep(30000);
-//        log.info(">>>> 退出第三个消费者 ~~~");
+//        log.info(">>>> 退出一个消费者 ~~~");
 //        thread.stop();
         Thread.sleep(10000000);
     }
@@ -87,7 +88,7 @@ public class KafkaWithoutSpring {
         kafkaConsumer.subscribe(
                 Arrays.asList(
                         // "demo-auth-order-message-topic",
-                        "demo-upload-fuel-order-topic"
+                        "demo-upload-order-topic"
                 ), new ConsumerRebalanceListener() {
                     @Override
                     public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
