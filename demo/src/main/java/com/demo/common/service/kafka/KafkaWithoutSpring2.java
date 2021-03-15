@@ -69,9 +69,9 @@ public class KafkaWithoutSpring2 {
         new Thread(() -> doCunsumer(properties)) {}.start();
         new Thread(() -> doCunsumer(properties)) {}.start();
         Thread.sleep(5000);
-        //        log.info("加入第三个消费者 ~~~");
+        //        log.info(">>>> 加入第三个消费者 ~~~");
         //        new Thread(() -> doCunsumer(properties)) {}.start();
-        Thread.sleep(1000000);
+        Thread.sleep(10000000);
     }
 
     private void doCunsumer(Properties properties) {

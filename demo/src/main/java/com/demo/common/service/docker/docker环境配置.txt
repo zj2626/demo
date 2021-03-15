@@ -1,0 +1,184 @@
+
+Docker环境配置
+
+
+Redis3.2
+docker启动命令 
+docker run --restart=always --privileged=true -d -p 6379:6379 --net=bridge -v /home/data/docker-mirror/redis/conf/redis.conf:/etc/redis/redis.conf -v /home/data/docker-mirror/redis/data:/data  --name redis3.2   redis:3.2 redis-server /etc/redis/redis.conf --appendonly yes
+提示
+daemonize=NO。非后台模式，如果为YES 会的导致 redis 无法启动，因为后台会导致docker无任务可做而退出。
+重要:  docker 镜像reids 默认 无配置文件启动
+参数说明
+--restart=always                       -> 开机启动容器,容器异常自动重启
+-d                                             -> 以守护进程的方式启动容器
+--privileged=true                 -> 提升容器内权限
+-p 6379:6379                                    -> 绑定宿主机端口
+-v /home/app/redis/conf/redis.conf:/etc/redis/redis.conf -> 映射配置文件
+-v /home/app/redis/data:/data                      -> 映射数据目录
+--name redis                                     -> 指定容器名称
+--appendonly yes                                 -> 开启数据持久化
+
+mysql5.7
+启动命令
+docker run --restart=always --privileged=true  -d  -p 3306:3306 --net=bridge -v /home/data/docker-mirror/mysql/conf/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf   -v /home/data/docker-mirror/mysql/data:/var/lib/mysql   -e MYSQL_ROOT_PASSWORD="123456"  --name mysql5.7 mysql:5.7
+参数说明
+-e  MYSQL_ROOT_PASSWORD=           -> 指定数据库连接时root的初始化密码
+Gitlab
+启动命令
+docker run --detach --publish 8443:443  --publish 8090:8090 --publish 9022:22 --name gitlab-ce11.6.4-ce.0 --restart=always --net=bridge -v /home/data/docker-mirror/gitlab/conf:/etc/gitlab  -v /home/data/docker-mirror/gitlab/logs:/var/log/gitlab -v /home/data/docker-mirror/gitlab/data:/var/opt/gitlab -v /etc/localtime:/etc/localtime:ro -v /home/data/docker-mirror/gitlab/backups:/var/opt/gitlab/backups --privileged=true gitlab/gitlab-ce:11.6.4-ce.0  
+参数说明
+-p 8443:443 \            # 将容器内443端口映射到主机8443,提供https服务
+-p 8090:80 \             # 将容器内80端口映射到主机8090,提供http服务
+-p 9022:22 \             # 将容器内22端口映射到主机9022,提供ssh服务
+--name gitlab \           # 指定容器名称
+--restart=unless-stopped \  # 容器运行中退出时（不是手动退出）,自动重启
+nexus3
+启动命令
+docker run -u 0 --privileged=true --restart=always  -d  -p 8081:8081 --net=bridge -v /home/data/docker-mirror/nexus3/data:/nexus-data -v /home/data/docker-mirror/nexus3/log:/nexus-data/log --name=nexus3.13.0 sonatype/nexus3:3.13.0
+参数说明
+-u 0  \                  #指定该命令使用root权限运行
+
+wurstmeister/zookeeper
+启动命令
+docker run --privileged=true --restart=always -p 2181:2181  -d --net=bridge -v /home/data/docker-mirror/zookeeper/data:/data -v /home/data/docker-mirror/zookeeper/conf:/conf  --name zookeeper -t  wurstmeister/zookeeper
+wurstmeister/kafka
+启动命令
+docker run --privileged=true --restart=always -d  -p 9092:9092  -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://10.9.144.228:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092    --name kafka   wurstmeister/kafka
+参数说明
+生产者:
+./kafka-console-producer.sh --topic=topic --broker-list 10.9.144.228:9092
+消费者:
+./kafka-console-consumer.sh --bootstrap-server 10.9.144.228:9092 --topic topic --from-beginning 
+
+jenkins/jenkins
+启动命令
+docker run --name jenkins --privileged=true --restart=always  -itd -p 8083:8080 -p 50000:50000 --net=bridge  -v /home/data/docker-mirror/jenkins:/var/jenkins_home -v /home/data/docker-mirror/jenkins/settings:/var/settings -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker -d jenkins/jenkins
+提示
+第一个异常：
+The push refers to repository [10.9.144.228:1180/nyh-project/nyh-zhuque]
+4ee3323b58eb: Preparing
+35c20f26d188: Preparing
+c3fe59dd9556: Preparing
+6ed1a81ba5b6: Preparing
+a3483ce177ce: Preparing
+ce6c8756685b: Preparing
+30339f20ced0: Preparing
+0eb22bfb707d: Preparing
+a2ae92ffcd29: Preparing
+0eb22bfb707d: Waiting
+30339f20ced0: Waiting
+ce6c8756685b: Waiting
+a2ae92ffcd29: Waiting
+denied: requested access to the resource is denied
+Build step 'Execute shell' marked build as failure
+
+已上错误，远程docker仓库拒绝了，Jenkins要提交image到远程仓库，必须本地宿主机登录，登录后执行以下命令
+ cp /root/.docker/config.json /docker-mirror/jenkins/.docker/config.json
+ 重启jenkins
+
+第二个异常信息：
+/var/run/docker.sock: connect: permission denied
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE
+
+ cd /var/run
+sudo chmod 666 /var/run/docker.sock
+注：临时解决办法
+xxl-job
+启动命令
+docker run -d --restart=always --privileged=true  --net=bridge -e PARAMS="--spring.datasource.url=jdbc:mysql://10.9.144.228:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=123456 --spring.datasource.driver-class-name=com.mysql.jdbc.Driver --server.port=9094" -p 9094:9094 -v  /home/data/docker-mirror/xxl-job/logs:/data/applogs --name xxl-job-admin xuxueli/xxl-job-admin:2.2.0
+nobodyiam/apollo-quick-start
+启动命令
+Docker run -d -e DEV_DB='jdbc:mysql://10.9.144.228:3306/apolloconfigdb?characterEncoding=utf8' \
+ -e DEV_DB_USER='root' \
+ -e DEV_DB_PWD='123456' \
+ -e PORTAL_DB='jdbc:mysql://10.9.144.228:3306/apolloportaldb?characterEncoding=utf8' \
+ -e PORTAL_DB_USER='root' \
+ -e PORTAL_DB_PWD='1234567' \
+ -e JAVA_OPTS='-Deureka.service.url=http://localhost:8180/eureka/' \
+ -p 8170:8070 \
+ -p 8180:8080 \
+ -p 8190:8090 \
+ -v /docker-mirror/apollo/logs:/opt/logs --name apollo nobodyiam/apollo-quick-start
+Nginx
+启动命令
+docker run --name nyh-nginx -d -p 80:80 --net=bridge   -v /home/data/docker-mirror/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /home/data/docker-mirror/nginx/html:/usr/share/nginx/html -v /home/data/docker-mirror/nginx/log:/var/log/nginx -v /home/data/docker-mirror/nginx/conf.d:/etc/nginx/conf.d nginx:latest
+当前配置
+server
+{
+    listen 80;
+    server_name nyh.sys.com;
+    location / {
+        include uwsgi_params;
+        proxy_pass http://172.172.172.173:8002;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header REMOTE-HOST $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size    2000m;
+    }
+    access_log /var/log/nginx/nyh.sys.com.access.log;
+}
+
+server {
+    listen       80;
+    server_name  nyh.manage.com;
+    location / {
+        include uwsgi_params;
+        proxy_pass http://172.172.172.173:8002/doc.html;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header REMOTE-HOST $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size    2000m;
+        if ( $request_uri ~ "^/(base|user|zhuque|gs_operation)\/?"){
+                rewrite ^ http://10.9.144.228:8002$request_uri;
+        }
+    }
+   location  /webjars/ {
+        proxy_pass http://10.9.144.228:8002;
+   }
+   location  /swagger-resources/ {
+        proxy_pass http://10.9.144.228:8002;
+   }
+   location  /swagger-resources/configuration/ui/ {
+        proxy_pass http://10.9.144.228:8002;
+   }
+   location ~ /v2/api-docs {
+        proxy_pass http://10.9.144.228:8002;
+   }
+}
+Dnsmasq
+局域网域名解析
+需要单独安装该软件yum install dnsmasq -y
+配置信息
+address=/nyh.sys.com/10.9.144.228
+address=/nyh.manage.com/10.9.144.228
+address=/nyh.manage.sys.com/10.9.144.228
+多个域名就启动写多个
+seata 分布式事务
+seata的docker部署，需要设置注册到eureka地址信息，具体设置如下
+ 
+docker run --name seata-server \
+        -p 8091:8091 \
+        --restart=always --privileged=true --net=bridge \
+        -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
+		-e SEATA_IP=10.9.144.228 \
+        -v /home/data/docker-mirror/seata/conf:/root/seata-config  \
+        -d seataio/seata-server
+
+ elasticsearch:7.8.0：
+   
+  docker run -d --restart=always --privileged=true -u 0 --net bridge -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node"   -v /home/data/docker-mirror/es/config:/usr/share/elasticsearch/config -v /home/data/docker-mirror/es/logs:/usr/share/elasticsearch/logs   -v /home/data/docker-mirror/es/bin:/usr/share/elasticsearch/bin  --name elasticsearch   elasticsearch:7.8.0
+
+
+mobz/elasticsearch-head:5
+(目前未使用)
+docker run -d --restart=always --privileged=true -p 9100:9100  --name elasticsearch-head  mobz/elasticsearch-head:5
+
+
+kibana：7.8.0
+  docker run -d  --restart=always --privileged=true -p 5601:5601 -v /home/data/docker-mirror/kibana/config:/usr/share/kibana/config/  --name kibana kibana:7.8.0
+
+canal/canal-server:v1.1.4
+docker run -d  --restart=always --privileged=true -v  /home/data/docker-mirror/canal/logs:/home/admin/canal-server/logs  -v /home/data/docker-mirror/canal/conf:/home/admin/canal-server/conf  --name canal  canal/canal-server:v1.1.4
