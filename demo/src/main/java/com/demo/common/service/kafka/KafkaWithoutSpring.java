@@ -10,6 +10,10 @@ import org.junit.Test;
 
 import java.util.*;
 
+/*
+kafka-topics.bat --create --zookeeper 127.0.0.1:2181 --topic demo-upload-fuel-order-topic --partitions 3
+kafka-topics.bat --alter --zookeeper 127.0.0.1:2181 --topic demo-upload-fuel-order-topic --partitions 3
+ */
 @Slf4j
 public class KafkaWithoutSpring {
     @Test
@@ -68,10 +72,14 @@ public class KafkaWithoutSpring {
 
         new Thread(() -> doCunsumer(properties)) {}.start();
         new Thread(() -> doCunsumer(properties)) {}.start();
-        Thread.sleep(5000);
-        //        log.info("加入第三个消费者 ~~~"); // TODO 为啥一加入就不停的再均衡
-        //        new Thread(() -> doCunsumer(properties)) {}.start();
-        Thread.sleep(1000000);
+        Thread.sleep(10000);
+        log.info(">>>> 加入第三个消费者 ~~~"); // TODO 为啥一加入就不停的再均衡
+        final Thread thread = new Thread(() -> doCunsumer(properties)) {};
+        thread.start();
+        Thread.sleep(30000);
+//        log.info(">>>> 退出第三个消费者 ~~~");
+//        thread.stop();
+        Thread.sleep(10000000);
     }
 
     private void doCunsumer(Properties properties) {
@@ -87,7 +95,7 @@ public class KafkaWithoutSpring {
                         for (TopicPartition p : partitions) {
                             log.info("分配之前消费的分区: " + p.topic() + " => " + p.partition());
                         }
-                        kafkaConsumer.commitSync(); // TODO 添加该语句的效果如何
+                        // kafkaConsumer.commitSync(); // TODO 添加该语句的效果如何
                     }
 
                     @Override
