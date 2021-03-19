@@ -183,8 +183,8 @@ public class StreamDemo {
         System.out.println(mapMap);
 
         System.out.println("###### list数据 求和");
-        BigDecimal result = to.stream().map(ToEntity::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println(result);
+        System.out.println(to.stream().map(ToEntity::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println(to.stream().mapToDouble(ToEntity::getScore).sum());
 
         System.out.println("###### list数据 max");
         System.out.println(to.stream().max(Comparator.comparing(ToEntity::getPrice)).orElse(null));
