@@ -28,7 +28,7 @@
 MYSQL的支持情况:
     1.GROUP BY:
         mysql会扫描整个表放到临时表中再进行分组(出现Using temporary)
-        mysql不支持分组转换技术,但是mysql会尽量使用索引 ???
+        mysql不支持分组转换技术,但是mysql会尽量使用索引 TODO ???
 
     2.ORDER BY:
         mysql支持在索引列上进行排序时利用索引优化
