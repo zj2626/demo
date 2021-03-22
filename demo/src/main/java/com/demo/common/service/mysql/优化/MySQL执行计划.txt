@@ -3,7 +3,7 @@ MySQL执行计划
 调用方式:
     1. 基础执行计划:
         EXPLAIN ***;
-    2. 详细执行计划:
+    2. 详细执行计划: (开启查询优化器日志)
         SET optimizer_trace="enabled=on";
         SHOW VARIABLES LIKE 'optimizer_trace';
         EXPLAIN ***;
