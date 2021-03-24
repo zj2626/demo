@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <springversion>4.2.6.RELEASE</springversion>
-        <mysql_version>5.1.33</mysql_version>
+        <mysql_version>8.0.16</mysql_version>
         <dubbo_version>2.7.1</dubbo_version>
         <java.version>1.8</java.version>
     </properties>
