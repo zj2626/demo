@@ -40,6 +40,10 @@ public class TransmittableThreadLocalDemo extends MyExcutor {
             //                System.out.println(Thread.currentThread().getName() + "            -remove -------  ");
             //                threadLocal.remove();
             //            }
+            //            if (i == 20) {
+            //                System.out.println(Thread.currentThread().getName() + "            -set-- new ");
+            //                threadLocal.set(new SqlConnection());
+            //            }
         }
         excutorPool.futureGet();
         System.out.println(Thread.currentThread().getName() + "      final -get--  " + threadLocal.get());
@@ -73,9 +77,11 @@ public class TransmittableThreadLocalDemo extends MyExcutor {
                 System.out.println(Thread.currentThread().getName() + "-get1--  " + threadLocal.get());
 
                 if (null != threadLocal.get()) {
+                    // 不同线程直接get的对象是同一个对象 但是各自线程可以直接set为一个新的对象
                     final String s = threadLocal.get().getConnAddress().substring(0, 5) + " " + threadNumber + " T" + i + "   >   " + UUID.randomUUID().toString().substring(0, 5);
                     System.out.println(Thread.currentThread().getName() + "-set --  " + s);
                     threadLocal.get().setConnAddress(s);
+                    //                    threadLocal.set(new SqlConnection());
                 }
 
                 Thread.sleep(30);
