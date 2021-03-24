@@ -36,6 +36,7 @@ public class ExcutorPoolDemo {
         executor.setQueueCapacity(10);
         executor.setThreadNamePrefix("pool-1-thread-");
         executor.initialize();
+        // Executor service = executor;
         Executor service = TtlExecutors.getTtlExecutor(executor);
 
         for (int i = 0; i < param.getSize(); i++) {
