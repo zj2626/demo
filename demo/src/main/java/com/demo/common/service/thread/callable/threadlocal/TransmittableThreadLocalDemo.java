@@ -1,5 +1,6 @@
 package com.demo.common.service.thread.callable.threadlocal;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import com.demo.common.service.thread.abs.MyExcutor;
 import lombok.Data;
@@ -14,9 +15,9 @@ import java.util.UUID;
  * @author: zhangj
  * @create: 2020-04-20 19:56
  **/
-public class InheritableThreadLocalDemo extends MyExcutor {
+public class TransmittableThreadLocalDemo extends MyExcutor {
 
-    private static InheritableThreadLocal<SqlConnection> threadLocal = new InheritableThreadLocal();
+    private static TransmittableThreadLocal<SqlConnection> threadLocal = new TransmittableThreadLocal();
 
     @Test
     public void test() throws InterruptedException {
@@ -24,7 +25,7 @@ public class InheritableThreadLocalDemo extends MyExcutor {
         System.out.println(Thread.currentThread().getName() + "       -start--  " + threadLocal.get());
 
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(1);
+        excutorPool.execute(2);
 
         for (int i = 10; i < 30; i++) {
             Thread.sleep(100);
@@ -83,10 +84,10 @@ public class InheritableThreadLocalDemo extends MyExcutor {
                 Thread.sleep(30);
                 System.out.println(Thread.currentThread().getName() + "-get3--  " + threadLocal.get());
 
-                //                if (1 == threadNumber && i == 20) {
-                //                    System.out.println(Thread.currentThread().getName() + "         -remove -------  ");
-                //                    threadLocal.remove();
-                //                }
+//                if (1 == threadNumber && i == 20) {
+//                    System.out.println(Thread.currentThread().getName() + "         -remove -------  ");
+//                    threadLocal.remove();
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();

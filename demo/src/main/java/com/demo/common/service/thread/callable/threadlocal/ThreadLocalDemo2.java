@@ -42,7 +42,7 @@ public class ThreadLocalDemo2 extends MyExcutor {
         try {
             for (int i = 0; i < 5; i++) {
                 // get得到null的时候会调用setInitialValue方法，从而调用initialValue方法，所以要set的值可以直接在initialValue中返回
-                SqlConnection sqlConnection = ThreadLocalDemo2.threadLocal.get();
+                SqlConnection sqlConnection = threadLocal.get();
                 Thread.sleep(100);
                 System.out.println(Thread.currentThread().getName() + " -get--" + sqlConnection);
 
@@ -54,23 +54,23 @@ public class ThreadLocalDemo2 extends MyExcutor {
         } finally {
             //            int a = (int) (1 + Math.random() * (10 - 1 + 1));
             //            if (a % 2 == 0) {
-            ThreadLocalDemo2.threadLocal.remove();
+            threadLocal.remove();
             //            }
         }
     }
 
     private void show() {
-        System.out.println(Thread.currentThread().getName() + " - show 1 -" + ThreadLocalDemo2.threadLocal.get());
-        ThreadLocalDemo2.threadLocal.remove();
+        System.out.println(Thread.currentThread().getName() + " - show 1 -" + threadLocal.get());
+        threadLocal.remove();
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 2 -" + ThreadLocalDemo2.threadLocal.get());
-        SqlConnection sqlConnection = ThreadLocalDemo2.threadLocal.get();
-        System.out.println(Thread.currentThread().getName() + " - show 3 -" + ThreadLocalDemo2.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 2 -" + threadLocal.get());
+        SqlConnection sqlConnection = threadLocal.get();
+        System.out.println(Thread.currentThread().getName() + " - show 3 -" + threadLocal.get());
         System.out.println(Thread.currentThread().getName() + " - show 4 -" + sqlConnection);
-        ThreadLocalDemo2.threadLocal.remove();
+        threadLocal.remove();
         System.out.println(Thread.currentThread().getName() + " - show 5 -" + sqlConnection);
         // initialValue
-        System.out.println(Thread.currentThread().getName() + " - show 6 -" + ThreadLocalDemo2.threadLocal.get());
+        System.out.println(Thread.currentThread().getName() + " - show 6 -" + threadLocal.get());
     }
 
     @Data

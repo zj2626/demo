@@ -1,6 +1,7 @@
 package com.demo.common.service.thread.abs;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -25,7 +26,15 @@ public class ExcutorPoolDemo {
 
     public void execute(Params param) throws InterruptedException {
         lock = Optional.ofNullable(lock).orElse(new DefaultLock());
-        ExecutorService service = Executors.newFixedThreadPool(300);
+//        ExecutorService service = Executors.newFixedThreadPool(2);
+
+        ThreadPoolTaskExecutor service = new ThreadPoolTaskExecutor();
+        service.setCorePoolSize(2);
+        service.setMaxPoolSize(2);
+        service.setQueueCapacity(10);
+        service.setThreadNamePrefix("pool-1-thread-");
+        service.initialize();
+
 
         for (int i = 0; i < param.getSize(); i++) {
             if (param.isOrder()) {
