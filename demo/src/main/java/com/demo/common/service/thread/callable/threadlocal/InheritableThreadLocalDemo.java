@@ -24,7 +24,7 @@ public class InheritableThreadLocalDemo extends MyExcutor {
         System.out.println(Thread.currentThread().getName() + "       -start--  " + threadLocal.get());
 
         excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(1);
+        excutorPool.execute(2);
 
         for (int i = 10; i < 30; i++) {
             Thread.sleep(100);
