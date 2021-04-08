@@ -11,7 +11,7 @@ public class MainTest {
         System.out.println("--------------------------------------------------1 Callable");
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        CallDemo<String> callDemo = new CallDemo<>();
+        CallableDemo<String> callDemo = new CallableDemo<>();
         Future<String> future = executor.submit(callDemo);
 
         if (future.isDone()) {
@@ -46,7 +46,7 @@ public class MainTest {
 
         System.out.println("--------------------------------------------------3 FutureTask + Runnable");
         String runResult = null;
-        FutureTaskDemo<String> futureTaskDemo2 = new FutureTaskDemo<>(new RunDemo(), runResult);
+        FutureTaskDemo<String> futureTaskDemo2 = new FutureTaskDemo<>(new RunnableDemo(), runResult);
         Future<?> future2 = executor.submit(futureTaskDemo2);
         System.out.println(futureTaskDemo2.get());
         System.out.println(future2.get());

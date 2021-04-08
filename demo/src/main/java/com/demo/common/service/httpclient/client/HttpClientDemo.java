@@ -47,7 +47,7 @@ public class HttpClientDemo {
             Future future = service.submit(() -> {
                 try {
                     Thread.sleep(200);
-                    System.out.println(request.doRequest(makeRequestParam()));
+                    System.out.println(request.doRequest());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,8 +68,6 @@ public class HttpClientDemo {
 
     /**
      * 设置请求头
-     *
-     * @param httpRequestBase
      */
     public void makeJSONHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "application/json");
@@ -85,7 +83,6 @@ public class HttpClientDemo {
 
     /**
      * 文件上传不需要手动设置该请求头
-     * @param httpRequestBase
      */
     public void makeMultipartHeader(HttpRequestBase httpRequestBase) {
         httpRequestBase.setHeader("Content-Type", "multipart/form-data");

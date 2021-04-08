@@ -13,8 +13,8 @@ public class ListInfo {
     protected List<String> listC = Collections.singletonList(null);
     protected List<String> listD = Collections.emptyList();
     protected List<String> listE = null;
-    protected List<String> listF = Collections.singletonList("FFFF");
     protected String[] arrayE = {"-aka-", "eee", "FFF", "CCC"};
+    protected List<String> listF = Collections.singletonList("FFFF");
 
     @Before
     public void before() {
@@ -36,5 +36,7 @@ public class ListInfo {
         System.out.println("listD " +JSON.toJSONString(listD));
         System.out.println("listE " +JSON.toJSONString(listE));
         System.out.println("arrayE " +JSON.toJSONString(arrayE));
+        System.out.println("listF " +JSON.toJSONString(listF));
+        System.out.println("=====================================================");
     }
 }

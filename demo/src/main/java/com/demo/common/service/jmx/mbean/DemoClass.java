@@ -1,4 +1,4 @@
-package com.demo.common.service.mbean;
+package com.demo.common.service.jmx.mbean;
 
 public class DemoClass implements DemoClassMBean {
     private String name;

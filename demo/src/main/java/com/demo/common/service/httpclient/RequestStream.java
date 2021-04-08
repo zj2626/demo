@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestStream extends Request {
@@ -27,7 +28,9 @@ public class RequestStream extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> parameter) {
+    public String doRequest() {
+        Map<String, String> parameter = makeRequestParam();
+
         InputStream is = new ByteArrayInputStream(parameter.toString().getBytes());
         InputStreamEntity ise = new InputStreamEntity(is);
 
@@ -69,5 +72,14 @@ public class RequestStream extends Request {
             clientDemo.closeClient(httpResponse);
         }
         return null;
+    }
+
+    private Map<String, String> makeRequestParam() {
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("id", "m32nvpfaagcmf");
+        parameter.put("kitchenId", "metu8341dq0a5");
+        parameter.put("name", "品类一001");
+        parameter.put("skuStatus", "1");
+        return parameter;
     }
 }

@@ -50,7 +50,7 @@ public class HttpClientAsyncDemo {
             Future future = service.submit(() -> {
                 try {
                     Thread.sleep(200);
-                    System.out.println(request.doRequest(makeRequestParam()));
+                    System.out.println(request.doRequest());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,15 +58,6 @@ public class HttpClientAsyncDemo {
             futureList.add(future);
         }
         futureGet(futureList);
-    }
-
-    private Map<String, String> makeRequestParam() {
-        Map<String, String> parameter = new HashMap<>();
-        parameter.put("id", "m32nvpfaagcmf");
-        parameter.put("kitchenId", "metu8341dq0a5");
-        parameter.put("name", "品类一001");
-        parameter.put("skuStatus", "1");
-        return parameter;
     }
 
     /**

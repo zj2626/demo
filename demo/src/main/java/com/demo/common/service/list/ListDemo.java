@@ -16,7 +16,7 @@ public class ListDemo extends ListInfo {
         System.out.println(listB.isEmpty());
         System.out.println(listC.isEmpty());
         System.out.println(listD.isEmpty());
-        System.out.println(listE.isEmpty());
+        System.out.println(listE);
     }
 
     /**
@@ -46,5 +46,15 @@ public class ListDemo extends ListInfo {
         System.out.println(arrayE.length);
         arrayE = Arrays.copyOf(arrayE, 9);
         System.out.println(arrayE.length);
+    }
+
+    /**
+     * 差集
+     */
+    @Test
+    public void removeAll() {
+        listA.removeAll(listB);
+        System.out.println(listA);
+        System.out.println(listB);
     }
 }

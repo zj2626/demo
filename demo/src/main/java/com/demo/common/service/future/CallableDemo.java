@@ -2,7 +2,7 @@ package com.demo.common.service.future;
 
 import java.util.concurrent.Callable;
 
-public class CallDemo<String> implements Callable<String> {
+public class CallableDemo<String> implements Callable<String> {
 
     @Override
     public String call() throws Exception {

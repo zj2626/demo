@@ -13,5 +13,5 @@ public abstract class Request {
     protected CloseableHttpClient httpClient;
     protected CloseableHttpAsyncClient httpClientAsync;
 
-    public abstract String doRequest(Map<String, String> parameter) throws Exception;
+    public abstract String doRequest() throws Exception;
 }

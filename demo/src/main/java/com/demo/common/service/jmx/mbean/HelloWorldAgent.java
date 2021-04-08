@@ -1,4 +1,4 @@
-package com.demo.common.service.mbean;
+package com.demo.common.service.jmx.mbean;
 
 
 import javax.management.MBeanServer;

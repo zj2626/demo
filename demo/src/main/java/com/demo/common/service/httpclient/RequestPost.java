@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestPost extends Request {
@@ -27,7 +28,7 @@ public class RequestPost extends Request {
     }
 
     @Override
-    public String doRequest(Map<String, String> parameter) {
+    public String doRequest() {
         // 2. 设置请求参数 拼接请求地址
         URI uri = null;
         try {
@@ -46,7 +47,7 @@ public class RequestPost extends Request {
         clientDemo.makeJSONHeader(httpPost);
         // httpPost.setHeader("Other", "xxx");
         // 5. 设置请求体参数
-        httpPost.setEntity(new StringEntity(JSON.toJSONString(parameter), StandardCharsets.UTF_8));
+        httpPost.setEntity(new StringEntity(JSON.toJSONString(makeRequestParam()), StandardCharsets.UTF_8));
 
         // 设置响应模型
         CloseableHttpResponse httpResponse = null;
@@ -68,5 +69,14 @@ public class RequestPost extends Request {
             clientDemo.closeClient(httpResponse);
         }
         return null;
+    }
+
+    private Map<String, String> makeRequestParam() {
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("id", "m32nvpfaagcmf");
+        parameter.put("kitchenId", "metu8341dq0a5");
+        parameter.put("name", "品类一001");
+        parameter.put("skuStatus", "1");
+        return parameter;
     }
 }

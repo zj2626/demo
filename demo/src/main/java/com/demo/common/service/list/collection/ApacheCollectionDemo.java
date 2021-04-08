@@ -1,4 +1,4 @@
-package com.demo.common.service.list;
+package com.demo.common.service.list.collection;
 
 import com.demo.common.service.list.abs.ListInfo;
 import org.apache.commons.collections4.CollectionUtils;

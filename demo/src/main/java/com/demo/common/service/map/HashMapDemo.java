@@ -16,9 +16,11 @@ public class HashMapDemo {
     @Test
     public void testHashMap(){
         Map<String, Object> map = new HashMap<>();
-        map.put(null, "aaa");
-        map.put("a", "aaa1");
-        map.put("b", "aaa2");
+        map.put(null, "a");
+        map.put("a", "aaa");
+        map.put("f", "fff");
+        map.put("e", "eee");
+        map.put("b", "bbb");
         System.out.println(map);
     }
 }

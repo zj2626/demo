@@ -1,4 +1,4 @@
-package com.demo.common.service.http;
+package com.demo.common.service.httpclient;
 
 import org.junit.Test;
 
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Demo {
+public class JavaNetDemo {
     String url = "https://csdnimg.cn/cdn/content-toolbar/csdn-logo_.png";
 
     @Test
