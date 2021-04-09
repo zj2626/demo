@@ -9,7 +9,7 @@ import java.util.Arrays;
  * list 自定义实现见:
  * @see com.demo.common.service.algorithm.math.list
  */
-public class ListDemo extends ListInfo {
+public class ArrayListDemo extends ListInfo {
     @Test
     public void isEmpty() {
         System.out.println(listA.isEmpty());
