@@ -235,7 +235,7 @@ public class HashMapDemo<K, V> {
         // 新的
         int newCap, newThr = 0;
 
-        // 如果map中已经有数据
+        // 如果map中已经初始化过存储空间
         if (oldCap > 0) {
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
@@ -246,35 +246,48 @@ public class HashMapDemo<K, V> {
                 newThr = oldThr << 1; // double threshold
         }
 
-        // 如果map中没数据, 但是存在调整临界点
+        // 如果map中没初始化过存储空间, 但是存在调整临界点(调用带有initialCapacity入参的构造方法)
         else if (oldThr > 0) // initial capacity was placed in threshold
             newCap = oldThr;
 
-        // 如果map中没数据也没初始化, 进行初始化
+        // 如果map中没存储空间, 进行初始化, 默认大小:16, 默认整临界点: 16*0.75
         else {               // zero initial threshold signifies using defaults
             newCap = DEFAULT_INITIAL_CAPACITY;
             newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
 
-        // TODO
+        // 如果整临界点没有初始化, 就使用新的table容量计算一次
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
                     (int)ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
+
+        // 开辟新的存储空间 新table
         @SuppressWarnings({"rawtypes","unchecked"})
         MyNode<K,V>[] newTab = (MyNode<K,V>[])new MyNode[newCap];
         table = newTab;
+
+        // 如果有旧空间, 循环每个元素位置,重新计算hash然后存放到新table的固定位置上
         if (oldTab != null) {
             for (int j = 0; j < oldCap; ++j) {
+                // e存储当前循环要复制的数据
                 MyNode<K,V> e;
+                // 位置有数据
                 if ((e = oldTab[j]) != null) {
+                    // 旧table该位置置空
                     oldTab[j] = null;
+
+                    // 判断当前节点没有链表, 就直接复制到新table
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
+
+                    // 如果当前节点已经转换为红黑树, 则进行红黑树处理
                     else if (e instanceof MyTreeNode)
                         ((MyTreeNode<K,V>)e).split(this, newTab, j, oldCap);
+
+                    // 都不是, 那就要访问当前节点的拉链 TODO
                     else { // preserve order
                         MyNode<K,V> loHead = null, loTail = null;
                         MyNode<K,V> hiHead = null, hiTail = null;
@@ -347,7 +360,10 @@ public class HashMapDemo<K, V> {
     @Override
     public String toString() {
         return "HashMapDemo{" +
-                "table=" + Arrays.toString(table) +
+                " table=" + (null == table ? null : Arrays.toString(table)) +
+                " size=" + size +
+                " length=" + (null == table ? null :table.length) +
+                " threshold=" + threshold +
                 '}';
     }
 }
