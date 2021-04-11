@@ -95,7 +95,7 @@ public class ArrayListDemo<E> {
 
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    // 扩容方法
+    // 扩容方法 每次扩容当前数据个数一半大小容量
     private void grow(int minCapacity) {
         // 扩容前大小
         int oldCapacity = elementData.length;

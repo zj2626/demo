@@ -134,58 +134,108 @@ public class HashMapDemo<K, V> {
         return null;
     }
 
+    /**
+     * @see HashMap#put(java.lang.Object, java.lang.Object)
+     */
     public V put(K key, V value) {
         return putVal(hash(key), key, value, false, true);
     }
 
+    /**
+     * @see HashMap#putVal(int, java.lang.Object, java.lang.Object, boolean, boolean)
+     */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
-        MyNode<K,V>[] tab; MyNode<K,V> p; int n, i;
+        // tab就是当前map中的table的引用
+        MyNode<K,V>[] tab;
+        // p是要存放数据的数组位置(数组位置同时也是链表的头)
+        MyNode<K,V> p;
+        // n是当前map容量 i是要存放数据的位置下标
+        int n, i;
+
+        // 第一次put数据, 需要进行初始化空间
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
+
+        // put数据中,n是已经初始化的数组空间大小(table.length), 通过(n - 1) & hash运算得到本次插入位置
+        // 判断当前位置是否已经有值
         if ((p = tab[i = (n - 1) & hash]) == null)
+            // 没有值就直接插
             tab[i] = newNode(hash, key, value, null);
         else {
-            MyNode<K,V> e; K k;
+            // 有值就要拉链表
+            // 真正要插入的位置
+            MyNode<K,V> e;
+            // 数据的key
+            K k;
+
+            // 判断当前位置(数组上的节点)已经存在的key和要插入的key是否相同, 是就设置e为当前位置节点(为后面覆盖当前位置的数据)
             if (p.hash == hash &&
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
+            // 如果当前节点已经转换为红黑树, 则进行红黑树处理
             else if (p instanceof MyTreeNode)
                 e = ((MyTreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD, 就要把当前节点类型改为红黑树
             else {
+                // binCount 已经存在的节点个数
                 for (int binCount = 0; ; ++binCount) {
+                    // 如果不存在下一个节点, 那就说明要么没有拉链, 要么就已经循环到最后了, 就新建节点直接链接到p的后面, 设置e是p的下一个
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
+                        // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8), 大于则改为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
                             treeifyBin(tab, hash);
                         break;
                     }
+                    // 如果存在下一个节点, 就和上面判断相同, 判断已经存在的key和要插入的key是否相同
                     if (e.hash == hash &&
                             ((k = e.key) == key || (key != null && key.equals(k))))
                         break;
+
+                    // 最终在此设置p(也就是e)就是要插入的数据
                     p = e;
                 }
             }
-            if (e != null) { // existing mapping for key
+
+            // 最终插入数据
+            if (e != null) {
                 V oldValue = e.value;
                 if (!onlyIfAbsent || oldValue == null)
+                    // 覆盖
                     e.value = value;
+                // 空方法 可覆盖
                 afterNodeAccess(e);
                 return oldValue;
             }
         }
         ++modCount;
+        // 如果插入数据个数已经大于下一个要调整大小(当前数组总大小*0.75)的大小值, 就会resize
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
         return null;
     }
 
+    /**
+     * 初始化或增加表大小, 每次增加当前数组总大小的二倍
+     *
+     * @see HashMap#resize()
+     */
     final MyNode<K,V>[] resize() {
+        System.out.println("do resize... 当前数据个数:" + size + " 调整大小界限:" + threshold);
+
+        // 旧table
         MyNode<K,V>[] oldTab = table;
+        // 旧table的容量
         int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        // 旧调整临界点
         int oldThr = threshold;
+
+        // 新的
         int newCap, newThr = 0;
+
+        // 如果map中已经有数据
         if (oldCap > 0) {
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
@@ -195,12 +245,18 @@ public class HashMapDemo<K, V> {
                     oldCap >= DEFAULT_INITIAL_CAPACITY)
                 newThr = oldThr << 1; // double threshold
         }
+
+        // 如果map中没数据, 但是存在调整临界点
         else if (oldThr > 0) // initial capacity was placed in threshold
             newCap = oldThr;
+
+        // 如果map中没数据也没初始化, 进行初始化
         else {               // zero initial threshold signifies using defaults
             newCap = DEFAULT_INITIAL_CAPACITY;
             newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
+
+        // TODO
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
@@ -275,7 +331,7 @@ public class HashMapDemo<K, V> {
                 hd.treeify(tab);
         }
     }
-    
+
     MyNode<K,V> newNode(int hash, K key, V value, MyNode<K,V> next) {
         return new MyNode<>(hash, key, value, next);
     }
@@ -283,7 +339,7 @@ public class HashMapDemo<K, V> {
     MyTreeNode<K,V> replacementTreeNode(MyNode<K,V> p, MyNode<K,V> next) {
         return new MyTreeNode<>(p.hash, p.key, p.value, next);
     }
-    
+
     void afterNodeAccess(MyNode<K,V> p) { }
     void afterNodeInsertion(boolean evict) { }
     void afterNodeRemoval(MyNode<K,V> p) { }

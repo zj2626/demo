@@ -8,10 +8,10 @@ public class SourceMapDemo {
     public void addTest() {
         HashMapDemo<String, String> map = new HashMapDemo<>(9);
         map.put(null, "a");
-        map.put("a", "aaa");
-        map.put("f", "fff");
-        map.put("e", "eee");
-        map.put("b", "bbb");
+        map.put("a", "a");
+        for (int i = 0; i < 30; i++) {
+            map.put("a" + i, "aaa" + i);
+        }
         System.out.println(map);
         System.out.println("================");
 
