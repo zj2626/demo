@@ -1,4 +1,4 @@
-package com.demo.common.service.list.abs;
+package com.demo.common.service.collection.list.abs;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;

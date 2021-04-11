@@ -1,4 +1,4 @@
-package com.demo.common.service.map;
+package com.demo.common.service.collection.map;
 
 import org.junit.Test;
 

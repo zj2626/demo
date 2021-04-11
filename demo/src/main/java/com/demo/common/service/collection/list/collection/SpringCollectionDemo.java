@@ -1,6 +1,6 @@
-package com.demo.common.service.list.collection;
+package com.demo.common.service.collection.list.collection;
 
-import com.demo.common.service.list.abs.ListInfo;
+import com.demo.common.service.collection.list.abs.ListInfo;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 

@@ -1,15 +1,17 @@
-package com.demo.common.service.list;
+package com.demo.common.service.collection.list;
 
-import com.demo.common.service.list.abs.ListInfo;
+import com.demo.common.service.collection.list.abs.ListInfo;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * list 自定义实现见:
+ *
  * @see com.demo.common.service.algorithm.math.list
  */
-public class ArrayListDemo extends ListInfo {
+public class ListDemo extends ListInfo {
     @Test
     public void isEmpty() {
         System.out.println(listA.isEmpty());
@@ -56,5 +58,43 @@ public class ArrayListDemo extends ListInfo {
         listA.removeAll(listB);
         System.out.println(listA);
         System.out.println(listB);
+    }
+
+    /**
+     * forEach
+     */
+    @Test
+    public void forEach() {
+        listA.forEach(s -> {
+            System.out.println(s);
+        });
+        System.out.println("===============");
+
+        for (String s : listA) {
+            System.out.println(s);
+        }
+    }
+
+    /**
+     * iterator
+     */
+    @Test
+    public void iterator() {
+        Iterator<String> iterator = listA.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+
+    /**
+     * listIterator
+     */
+    @Test
+    public void listIterator() {
+        Iterator<String> iterator = listA.listIterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }

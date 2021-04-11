@@ -1,4 +1,4 @@
-package com.demo.common.service.map;
+package com.demo.common.service.collection.map;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * @description
  * @create 2021-03-16 16:55
  **/
-public class HashMapDemo {
+public class MapDemo {
 
     @Test
     public void testHashMap(){

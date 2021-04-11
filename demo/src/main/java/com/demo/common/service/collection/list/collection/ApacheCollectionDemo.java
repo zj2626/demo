@@ -1,6 +1,6 @@
-package com.demo.common.service.list.collection;
+package com.demo.common.service.collection.list.collection;
 
-import com.demo.common.service.list.abs.ListInfo;
+import com.demo.common.service.collection.list.abs.ListInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 

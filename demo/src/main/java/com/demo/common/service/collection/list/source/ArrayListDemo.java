@@ -1,34 +1,12 @@
-package com.demo.common.service.list.source;
-
-/*
- * Copyright (c) 1997, 2017, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
+package com.demo.common.service.collection.list.source;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @see ArrayList
+ */
 public class ArrayListDemo<E> {
 
     // 默认容量
@@ -54,10 +32,11 @@ public class ArrayListDemo<E> {
 
 
     /**
+     * 默认方法不创建长度为10的数组, 只是创建一个空数组, 在第一次add的时候才创建
+     *
      * @see ArrayList#ArrayList()
      */
     public ArrayListDemo() {
-        // 默认方法不创建长度为10的数组, 只是创建一个空数组, 在第一次add的时候才创建
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
     }
 
