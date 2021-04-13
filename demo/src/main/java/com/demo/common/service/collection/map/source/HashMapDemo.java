@@ -90,6 +90,7 @@ public class HashMapDemo<K, V> {
      */
     static final int hash(Object key) {
         int h;
+        // TODO 什么意思
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
@@ -146,6 +147,8 @@ public class HashMapDemo<K, V> {
      */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
+        System.out.println("do putVal");
+
         // tab就是当前map中的table的引用
         MyNode<K,V>[] tab;
         // p是要存放数据的数组位置(数组位置同时也是链表的头)

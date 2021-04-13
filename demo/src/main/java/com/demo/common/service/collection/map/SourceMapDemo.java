@@ -6,13 +6,18 @@ import org.junit.Test;
 public class SourceMapDemo {
     @Test
     public void addTest() {
-        HashMapDemo<String, String> map = new HashMapDemo<>(3);
+        HashMapDemo<String, String> map = new HashMapDemo<>(5);
         System.out.println(map);
         map.put("a", "a");
+        System.out.println(map);
         map.put("b", "b");
         map.put("c", "c");
-        System.out.println(map);
         map.put("d", "d");
+        map.put("e", "e");
+        map.put("f", "f");
+        System.out.println(map);
+        map.put("g", "g");
+        System.out.println(map);
 
 //        for (int i = 0; i < 30; i++) {
 //            map.put("a" + i, "aaa" + i);
