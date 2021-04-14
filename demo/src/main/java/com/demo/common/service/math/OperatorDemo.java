@@ -74,7 +74,7 @@ public class OperatorDemo {
         System.out.println(a >>> 2);
         System.out.println(a >>> 1);
         System.out.println(c >>> 1);
-        System.out.println(97 ^ (97 >>> 16));
+        System.out.println(97 >>> 16);
     }
 
     /**
