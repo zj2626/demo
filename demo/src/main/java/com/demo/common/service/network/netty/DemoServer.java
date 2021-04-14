@@ -31,7 +31,7 @@ public class DemoServer extends MyNettyAddr {
 
     @Test
     public void server() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         excutorPool.futureGet(1800L);
         excutorPool.futureCancel();
@@ -39,7 +39,7 @@ public class DemoServer extends MyNettyAddr {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         /**
          * interface EventLoopGroup extends EventExecutorGroup extends ScheduledExecutorService extends ExecutorService
          * 配置服务端的 NIO 线程池,用于网络事件处理，实质上他们就是 Reactor 线程组

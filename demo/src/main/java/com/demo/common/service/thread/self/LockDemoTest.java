@@ -15,14 +15,14 @@ public class LockDemoTest extends MyExcutor implements LockInterface {
 
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(50);
         excutorPool.futureGet();
         System.out.println(count);
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         for (int i = 0; i < 5; i++) {
             Thread.sleep(5);
             count++;

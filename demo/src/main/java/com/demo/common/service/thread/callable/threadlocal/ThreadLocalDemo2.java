@@ -20,13 +20,13 @@ public class ThreadLocalDemo2 extends MyExcutor {
 
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         excutorPool.futureGet();
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             optionOne();
 

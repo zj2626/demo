@@ -20,7 +20,7 @@ public class DemoServer extends MyNettyAddr {
 
     @Test
     public void server() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         excutorPool.futureGet();
     }
@@ -33,7 +33,7 @@ public class DemoServer extends MyNettyAddr {
      * @throws Exception
      */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         // 第一个，通常称为“boss”，接受传入的连接
         EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread,
                 new ThreadFactoryBuilder().setNameFormat("zj-bossGroup-%d").build());

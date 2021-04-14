@@ -18,7 +18,7 @@ public class ConcurrentHashMapTest extends MyExcutor {
 
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(500);
         excutorPool.futureGet();
         System.out.println("ConcurrentHashMap 结果等于 1000; HashMap 结果不一定等于");
@@ -26,7 +26,7 @@ public class ConcurrentHashMapTest extends MyExcutor {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         // useless
         for (int i = 0; i < 1000; i++) {
             map.put(Integer.toString(i), String.valueOf(Math.random() * 100));

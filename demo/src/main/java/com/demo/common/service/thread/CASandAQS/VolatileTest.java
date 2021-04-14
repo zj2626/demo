@@ -12,14 +12,14 @@ public class VolatileTest extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(20);
         excutorPool.futureGet();
         System.out.println("结果 " + number);
     }
     
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             TimeUnit.MILLISECONDS.sleep(10);
         } catch (InterruptedException ignored) {

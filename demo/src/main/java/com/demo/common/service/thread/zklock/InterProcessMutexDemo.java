@@ -73,7 +73,7 @@ public class InterProcessMutexDemo implements Runnable {
 
     @Override
     public void run() {
-        String lockStr = (Thread.currentThread().getName().contains("2") || Thread.currentThread().getName().contains("4"))
+        String lockStr = (Thread.currentThread().getName().contains("doExcuteRead") || Thread.currentThread().getName().contains("4"))
                 ? LOCK_ZNODE_SHIT : LOCK_ZNODE_FUCK;    // 两个path
         lockStr = LOCK_ZNODE_FUCK;                    // 一个path
         System.out.println(lockStr);

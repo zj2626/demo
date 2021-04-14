@@ -21,13 +21,13 @@ public class ReentrantLockCondition2ProducerConsumer extends MyExcutor {
         ExcutorPoolDemo producerThread = new ExcutorPoolDemo(this);
         producerThread.execute(Params.builder().size(7).build());
         ExcutorPoolDemo consumerThread = new ExcutorPoolDemo(this);
-        consumerThread.execute(Params.builder().size(5).type("2").build());
+        consumerThread.execute(Params.builder().size(5).type("doExcuteRead").build());
         producerThread.futureGet();
         consumerThread.futureGet();
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         while (true) {
             try {
                 lock.lock();
@@ -52,7 +52,7 @@ public class ReentrantLockCondition2ProducerConsumer extends MyExcutor {
     }
 
     @Override
-    public Object doExcuteRead(Map<String, Object> parameterignore) throws Exception {
+    public Object doExcuteRead() throws Exception {
         while (true) {
             try {
                 lock.lock();

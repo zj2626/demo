@@ -24,7 +24,7 @@ public class TransmittableThreadLocalDemo extends MyExcutor {
         threadLocal.set(new SqlConnection());
         System.out.println(Thread.currentThread().getName() + "       -start--  " + threadLocal.get());
 
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(2);
 
         for (int i = 10; i < 30; i++) {
@@ -51,7 +51,7 @@ public class TransmittableThreadLocalDemo extends MyExcutor {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             System.out.println(Thread.currentThread().getName() + " - 任务开始了 -" + threadLocal.get());
             optionOne();

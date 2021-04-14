@@ -13,21 +13,21 @@ public class SynchronizedDemo2 extends MyExcutor {
         ExcutorPoolDemo aThread = new ExcutorPoolDemo(this);
         aThread.execute(Params.builder().size(1).build());
         ExcutorPoolDemo bThread = new ExcutorPoolDemo(this);
-        bThread.execute(Params.builder().size(1).type("2").build());
+        bThread.execute(Params.builder().size(1).type("doExcuteRead").build());
         aThread.futureGet();
         bThread.futureGet();
     }
 
     /* 公平锁 */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         classSync();
         return null;
     }
 
     /* 非公平锁 */
     @Override
-    public Object doExcuteRead(Map<String, Object> parameterparameter) throws Exception {
+    public Object doExcuteRead() throws Exception {
         objectSync();
         return null;
     }

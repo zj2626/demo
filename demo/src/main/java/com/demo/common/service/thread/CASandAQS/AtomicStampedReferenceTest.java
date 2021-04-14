@@ -18,14 +18,14 @@ public class AtomicStampedReferenceTest extends MyExcutor {
      */
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(300);
         excutorPool.futureGet();
         System.out.println("结果 " + atomicStampedReference.getReference() + " --- " + atomicStampedReference.getStamp());
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         for (; ; ) {
             Integer reference = atomicStampedReference.getReference();
             int stamp = atomicStampedReference.getStamp();

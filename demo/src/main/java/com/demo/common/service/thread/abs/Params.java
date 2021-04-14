@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Params {
-    String type;
+    String type = "doExcute";
     Integer size;
     boolean isOrder = false;
     Object data;

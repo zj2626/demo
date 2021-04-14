@@ -1,10 +1,11 @@
 package com.demo.common.service.thread.abs;
 
 import com.alibaba.ttl.threadpool.TtlExecutors;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 public class ExcutorPoolDemo {
@@ -28,16 +29,7 @@ public class ExcutorPoolDemo {
     public void execute(Params param) throws InterruptedException {
         lock = Optional.ofNullable(lock).orElse(new DefaultLock());
 
-        //        ExecutorService service = Executors.newFixedThreadPool(2);
-
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(10);
-        executor.setThreadNamePrefix("pool-1-thread-");
-        executor.initialize();
-        // Executor service = executor;
-        Executor service = TtlExecutors.getTtlExecutor(executor);
+        Executor service = getAlibabaExecutor();
 
         for (int i = 0; i < param.getSize(); i++) {
             if (param.isOrder()) {
@@ -45,14 +37,12 @@ public class ExcutorPoolDemo {
             }
             FutureTask<Object> future = new FutureTask<>(() -> {
                 try {
-                    if (param.isOrder()) {
-                        System.out.println(Thread.currentThread().getName() + "===>线程开始===>");
-                    }
+                    System.out.println(Thread.currentThread().getName() + "===>线程开始===>");
                     if (lock.getLock()) {
-                        if (StringUtils.isNotEmpty(param.getType()) && param.getType().contains("2")) {
-                            return excutor.doExcuteRead(makeRequestParam(param));
+                        if (param.getType().equals("doExcuteRead")) {
+                            return excutor.doExcuteRead();
                         } else {
-                            return excutor.doExcute(makeRequestParam(param));
+                            return excutor.doExcute();
                         }
                     } else {
                         System.out.println(Thread.currentThread().getName() + "===>获得锁失败===>");
@@ -72,16 +62,6 @@ public class ExcutorPoolDemo {
             service.execute((FutureTask) future);
         }
         System.out.println("线程已启动: " + futureList.size());
-    }
-
-    private Map<String, Object> makeRequestParam(Params param) {
-        Map<String, Object> parameter = new HashMap<>();
-        parameter.put("id", "m32nvpfaagcmf");
-        parameter.put("kitchenId", "metu8341dq0a5");
-        parameter.put("name", "wtf");
-        parameter.put("skuStatus", "1");
-        parameter.put("requestParam", param);
-        return parameter;
     }
 
     public List<Future> getFutureList() {
@@ -131,5 +111,36 @@ public class ExcutorPoolDemo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // #####################################
+    // #####################################
+    // #####################################
+
+    // 普通的线程池
+    private Executor getExecutor() {
+        return Executors.newFixedThreadPool(2);
+    }
+
+    // Spring的线程池
+    private Executor getSpringExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("pool-1-thread-");
+        executor.initialize();
+        return executor;
+    }
+
+    // alibaba的线程池
+    private Executor getAlibabaExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("pool-1-thread-");
+        executor.initialize();
+        return TtlExecutors.getTtlExecutor(executor);
     }
 }

@@ -13,7 +13,7 @@ public class Volatile2Test extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(2);
         
         stopThread();
@@ -23,7 +23,7 @@ public class Volatile2Test extends MyExcutor {
     }
     
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         while (ifRun) {
             number++;
         }

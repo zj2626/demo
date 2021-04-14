@@ -30,7 +30,7 @@ public class ReentrantLockRWDemo extends MyExcutor {
     @Test
     public void test() throws InterruptedException {
         ExcutorPoolDemo readThread = new ExcutorPoolDemo(this);
-        readThread.execute(Params.builder().size(3).type("2").build());
+        readThread.execute(Params.builder().size(3).type("doExcuteRead").build());
 
         ExcutorPoolDemo writeThread = new ExcutorPoolDemo(this);
         writeThread.execute(Params.builder().size(5).build());
@@ -39,7 +39,7 @@ public class ReentrantLockRWDemo extends MyExcutor {
 
     /* 写数据使用写锁 */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         while (true) {
             try {
                 writeLock.lock(); // 写锁
@@ -58,7 +58,7 @@ public class ReentrantLockRWDemo extends MyExcutor {
 
     /* 读数据使用读锁 */
     @Override
-    public Object doExcuteRead(Map<String, Object> parameterparameter) throws Exception {
+    public Object doExcuteRead() throws Exception {
         while (true) {
             try {
                 readLock.lock(); // 读锁

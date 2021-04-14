@@ -15,7 +15,7 @@ public class ReentrantLock2TryDemo extends MyExcutor implements LockInterface {
 
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(20);
         excutorPool.futureGet();
         System.out.println(count);
@@ -46,7 +46,7 @@ public class ReentrantLock2TryDemo extends MyExcutor implements LockInterface {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         for (int i = 0; i < 50; i++) {
             Thread.sleep(1);
             count++;

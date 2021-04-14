@@ -13,7 +13,7 @@ public class ReentrantLock4InterruptedDemo extends MyExcutor implements LockInte
 
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         Thread.sleep(200);
         System.out.println("Interrupt");
@@ -30,7 +30,7 @@ public class ReentrantLock4InterruptedDemo extends MyExcutor implements LockInte
      * @throws Exception
      */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         System.out.println(Thread.currentThread().getName() + " reentrantLock getLock");
         long n = 0;
         for (long i = 0; i < 1000000L; i++) {

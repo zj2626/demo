@@ -17,7 +17,7 @@ public class DemoServer extends MyNettyAddr {
 
     @Test
     public void server() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         excutorPool.futureGet();
     }
@@ -28,7 +28,7 @@ public class DemoServer extends MyNettyAddr {
      * @throws Exception
      */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread);
         EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread);
         try {

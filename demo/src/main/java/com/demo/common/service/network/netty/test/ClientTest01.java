@@ -29,7 +29,7 @@ public class ClientTest01 extends MyNettyAddr {
 
     @Test
     public void client() throws Exception {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(1);
         excutorPool.futureGet(5L);
 
@@ -48,7 +48,7 @@ public class ClientTest01 extends MyNettyAddr {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();

@@ -19,7 +19,7 @@ import java.util.Map;
 public class DemoClientHandler extends MyNettyAddr {
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();

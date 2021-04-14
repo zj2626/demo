@@ -19,7 +19,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     @Test
     public void testFair() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(Params.builder().size(30).isOrder(true).build());
         excutorPool.futureGet();
         System.out.println(count);
@@ -27,15 +27,15 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     @Test
     public void testUnfair() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
-        excutorPool.execute(Params.builder().size(30).type("2").isOrder(true).build());
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
+        excutorPool.execute(Params.builder().size(30).type("doExcuteRead").isOrder(true).build());
         excutorPool.futureGet();
         System.out.println(count);
     }
 
     /* 公平锁 */
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             fairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 公平锁");
@@ -49,7 +49,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
 
     /* 非公平锁 */
     @Override
-    public Object doExcuteRead(Map<String, Object> parameterparameter) throws Exception {
+    public Object doExcuteRead() throws Exception {
         try {
             unfairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 非公平锁");

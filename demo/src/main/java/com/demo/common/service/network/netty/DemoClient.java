@@ -23,13 +23,13 @@ public class DemoClient extends MyNettyAddr {
 
     @Test
     public void client() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(20);
         excutorPool.futureGet();
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             /* Bootstrap 与 ServerBootstrap 都继承(extends)于 AbstractBootstrap

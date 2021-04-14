@@ -5,6 +5,7 @@ import com.demo.common.service.thread.abs.Params;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -12,6 +13,8 @@ import java.util.concurrent.Future;
 import java.util.stream.LongStream;
 
 public class ExecutorsDemo extends MyExcutor {
+   private   List<Params> parameter = new ArrayList<>();
+
     /**
      * 求和
      *
@@ -23,9 +26,11 @@ public class ExecutorsDemo extends MyExcutor {
         int size = 20;
         int pipe = data.length / size;
 
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         for (int i = 0; i < size; i++) {
-            excutorPool.execute(Params.builder().size(1).data(data).from(i * pipe).to((i + 1) * pipe).build());
+            Params params = Params.builder().size(1).data(data).from(i * pipe).to((i + 1) * pipe).build();
+            excutorPool.execute(params);
+            parameter.add(params);
         }
 
         int result = 0;
@@ -37,8 +42,8 @@ public class ExecutorsDemo extends MyExcutor {
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
-        Params param = (Params) parameter.get("requestParam");
+    public Object doExcute() throws Exception {
+        Params param = (Params) parameter.remove(0);
         long[] line = (long[]) param.getData();
         System.out.println(Thread.currentThread().getName() + " => " + param.getFrom() + " " + param.getTo());
         int sum = 0;

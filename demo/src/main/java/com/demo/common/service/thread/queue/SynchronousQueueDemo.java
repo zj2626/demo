@@ -24,13 +24,13 @@ public class SynchronousQueueDemo extends MyExcutor {
         ExcutorPoolDemo producerThread = new ExcutorPoolDemo(this);
         producerThread.execute(Params.builder().size(1).build());
         ExcutorPoolDemo consumerThread = new ExcutorPoolDemo(this);
-//        consumerThread.execute(Params.builder().size(1).type("2").build());
+//        consumerThread.execute(Params.builder().size(1).type("doExcuteRead").build());
         producerThread.futureGet();
         consumerThread.futureGet();
     }
 
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         while (true) {
             try {
                 boolean success = true;
@@ -46,7 +46,7 @@ public class SynchronousQueueDemo extends MyExcutor {
     }
 
     @Override
-    public Object doExcuteRead(Map<String, Object> parameterignore) throws Exception {
+    public Object doExcuteRead() throws Exception {
         while (true) {
             try {
                 Object obj = null;

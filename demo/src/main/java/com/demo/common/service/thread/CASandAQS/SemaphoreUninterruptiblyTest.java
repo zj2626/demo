@@ -13,13 +13,13 @@ public class SemaphoreUninterruptiblyTest extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(20);
         excutorPool.futureGet();
     }
     
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             // acquireUninterruptibly()作用是使等待进入acquire()方法的线程，不允许被中断
             semaphore.acquireUninterruptibly();

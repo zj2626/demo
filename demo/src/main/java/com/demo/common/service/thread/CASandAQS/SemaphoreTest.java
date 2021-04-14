@@ -13,13 +13,13 @@ public class SemaphoreTest extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         excutorPool.execute(20);
         excutorPool.futureGet();
     }
     
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             semaphore.acquire();
             TimeUnit.MILLISECONDS.sleep(500);

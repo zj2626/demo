@@ -14,7 +14,7 @@ public class CyclicBarrierTest extends MyExcutor {
     
     @Test
     public void test() throws InterruptedException {
-        excutorPool = new ExcutorPoolDemo(this);
+        ExcutorPoolDemo excutorPool = new ExcutorPoolDemo(this);
         System.out.println("begin");
         excutorPool.execute(16);
         System.out.println("end: " + barrier.getNumberWaiting() + " == > " + barrier.getParties());
@@ -23,7 +23,7 @@ public class CyclicBarrierTest extends MyExcutor {
     }
     
     @Override
-    public Object doExcute(Map<String, Object> parameter) throws Exception {
+    public Object doExcute() throws Exception {
         try {
             TimeUnit.MILLISECONDS.sleep(1000 * new Random().nextInt(2));
             System.out.println(Thread.currentThread().getName() + "=====>");

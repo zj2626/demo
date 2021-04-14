@@ -6,7 +6,7 @@ public class DemoClientA {
     public static void main(String[] args) {
         DemoClientHandler client = new DemoClientHandler();
         try {
-            client.doExcute(null);
+            client.doExcute();
         } catch (Exception e) {
             e.printStackTrace();
         }
