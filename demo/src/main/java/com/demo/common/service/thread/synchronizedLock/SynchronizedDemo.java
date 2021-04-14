@@ -1,11 +1,9 @@
-package com.demo.common.service.thread.lock;
+package com.demo.common.service.thread.synchronizedLock;
 
 import com.demo.common.service.thread.abs.LockInterface;
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import org.junit.Test;
-
-import java.util.Map;
 
 public class SynchronizedDemo extends MyExcutor implements LockInterface {
     private static Integer lock = 0;

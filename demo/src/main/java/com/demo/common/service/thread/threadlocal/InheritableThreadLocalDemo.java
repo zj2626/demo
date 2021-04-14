@@ -1,12 +1,10 @@
-package com.demo.common.service.thread.callable.threadlocal;
+package com.demo.common.service.thread.threadlocal;
 
-import com.alibaba.ttl.TransmittableThreadLocal;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import com.demo.common.service.thread.abs.MyExcutor;
 import lombok.Data;
 import org.junit.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -15,9 +13,9 @@ import java.util.UUID;
  * @author: zhangj
  * @create: 2020-04-20 19:56
  **/
-public class TransmittableThreadLocalDemo extends MyExcutor {
+public class InheritableThreadLocalDemo extends MyExcutor {
 
-    private static TransmittableThreadLocal<SqlConnection> threadLocal = new TransmittableThreadLocal();
+    private static InheritableThreadLocal<SqlConnection> threadLocal = new InheritableThreadLocal();
 
     @Test
     public void test() throws InterruptedException {
@@ -90,10 +88,10 @@ public class TransmittableThreadLocalDemo extends MyExcutor {
                 Thread.sleep(30);
                 System.out.println(Thread.currentThread().getName() + "-get3--  " + threadLocal.get());
 
-//                if (1 == threadNumber && i == 20) {
-//                    System.out.println(Thread.currentThread().getName() + "         -remove -------  ");
-//                    threadLocal.remove();
-//                }
+                //                if (1 == threadNumber && i == 20) {
+                //                    System.out.println(Thread.currentThread().getName() + "         -remove -------  ");
+                //                    threadLocal.remove();
+                //                }
             }
         } catch (Exception e) {
             e.printStackTrace();

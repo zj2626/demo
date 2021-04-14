@@ -1,18 +1,21 @@
-package com.demo.common.service.thread.callable.threadlocal;
+package com.demo.common.service.thread.threadlocal;
 
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import com.demo.common.service.thread.abs.MyExcutor;
 import lombok.Data;
 import org.junit.Test;
 
-import java.util.Map;
 import java.util.UUID;
 
-public class ThreadLocalDemo extends MyExcutor {
+public class ThreadLocalDemo2 extends MyExcutor {
     // ThreadLocal的作用就是省的传参数 其保证每个线程中的某对象的独立--独享变量;(不像成员属性可能由于注入(共享)而导致线程安全问题), 可以理解为局部变量(形参)
 
     // ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用，也即变量在线程间隔离而在方法或类间共享的场景
-    private static ThreadLocal<SqlConnection> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<SqlConnection> threadLocal = ThreadLocal.withInitial(() -> {
+        System.out.println('\n' + Thread.currentThread().getName() + " >>>> initialValue");
+        SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
+        return sqlConnection;
+    });
 
     @Test
     public void test() throws InterruptedException {
@@ -34,17 +37,8 @@ public class ThreadLocalDemo extends MyExcutor {
         return null;
     }
 
-    // 每一个Thread对象都有一个ThreadLocalMap对象，这个ThreadLocalMap持有对象的引用
-    // ThreadLocalMap以当前的threadlocal对象为key，以真正的存储对象为value。get时通过threadlocal实例就可以找到绑定在当前线程上的对象。
-    // 每个 Thread 内有自己的实例副本，且该副本只能由当前 Thread 使用。这是也是 ThreadLocal 命名的由来
     private void optionOne() {
         try {
-            // set的部分可以放到initialValue方法中执行
-            if (null == threadLocal.get()) {
-                SqlConnection sqlConnection = new SqlConnection(Thread.currentThread().getName());
-                threadLocal.set(sqlConnection);
-            }
-
             for (int i = 0; i < 5; i++) {
                 // get得到null的时候会调用setInitialValue方法，从而调用initialValue方法，所以要set的值可以直接在initialValue中返回
                 SqlConnection sqlConnection = threadLocal.get();

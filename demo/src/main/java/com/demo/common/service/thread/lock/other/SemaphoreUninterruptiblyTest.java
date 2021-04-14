@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.CASandAQS;
+package com.demo.common.service.thread.lock.other;
 
 import com.demo.common.service.thread.abs.MyExcutor;
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class SemaphoreTest extends MyExcutor {
+public class SemaphoreUninterruptiblyTest extends MyExcutor {
     private Semaphore semaphore = new Semaphore(5, true);
     
     @Test
@@ -21,14 +21,15 @@ public class SemaphoreTest extends MyExcutor {
     @Override
     public Object doExcute() throws Exception {
         try {
-            semaphore.acquire();
+            // acquireUninterruptibly()作用是使等待进入acquire()方法的线程，不允许被中断
+            semaphore.acquireUninterruptibly();
             TimeUnit.MILLISECONDS.sleep(500);
             System.out.println(Thread.currentThread().getName() + "=====> "
                     + Thread.currentThread().isAlive() + " - "
                     + Thread.currentThread().isInterrupted());
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(1000);
         } catch (InterruptedException ignored) {
-        } finally{
+        } finally {
             semaphore.release();
         }
         

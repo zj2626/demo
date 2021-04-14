@@ -1,12 +1,6 @@
-package com.demo.common.service.thread.lock;
+package com.demo.common.service.thread.synchronizedLock;
 
-import com.demo.common.service.thread.abs.ExcutorPoolDemo;
-import com.demo.common.service.thread.abs.LockInterface;
-import com.demo.common.service.thread.abs.MyExcutor;
 import org.junit.Test;
-
-import java.util.Date;
-import java.util.Map;
 
 public class SynchronizedDemo3  {
 

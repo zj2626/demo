@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.callable.chain;
+package com.demo.common.service.thread.queue.chain;
 
 import org.junit.Test;
 

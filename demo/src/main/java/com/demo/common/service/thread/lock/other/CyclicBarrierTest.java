@@ -1,4 +1,4 @@
-package com.demo.common.service.thread.container;
+package com.demo.common.service.thread.lock.other;
 
 import com.demo.common.service.thread.abs.ExcutorPoolDemo;
 import com.demo.common.service.thread.abs.MyExcutor;
