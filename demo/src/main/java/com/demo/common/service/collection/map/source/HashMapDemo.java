@@ -236,6 +236,7 @@ public class HashMapDemo<K, V> {
      * @see HashMap#resize()
      */
     final MyNode<K, V>[] resize() {
+        System.out.println(this);
         System.out.println("do resize... 当前数据个数:" + size + " 调整大小界限:" + threshold);
 
         // 旧table
@@ -332,6 +333,8 @@ public class HashMapDemo<K, V> {
                 }
             }
         }
+        System.out.println(this);
+        System.out.println("---------------------------------------------------------------------------");
         return newTab;
     }
 
@@ -389,7 +392,7 @@ public class HashMapDemo<K, V> {
     private String print(MyNode<K, V>[] table) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < table.length; i++) {
-            result.append("\n\t").append(i).append(" -> ").append(table[i]);
+            result.append("\n\t").append(String.format("%3d", i)).append(" -> ").append(table[i]);
         }
         result.append("\n\t");
         return result.toString();
