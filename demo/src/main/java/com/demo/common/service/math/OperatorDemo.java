@@ -113,20 +113,30 @@ public class OperatorDemo {
         System.out.println((a & 1) == 0);
         System.out.println("--------------------------");
 
+        // 取余 对2^n的数值进行取余计算
+        int n = 8 - 1;
+        System.out.println(a & n);
+        System.out.println(n & a);
+        System.out.println("--------------------------");
+
+        // 生成第一个大于a的满足2^n的数
+        System.out.println(tableSizeFor(5));
+        System.out.println("--------------------------");
+
+        // 相反数
+        System.out.println(~a + 1);
+        System.out.println("--------------------------");
+
+        // 绝对值
+        System.out.println(a >> 31 == 0 ? a : (~a + 1));
+        System.out.println("--------------------------");
+
         // 交换两个数
         a ^= b;
         b ^= a;
         a ^= b;
         System.out.println(a);
         System.out.println(b);
-        System.out.println("--------------------------");
-
-        // 取余 对2^n的数值进行取余计算
-        System.out.println(13 & 3);
-        System.out.println("--------------------------");
-
-        // 生成第一个大于a的满足2^n的数
-        System.out.println(tableSizeFor(5));
         System.out.println("--------------------------");
     }
 

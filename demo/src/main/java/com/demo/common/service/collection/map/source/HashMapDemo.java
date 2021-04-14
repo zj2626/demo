@@ -160,7 +160,7 @@ public class HashMapDemo<K, V> {
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
 
-        // put数据中,n是已经初始化的数组空间大小(table.length), 通过(n - 1) & hash运算得到本次插入位置
+        // put数据中,n是已经初始化的数组空间大小(table.length), 通过[取余]得到本次插入位置
         // 判断当前位置是否已经有值
         if ((p = tab[i = (n - 1) & hash]) == null)
             // 没有值就直接插
