@@ -1,5 +1,7 @@
 package com.demo.common.service.collection.map.source;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,7 +20,7 @@ public class MyNode<K,V> implements Map.Entry<K,V> {
 
     public final K getKey()        { return key; }
     public final V getValue()      { return value; }
-    public final String toString() { return key + "=" + value; }
+    public final MyNode<K,V> getNext()      { return next; }
 
     public final int hashCode() {
         return Objects.hashCode(key) ^ Objects.hashCode(value);
@@ -40,5 +42,10 @@ public class MyNode<K,V> implements Map.Entry<K,V> {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

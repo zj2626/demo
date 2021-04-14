@@ -1,6 +1,8 @@
 package com.demo.common.service.collection.map.source;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @see HashMap
@@ -153,9 +155,9 @@ public class HashMapDemo<K, V> {
         System.out.println("do putVal");
 
         // tab就是当前map中的table的引用
-        MyNode<K,V>[] tab;
+        MyNode<K, V>[] tab;
         // p是要存放数据的数组位置(数组位置同时也是链表的头)
-        MyNode<K,V> p;
+        MyNode<K, V> p;
         // n是当前map容量 i是要存放数据的位置下标
         int n, i;
 
@@ -171,7 +173,7 @@ public class HashMapDemo<K, V> {
         else {
             // 有值就要拉链表
             // 真正要插入的位置
-            MyNode<K,V> e;
+            MyNode<K, V> e;
             // 数据的key
             K k;
 
@@ -179,32 +181,37 @@ public class HashMapDemo<K, V> {
             if (p.hash == hash &&
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
-            // 如果当前节点已经转换为红黑树, 则进行红黑树处理
+                // 如果当前节点已经转换为红黑树, 则进行红黑树处理
             else if (p instanceof MyTreeNode)
-                e = ((MyTreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
-            // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD, 就要把当前节点类型改为红黑树
+                e = ((MyTreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
+                // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD, 就要把当前节点类型改为红黑树
             else {
-                // binCount 已经存在的节点个数
+                // 已经存在的节点个数 == binCount+1
                 for (int binCount = 0; ; ++binCount) {
-                    // 如果不存在下一个节点, 那就说明要么没有拉链, 要么就已经循环到最后了, 就新建节点直接链接到p的后面, 设置e是p的下一个
+                    // 设置e是p的下一个
+                    // 如果不存在下一个节点, 那就说明要么没有拉链, 要么就已经循环到最后了, 就新建节点直接链接到p的后面, 新建节点, 跳出循环
                     if ((e = p.next) == null) {
+                        // 数据连接当前节点后面
                         p.next = newNode(hash, key, value, null);
-                        // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8), 大于则改为红黑树
-                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                        // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8, 意思是当前put节点是链表的第9个元素), 大于则改为红黑树
+                        if (binCount >= TREEIFY_THRESHOLD - 1) { // -1 for 1st
+                            System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: \n" + this.toString() + "\n<<<<<<<<<<<<<<<< 链表转为红黑树");
                             treeifyBin(tab, hash);
+                        }
+
                         break;
                     }
-                    // 如果存在下一个节点, 就和上面判断相同, 判断已经存在的key和要插入的key是否相同
+                    // 如果存在下一个节点, 就和上面判断相同, 判断已经存在的key和要插入的key是否相同, 如果相同则跳出循环, 后面代码操作:覆盖原有数据
                     if (e.hash == hash &&
                             ((k = e.key) == key || (key != null && key.equals(k))))
                         break;
 
-                    // 最终在此设置p(也就是e)就是要插入的数据
+                    // 设置p为下一个节点 然后继续循环
                     p = e;
                 }
             }
 
-            // 最终插入数据
+            // 覆盖原有数据
             if (e != null) {
                 V oldValue = e.value;
                 if (!onlyIfAbsent || oldValue == null)
@@ -218,7 +225,7 @@ public class HashMapDemo<K, V> {
         ++modCount;
         // 如果插入数据个数已经大于下一个要调整大小(当前数组总大小*0.75)的大小值, 就会resize
         if (++size > threshold)
-            resize();
+             resize();
         afterNodeInsertion(evict);
         return null;
     }
@@ -228,11 +235,11 @@ public class HashMapDemo<K, V> {
      *
      * @see HashMap#resize()
      */
-    final MyNode<K,V>[] resize() {
+    final MyNode<K, V>[] resize() {
         System.out.println("do resize... 当前数据个数:" + size + " 调整大小界限:" + threshold);
 
         // 旧table
-        MyNode<K,V>[] oldTab = table;
+        MyNode<K, V>[] oldTab = table;
         // 旧table的容量
         int oldCap = (oldTab == null) ? 0 : oldTab.length;
         // 旧调整临界点
@@ -246,8 +253,7 @@ public class HashMapDemo<K, V> {
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
-            }
-            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+            } else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
                     oldCap >= DEFAULT_INITIAL_CAPACITY)
                 newThr = oldThr << 1; // double threshold
         }
@@ -256,30 +262,30 @@ public class HashMapDemo<K, V> {
         else if (oldThr > 0) // initial capacity was placed in threshold
             newCap = oldThr;
 
-        // 如果map中没存储空间, 进行初始化, 默认大小:16, 默认整临界点: 16*0.75
+            // 如果map中没存储空间, 进行初始化, 默认大小:16, 默认整临界点: 16*0.75
         else {               // zero initial threshold signifies using defaults
             newCap = DEFAULT_INITIAL_CAPACITY;
-            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+            newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
 
         // 如果整临界点没有初始化, 就使用新的table容量计算一次
         if (newThr == 0) {
-            float ft = (float)newCap * loadFactor;
-            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
-                    (int)ft : Integer.MAX_VALUE);
+            float ft = (float) newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float) MAXIMUM_CAPACITY ?
+                    (int) ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
 
         // 开辟新的存储空间 新table
-        @SuppressWarnings({"rawtypes","unchecked"})
-        MyNode<K,V>[] newTab = (MyNode<K,V>[])new MyNode[newCap];
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        MyNode<K, V>[] newTab = (MyNode<K, V>[]) new MyNode[newCap];
         table = newTab;
 
         // 如果有旧空间, 循环每个元素位置,重新计算hash然后存放到新table的固定位置上
         if (oldTab != null) {
             for (int j = 0; j < oldCap; ++j) {
                 // e存储当前循环要复制的数据
-                MyNode<K,V> e;
+                MyNode<K, V> e;
                 // 位置有数据
                 if ((e = oldTab[j]) != null) {
                     // 旧table该位置置空
@@ -289,15 +295,15 @@ public class HashMapDemo<K, V> {
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
 
-                    // 如果当前节点已经转换为红黑树, 则进行红黑树处理
+                        // 如果当前节点已经转换为红黑树, 则进行红黑树处理
                     else if (e instanceof MyTreeNode)
-                        ((MyTreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                        ((MyTreeNode<K, V>) e).split(this, newTab, j, oldCap);
 
-                    // 都不是, 那就要访问当前节点的拉链 TODO
+                        // 都不是, 那就要访问当前节点的拉链 TODO
                     else { // preserve order
-                        MyNode<K,V> loHead = null, loTail = null;
-                        MyNode<K,V> hiHead = null, hiTail = null;
-                        MyNode<K,V> next;
+                        MyNode<K, V> loHead = null, loTail = null;
+                        MyNode<K, V> hiHead = null, hiTail = null;
+                        MyNode<K, V> next;
                         do {
                             next = e.next;
                             if ((e.hash & oldCap) == 0) {
@@ -306,8 +312,7 @@ public class HashMapDemo<K, V> {
                                 else
                                     loTail.next = e;
                                 loTail = e;
-                            }
-                            else {
+                            } else {
                                 if (hiTail == null)
                                     hiHead = e;
                                 else
@@ -330,14 +335,20 @@ public class HashMapDemo<K, V> {
         return newTab;
     }
 
-    final void treeifyBin(MyNode<K,V>[] tab, int hash) {
-        int n, index; MyNode<K,V> e;
+    /**
+     * 当前链表转换为红黑树 TODO
+     *
+     * @see HashMap#treeifyBin(java.util.HashMap.Node[], int)
+     */
+    final void treeifyBin(MyNode<K, V>[] tab, int hash) {
+        int n, index;
+        MyNode<K, V> e;
         if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
             resize();
         else if ((e = tab[index = (n - 1) & hash]) != null) {
-            MyTreeNode<K,V> hd = null, tl = null;
+            MyTreeNode<K, V> hd = null, tl = null;
             do {
-                MyTreeNode<K,V> p = replacementTreeNode(e, null);
+                MyTreeNode<K, V> p = replacementTreeNode(e, null);
                 if (tl == null)
                     hd = p;
                 else {
@@ -351,25 +362,36 @@ public class HashMapDemo<K, V> {
         }
     }
 
-    MyNode<K,V> newNode(int hash, K key, V value, MyNode<K,V> next) {
+    MyNode<K, V> newNode(int hash, K key, V value, MyNode<K, V> next) {
         return new MyNode<>(hash, key, value, next);
     }
 
-    MyTreeNode<K,V> replacementTreeNode(MyNode<K,V> p, MyNode<K,V> next) {
+    MyTreeNode<K, V> replacementTreeNode(MyNode<K, V> p, MyNode<K, V> next) {
         return new MyTreeNode<>(p.hash, p.key, p.value, next);
     }
 
-    void afterNodeAccess(MyNode<K,V> p) { }
+    void afterNodeAccess(MyNode<K, V> p) { }
+
     void afterNodeInsertion(boolean evict) { }
-    void afterNodeRemoval(MyNode<K,V> p) { }
+
+    void afterNodeRemoval(MyNode<K, V> p) { }
 
     @Override
     public String toString() {
         return "HashMapDemo{" +
-                " table=" + (null == table ? null : Arrays.toString(table)) +
                 " size=" + size +
-                " length=" + (null == table ? null :table.length) +
+                " length=" + (null == table ? null : table.length) +
                 " threshold=" + threshold +
+                " table=" + (null == table ? null : print(table)) +
                 '}';
+    }
+
+    private String print(MyNode<K, V>[] table) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < table.length; i++) {
+            result.append("\n\t").append(i).append(" -> ").append(table[i]);
+        }
+        result.append("\n\t");
+        return result.toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.demo.common.service.collection.map;
 
 import com.demo.common.service.collection.map.source.HashMapDemo;
+import com.demo.common.service.util.RandomStringUtils;
 import org.junit.Test;
 
 public class SourceMapDemo {
@@ -8,21 +9,21 @@ public class SourceMapDemo {
     public void addTest() {
         HashMapDemo<String, String> map = new HashMapDemo<>(5);
         System.out.println(map);
-        map.put("a", "a");
+        map.put(RandomStringUtils.getRandomString(3), null);
         System.out.println(map);
-        map.put("b", "b");
-        map.put("c", "c");
-        map.put("d", "d");
-        map.put("e", "e");
-        map.put("f", "f");
+        map.put(RandomStringUtils.getRandomString(3), null);
+        map.put(RandomStringUtils.getRandomString(3), null);
+        map.put(RandomStringUtils.getRandomString(3), null);
+        map.put(RandomStringUtils.getRandomString(3), null);
+        map.put(RandomStringUtils.getRandomString(3), null);
         System.out.println(map);
-        map.put("g", "g");
+        map.put(RandomStringUtils.getRandomString(3), null);
         System.out.println(map);
 
-//        for (int i = 0; i < 30; i++) {
-//            map.put("a" + i, "aaa" + i);
-//        }
-//        map.put(null, "a");
+        for (int i = 0; i < 40; i++) {
+            map.put(RandomStringUtils.getRandomString(3) + i, null);
+        }
+//        map.put(null, null);
         System.out.println(map);
         System.out.println("================");
 

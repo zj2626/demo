@@ -1,6 +1,8 @@
 package com.demo.common.service.collection.map.source;
 
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.HashMap;
 
 public class MyTreeNode<K, V> extends MyNode<K, V> {
@@ -31,5 +33,13 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
 
     final void treeify(MyNode<K, V>[] tab) {
 
+    }
+
+    public final MyTreeNode<K, V> getLeft()        { return left; }
+    public final MyTreeNode<K, V> getRight()      { return right; }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }
