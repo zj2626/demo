@@ -19,6 +19,7 @@ public class MyNode<K,V> implements Map.Entry<K,V> {
     }
 
     public final K getKey()        { return key; }
+    public final int getHash()        { return hash; }
     public final V getValue()      { return value; }
     public final MyNode<K,V> getNext()      { return next; }
 

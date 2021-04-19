@@ -10,12 +10,20 @@ public class SourceMapDemo {
         HashMapDemo<String, String> map = new HashMapDemo<>(5);
         System.out.println(map);
 
-        for (int i = 0; i < 40; i++) {
-            map.put(RandomStringUtils.getRandomString(3) + i, null);
-        }
-        //        map.put(null, null);
+        map.put("4b4_0", null);
+        map.put("25k_1", null);
+        map.put("H47_2", null);
+        map.put("yl6_3", null);
+        map.put("gu5_4", null);
+        map.put("4cm_5", null);
+        map.put("V78_6", null);
+//        for (int i = 7; i < 8; i++) {
+//            map.put(RandomStringUtils.getRandomString(3) + "_" + i, null);
+//        }
+        System.out.println("================================================================================================");
+        System.out.println("================================");
+        System.out.println("================================");
         System.out.println(map);
-        System.out.println("================");
 
         String key = "a";
         System.out.println(map.get(key));
