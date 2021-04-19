@@ -296,17 +296,23 @@ public class HashMapDemo<K, V> {
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
 
-                        // 如果当前节点已经转换为红黑树, 则进行红黑树处理
+                    // 如果当前节点已经转换为红黑树, 则进行红黑树处理
                     else if (e instanceof MyTreeNode)
                         ((MyTreeNode<K, V>) e).split(this, newTab, j, oldCap);
 
-                        // 都不是, 那就要访问当前节点的拉链 TODO
+                    // 都不是, 那就要访问当前节点的拉链 TODO
                     else { // preserve order
                         MyNode<K, V> loHead = null, loTail = null;
                         MyNode<K, V> hiHead = null, hiTail = null;
+                        // 链表的下一个节点
                         MyNode<K, V> next;
                         do {
                             next = e.next;
+                            /*
+                             * 判断是否需要移动位置 (&:如果相对应位值相同，则结果为0，否则为1) TODO
+                             * xxxx xxxx
+                             * 0000 1000
+                             */
                             if ((e.hash & oldCap) == 0) {
                                 if (loTail == null)
                                     loHead = e;
