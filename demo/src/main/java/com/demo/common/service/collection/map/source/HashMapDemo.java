@@ -300,13 +300,16 @@ public class HashMapDemo<K, V> {
                     else if (e instanceof MyTreeNode)
                         ((MyTreeNode<K, V>) e).split(this, newTab, j, oldCap);
 
-                    // 都不是, 那就要访问当前节点的拉链 TODO
+                    // 都不是, 那就要访问当前节点的拉链 一个一个判断 TODO
                     else { // preserve order
+                        // lo开头变量存放不需要移动位置的数据元素, 组成的链表
+                        // li开头变量存放 需要移动位置的数据元素, 组成的链表
                         MyNode<K, V> loHead = null, loTail = null;
                         MyNode<K, V> hiHead = null, hiTail = null;
                         // 链表的下一个节点
                         MyNode<K, V> next;
                         do {
+                            // 循环链表的每个元素
                             next = e.next;
                             /*
                              * 判断是否需要移动位置 (&:如果相对应位都是1，则结果为1，否则为0), (e.hash & oldCap) == 0 则不需要移动
@@ -327,18 +330,25 @@ public class HashMapDemo<K, V> {
                              * resize前检测: hash & oldCap 也就是 19 & 8 ---> 8 (> 0) 需要移动
                              * 0011 1011
                              * 0000 1000 --> 0000 1000
-                             * resize后: hash & newCap-1 也就是  19 & 16-1 ---> 11
+                             * resize后: hash & newCap-1 也就是  19 & 16-1 ---> 11 (而且11正好等于3+8, 也就是(newCap = j + oldCap))
                              * 0011 1011
                              * 0000 1111 --> 0000 1011
                              * -------------------------------------------------------------------------------------
                              */
+                            // 不需要移动情况: 存放到一个链表, 然后在后面统一处理
                             if ((e.hash & oldCap) == 0) {
+                                // 拉链 loHead永远指向第一个(头部), loTail永远指向最后一个(尾部)
                                 if (loTail == null)
+                                    // loHead指向头部
                                     loHead = e;
                                 else
+                                    // 当前节点链接到链表尾部
                                     loTail.next = e;
+                                // loTail指向尾部
                                 loTail = e;
-                            } else {
+                            }
+                            // 需要移动情况: 需要移动的也放到一个链表中, 然后在后面统一处理
+                            else {
                                 if (hiTail == null)
                                     hiHead = e;
                                 else
@@ -346,10 +356,14 @@ public class HashMapDemo<K, V> {
                                 hiTail = e;
                             }
                         } while ((e = next) != null);
+
+                        // 当存在不需要移动的元素, 直接设置到新table的当前位置(下标j)上
                         if (loTail != null) {
                             loTail.next = null;
                             newTab[j] = loHead;
                         }
+
+                        // 当存在需要移动的元素, 直接设置到新table的指定位置(下标j + oldCap)上
                         if (hiTail != null) {
                             hiTail.next = null;
                             newTab[j + oldCap] = hiHead;
