@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.stream.LongStream;
 
 public class ExecutorsDemo extends MyExcutor {
@@ -34,8 +35,8 @@ public class ExecutorsDemo extends MyExcutor {
         }
 
         int result = 0;
-        List<Future> futureList = excutorPool.getFutureList();
-        for (Future future : futureList) {
+        List<FutureTask> futureList = excutorPool.getFutureList();
+        for (FutureTask future : futureList) {
             result = (int) future.get();
         }
         System.out.println("求和 " + result);

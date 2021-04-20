@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 public class ExcutorPoolDemo {
     private ExcutorInterface excutor;
     private LockInterface lock;
-    private static List<Future> futureList = new ArrayList<>();
+    private static List<FutureTask> futureList = new ArrayList<>();
 
     public ExcutorPoolDemo(ExcutorInterface excutor) {
         System.out.println("CPU核心数" + Runtime.getRuntime().availableProcessors());
@@ -23,13 +23,13 @@ public class ExcutorPoolDemo {
     }
 
     public void execute(int size) throws InterruptedException {
-        execute(Params.builder().size(size).build());
+        execute(Params.builder().type("doExcute").size(size).build());
     }
 
     public void execute(Params param) throws InterruptedException {
         lock = Optional.ofNullable(lock).orElse(new DefaultLock());
 
-        Executor service = getAlibabaExecutor();
+        Executor service = getExecutor();
 
         for (int i = 0; i < param.getSize(); i++) {
             if (param.isOrder()) {
@@ -58,18 +58,18 @@ public class ExcutorPoolDemo {
             });
             futureList.add(future);
         }
-        for (Future future : futureList) {
+        for (FutureTask future : futureList) {
             service.execute((FutureTask) future);
         }
         System.out.println("线程已启动: " + futureList.size());
     }
 
-    public List<Future> getFutureList() {
+    public List<FutureTask> getFutureList() {
         return futureList;
     }
 
     public void futureGet(Long timeOut) {
-        for (Future future : futureList) {
+        for (FutureTask future : futureList) {
             try {
                 if (!isCancelled(future)) {
                     future.get(timeOut, TimeUnit.SECONDS);
@@ -83,7 +83,7 @@ public class ExcutorPoolDemo {
     }
 
     public void futureGet() throws InterruptedException {
-        for (Future future : futureList) {
+        for (FutureTask future : futureList) {
             try {
                 if (!isCancelled(future)) {
                     future.get();
@@ -94,7 +94,7 @@ public class ExcutorPoolDemo {
         }
     }
 
-    public boolean isCancelled(Future future) {
+    public boolean isCancelled(FutureTask future) {
         return future.isCancelled();
     }
 
@@ -119,15 +119,15 @@ public class ExcutorPoolDemo {
 
     // 普通的线程池
     private Executor getExecutor() {
-        return Executors.newFixedThreadPool(2);
+        return Executors.newFixedThreadPool(1000);
     }
 
     // Spring的线程池
     private Executor getSpringExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(10);
+        executor.setCorePoolSize(1000);
+        executor.setMaxPoolSize(1000);
+        executor.setQueueCapacity(1000);
         executor.setThreadNamePrefix("pool-1-thread-");
         executor.initialize();
         return executor;
@@ -136,9 +136,9 @@ public class ExcutorPoolDemo {
     // alibaba的线程池
     private Executor getAlibabaExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(10);
+        executor.setCorePoolSize(1000);
+        executor.setMaxPoolSize(1000);
+        executor.setQueueCapacity(1000);
         executor.setThreadNamePrefix("pool-1-thread-");
         executor.initialize();
         return TtlExecutors.getTtlExecutor(executor);
