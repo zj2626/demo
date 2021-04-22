@@ -395,6 +395,7 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
     public final MyTreeNode<K, V> getLeft()        { return left; }
     public final MyTreeNode<K, V> getRight()      { return right; }
     public final boolean isRed()      { return red; }
+    public MyTreeNode<K,V> getNext()      { return null; }
 
     @Override
     public String toString() {
