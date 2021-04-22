@@ -184,7 +184,7 @@ public class HashMapDemo<K, V> {
                 // 如果当前节点已经转换为红黑树, 则进行红黑树处理
             else if (p instanceof MyTreeNode)
                 e = ((MyTreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
-                // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD, 就要把当前节点类型改为红黑树
+            // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD且table容量不小于64, 就要把当前节点类型改为红黑树
             else {
                 // 已经存在的节点个数 == binCount+1
                 for (int binCount = 0; ; ++binCount) {
@@ -193,7 +193,7 @@ public class HashMapDemo<K, V> {
                     if ((e = p.next) == null) {
                         // 数据连接当前节点后面
                         p.next = newNode(hash, key, value, null);
-                        // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8, 意思是当前put节点是链表的第9个元素), 大于则改为红黑树
+                        // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8, 意思是当前put节点是链表的第9个元素), 链表长度大于8且 table容量不小于64时候改为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) { // -1 for 1st
                             System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: " + this);
                             treeifyBin(tab, hash);
@@ -220,6 +220,7 @@ public class HashMapDemo<K, V> {
                     e.value = value;
                 // 空方法 可覆盖
                 afterNodeAccess(e);
+                System.out.println("putVal end   :" + key);
                 return oldValue;
             }
         }
@@ -228,7 +229,7 @@ public class HashMapDemo<K, V> {
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
-        System.out.println("putVal end :" + key);
+        System.out.println("putVal end   :" + key);
         return null;
     }
 
@@ -386,8 +387,10 @@ public class HashMapDemo<K, V> {
     final void treeifyBin(MyNode<K, V>[] tab, int hash) {
         int n, index;
         MyNode<K, V> e;
+        // table容量小于64时候会进行resize
         if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
             resize();
+        // 当table容量不小于64时候改为红黑树
         else if ((e = tab[index = (n - 1) & hash]) != null) {
             MyTreeNode<K, V> hd = null, tl = null;
             do {
