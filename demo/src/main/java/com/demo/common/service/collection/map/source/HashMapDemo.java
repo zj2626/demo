@@ -152,7 +152,7 @@ public class HashMapDemo<K, V> {
      */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
-        System.out.println("do putVal");
+        System.out.println("putVal begin :" + key);
 
         // tab就是当前map中的table的引用
         MyNode<K, V>[] tab;
@@ -195,8 +195,9 @@ public class HashMapDemo<K, V> {
                         p.next = newNode(hash, key, value, null);
                         // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8, 意思是当前put节点是链表的第9个元素), 大于则改为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) { // -1 for 1st
-                            System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: \n" + this.toString() + "\n<<<<<<<<<<<<<<<< 链表转为红黑树");
+                            System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: " + this);
                             treeifyBin(tab, hash);
+                            System.out.println("<<<<<<<<<<<<<<<< 链表转为红黑树");
                         }
 
                         break;
@@ -225,8 +226,9 @@ public class HashMapDemo<K, V> {
         ++modCount;
         // 如果插入数据个数已经大于下一个要调整大小(当前数组总大小*0.75)的大小值, 就会resize
         if (++size > threshold)
-             resize();
+            resize();
         afterNodeInsertion(evict);
+        System.out.println("putVal end :" + key);
         return null;
     }
 
@@ -236,8 +238,7 @@ public class HashMapDemo<K, V> {
      * @see HashMap#resize()
      */
     final MyNode<K, V>[] resize() {
-        System.out.println(this);
-        System.out.println("do resize... 当前数据个数:" + size + " 调整大小界限:" + threshold);
+        System.out.println("do resize before... " + this);
 
         // 旧table
         MyNode<K, V>[] oldTab = table;
@@ -296,11 +297,11 @@ public class HashMapDemo<K, V> {
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
 
-                    // 如果当前节点已经转换为红黑树, 则进行红黑树处理
+                        // 如果当前节点已经转换为红黑树, 则进行红黑树处理
                     else if (e instanceof MyTreeNode)
                         ((MyTreeNode<K, V>) e).split(this, newTab, j, oldCap);
 
-                    // 都不是, 那就要访问当前节点的拉链 一个一个判断 TODO
+                        // 都不是, 那就要访问当前节点的拉链 一个一个判断 TODO
                     else { // preserve order
                         // lo开头变量存放不需要移动位置的数据元素, 组成的链表
                         // li开头变量存放 需要移动位置的数据元素, 组成的链表
@@ -372,7 +373,7 @@ public class HashMapDemo<K, V> {
                 }
             }
         }
-        System.out.println(this);
+        System.out.println("do resize after... " + this);
         System.out.println("---------------------------------------------------------------------------");
         return newTab;
     }
@@ -408,11 +409,11 @@ public class HashMapDemo<K, V> {
         return new MyNode<>(hash, key, value, next);
     }
 
-    MyNode<K,V> replacementNode(MyNode<K,V> p, MyNode<K,V> next) {
+    MyNode<K, V> replacementNode(MyNode<K, V> p, MyNode<K, V> next) {
         return new MyNode<>(p.hash, p.key, p.value, next);
     }
 
-    MyTreeNode<K,V> newTreeNode(int hash, K key, V value, MyNode<K,V> next) {
+    MyTreeNode<K, V> newTreeNode(int hash, K key, V value, MyNode<K, V> next) {
         return new MyTreeNode<>(hash, key, value, next);
     }
 
@@ -429,9 +430,9 @@ public class HashMapDemo<K, V> {
     @Override
     public String toString() {
         return "HashMapDemo{" +
-                " size=" + size +
-                " length=" + (null == table ? null : table.length) +
-                " threshold=" + threshold +
+                " 当前数据个数(size)=" + size +
+                " table长度(length)=" + (null == table ? null : table.length) +
+                " 调整大小界限(threshold)=" + threshold +
                 " table=" + (null == table ? null : print(table)) +
                 '}';
     }
@@ -439,7 +440,13 @@ public class HashMapDemo<K, V> {
     private String print(MyNode<K, V>[] table) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < table.length; i++) {
-            result.append("\n\t").append(String.format("%3d", i)).append(" -> ").append(table[i]);
+            final MyNode<K, V> node = table[i];
+            if (node instanceof MyTreeNode) {
+                MyTreeNode<K, V> treeNode = (MyTreeNode<K, V>) node;
+                result.append("\n\t").append(String.format("%3d", i)).append(" -> ").append(treeNode);
+            } else {
+                result.append("\n\t").append(String.format("%3d", i)).append(" -> ").append(node);
+            }
         }
         result.append("\n\t");
         return result.toString();
