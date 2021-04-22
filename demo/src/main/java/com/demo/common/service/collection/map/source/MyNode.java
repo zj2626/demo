@@ -2,9 +2,13 @@ package com.demo.common.service.collection.map.source;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @see HashMap.Node
+ */
 public class MyNode<K,V> implements Map.Entry<K,V> {
     final int hash;
     final K key;

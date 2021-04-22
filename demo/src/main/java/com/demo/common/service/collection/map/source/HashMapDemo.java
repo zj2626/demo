@@ -408,6 +408,14 @@ public class HashMapDemo<K, V> {
         return new MyNode<>(hash, key, value, next);
     }
 
+    MyNode<K,V> replacementNode(MyNode<K,V> p, MyNode<K,V> next) {
+        return new MyNode<>(p.hash, p.key, p.value, next);
+    }
+
+    MyTreeNode<K,V> newTreeNode(int hash, K key, V value, MyNode<K,V> next) {
+        return new MyTreeNode<>(hash, key, value, next);
+    }
+
     MyTreeNode<K, V> replacementTreeNode(MyNode<K, V> p, MyNode<K, V> next) {
         return new MyTreeNode<>(p.hash, p.key, p.value, next);
     }
