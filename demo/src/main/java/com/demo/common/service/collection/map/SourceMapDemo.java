@@ -73,12 +73,12 @@ public class SourceMapDemo {
         // 加入8个数据存储到map的数据(数据都在下标为3的位置)
         map.put(1027, null);
         map.put(131, null);
-        map.put(1283, null);
+        map.put(643, null);
         map.put(259, null);
-        map.put(387, null);
         map.put(579, null);
         map.put(515, null);
-        map.put(643, null);
+        map.put(1283, null);
+        map.put(387, null);
         map.put(707, null);
 
         //        for (int i = 7; i < 8; i++) {

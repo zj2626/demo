@@ -141,6 +141,9 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
         }
     }
 
+    /**
+     * @see HashMap.TreeNode#tieBreakOrder
+     */
     static int tieBreakOrder(Object a, Object b) {
         int d;
         if (a == null || b == null ||
@@ -151,6 +154,9 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
         return d;
     }
 
+    /**
+     * @see HashMap.TreeNode#moveRootToFront(java.util.HashMap.Node[], java.util.HashMap.TreeNode)
+     */
     static <K,V> void moveRootToFront(MyNode<K,V>[] tab, MyTreeNode<K,V> root) {
         int n;
         if (root != null && tab != null && (n = tab.length) > 0) {
@@ -173,6 +179,9 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
         }
     }
 
+    /**
+     * @see HashMap.TreeNode#balanceInsertion(java.util.HashMap.TreeNode, java.util.HashMap.TreeNode)
+     */
     static <K,V> MyTreeNode<K,V> balanceInsertion(MyTreeNode<K,V> root,
                                                         MyTreeNode<K,V> x) {
         x.red = true;
@@ -328,13 +337,19 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
         return hd;
     }
 
+    /**
+     * @see HashMap.TreeNode#treeify(java.util.HashMap.Node[])
+     */
     final void treeify(MyNode<K,V>[] tab) {
         MyTreeNode<K,V> root = null;
+        // 循环每个元素(x)转为红黑树结构
         for (MyTreeNode<K,V> x = this, next; x != null; x = next) {
             next = (MyTreeNode<K,V>)x.next;
             x.left = x.right = null;
+            // 第一次循环
             if (root == null) {
                 x.parent = null;
+                // 根节点是黑
                 x.red = false;
                 root = x;
             }
@@ -342,7 +357,10 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
                 K k = x.key;
                 int h = x.hash;
                 Class<?> kc = null;
+                // 循环已经存在的节点(p) 找到当前循环节点(x)在树上的正确的位置
                 for (MyTreeNode<K,V> p = root;;) {
+                    // 对比已存在节点的hash和本次循环的元素的hash
+                    // 大于则dir = -1, 小于则dir = 1
                     int dir, ph;
                     K pk = p.key;
                     if ((ph = p.hash) > h)
@@ -355,6 +373,8 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
                         dir = tieBreakOrder(k, pk);
 
                     MyTreeNode<K,V> xp = p;
+                    // 寻找对应节点是否存在数据 dir <= 0就找左子树 否则就找右子树; 如果不存在就直接设置当前循环节点(x)在已经存在的节点(p)的左右子节点
+                    // 同时把p设置为下一次循环的节点(已存在节点)
                     if ((p = (dir <= 0) ? p.left : p.right) == null) {
                         x.parent = xp;
                         if (dir <= 0)
@@ -367,6 +387,8 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
                 }
             }
         }
+
+        // 确保树的根节点是第一个节点
         moveRootToFront(tab, root);
     }
 
