@@ -195,9 +195,7 @@ public class HashMapDemo<K, V> {
                         p.next = newNode(hash, key, value, null);
                         // 判断当前链表节点个数是否大于TREEIFY_THRESHOLD(8, 意思是当前put节点是链表的第9个元素), 链表长度大于8且 table容量不小于64时候改为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) { // -1 for 1st
-                            System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: " + this);
                             treeifyBin(tab, hash);
-                            System.out.println("<<<<<<<<<<<<<<<< 链表转为红黑树");
                         }
 
                         break;
@@ -385,15 +383,21 @@ public class HashMapDemo<K, V> {
      * @see HashMap#treeifyBin(java.util.HashMap.Node[], int)
      */
     final void treeifyBin(MyNode<K, V>[] tab, int hash) {
+        // n 当前table容量  index 下标位置
         int n, index;
         MyNode<K, V> e;
         // table容量小于64时候会进行resize
-        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY) {
+            System.out.println("do resize in treeifyBin... ");
             resize();
+        }
         // 当table容量不小于64时候改为红黑树
         else if ((e = tab[index = (n - 1) & hash]) != null) {
+            System.out.println(">>>>>>>>>>>>>>>> 链表转为红黑树: 链表: " + this);
+            // hd 链表先转变为树结构,元素按照原先链表的顺序, hd是红黑树的第一个元素(按照插入顺序) tl:临时节点
             MyTreeNode<K, V> hd = null, tl = null;
             do {
+                // 循环链表每个节点 Node直接替换为TreeNode 然后按照原先顺序链接为树(也是双向链表)
                 MyTreeNode<K, V> p = replacementTreeNode(e, null);
                 if (tl == null)
                     hd = p;
@@ -403,8 +407,11 @@ public class HashMapDemo<K, V> {
                 }
                 tl = p;
             } while ((e = e.next) != null);
+            // map的当前元素直接替换为新的元素
             if ((tab[index] = hd) != null)
+                // 当前数转变为真红黑树
                 hd.treeify(tab);
+            System.out.println("<<<<<<<<<<<<<<<< 链表转为红黑树: 红黑树: " + this);
         }
     }
 
