@@ -415,6 +415,67 @@ public class HashMapDemo<K, V> {
         }
     }
 
+    /**
+     * @see HashMap#remove(java.lang.Object)
+     */
+    public V remove(Object key) {
+        MyNode<K,V> e;
+        return (e = removeNode(hash(key), key, null, false, true)) == null ?
+                null : e.value;
+    }
+
+    /**
+     * @see HashMap#removeNode(int, java.lang.Object, java.lang.Object, boolean, boolean)
+     *
+     * @param matchValue 如果为true，则仅在值相等时删除
+     * @param movable 如果为false，则在删除时不要移动其他节点
+     */
+    final MyNode<K,V> removeNode(int hash, Object key, Object value,
+                                       boolean matchValue, boolean movable) {
+        MyNode<K,V>[] tab; MyNode<K,V> p; int n, index;
+        // 元素存在才去remove
+        if ((tab = table) != null && (n = tab.length) > 0 &&
+                (p = tab[index = (n - 1) & hash]) != null) {
+            MyNode<K,V> node = null, e; K k; V v;
+            // 判断要素: (hash相同) 且 (key相等(==) 或 key相等(equals))
+            if (p.hash == hash &&
+                    ((k = p.key) == key || (key != null && key.equals(k))))
+                node = p;
+            // 当前节点不等, 则遍历链表/红黑树
+            else if ((e = p.next) != null) {
+                if (p instanceof MyTreeNode)
+                    node = ((MyTreeNode<K,V>)p).getTreeNode(hash, key);
+                else {
+                    do {
+                        // 判断要素: (hash相同) 且 (key相等(==) 或 key相等(equals))
+                        if (e.hash == hash &&
+                                ((k = e.key) == key ||
+                                        (key != null && key.equals(k)))) {
+                            node = e;
+                            break;
+                        }
+                        p = e;
+                    } while ((e = e.next) != null);
+                }
+            }
+            // 找到要删除的数据 则进行删除
+            if (node != null && (!matchValue || (v = node.value) == value ||
+                    (value != null && value.equals(v)))) {
+                if (node instanceof MyTreeNode)
+                    ((MyTreeNode<K,V>)node).removeTreeNode(this, tab, movable);
+                else if (node == p)
+                    tab[index] = node.next;
+                else
+                    p.next = node.next;
+                ++modCount;
+                --size;
+                afterNodeRemoval(node);
+                return node;
+            }
+        }
+        return null;
+    }
+
     MyNode<K, V> newNode(int hash, K key, V value, MyNode<K, V> next) {
         return new MyNode<>(hash, key, value, next);
     }

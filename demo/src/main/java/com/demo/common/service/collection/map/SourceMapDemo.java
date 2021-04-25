@@ -16,25 +16,20 @@ public class SourceMapDemo {
         map.put(39, null);
         map.put(49, null);
         map.put(59, null);
-        map.put(69, null);
-
-//        map.put("4b4_0", null);
-//        map.put("25k_1", null);
-//        map.put("H47_2", null);
-//        map.put("yl6_3", null);
-//        map.put("gu5_4", null);
-//        map.put("4cm_5", null);
-//        map.put("V78_6", null);
+        map.put(109, null);
 
 //        for (int i = 7; i < 8; i++) {
 //            map.put(RandomStringUtils.getRandomString(3) + "_" + i, null);
 //        }
+
+        map.get(109);
         System.out.println("================================================================================================");
-        System.out.println("================================");
-        System.out.println("================================");
         System.out.println(map);
 
-        map.get(19);
+        map.remove(39);
+        map.remove(29);
+        System.out.println("================================================================================================");
+        System.out.println(map);
     }
 
     @Test
@@ -84,12 +79,9 @@ public class SourceMapDemo {
         //        for (int i = 7; i < 8; i++) {
         //            map.put(RandomStringUtils.getRandomString(3) + "_" + i, null);
         //        }
+        map.get(109);
         System.out.println("================================================================================================");
-        System.out.println("================================");
-        System.out.println("================================");
         System.out.println(map);
-
-        map.get(19);
     }
 
     // 如果tab的容量不足64时, 即使某链表长度超过8也不会转为红黑树, 会去resize
@@ -142,12 +134,9 @@ public class SourceMapDemo {
         //        for (int i = 7; i < 8; i++) {
         //            map.put(RandomStringUtils.getRandomString(3) + "_" + i, null);
         //        }
+        map.get(109);
         System.out.println("================================================================================================");
-        System.out.println("================================");
-        System.out.println("================================");
         System.out.println(map);
-
-        map.get(19);
     }
 
     @Test

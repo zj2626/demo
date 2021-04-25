@@ -237,6 +237,104 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
         }
     }
 
+    final void removeTreeNode(HashMapDemo<K,V> map, MyNode<K,V>[] tab,
+                              boolean movable) {
+        int n;
+        if (tab == null || (n = tab.length) == 0)
+            return;
+        int index = (n - 1) & hash;
+        MyTreeNode<K,V> first = (MyTreeNode<K,V>)tab[index], root = first, rl;
+        MyTreeNode<K,V> succ = (MyTreeNode<K,V>)next, pred = prev;
+        if (pred == null)
+            tab[index] = first = succ;
+        else
+            pred.next = succ;
+        if (succ != null)
+            succ.prev = pred;
+        if (first == null)
+            return;
+        if (root.parent != null)
+            root = root.root();
+        if (root == null
+                || (movable
+                && (root.right == null
+                || (rl = root.left) == null
+                || rl.left == null))) {
+            tab[index] = first.untreeify(map);  // too small
+            return;
+        }
+        MyTreeNode<K,V> p = this, pl = left, pr = right, replacement;
+        if (pl != null && pr != null) {
+            MyTreeNode<K,V> s = pr, sl;
+            while ((sl = s.left) != null) // find successor
+                s = sl;
+            boolean c = s.red; s.red = p.red; p.red = c; // swap colors
+            MyTreeNode<K,V> sr = s.right;
+            MyTreeNode<K,V> pp = p.parent;
+            if (s == pr) { // p was s's direct parent
+                p.parent = s;
+                s.right = p;
+            }
+            else {
+                MyTreeNode<K,V> sp = s.parent;
+                if ((p.parent = sp) != null) {
+                    if (s == sp.left)
+                        sp.left = p;
+                    else
+                        sp.right = p;
+                }
+                if ((s.right = pr) != null)
+                    pr.parent = s;
+            }
+            p.left = null;
+            if ((p.right = sr) != null)
+                sr.parent = p;
+            if ((s.left = pl) != null)
+                pl.parent = s;
+            if ((s.parent = pp) == null)
+                root = s;
+            else if (p == pp.left)
+                pp.left = s;
+            else
+                pp.right = s;
+            if (sr != null)
+                replacement = sr;
+            else
+                replacement = p;
+        }
+        else if (pl != null)
+            replacement = pl;
+        else if (pr != null)
+            replacement = pr;
+        else
+            replacement = p;
+        if (replacement != p) {
+            MyTreeNode<K,V> pp = replacement.parent = p.parent;
+            if (pp == null)
+                root = replacement;
+            else if (p == pp.left)
+                pp.left = replacement;
+            else
+                pp.right = replacement;
+            p.left = p.right = p.parent = null;
+        }
+
+        MyTreeNode<K,V> r = p.red ? root : balanceDeletion(root, replacement);
+
+        if (replacement == p) {  // detach
+            MyTreeNode<K,V> pp = p.parent;
+            p.parent = null;
+            if (pp != null) {
+                if (p == pp.left)
+                    pp.left = null;
+                else if (p == pp.right)
+                    pp.right = null;
+            }
+        }
+        if (movable)
+            moveRootToFront(tab, r);
+    }
+
     /**
      * @see HashMap.TreeNode#split(java.util.HashMap, java.util.HashMap.Node[], int, int)
      */
@@ -390,6 +488,98 @@ public class MyTreeNode<K, V> extends MyNode<K, V> {
 
         // 确保树的根节点是第一个节点
         moveRootToFront(tab, root);
+    }
+
+    static <K,V> MyTreeNode<K,V> balanceDeletion(MyTreeNode<K,V> root,
+                                                       MyTreeNode<K,V> x) {
+        for (MyTreeNode<K,V> xp, xpl, xpr;;) {
+            if (x == null || x == root)
+                return root;
+            else if ((xp = x.parent) == null) {
+                x.red = false;
+                return x;
+            }
+            else if (x.red) {
+                x.red = false;
+                return root;
+            }
+            else if ((xpl = xp.left) == x) {
+                if ((xpr = xp.right) != null && xpr.red) {
+                    xpr.red = false;
+                    xp.red = true;
+                    root = rotateLeft(root, xp);
+                    xpr = (xp = x.parent) == null ? null : xp.right;
+                }
+                if (xpr == null)
+                    x = xp;
+                else {
+                    MyTreeNode<K,V> sl = xpr.left, sr = xpr.right;
+                    if ((sr == null || !sr.red) &&
+                            (sl == null || !sl.red)) {
+                        xpr.red = true;
+                        x = xp;
+                    }
+                    else {
+                        if (sr == null || !sr.red) {
+                            if (sl != null)
+                                sl.red = false;
+                            xpr.red = true;
+                            root = rotateRight(root, xpr);
+                            xpr = (xp = x.parent) == null ?
+                                    null : xp.right;
+                        }
+                        if (xpr != null) {
+                            xpr.red = (xp == null) ? false : xp.red;
+                            if ((sr = xpr.right) != null)
+                                sr.red = false;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            root = rotateLeft(root, xp);
+                        }
+                        x = root;
+                    }
+                }
+            }
+            else { // symmetric
+                if (xpl != null && xpl.red) {
+                    xpl.red = false;
+                    xp.red = true;
+                    root = rotateRight(root, xp);
+                    xpl = (xp = x.parent) == null ? null : xp.left;
+                }
+                if (xpl == null)
+                    x = xp;
+                else {
+                    MyTreeNode<K,V> sl = xpl.left, sr = xpl.right;
+                    if ((sl == null || !sl.red) &&
+                            (sr == null || !sr.red)) {
+                        xpl.red = true;
+                        x = xp;
+                    }
+                    else {
+                        if (sl == null || !sl.red) {
+                            if (sr != null)
+                                sr.red = false;
+                            xpl.red = true;
+                            root = rotateLeft(root, xpl);
+                            xpl = (xp = x.parent) == null ?
+                                    null : xp.left;
+                        }
+                        if (xpl != null) {
+                            xpl.red = (xp == null) ? false : xp.red;
+                            if ((sl = xpl.left) != null)
+                                sl.red = false;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            root = rotateRight(root, xp);
+                        }
+                        x = root;
+                    }
+                }
+            }
+        }
     }
 
     static <K,V> boolean checkInvariants(MyTreeNode<K,V> t) {
