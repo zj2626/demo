@@ -42,35 +42,35 @@ type:   表示的访问路径,及数据获取途径 一般来说，得保证查�
     优先级:null->system->const->eq-ref->ref->fulltext->ref_or_null->index_merge->unique_subquery->index_subquery->range->index->ALL
     1.null:     不访问任何表
     2.system:   一种特殊的const 要求表中只有一条记录
-    3.const:    表示通过索引一次就找到了
-    4.eq_ref:   索引唯一索引扫描(字段数据具有唯一性)
-    5.ref:      索引非唯一性扫描(字段数据不具有唯一性)
+    3.const:    表示通过索引一次就找到了: 根据主键或者唯一二级索引列与常数进行等值匹配时，对单表的访问方法就是const
+    4.eq_ref:   在连接查询时，如果被驱动表是通过主键或者唯一二级索引列等值匹配的方式进行访问的（如果该主键或者唯一二级索引是联合索引的话，所有的索引列都必须进行等值比较），则对该被驱动表的访问方法就是eq_ref
+    5.ref:      当通过普通的二级索引列与常量进行等值匹配时来查询某个表，那么对该表的访问方法就可能是ref
     6.fulltext: 使用全文索引时出现
-    7.ref_or_null: 当谓词出现索引列等于某值或为空时出现(IS NULL)
-    8.index_merge: 当谓词分别用到多个索引的首列,并且谓词连接为或时(OR)
-    9.unique_subquery:
-    10.index_subquery:
+    7.ref_or_null: 当对普通二级索引进行等值匹配查询，该索引列的值也可以是NULL值时(查询条件中包含 is null) 也就是当谓词出现索引列等于某值或为空时出现(IS NULL)
+    8.index_merge: 当谓词分别用到多个索引的首列,并且谓词连接为或时(OR): 索引合并
+    9.unique_subquery: 如果查询优化器决定将IN子查询转换为EXISTS子查询，而且子查询可以使用到主键进行等值匹配的话，那么该子查询执行计划的type列的值就是unique_subquery
+    10.index_subquery: index_subquery与unique_subquery类似，只不过访问子查询中的表时使用的是普通的索引。
     11.range:   通过范围方式访问索引
-    12.index:   索引全扫描 正常情况下应该在没有过滤谓词时出现
+    12.index:   全索引扫描 索引全扫描 (比如返回结果集中只有索引列)
     13.ALL:     全表扫描
 
 possible_keys:  可能被使用的索引 ,并不是所有的索引
-
 key:            被使用的索引
-
 key_len:        key_len 计算公式为
                 变长字段: 可变长度*字符集位数+(如果可为null+1 否则+0)+2
                 固定字段: eg:[int 4 + (not null +1, else 0 )]
 
-ref:            关联谓词信息或常量
-rows:           如果是驱动行源则为该行源大小 如果是被驱动行源,则是单次操作的行源大小(例如遍历情况下每次一条则显示1)
+ref:            关联谓词信息或常量; 当使用索引列等值匹配的条件去执行查询时，也就是在访问方法是const、eq_ref、ref、ref_or_null、unique_subquery、index_subquery其中之一时，ref列展示的就是与索引列作等值匹配的东西是什么，比如只是一个常数或者是某个列
+rows:           如果查询优化器决定使用全表扫描的方式对某个表执行查询时，执行计划的rows列就代表预计需要扫描的行数，
+                如果使用索引来执行查询时，执行计划的rows列就代表预计扫描的索引记录行数
+Filtered:       代表查询优化器预测在这扫描的记录中，有多少条记录满足其余的搜索条件 (rows行记录中 满足要求的数据的占比)
 Extra:          显示其他重要信息
-    1.Using where           :表示优化器需要通过索引回表查询数据
+    1.Using where           :当我们使用全表扫描来执行对某个表的查询，并且该语句的WHERE子句中有针对该表的搜索条件时
     2.Using index           :表示直接访问索引就足够获取到所需要的数据，不需要通过索引回表(覆盖索引)
-    3.Using index condition :先条件过滤索引，过滤完索引后找到所有符合索引条件的数据行，随后用WHERE子句中的其他条件去过滤这些数据行(索引下推), 此时就可以把查询条件和查询结果列组成联合索引就可以避免此查询
+    3.Using index condition :有些搜索条件中虽然出现了索引列，但却不能使用到索引 (比如在索引列上 like '%aa')
     3.Using where && Using index :
-    4.Using temporary       :使用了临时表
-    5.Using filesort        :无法利用索引来完成的排序
-    6.Using join buffer     :将之前访问的数据存放于join buffer中
-    7.Impossible WHERE      :谓词不成立
+    4.Using temporary       :在许多查询的执行过程中，MySQL可能会借助临时表来完成一些功能，比如去重、排序之类的，比如我们在执行许多包含DISTINCT、GROUP BY、UNION等子句的查询过程中，如果不能有效利用索引来完成查询，MySQL很有可能寻求通过建立内部的临时表来执行查询
+    5.Using filesort        :无法利用索引来完成的排序, 只能在内存中（记录较少的时候）或者磁盘中（记录较多的时候）进行排序，这种在内存中或者磁盘上进行排序的方式统称为文件排序 (注意: group by默认会先排序, 可以使用order by null禁用排序)
+    6.Using join buffer     :在连接查询执行过程中，当被驱动表不能有效的利用索引加快访问速度，MySQL一般会为其分配一块名叫join buffer的内存块来加快查询速度。
+    7.Impossible WHERE      :条件不成立
 
