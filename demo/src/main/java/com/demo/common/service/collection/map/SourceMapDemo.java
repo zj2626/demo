@@ -82,6 +82,11 @@ public class SourceMapDemo {
         map.get(109);
         System.out.println("================================================================================================");
         System.out.println(map);
+
+        map.remove(1027);
+        map.remove(643);
+        System.out.println("================================================================================================");
+        System.out.println(map);
     }
 
     // 如果tab的容量不足64时, 即使某链表长度超过8也不会转为红黑树, 会去resize

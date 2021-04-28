@@ -181,7 +181,7 @@ public class HashMapDemo<K, V> {
             if (p.hash == hash &&
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
-                // 如果当前节点已经转换为红黑树, 则进行红黑树处理
+            // 如果当前节点已经转换为红黑树, 则进行红黑树处理 TODO
             else if (p instanceof MyTreeNode)
                 e = ((MyTreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
             // 都不是, 那就要访问当前节点的拉链,一个一个对比, 如果长度(节点个数)超过TREEIFY_THRESHOLD且table容量不小于64, 就要把当前节点类型改为红黑树
@@ -300,7 +300,7 @@ public class HashMapDemo<K, V> {
                     else if (e instanceof MyTreeNode)
                         ((MyTreeNode<K, V>) e).split(this, newTab, j, oldCap);
 
-                        // 都不是, 那就要访问当前节点的拉链 一个一个判断 TODO
+                        // 都不是, 那就要访问当前节点的拉链 一个一个判断
                     else { // preserve order
                         // lo开头变量存放不需要移动位置的数据元素, 组成的链表
                         // li开头变量存放 需要移动位置的数据元素, 组成的链表
@@ -461,8 +461,10 @@ public class HashMapDemo<K, V> {
             // 找到要删除的数据 则进行删除
             if (node != null && (!matchValue || (v = node.value) == value ||
                     (value != null && value.equals(v)))) {
+                // 红黑树节点删除
                 if (node instanceof MyTreeNode)
                     ((MyTreeNode<K,V>)node).removeTreeNode(this, tab, movable);
+                // 普通节点删除 TODO
                 else if (node == p)
                     tab[index] = node.next;
                 else
