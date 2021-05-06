@@ -1,0 +1,270 @@
+# 表结构:
+CREATE TABLE `testd` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `sex` int(11) DEFAULT NULL,
+  `comment` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ONLY_AGE` (`age`) USING BTREE,
+  KEY `ONLY_NAME` (`name`) USING BTREE,
+  KEY `NAME_SEX` (`name`,`comment`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=56003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+# 查询语句(开启查询优化器日志)
+SET optimizer_trace="enabled=on";
+EXPLAIN select * from testd where id > 10001 and name like '2%' and  age > 450;
+select * from information_schema.OPTIMIZER_TRACE;
+
+# 查询优化器日志
+{
+    "steps":[
+        {
+            "join_preparation":{
+                "select#":1,
+                "steps":[
+                    {
+                        "expanded_query":"/* select#1 */ select `testd`.`id` AS `id`,`testd`.`name` AS `name`,`testd`.`age` AS `age`,`testd`.`sex` AS `sex`,`testd`.`comment` AS `comment` from `testd` where ((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))"
+                    }
+                ]
+            }
+        },
+        {
+            "join_optimization":{
+                "select#":1,
+                "steps":[
+                    {
+                        "condition_processing":{
+                            "condition":"WHERE",
+                            "original_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))",
+                            "steps":[
+                                {
+                                    "transformation":"equality_propagation",
+                                    "resulting_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))"
+                                },
+                                {
+                                    "transformation":"constant_propagation",
+                                    "resulting_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))"
+                                },
+                                {
+                                    "transformation":"trivial_condition_removal",
+                                    "resulting_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "substitute_generated_columns":{
+
+                        }
+                    },
+                    {
+                        "table_dependencies":[
+                            {
+                                "table":"`testd`",
+                                "row_may_be_null":false,
+                                "map_bit":0,
+                                "depends_on_map_bits":[
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ref_optimizer_key_uses":[
+
+                        ]
+                    },
+                    {
+                        "rows_estimation":[ # 行估算
+                            {
+                                "table":"`testd`",
+                                "range_analysis":{
+                                    "table_scan":{ # 全表扫描
+                                        "rows":48162,  # 全表扫描行
+                                        "cost":9795.5  # 全表扫描成本
+                                    },
+                                    "potential_range_indexes":[ # 可能用到的索引
+                                        {
+                                            "index":"PRIMARY", # 主键索引/聚簇索引
+                                            "usable":true,
+                                            "key_parts":[
+                                                "id"
+                                            ]
+                                        },
+                                        {
+                                            "index":"ONLY_AGE",
+                                            "usable":true,
+                                            "key_parts":[
+                                                "age",
+                                                "id"
+                                            ]
+                                        },
+                                        {
+                                            "index":"NAME_SEX",
+                                            "usable":true,
+                                            "key_parts":[
+                                                "name",
+                                                "sex",
+                                                "id"
+                                            ]
+                                        },
+                                        {
+                                            "index":"ONLY_NAME",
+                                            "usable":true,
+                                            "key_parts":[
+                                                "name",
+                                                "id"
+                                            ]
+                                        }
+                                    ],
+                                    "setup_range_conditions":[
+
+                                    ],
+                                    "group_index_range":{
+                                        "chosen":false,
+                                        "cause":"not_group_by_or_distinct"
+                                    },
+                                    "analyzing_range_alternatives":{ # 分析各个索引的成本
+                                        "range_scan_alternatives":[
+                                            {
+                                                "index":"PRIMARY",
+                                                "ranges":[
+                                                    "10001 < id"
+                                                ],
+                                                "index_dives_for_eq_ranges":true,
+                                                "rowid_ordered":true,
+                                                "using_mrr":false,
+                                                "index_only":false,
+                                                "rows":24081,
+                                                "cost":4846.4,  # 成本
+                                                "chosen":true
+                                            },
+                                            {
+                                                "index":"ONLY_AGE",
+                                                "ranges":[
+                                                    "450 < age"
+                                                ],
+                                                "index_dives_for_eq_ranges":true,
+                                                "rowid_ordered":false,
+                                                "using_mrr":false,
+                                                "index_only":false,
+                                                "rows":4672,
+                                                "cost":5607.4,  # 成本
+                                                "chosen":false,
+                                                "cause":"cost"
+                                            },
+                                            {
+                                                "index":"NAME_SEX",
+                                                "ranges":[
+                                                    "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
+                                                ],
+                                                "index_dives_for_eq_ranges":true,
+                                                "rowid_ordered":false,
+                                                "using_mrr":false,
+                                                "index_only":false,
+                                                "rows":3009,
+                                                "cost":3611.8,  # 成本
+                                                "chosen":true
+                                            },
+                                            {
+                                                "index":"ONLY_NAME",
+                                                "ranges":[
+                                                    "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
+                                                ],
+                                                "index_dives_for_eq_ranges":true,
+                                                "rowid_ordered":false,
+                                                "using_mrr":false,
+                                                "index_only":false,
+                                                "rows":3009,
+                                                "cost":3611.8,  # 成本
+                                                "chosen":false,
+                                                "cause":"cost"
+                                            }
+                                        ],
+                                        "analyzing_roworder_intersect":{
+                                            "usable":false,
+                                            "cause":"too_few_roworder_scans"
+                                        }
+                                    },
+                                    "chosen_range_access_summary":{
+                                        "range_access_plan":{
+                                            "type":"range_scan",
+                                            "index":"NAME_SEX",
+                                            "rows":3009,
+                                            "ranges":[
+                                                "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
+                                            ]
+                                        },
+                                        "rows_for_plan":3009,
+                                        "cost_for_plan":3611.8,
+                                        "chosen":true
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "considered_execution_plans":[
+                            {
+                                "plan_prefix":[
+
+                                ],
+                                "table":"`testd`",
+                                "best_access_path":{
+                                    "considered_access_paths":[
+                                        {
+                                            "rows_to_scan":3009,
+                                            "access_type":"range",
+                                            "range_details":{
+                                                "used_index":"NAME_SEX"
+                                            },
+                                            "resulting_rows":145.95,
+                                            "cost":4213.6,
+                                            "chosen":true
+                                        }
+                                    ]
+                                },
+                                "condition_filtering_pct":100,
+                                "rows_for_plan":145.95,
+                                "cost_for_plan":4213.6,
+                                "chosen":true
+                            }
+                        ]
+                    },
+                    {
+                        "attaching_conditions_to_tables":{
+                            "original_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))",
+                            "attached_conditions_computation":[
+
+                            ],
+                            "attached_conditions_summary":[
+                                {
+                                    "table":"`testd`",
+                                    "attached":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%') and (`testd`.`age` > 450))"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "refine_plan":[
+                            {
+                                "table":"`testd`",
+                                "pushed_index_condition":"((`testd`.`id` > 10001) and (`testd`.`name` like '2%'))",
+                                "table_condition_attached":"(`testd`.`age` > 450)"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "join_explain":{
+                "select#":1,
+                "steps":[
+
+                ]
+            }
+        }
+    ]
+}
