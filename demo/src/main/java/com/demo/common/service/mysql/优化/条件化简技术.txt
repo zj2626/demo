@@ -32,6 +32,7 @@
                 ### 查询优化结果见: @see 测试查询成本.txt
                 一. 计算全表扫描的代价 (聚簇索引页数*1+行数*0.2)
                     1. 通过: SHOW TABLE STATUS LIKE 'testd'; 获取表testd记录条数(Rows)=48162 和 占用空间字节数(Data_length)=2637824
+                       通过: SHOW INDEX FROM testd; 获取 TODO
                        通过: SHOW GLOBAL STATUS like 'Innodb_page_size'; 获取mysql的页大小=16384 也就是 16k
                         # Rows: 对于使用MyISAM存储引擎的表来说，该值是准确的，对于使用InnoDB存储引擎的表来说，该值是一个估计值。
                         # Data_length: 使用MyISAM存储引擎的表来说，该值就是数据文件的大小，对于使用InnoDB存储引擎的表来说，该值就相当于聚簇索引占用的存储空间大小(相当于聚簇索引页面数*每页大小)
