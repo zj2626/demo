@@ -4,11 +4,10 @@ CREATE TABLE `testd` (
   `name` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
   `sex` int(11) DEFAULT NULL,
-  `comment` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `comment` varchar(250) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ONLY_AGE` (`age`) USING BTREE,
-  KEY `ONLY_NAME` (`name`) USING BTREE,
-  KEY `NAME_SEX` (`name`,`comment`) USING BTREE
+  KEY `NAME_SEX` (`name`,`sex`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=56003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
 # 查询语句(开启查询优化器日志)
@@ -76,17 +75,17 @@ select * from information_schema.OPTIMIZER_TRACE;
                         ]
                     },
                     {
-                        "rows_estimation":[ # 行估算
+                        "rows_estimation":[
                             {
                                 "table":"`testd`",
                                 "range_analysis":{
-                                    "table_scan":{ # 全表扫描
-                                        "rows":48162,  # 全表扫描行
-                                        "cost":9795.5  # 全表扫描成本
+                                    "table_scan":{
+                                        "rows":48162,
+                                        "cost":9795.5
                                     },
-                                    "potential_range_indexes":[ # 可能用到的索引
+                                    "potential_range_indexes":[
                                         {
-                                            "index":"PRIMARY", # 主键索引/聚簇索引
+                                            "index":"PRIMARY",
                                             "usable":true,
                                             "key_parts":[
                                                 "id"
@@ -108,14 +107,6 @@ select * from information_schema.OPTIMIZER_TRACE;
                                                 "sex",
                                                 "id"
                                             ]
-                                        },
-                                        {
-                                            "index":"ONLY_NAME",
-                                            "usable":true,
-                                            "key_parts":[
-                                                "name",
-                                                "id"
-                                            ]
                                         }
                                     ],
                                     "setup_range_conditions":[
@@ -125,7 +116,7 @@ select * from information_schema.OPTIMIZER_TRACE;
                                         "chosen":false,
                                         "cause":"not_group_by_or_distinct"
                                     },
-                                    "analyzing_range_alternatives":{ # 分析各个索引的成本
+                                    "analyzing_range_alternatives":{
                                         "range_scan_alternatives":[
                                             {
                                                 "index":"PRIMARY",
@@ -137,7 +128,7 @@ select * from information_schema.OPTIMIZER_TRACE;
                                                 "using_mrr":false,
                                                 "index_only":false,
                                                 "rows":24081,
-                                                "cost":4846.4,  # 成本
+                                                "cost":4846.4,
                                                 "chosen":true
                                             },
                                             {
@@ -150,36 +141,22 @@ select * from information_schema.OPTIMIZER_TRACE;
                                                 "using_mrr":false,
                                                 "index_only":false,
                                                 "rows":4672,
-                                                "cost":5607.4,  # 成本
+                                                "cost":5607.4,
                                                 "chosen":false,
                                                 "cause":"cost"
                                             },
                                             {
                                                 "index":"NAME_SEX",
                                                 "ranges":[
-                                                    "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
+                                                    "0x010032000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x280032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf"
                                                 ],
                                                 "index_dives_for_eq_ranges":true,
                                                 "rowid_ordered":false,
                                                 "using_mrr":false,
                                                 "index_only":false,
                                                 "rows":3009,
-                                                "cost":3611.8,  # 成本
+                                                "cost":3611.8,
                                                 "chosen":true
-                                            },
-                                            {
-                                                "index":"ONLY_NAME",
-                                                "ranges":[
-                                                    "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
-                                                ],
-                                                "index_dives_for_eq_ranges":true,
-                                                "rowid_ordered":false,
-                                                "using_mrr":false,
-                                                "index_only":false,
-                                                "rows":3009,
-                                                "cost":3611.8,  # 成本
-                                                "chosen":false,
-                                                "cause":"cost"
                                             }
                                         ],
                                         "analyzing_roworder_intersect":{
@@ -193,7 +170,7 @@ select * from information_schema.OPTIMIZER_TRACE;
                                             "index":"NAME_SEX",
                                             "rows":3009,
                                             "ranges":[
-                                                "0x0100320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x780032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf2020"
+                                                "0x010032000000000000000000000000000000000000000000000000000000000000000000000000000000 <= name <= 0x280032efbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbfefbfbf"
                                             ]
                                         },
                                         "rows_for_plan":3009,
