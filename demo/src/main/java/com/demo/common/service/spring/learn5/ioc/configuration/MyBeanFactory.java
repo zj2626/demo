@@ -95,7 +95,7 @@ public class MyBeanFactory {
                     refObjects[i] = refObject;
                     i++;
                 }
-                // 得到类的构造方法 反射创建对应的对象 TODO 暂时只得到第一个 ???
+                // 得到类的构造方法 反射创建对应的对象
                 Constructor constructor = classObject.getConstructors()[0];
                 try {
                     object = constructor.newInstance(refObjects);
@@ -129,7 +129,8 @@ public class MyBeanFactory {
                     }
                     try {
                         Field field = classObject.getDeclaredField(setterName);
-                        field.setAccessible(true); // TODO ???
+                        // 设置Field对象的Accessible的访问标志位为Ture, 就可以通过反射获取私有变量的值, 在访问时会忽略访问修饰符的检查
+                        field.setAccessible(true);
                         String fieldType = field.getType().getName();
                         switch (fieldType) {
                             case "java.lang.Integer":
@@ -174,7 +175,7 @@ public class MyBeanFactory {
     }
 
     private Element getRootElement() throws DocumentException {
-        String path = this.getClass().getResource("/").getPath() + xmlPath;
+        String path = this.getClass().getResource("/").getPath() + "framework\\" + xmlPath;
         SAXReader reader = new SAXReader();
         Document document = reader.read(path);
         if (null != document) {

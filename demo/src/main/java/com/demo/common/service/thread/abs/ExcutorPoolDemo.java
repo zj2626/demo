@@ -39,7 +39,7 @@ public class ExcutorPoolDemo {
                 try {
                     System.out.println(Thread.currentThread().getName() + "===>线程开始===>");
                     if (lock.getLock()) {
-                        if (param.getType().equals("doExcuteRead")) {
+                        if (null != param.getType() && param.getType().equals("doExcuteRead")) {
                             return excutor.doExcuteRead();
                         } else {
                             return excutor.doExcute();

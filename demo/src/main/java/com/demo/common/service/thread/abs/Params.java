@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Params {
     String type = "doExcute";
-    Integer size;
+    int size;
     boolean isOrder = false;
     Object data;
     int from;
