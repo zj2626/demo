@@ -1,3 +1,15 @@
+事务 4个条件 (ACID):
+    1. 原子性（Atomicity，或称不可分割性）
+    2. 一致性（Consistency）
+    3. 隔离性（Isolation，又称独立性）
+    3. 持久性（Durability）
+
+事务 隔离级别:
+    1. 读未提交（read-uncommitted） 产生问题: 脏读
+    2. 读已提交（read-committed）   产生问题: 不可重复读
+    3. 可重复读（repeatable-read）  产生问题: 幻读
+    4. 串行化（serializable）       产生问题: 脏读
+
 Mysql InnoDB 锁类型:
     1.共享锁         [S锁] Share Locks
     2.排它锁         [X锁] Exclusive Locks
