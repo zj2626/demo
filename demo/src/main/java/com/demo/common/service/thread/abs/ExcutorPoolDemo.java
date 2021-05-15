@@ -37,7 +37,7 @@ public class ExcutorPoolDemo {
             }
             FutureTask<Object> future = new FutureTask<>(() -> {
                 try {
-                    System.out.println(Thread.currentThread().getName() + "===>线程开始===>");
+                    System.out.println(Thread.currentThread().getName() + "===>线程开始获取锁===>");
                     if (lock.getLock()) {
                         if (null != param.getType() && param.getType().equals("doExcuteRead")) {
                             return excutor.doExcuteRead();

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 公平锁和非公平锁 TODO ??? 没效果
+ * 公平锁和非公平锁
  */
 public class ReentrantLockFairDemo extends MyExcutor {
     // true:公平或 false(默认):非公平
@@ -39,7 +39,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
         try {
             fairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 公平锁");
-            Thread.sleep(200);
+            Thread.sleep(3);
             count++;
         } finally {
             fairLock.unlock();
@@ -53,7 +53,7 @@ public class ReentrantLockFairDemo extends MyExcutor {
         try {
             unfairLock.lock();
             System.out.println(Thread.currentThread().getName() + " 非公平锁");
-            Thread.sleep(200);
+            Thread.sleep(3);
             count++;
         } finally {
             unfairLock.unlock();
