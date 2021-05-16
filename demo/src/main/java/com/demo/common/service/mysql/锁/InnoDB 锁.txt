@@ -7,20 +7,20 @@
 事务 隔离级别:
     1. 读未提交（read-uncommitted） 产生问题: 脏读
     2. 读已提交（read-committed）   产生问题: 不可重复读
-    3. 可重复读（repeatable-read）  产生问题: 幻读
+    3. 可重复读（repeatable-read）  产生问题: 幻读   [mysql默认]
     4. 串行化（serializable）       产生问题: 脏读
 
 Mysql InnoDB 锁类型:
-    1.共享锁         [S锁] Share Locks
-    2.排它锁         [X锁] Exclusive Locks
-    3.意向锁共享锁    [IS锁0]Intention Share Locks
+    1.共享锁         Share Locks           LOCK_S              [S锁]
+    2.排它锁         Exclusive Locks                           [X锁]
+    3.意向锁共享锁    Intention Share Locks                     [IS锁0]
     4.意向锁排它锁    Intention Exclusive Locks
     5.自增锁         AUTO-INC Locks
 
     行锁算法:
-        1.临键锁     Next-key Locks
-        2.间隙锁     Gap Locks
-        3.记录锁     Record Locks
+        1.记录锁     Record Locks          LOCK_REC_NOT_GAP    表示这个锁对象只是单纯的锁在记录上，不会锁记录之前的GAP
+        2.间隙锁     Gap Locks             LOCK_GAP            表示只锁住一段范围，不锁记录本身，通常表示两个索引记录之间，或者索引上的第一条记录之前，或者最后一条记录之后的锁
+        3.临键锁     Next-key Locks        LOCK_ORDINARY       包含记录本身及记录之前的GAP(为了解决RR隔离级别下的幻读问题)
 
 #####################################################################
 
@@ -36,9 +36,13 @@ Mysql InnoDB 锁类型:
     9. 因为是在索引上加锁, 所以如果获得锁的语句的条件执行没有命中索引而导致全表扫描,则会导致变成表锁而不是行锁(InnoDB的表锁实际是锁定所有的行,伪表锁),见4(锁加在条件索引以及主键索引上)
     10. 对锁定的数据可以读取快照(不加(lock in share mode)的查询就是查询的快照)
 
-共享锁: 读锁 用法: select语句 + lock in share mode;
+共享锁: 读锁
+    *. 普通查询在隔离级别为SERIALIZABLE会给记录加共享锁
+    *. select语句 + lock in share mode
 
-排它锁: 写锁 用法: 执行CUD语句获得的锁;
+排它锁: 写锁
+    *. CUD...
+    *. select语句 + for update
 
 意向锁共享锁: 事务准备给数据行加共享锁前需要获得IS锁(表级别的锁), IS锁之间可以互相兼容
 意向锁排它锁: 事务准备给数据行加排它锁前需要获得IX锁(表级别的锁), IX锁之间可以互相兼容
