@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,6 +27,14 @@ public class BeanShow {
     @Value("${bean.info.none:#{null}}")
     private String nullBean;
 
+    public static final String AAAA = "AAAA";
+    public static final String BBB = "BBB";
+    public static final String CCCCCCCCC = "CCCCCCCCC";
+    public static final String ABC_LIST_STR = AAAA + "," + BBB + "," + CCCCCCCCC;
+
+    @Value("#{'${nyh.station.type:" + ABC_LIST_STR + "}'.split(',')}")
+    private List<String> stationType;
+
     @Autowired
     private BeanConfig beanConfig;
 
@@ -40,5 +49,7 @@ public class BeanShow {
         System.out.println("配置文件 -- infoList: " + JSON.toJSONString(infoList));
 
         System.out.println("配置文件 -- nullBean: " + nullBean);
+
+        System.out.println("配置文件 -- stationType: " + stationType);
     }
 }
