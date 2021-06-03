@@ -3,7 +3,7 @@ package com.demo.common.service.jvm.oom;
 /**
  * @author zj2626
  * @name HeapOOM
- * @description 堆溢出
+ * @description 栈溢出
  * @create 2021-06-01 22:01
  **/
 public class StackOOM {
