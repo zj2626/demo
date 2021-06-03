@@ -30,8 +30,6 @@ description:
 
 ### 1.Java堆溢出
 
-![](20210601001_OutOfMemoryError/image-20210603213230669.png)
-
 ```java
 /**
  *  vm args: -Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails
@@ -60,5 +58,4 @@ description:
 ### 4.本机直接内存溢出
 
 
- 
 
