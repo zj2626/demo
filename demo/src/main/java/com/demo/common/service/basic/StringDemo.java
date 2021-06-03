@@ -12,36 +12,45 @@ public class StringDemo {
      */
     @Test
     public void test() {
-        String a = "abcde";
-        String b = "abcde";
-        String c = new String("abcde");
-        String d = new String("abcde");
+        String a = "ab";
+        String b = "ab";
+        String c = "ab".intern();
+        String d = "ab".intern();
+        String e = new String("ab").intern();
+        String f = new String("ab").intern();
+        String g = new String("ab");
+        String h = new String("ab");
+
+        String i = new char[]{'a', 'b'}.toString();
+        String k = 'a' + 'b' + "";
+        String m = "a" + "b" + "";
 
         System.out.println(a == b);
+        System.out.println(a == e);
+        System.out.println(e == f);
         System.out.println(a == c);
         System.out.println(c == d);
+        System.out.println(c == e);
         System.out.println();
-        System.out.println(b.intern() == a);
-        System.out.println(b.intern() == b);
-        System.out.println(b.intern() == c);
+        System.out.println(a == g);
+        System.out.println(c == g);
+        System.out.println(e == g);
+        System.out.println(g == h);
         System.out.println();
-        System.out.println(c.intern() == a);
-        System.out.println(c.intern() == c);
-        System.out.println(c.intern() == d);
-    }
-
-    @Test
-    public void test2() {
-        String a = "abcde";
-        String b = "abcde";
-        char[] c = {'a', 'b', 'c', 'd', 'e'};
-        String d = "ab" + "cde";
-        String e = 'a' + 'b' + 'c' + 'd' + 'e' + "";
-
-        System.out.println(a == b); // true
-        System.out.println(a == c.toString());
-        System.out.println(a == d); // true
-        System.out.println(a == e);
-        System.out.println(a == "ab" + "cde"); // true
+        System.out.println();
+        System.out.println(i == a);
+        System.out.println(i == c);
+        System.out.println(i == e);
+        System.out.println(i == g);
+        System.out.println();
+        System.out.println(k == a);
+        System.out.println(k == c);
+        System.out.println(k == e);
+        System.out.println(k == g);
+        System.out.println();
+        System.out.println(m == a);
+        System.out.println(m == c);
+        System.out.println(m == e);
+        System.out.println(m == g);
     }
 }

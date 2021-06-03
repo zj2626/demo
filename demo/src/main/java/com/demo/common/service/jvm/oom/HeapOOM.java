@@ -1,4 +1,4 @@
-package com.demo.common.service.oom;
+package com.demo.common.service.jvm.oom;
 
 import java.util.ArrayList;
 import java.util.List;
