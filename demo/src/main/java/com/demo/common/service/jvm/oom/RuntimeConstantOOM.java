@@ -9,7 +9,8 @@ package com.demo.common.service.jvm.oom;
 public class RuntimeConstantOOM {
 
     /**
-     * vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+     * 1.6 vm args: -XX:PermSIze=16m -XX:MaxPermSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+     * 1.7 vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
      */
     public static void main(String[] args) {
 

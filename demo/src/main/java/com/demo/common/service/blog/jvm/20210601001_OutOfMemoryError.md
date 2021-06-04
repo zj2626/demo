@@ -20,15 +20,11 @@ description:
 
 ## 2.溢出种类
 
-> java堆存储对象实例, 只需不断创建对象且GC Roots到对象可达避免垃圾回收, 达到最大堆限制即溢出
-
-```java
-
-```
-
 
 
 ### 1.Java堆溢出
+
+> java堆存储对象实例, 只需不断创建对象且GC Roots到对象可达避免垃圾回收, 达到最大堆限制即溢出
 
 ```java
 /**
@@ -53,9 +49,27 @@ description:
 ### 3.方法去和运行时常量池溢出
 
 ```java
-
+/**
+ * 1.6 vm args: -XX:PermSIze=16m -XX:MaxPermSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+ * 1.7 vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+ * @see com.demo.common.service.jvm.oom.RuntimeConstantOOM
+ */
 ```
+*String.intern（）是一个Native方法*
+
+*在JDK 1.6中，intern（）方法会把首次遇到的字符串实例复制 到永久代中，返回的也是永久代中这个字符串实例的引用*
+
+*在JDK 1.7中，intern（）方法不会再复制实例，只是在常量池中记录首次出现的实例引用(地址)*
+
 ### 4.本机直接内存溢出
 
+```java
+/**
+ * 1.6 vm args: -XX:PermSIze=16m -XX:MaxPermSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+ * 1.7 vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
+ * @see com.demo.common.service.jvm.oom.MethodAreaOOM
+ */
 
+//		Exception in thread "main" java.lang.OutOfMemoryError: Metaspace  
+```
 
