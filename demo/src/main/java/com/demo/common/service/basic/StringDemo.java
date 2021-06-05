@@ -79,9 +79,9 @@ public class StringDemo {
         System.out.println(" intern的");
         System.out.println("a: " + (a.intern() == a));
         System.out.println("g: " + (g.intern() == g));
-        System.out.println("m1: " + (m1.intern() == m1)); // TODO 为啥是true
+        System.out.println("m1: " + (m1.intern() == m1));
         System.out.println("m2: " + (m2.intern() == m2));
-        System.out.println("n: " + (n.intern() == n)); // TODO 为啥是true
+        System.out.println("n: " + (n.intern() == n));
         System.out.println("o: " + (o.intern() == o));
         System.out.println("p: " + (p.intern() == p));
         System.out.println("q: " + (q.intern() == q));

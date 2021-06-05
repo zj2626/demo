@@ -13,13 +13,12 @@ import java.util.List;
 public class HeapOOM {
 
     /**
-    *  vm args: -Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails
+    *  vm args: -Xms20m -Xmx20m -XX:+PrintGCDetails
     */
     public static void main(String[] args) {
         List<String[]> result = new ArrayList<>();
         int i=0;
-        for(;;){
-            i++;
+        for (; i<50000; i++) {
             System.out.println("第" + i + "次循环开始");
             result.add(new String[1024*1024]);
             System.out.println("第" + i + "次循环结束");

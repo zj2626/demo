@@ -28,7 +28,7 @@ description:
 
 ```java
 /**
- *  vm args: -Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDetails
+ *  vm args: -Xms20m -Xmx20m -XX:+PrintGCDetails
  *  @see com.demo.common.service.jvm.oom.HeapOOM
  */
     
@@ -53,7 +53,10 @@ description:
  * 1.6 vm args: -XX:PermSIze=16m -XX:MaxPermSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
  * 1.7 vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
  * @see com.demo.common.service.jvm.oom.RuntimeConstantOOM
+ * @see com.demo.common.service.jvm.oom.MethodAreaOOM
  */
+
+//		Exception in thread "main" java.lang.OutOfMemoryError: Metaspace  
 ```
 *String.intern（）是一个Native方法*
 
@@ -65,11 +68,10 @@ description:
 
 ```java
 /**
- * 1.6 vm args: -XX:PermSIze=16m -XX:MaxPermSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
- * 1.7 vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
- * @see com.demo.common.service.jvm.oom.MethodAreaOOM
+ * vm args: -Xms20m -Xmx20m -XX:MaxDirectMemorySize=10M -XX:+PrintGCDetails
+ * @see com.demo.common.service.jvm.oom.DirectMemoryOOM
  */
 
-//		Exception in thread "main" java.lang.OutOfMemoryError: Metaspace  
+// java.lang.OutOfMemoryError: Direct buffer memory
 ```
 

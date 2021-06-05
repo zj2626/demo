@@ -20,7 +20,8 @@ public class MethodAreaOOM {
      * vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
      */
     public static void main(String[] args) {
-        while (true) {
+        int i=0;
+        for (; i<50000; i++) {
             Enhancer enhancer = new Enhancer();
             enhancer.setSuperclass(OOMObject.class);
             enhancer.setUseCache(false);
