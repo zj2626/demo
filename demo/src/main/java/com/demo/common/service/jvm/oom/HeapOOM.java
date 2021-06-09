@@ -15,10 +15,11 @@ public class HeapOOM {
     /**
     *  vm args: -Xms20m -Xmx20m -XX:+PrintGCDetails
     */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         List<String[]> result = new ArrayList<>();
         int i=0;
         for (; i<50000; i++) {
+            Thread.sleep(1000);
             System.out.println("第" + i + "次循环开始");
             result.add(new String[1024*1024]);
             System.out.println("第" + i + "次循环结束");
