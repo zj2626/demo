@@ -24,5 +24,7 @@ public class HeapOOM {
             result.add(new String[1024*1024]);
             System.out.println("第" + i + "次循环结束");
         }
+
+        System.gc();
     }
 }

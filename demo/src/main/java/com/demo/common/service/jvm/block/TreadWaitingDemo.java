@@ -1,14 +1,8 @@
-package com.demo.common.service.jvm;
+package com.demo.common.service.jvm.block;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/**
- * @author zj2626
- * @name HeapOOM
- * @description 堆溢出
- * @create 2021-06-01 22:01
- **/
 public class TreadWaitingDemo {
 
     /**
@@ -50,5 +44,11 @@ public class TreadWaitingDemo {
         createBusyThread();
         br.readLine();
         Object obj = new Object();
+        createLockThread(obj);
+        br.readLine();
+        Thread.sleep(10000);
+        obj.notify();
+        System.out.println("finally -----------------");
+        br.readLine();
     }
 }
