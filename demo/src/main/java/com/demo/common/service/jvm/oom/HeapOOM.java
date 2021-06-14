@@ -19,7 +19,7 @@ public class HeapOOM {
         List<String[]> result = new ArrayList<>();
         int i=0;
         for (; i<50000; i++) {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             System.out.println("第" + i + "次循环开始");
             result.add(new String[1024*1024]);
             System.out.println("第" + i + "次循环结束");
