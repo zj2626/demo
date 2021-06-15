@@ -14,7 +14,7 @@ import java.util.List;
 public class HeapOOM {
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
      */
     @Test
     public void tetStringSize() throws InterruptedException {
@@ -30,12 +30,24 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
      * <p>
      * PSYoungGen
      */
-    @Test
-    public void main() throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
+        Thread.sleep(10000);
+        List<byte[]> result = new ArrayList<>();
+        int i=0;
+        for (; i<50000; i++) {
+            Thread.sleep(2000);
+            System.out.println("第" + i + "次循环开始");
+            result.add(new byte[1024*1024]);
+        }
+
+        System.gc();
+    }
+
+    private void fun() throws InterruptedException {
         System.out.println("\n\n");
         Thread.sleep(10000);
         List<byte[]> result = new ArrayList<>();
@@ -54,49 +66,49 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseSerialGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps  -XX:+UseSerialGC
      * 使用Serial+Serial Old收集器组合进行垃圾收集
      * <p>
      */
     @Test
     public void UseSerialGC() throws InterruptedException {
-        main();
+        fun();
     }
 
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParNewGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParNewGC
      * <p>
      */
     @Test
     public void UseParNewGC() throws InterruptedException {
-        main();
+        fun();
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseConcMarkSweepGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseConcMarkSweepGC
      * <p>
      */
     @Test
     public void UseConcMarkSweepGC() throws InterruptedException {
-        main();
+        fun();
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParallelGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelGC
      * <p>
      */
     @Test
     public void UseParallelGC() throws InterruptedException {
-        main();
+        fun();
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParallelOldGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelOldGC
      * <p>
      */
     @Test
     public void UseParallelOldGC() throws InterruptedException {
-        main();
+        fun();
     }
 }
