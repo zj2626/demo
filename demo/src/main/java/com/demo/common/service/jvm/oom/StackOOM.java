@@ -1,5 +1,7 @@
 package com.demo.common.service.jvm.oom;
 
+import org.junit.Test;
+
 /**
  * @author zj2626
  * @name HeapOOM
@@ -13,7 +15,8 @@ public class StackOOM {
     /**
      * vm args: -Xss128k -XX:+PrintGCDetails
      */
-    public static void main(String[] args) {
+    @Test
+    public void main() throws InterruptedException {
         try {
             fun();
         } catch (Exception e) {

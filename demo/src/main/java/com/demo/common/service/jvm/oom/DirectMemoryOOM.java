@@ -31,7 +31,6 @@ public class DirectMemoryOOM {
         for (; i<50000; i++) {
             System.out.println("第" + i + "次循环开始");
             unsafe.allocateMemory(1024 * 1024);
-            System.out.println("第" + i + "次循环结束");
         }
     }
 
@@ -49,7 +48,6 @@ public class DirectMemoryOOM {
             System.out.println("第" + i + "次循环开始");
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024 * 1024);
             buffers.add(byteBuffer);
-            System.out.println("第" + i + "次循环结束");
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.demo.common.service.jvm.oom;
 
+import org.junit.Test;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -19,7 +20,8 @@ public class MethodAreaOOM {
     /**
      * vm args: -XX:MetaspaceSize=16m -XX:MaxMetaspaceSize=16m -Xms256m -Xmx256m -XX:+PrintGCDetails
      */
-    public static void main(String[] args) {
+    @Test
+    public void main() throws InterruptedException {
         int i=0;
         for (; i<50000; i++) {
             Enhancer enhancer = new Enhancer();

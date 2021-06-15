@@ -1,5 +1,7 @@
 package com.demo.common.service.jvm.oom;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,8 @@ public class RuntimeConstantOOM {
      *
      * 下面代码在1.6会溢出 1.7不会, 因为运行时常量池在1.7已经移动到堆
      */
-    public static void main(String[] args) {
+    @Test
+    public void main() throws InterruptedException {
         List<String> result = new ArrayList<>();
         int i=0;
         for (; i<50000; i++) {
