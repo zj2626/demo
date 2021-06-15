@@ -14,7 +14,7 @@ import java.util.List;
 public class HeapOOM {
 
     /**
-     * vm args: -Xms16m -Xmx16m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:NewRatio=7
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
      */
     @Test
     public void tetStringSize() throws InterruptedException {
@@ -30,19 +30,22 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms20m -Xmx20m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
      * <p>
      * PSYoungGen
      */
     @Test
     public void main() throws InterruptedException {
         System.out.println("\n\n");
-        Thread.sleep(30000);
+        Thread.sleep(10000);
         List<byte[]> result = new ArrayList<>();
         int i = 0;
         for (; i < 50000; i++) {
             System.out.println("第" + i + "次循环开始");
-            result.add(new byte[1024 * 1024]);
+            for (int j = 0; j < 1024; j++) {
+                result.add(new byte[1024]);
+            }
+            Thread.sleep(1000);
         }
 
         System.out.println("before system gc");
@@ -51,7 +54,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:+UseSerialGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseSerialGC
      * 使用Serial+Serial Old收集器组合进行垃圾收集
      * <p>
      */
@@ -62,7 +65,7 @@ public class HeapOOM {
 
 
     /**
-     * vm args: -Xms32m -Xmx32m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParNewGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParNewGC
      * <p>
      */
     @Test
@@ -71,7 +74,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:+UseConcMarkSweepGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseConcMarkSweepGC
      * <p>
      */
     @Test
@@ -80,7 +83,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParallelGC
      * <p>
      */
     @Test
@@ -89,7 +92,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelOldGC
+     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseParallelOldGC
      * <p>
      */
     @Test
