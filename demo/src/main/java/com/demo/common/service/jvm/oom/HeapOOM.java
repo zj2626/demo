@@ -37,11 +37,11 @@ public class HeapOOM {
     public static void main(String[] args) throws InterruptedException {
         Thread.sleep(10000);
         List<byte[]> result = new ArrayList<>();
-        int i=0;
-        for (; i<50000; i++) {
+        int i = 0;
+        for (; i < 50000; i++) {
             Thread.sleep(2000);
             System.out.println("第" + i + "次循环开始");
-            result.add(new byte[1024*1024]);
+            result.add(new byte[1024 * 1024]);
         }
 
         System.gc();
@@ -67,8 +67,8 @@ public class HeapOOM {
 
     /**
      * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps  -XX:+UseSerialGC
-     * 使用Serial+Serial Old收集器组合进行垃圾收集
      * <p>
+     * 使用Serial+Serial Old收集器组合进行垃圾收集
      */
     @Test
     public void UseSerialGC() throws InterruptedException {
@@ -97,6 +97,7 @@ public class HeapOOM {
     /**
      * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelGC
      * <p>
+     * 使用Parallel Scavenge + Serial Old的收集器组合进行回收
      */
     @Test
     public void UseParallelGC() throws InterruptedException {
