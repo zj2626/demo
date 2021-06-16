@@ -14,7 +14,7 @@ import java.util.List;
 public class HeapOOM {
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
      */
     @Test
     public void tetStringSize() throws InterruptedException {
@@ -30,7 +30,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
      * <p>
      * PSYoungGen
      */
@@ -66,7 +66,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps  -XX:+UseSerialGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps  -XX:+UseSerialGC
      * <p>
      * 使用Serial+Serial Old收集器组合进行垃圾收集
      */
@@ -77,7 +77,7 @@ public class HeapOOM {
 
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParNewGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParNewGC
      * <p>
      */
     @Test
@@ -86,7 +86,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseConcMarkSweepGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseConcMarkSweepGC
      * <p>
      */
     @Test
@@ -95,7 +95,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelGC
      * <p>
      * 使用Parallel Scavenge + Serial Old的收集器组合进行回收
      */
@@ -105,7 +105,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn4m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelOldGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelOldGC
      * <p>
      */
     @Test
