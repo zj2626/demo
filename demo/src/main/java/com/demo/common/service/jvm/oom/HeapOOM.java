@@ -48,7 +48,7 @@ public class HeapOOM {
     }
 
     private void fun() throws InterruptedException {
-        System.out.println("\n\n");
+        System.out.println("[beginning...]\n\n");
         Thread.sleep(10000);
         List<byte[]> result = new ArrayList<>();
         int i = 0;
@@ -57,7 +57,7 @@ public class HeapOOM {
             for (int j = 0; j < 1024; j++) {
                 result.add(new byte[1024]);
             }
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
 
         System.out.println("before system gc");
@@ -79,6 +79,7 @@ public class HeapOOM {
     /**
      * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParNewGC
      * <p>
+     * 使用ParNew + Serial Old的收集器进行垃圾回收
      */
     @Test
     public void UseParNewGC() throws InterruptedException {
@@ -88,6 +89,7 @@ public class HeapOOM {
     /**
      * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseConcMarkSweepGC
      * <p>
+     * 使用ParNew + CMS +  Serial Old的收集器组合进行内存回收，Serial Old作为CMS出现“Concurrent Mode Failure”失败后的后备收集器使用。
      */
     @Test
     public void UseConcMarkSweepGC() throws InterruptedException {
@@ -97,7 +99,7 @@ public class HeapOOM {
     /**
      * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelGC
      * <p>
-     * 使用Parallel Scavenge + Serial Old的收集器组合进行回收
+     * 使用Parallel Scavenge + Serial Old的收集器组合进行回收 (默认)
      */
     @Test
     public void UseParallelGC() throws InterruptedException {
@@ -107,9 +109,20 @@ public class HeapOOM {
     /**
      * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseParallelOldGC
      * <p>
+     * 使用Parallel Scavenge + Parallel Old的收集器组合进行回收
      */
     @Test
     public void UseParallelOldGC() throws InterruptedException {
+        fun();
+    }
+
+    /**
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseG1GC
+     * <p>
+     * 使用Parallel Scavenge + Parallel Old的收集器组合进行回收
+     */
+    @Test
+    public void UseG1GC() throws InterruptedException {
         fun();
     }
 }
