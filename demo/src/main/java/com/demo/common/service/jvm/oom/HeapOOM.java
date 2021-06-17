@@ -66,7 +66,7 @@ public class HeapOOM {
     }
 
     /**
-     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps  -XX:+UseSerialGC
+     * vm args: -Xms32m -Xmx32m -Xmn8m -XX:SurvivorRatio=6 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseSerialGC
      * <p>
      * 使用Serial+Serial Old收集器组合进行垃圾收集
      */
