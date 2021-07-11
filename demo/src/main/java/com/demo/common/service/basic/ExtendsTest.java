@@ -9,10 +9,13 @@ package com.demo.common.service.basic;
 public class ExtendsTest {
 
     public static void main(String[] args) {
-//        C c = new C();
-//        System.out.println(c);
-
         System.out.println(C.abc);
+
+        System.out.println("==================");
+
+        C c = new C();
+        System.out.println(c);
+        c.pr();
     }
 }
 
@@ -25,7 +28,15 @@ class P {
 }
 
 class C extends P {
+    private static int A;
+    private int B;
+
     static {
         System.out.println("CCCC"); // 不执行
+    }
+
+    public void pr(){
+        System.out.println(A);
+        System.out.println(B);
     }
 }
