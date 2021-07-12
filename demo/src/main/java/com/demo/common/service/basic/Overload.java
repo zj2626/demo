@@ -2,7 +2,7 @@ package com.demo.common.service.basic;
 
 import java.io.Serializable;
 
-/*代码示例 重载的类型转换*/
+/*代码示例 静态分派 重载的类型转换*/
 public class Overload {
     public static void sayHello(Object arg) {
         System.out.println("hello Object");

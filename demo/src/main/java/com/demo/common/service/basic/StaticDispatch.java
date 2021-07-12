@@ -32,14 +32,4 @@ public class StaticDispatch {
         this.sayHello(man);
         this.sayHello(woman);
     }
-
-
-    @Test
-    public void test2() {
-        Human man = new Man();
-        Human woman = new Woman();
-        StaticDispatch sr = new StaticDispatch();
-        sr.sayHello(man);
-        sr.sayHello(woman);
-    }
 }
