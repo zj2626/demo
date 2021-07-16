@@ -14,7 +14,6 @@ Scope默认singleton, 如果scope为singleton的对象A依赖一个prototype的�
 解决方法:在依赖的对象B的get方法上加注解 @Lookup
  */
 public class DemoService {
-    private DemoResource resource;
     private DemoDao demoOneDao;
     private DemoDao demoTwoDao;
     private DemoDao demoThreeDao;
@@ -32,54 +31,45 @@ public class DemoService {
         System.out.println("setter注入[自动装配:byType]:   " + demoFourDao);
         System.out.println("注解注入:           " + demoFiveDao);
         System.out.println("注解注入:           " + annoDao);
-        System.out.println("注解注入:           " + resource);
     }
 
     public DemoService() {
     }
 
     // 通过<constructor-arg ref="demoDao01"/>注入
-    public DemoService(DemoDao dao0) {
-        this.demoTwoDao = dao0;
+    public DemoService(DemoDao obj) {
+        this.demoTwoDao = obj;
     }
 
     // 通过<property name="demoOneDao" ref="demoDao01"/>注入
-    public void setDemoOneDao(DemoDao daoa) {
+    public void setDemoOneDao(DemoDao obj) {
         System.out.println("--------------------> 1 setDemoOneDao");
-        this.demoOneDao = daoa;
+        this.demoOneDao = obj;
     }
 
     /**
      * 通过default-autowire="byType"注入, 如果不设置或者设置为[default-autowire="no"]则不会注入
      * 查找所有的set方法，将符合符合参数类型的bean注入
      */
-    public void setaAaA(DemoDao daob) {
+    public void setaAaA(DemoDao obj) {
         System.out.println("--------------------> 2 setaAaA");
-        this.demoTwoDao = daob;
+        this.demoTwoDao = obj;
     }
 
     /**
      * 通过default-autowire="byName"注入, 如果不设置或者设置为[default-autowire="no"]则不会注入
      * 被注入bean的id名必须与set方法相匹配
      */
-    public void setDemoDao01(DemoDao daoc) {
+    public void setDemoDao01(DemoDao obj) {
         System.out.println("--------------------> 3 setDemoDao01");
-        this.demoThreeDao = daoc;
+        this.demoThreeDao = obj;
     }
 
     /**
      * 通过default-autowire="byType"注入
      */
-    public void setDemoFourDao(DemoDao daod) {
+    public void setDemo4Dao(DemoDao obj) {
         System.out.println("--------------------> 4 setDemoFourDao");
-        this.demoFourDao = daod;
-    }
-
-    /**
-     * 通过default-autowire="byType"注入
-     */
-    public void setResource(DemoResource resourcee) {
-        System.out.println("--------------------> 5 setResource");
-        this.resource = resourcee;
+        this.demoFourDao = obj;
     }
 }

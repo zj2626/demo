@@ -6,5 +6,4 @@
     <!-- byType -->
     <bean id="demoService" class="com.demo.common.service.spring.learn0.injection.bean.DemoService"/>
     <bean id="demoDao" class="com.demo.common.service.spring.learn0.injection.bean.DemoDao"/>
-    <bean id="demoResource" class="com.demo.common.service.spring.learn0.injection.bean.DemoResource"/>
 </beans>
