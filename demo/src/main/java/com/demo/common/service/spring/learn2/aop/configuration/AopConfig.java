@@ -37,10 +37,7 @@ public class AopConfig {
     /**
      * within: 定义到类级别
      */
-    @Pointcut("within(com.demo.common.service.spring.learn2..*.*)")
-    public void pointCutWithin() {}
-
-    @Before("pointCutWithin()")
+    @Before("within(com.demo.common.service.spring.learn2..*.*)")
     public void before1(JoinPoint joinPoint) {
         System.out.println("@Before: pointCutWithin");
     }
@@ -48,21 +45,15 @@ public class AopConfig {
     /**
      * args: 定义到类级别
      */
-    @Pointcut("args(String, .., Integer)")
-    public void pointCutArgs() {}
-
-    @Before("pointCutArgs()")
+    @Before("args(String, .., Integer)")
     public void before2(JoinPoint joinPoint) {
         System.out.println("@Before: pointCutArgs");
     }
 
     /**
-     * @annotation: 定义到注解级别
+     * 定义到注解级别
      */
-    @Pointcut("@annotation(com.demo.common.service.spring.learn2.aop.bean.MyLogs)")
-    public void pointCutAnnotation() {}
-
-    @Before("pointCutAnnotation()")
+    @Before("@annotation(com.demo.common.service.spring.learn2.aop.bean.MyLogs)")
     public void before3(JoinPoint joinPoint) {
         System.out.println("@Before: @annotation");
     }
