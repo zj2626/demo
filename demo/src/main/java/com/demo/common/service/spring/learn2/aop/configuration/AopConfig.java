@@ -37,13 +37,13 @@ public class AopConfig {
     /**
      * within: 定义到类级别
      */
-    @Before("within(com.demo.common.service.spring.learn2..*.*)")
+    @Before("within(com.demo.common.service.spring.learn2.aop.bean.DemoServiceImpl)")
     public void before1(JoinPoint joinPoint) {
         System.out.println("@Before: pointCutWithin");
     }
 
     /**
-     * args: 定义到类级别
+     * args: 定义到类(或者包)级别
      */
     @Before("args(String, .., Integer)")
     public void before2(JoinPoint joinPoint) {
