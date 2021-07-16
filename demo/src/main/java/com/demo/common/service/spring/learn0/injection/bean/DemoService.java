@@ -25,12 +25,14 @@ public class DemoService {
     private DemoAnnotationDao annoDao;
 
     public void getDaoInfo(){
+        System.out.println("-----------------------------------");
         System.out.println("setter注入:         " + demoOneDao);
         System.out.println("构造方法注入:       " + demoTwoDao);
         System.out.println("setter注入[自动装配:byName]:   " + demoThreeDao);
         System.out.println("setter注入[自动装配:byType]:   " + demoFourDao);
         System.out.println("注解注入:           " + demoFiveDao);
         System.out.println("注解注入:           " + annoDao);
+        System.out.println("-----------------------------------");
     }
 
     public DemoService() {
