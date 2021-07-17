@@ -8,7 +8,7 @@
     1. 读未提交（read-uncommitted） 产生问题: 脏读
     2. 读已提交（read-committed）   产生问题: 不可重复读
     3. 可重复读（repeatable-read）  产生问题: 幻读   [mysql默认]
-    4. 串行化（serializable）       产生问题: 脏读
+    4. 串行化（serializable）
 
 Mysql InnoDB 锁类型:
     1.共享锁         Share Locks           LOCK_S              [S锁]
