@@ -1,13 +1,15 @@
-package com.demo.common.service.proxy;
+package com.demo.common.service.design.structural.proxy.util;
+
+import com.demo.common.service.design.structural.proxy.demo2.RealSubject;
+import org.junit.Test;
+import sun.misc.ProxyGenerator;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.junit.Test;
-import sun.misc.ProxyGenerator;
-
 /**
  * 代理类的生成工具
+ *
  * @author zyb
  * @since 2012-8-9
  */
@@ -20,6 +22,7 @@ public class ProxyGeneratorUtils {
 
     /**
      * 把代理类的字节码写到硬盘上
+     *
      * @param path 保存路径
      */
     public static void writeProxyClassToHardDisk(String path) {

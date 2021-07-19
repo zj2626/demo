@@ -1,6 +1,6 @@
 package com.demo.common.service.design.structural.proxy;
 
-import com.demo.common.service.design.structural.proxy.demo2.ProxyFactory2;
+import com.demo.common.service.design.structural.proxy.demo2.ProxyFactory;
 import com.demo.common.service.design.structural.proxy.demo2.RealSubject;
 import com.demo.common.service.design.structural.proxy.demo2.Subject;
 import org.junit.Test;
@@ -20,10 +20,14 @@ public class StructDemoTest {
 
     @Test
     public void test1() {
-        Subject proxySubject = (Subject) new ProxyFactory2(new RealSubject()).getProxyInstance();
+        Subject realSubject = new RealSubject();
 
-        proxySubject.request("sex !");
+        Subject proxySubject = (Subject) new ProxyFactory(realSubject).getProxyInstance();
+
+        System.out.println(proxySubject.getClass() + "\n");
         proxySubject.request2("sex2 !", "sex3 -|");
+        // proxySubject.fatherSMethod();
+        System.out.println("是否相等: " + (realSubject == proxySubject));
     }
 
 }

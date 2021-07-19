@@ -19,11 +19,11 @@ public class ProxyFactory implements Subject {
     }
 
     private void beforeRequest() {
-        System.out.println("beforeRequest");
+        System.out.println("-------------------- beforeRequest");
     }
 
     private void afterRequest() {
-        System.out.println("afterRequest");
+        System.out.println("-------------------- afterRequest\n\n");
     }
 
 }

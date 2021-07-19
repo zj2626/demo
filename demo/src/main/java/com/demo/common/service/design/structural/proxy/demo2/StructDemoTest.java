@@ -12,7 +12,7 @@ public class StructDemoTest {
     public void test1() {
         Subject realSubject = new RealSubject();
 
-        Subject proxySubject = (Subject) new ProxyFactory(realSubject).getProxyInstance(new Object[]{"wtffff"});
+        Subject proxySubject = (Subject) new ProxyFactory(realSubject).getProxyInstance();
 
         System.out.println(proxySubject.getClass() + "*******\n");
 
@@ -24,7 +24,7 @@ public class StructDemoTest {
     public void test2() {
         Subject realSubject = new RealSubject();
 
-        Subject proxySubject = (Subject) new ProxyFactory2(realSubject).getProxyInstance();
+        Subject proxySubject = (Subject) new ProxyFactory(realSubject).getProxyInstance();
 
         System.out.println(proxySubject.getClass() + "*******\n");
 

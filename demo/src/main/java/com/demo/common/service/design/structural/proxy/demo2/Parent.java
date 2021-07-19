@@ -1,4 +1,4 @@
-package com.demo.common.service.proxy;
+package com.demo.common.service.design.structural.proxy.demo2;
 
 public abstract class Parent {
 
