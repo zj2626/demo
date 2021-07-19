@@ -1,5 +1,6 @@
 package com.demo.common.service.basic;
 
+import com.demo.common.service.basic.bean.Father;
 import com.demo.common.service.basic.bean.Son;
 import com.demo.common.service.basic.bean.BeanA;
 import com.demo.common.service.basic.bean.ResultInfo;
@@ -23,15 +24,20 @@ import java.util.List;
 public class StaticDemo {
 
     public static void main(String[] args) {
+        System.out.println("--->");
         Son a = new Son();
         System.out.println("--------------");
         Son a1 = new Son();
         System.out.println("--------------");
         Son.StaticInSon c = new Son.StaticInSon();
+        c = new Son.StaticInSon();
+        System.out.println("--------------");
+        Father.StaticInFather d = new Father.StaticInFather();
     }
 
     @Test
     public void test(){
+        System.out.println("--->");
         BeanA beanA = new BeanA();
         beanA.setName("AAA");
         BeanA beanB = new BeanA();
