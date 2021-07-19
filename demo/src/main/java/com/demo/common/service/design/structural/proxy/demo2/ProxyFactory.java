@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * > Proxy 的静态方法
+ * > java.lang.reflect.Proxy 的静态方法
+ *
+ * @see Proxy
  * <p>
  * // 方法 1: 该方法用于获取指定代理对象所关联的调用处理器
  * static InvocationHandler getInvocationHandler(Object proxy)

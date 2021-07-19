@@ -9,7 +9,7 @@ public class StructDemoTest {
 
     @Test
     public void test1() {
-        Subject realSubject= new RealSubject();
+        Subject realSubject = new RealSubject();
 
         ProxyFactory proxy = new ProxyFactory(realSubject);
         proxy.request("sex !");
