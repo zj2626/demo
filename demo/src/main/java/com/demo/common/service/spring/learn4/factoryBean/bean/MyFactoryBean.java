@@ -4,14 +4,24 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
 
 @Component("demoTestFactoryBean")
-public class MyFactoryBean implements FactoryBean {
+public class MyFactoryBean implements FactoryBean<DemoFactoryBeanService> {
+    private DemoFactoryBeanService obj;
+
     @Override
-    public Object getObject() throws Exception {
-        return new DemoFactoryBeanServiceImpl();
+    public DemoFactoryBeanService getObject() throws Exception {
+        if (null == obj) {
+            obj = new DemoFactoryBeanServiceImpl();
+        }
+        return obj;
     }
 
     @Override
     public Class<?> getObjectType() {
         return DemoFactoryBeanServiceImpl.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
     }
 }

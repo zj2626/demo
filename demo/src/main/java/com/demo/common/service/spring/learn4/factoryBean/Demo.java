@@ -1,9 +1,9 @@
 package com.demo.common.service.spring.learn4.factoryBean;
 
 import com.demo.common.service.spring.learn4.factoryBean.bean.DemoFactoryBeanService;
-import com.demo.common.service.spring.learn4.factoryBean.bean.MyFactoryBean;
 import com.demo.common.service.spring.learn4.factoryBean.configuration.SpringConfig;
 import org.junit.Test;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -18,7 +18,7 @@ public class Demo {
          */
         DemoFactoryBeanService factoryBeanService = context.getBean(DemoFactoryBeanService.class);
         System.out.println("SERVICE          :" + factoryBeanService);
-        factoryBeanService.getMsg("WTF2");
+        factoryBeanService.getMsg("WTF1");
         System.out.println();
 
         // DemoFactoryBeanService 实例定义的beanName为 demoTestFactoryBean
@@ -28,9 +28,8 @@ public class Demo {
         System.out.println();
 
         // MyFactoryBean 实例定义的beanName为 &demoTestFactoryBean
-        MyFactoryBean myFactoryBean = (MyFactoryBean) context.getBean("&demoTestFactoryBean");
-        System.out.println("SERVICE          :" + myFactoryBean);
-        System.out.println(myFactoryBean.getObject());
-        System.out.println(myFactoryBean.getObjectType());
+        FactoryBean myFactoryBean = (FactoryBean) context.getBean("&demoTestFactoryBean");
+        System.out.println("SERVICE          :" + myFactoryBean.getObject());
+        System.out.println("SERVICE  FactoryBean :" + myFactoryBean);
     }
 }
