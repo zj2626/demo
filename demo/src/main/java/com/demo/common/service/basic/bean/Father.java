@@ -35,9 +35,9 @@ public class Father {
     }
 
     public static class StaticInFather {
-        public String notStaticStr = getNotStaticStr();
         public static String staticStr = getStaticStr();
         public final String finalStaticStr = getFinalStr();
+        public String notStaticStr = getNotStaticStr();
 
         static {
             System.out.println("StaticInFather--static");
