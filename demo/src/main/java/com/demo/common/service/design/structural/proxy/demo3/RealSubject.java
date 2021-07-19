@@ -9,6 +9,13 @@ public class RealSubject {
 
     public String request2(String parameter) {
         System.out.println("real request2 " + parameter);
+        request3(parameter);
+
+        return "success";
+    }
+
+    public String request3(String parameter) {
+        System.out.println("real request3 " + parameter);
 
         return "success";
     }

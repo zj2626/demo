@@ -22,6 +22,7 @@ public class StructDemoTest {
 
         proxySubject.request("sex !");
         proxySubject.request2("sex2 !");
+        proxySubject.request3("sex3 !");
 
         // 无效
         proxySubject.fuck("sssss");

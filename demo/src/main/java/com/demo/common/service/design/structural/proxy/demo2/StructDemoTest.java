@@ -20,5 +20,9 @@ public class StructDemoTest {
 
         proxySubject.request("sex !");
         proxySubject.request2("sex2 !", "sex3 -|");
+        proxySubject.request3("sex3 !");
+
+        // proxySubject.fatherSMethod();
+        System.out.println("是否相等: " + (realSubject == proxySubject));
     }
 }

@@ -1,10 +1,5 @@
 package com.demo.common.service.design.structural.proxy;
 
-import com.demo.common.service.design.structural.proxy.demo2.ProxyFactory;
-import com.demo.common.service.design.structural.proxy.demo2.RealSubject;
-import com.demo.common.service.design.structural.proxy.demo2.Subject;
-import org.junit.Test;
-
 /**
  * 6. 代理模式(Proxy Pattern)
  * <p>
@@ -17,18 +12,6 @@ import org.junit.Test;
  * @version $Id: StructDemoTest.java, v 0.1 2019/5/14 17:00 zhangj Exp $
  */
 public class StructDemoTest {
-
-    @Test
-    public void test1() {
-        Subject realSubject = new RealSubject();
-
-        Subject proxySubject = (Subject) new ProxyFactory(realSubject).getProxyInstance();
-
-        System.out.println(proxySubject.getClass() + "\n");
-        proxySubject.request2("sex2 !", "sex3 -|");
-        // proxySubject.fatherSMethod();
-        System.out.println("是否相等: " + (realSubject == proxySubject));
-    }
 
 }
 /**
