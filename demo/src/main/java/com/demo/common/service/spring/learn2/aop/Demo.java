@@ -17,27 +17,25 @@ public class Demo {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         System.out.println("-------start---------");
         DemoService service = context.getBean(DemoService.class);
-        System.out.println(">>> Spring容器中的对象:");
-        System.out.println("SERVICE          :" + service);
+        System.out.println(">>> Spring容器中的对象 :" + service);
         service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
-        System.out.println("------------代理--------------");
+        if (null != service) {
+            System.out.println("SERVICE  instanceof    :" + (service instanceof DemoService));
+            System.out.println("SERVICE  instanceof    :" + (service instanceof DemoServiceImpl)); //使用JDK动态代理则为false
+            System.out.println("SERVICE  instanceof    :" + (service instanceof Proxy)); //使用cglib动态代理则为false
+        }
 
+        System.out.println("------------代理--------------");
         // 默认情况下context.getBean(DemoServiceImpl.class)会报错因为默认使用JDK动态代理,
         // 修改为@EnableAspectJAutoProxy(proxyTargetClass = true),则开启cglib代理, 就不会报错了
         DemoService service2 = null;
         try {
             service2 = context.getBean(DemoServiceImpl.class);
-            System.out.println(">>> Spring容器中的对象:");
-            System.out.println("SERVICE          :" + service2);
+            System.out.println(">>> Spring容器中的对象 :" + service2);
             System.out.println("SERVICE  SAME    :" + (service == service2));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (null != service) {
-                System.out.println("SERVICE  instanceof    :" + (service instanceof DemoService));
-                System.out.println("SERVICE  instanceof    :" + (service instanceof DemoServiceImpl)); //使用JDK动态代理则为false
-                System.out.println("SERVICE  instanceof    :" + (service instanceof Proxy)); //使用cglib动态代理则为false
-            }
             if (null != service2) { // 使用JDK动态代理则为空
                 System.out.println("SERVICE  instanceof    :" + (service2 instanceof DemoService));
                 System.out.println("SERVICE  instanceof    :" + (service2 instanceof DemoServiceImpl));
