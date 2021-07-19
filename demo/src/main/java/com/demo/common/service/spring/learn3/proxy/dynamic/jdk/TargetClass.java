@@ -6,11 +6,11 @@ public class TargetClass implements TargetInterface {
 
     @Override
     public String action1() {
-        return "AAAAAAAAAAA";
+        return "TargetClass action1";
     }
 
     @Override
     public void action2(String msg, Integer age, Person person) {
-        System.out.println("222" + msg + "|" + age + "| -- " + person.toString());
+        System.out.println("TargetClass action2" + msg + "|" + age + "| -- " + person.toString());
     }
 }
