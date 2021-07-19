@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 /**
  * ApplicationContext 构造方法:
  * 1.加载资源XML
- * 2.创建BeanFactory, 解析XML文件到BeanDifinition, 注册到BeanFactory中
+ * 2.创建BeanFactory, 解析XML文件到BeanDefinition, 注册到BeanFactory中
  * 3.初始化BeanFactory,对Bean(Singleton且非LazyInit非抽象的Bean)进行创建
  */
 public class ApplicationContextTest {
