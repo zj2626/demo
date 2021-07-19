@@ -1,9 +1,9 @@
 package com.demo.common.service.basic.bean;
 
 public class Son extends Father {
+    public final String finalStaticStr = getFinalStr();
     public String notStaticStr = getNotStaticStr();
     public static String staticStr = getStaticStr();
-    public final String finalStaticStr = getFinalStr();
 
     static {
         System.out.println("Son--static");
