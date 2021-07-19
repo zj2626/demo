@@ -6,11 +6,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.junit.After;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy/*(proxyTargetClass = true)*/
 @Aspect
 
 // 为所有代理对象是DemoService的单独创建一个切面(满足条件:切面和代理对象的生命周期都是prototype)
@@ -62,7 +61,7 @@ public class AopConfig2 {
         System.out.println("@Before: 前置通知-" + " >>> " + this.hashCode());
     }
 
-    @Before(value = "target(id) && target(name)", argNames="id,name")
+    @Before(value = "target(id) && target(name)", argNames = "id,name")
     public void after(String id, String name) {
         System.out.println("@Before: 前置通知2-" + " >>> " + this.hashCode());
     }

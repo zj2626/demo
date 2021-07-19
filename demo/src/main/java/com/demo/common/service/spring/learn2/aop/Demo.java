@@ -26,10 +26,10 @@ public class Demo {
         }
 
         System.out.println("------------代理--------------");
-        // 默认情况下context.getBean(DemoServiceImpl.class)会报错因为默认使用JDK动态代理,
-        // 修改为@EnableAspectJAutoProxy(proxyTargetClass = true),则开启cglib代理, 就不会报错了
         DemoService service2 = null;
         try {
+            // 默认情况下context.getBean(DemoServiceImpl.class)会报错因为默认使用JDK动态代理,
+            // 修改为@EnableAspectJAutoProxy(proxyTargetClass = true),则开启cglib代理, 就不会报错了
             service2 = context.getBean(DemoServiceImpl.class);
             System.out.println(">>> Spring容器中的对象 :" + service2);
             System.out.println("SERVICE  SAME    :" + (service == service2));
@@ -48,9 +48,13 @@ public class Demo {
     @Test
     public void testDemo2() {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig2.class);
-        System.out.println("-------start---------\n");
         DemoService service = context.getBean(DemoService.class);
         DemoService service2 = context.getBean(DemoService.class);
+        DemoService service3 = context.getBean(DemoServiceImpl.class);
+        System.out.println("是否相等: " + (service == service2) + " " + (service == service3));
+        System.out.println();
+
+        System.out.println("-------start---------\n");
         service.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
         System.out.println("-------____---------");
         service2.queryById(UUID.randomUUID().toString(), "zj2626", "", "", 21, "", "", 0D);
