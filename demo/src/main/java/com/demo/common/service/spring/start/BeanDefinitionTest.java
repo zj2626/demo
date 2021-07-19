@@ -6,7 +6,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /*
- * bean属性定义[BeanDefiniton]
+ * bean属性定义[BeanDefinition]
  * *.id
  * *.name
  * *.scope
@@ -16,16 +16,16 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  * *.Depends
  * *.Property
  *
- * bean存储定义[BeanDefiniton]
+ * bean存储定义[BeanDefinition]
  * *.XML
  * *.properties
  *
  * bean加载/解析[BeanDefinitionReader]
  * *.加载XML文件流
  * *.转化为Document
- * *.Document Element解析/注册为BeanDefiniton[DocumentLoader/BeanDefinitionRegistry]
+ * *.Document Element解析/注册为BeanDefinition[DocumentLoader/BeanDefinitionRegistry]
  * */
-public class BeanDefinitonTest {
+public class BeanDefinitionTest {
 
     /**
      * 自动生成bean bean的定义

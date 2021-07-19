@@ -152,7 +152,7 @@ public class MyBeanFactory {
             if (ifAutowired && "byType".equals(autowired)) {
 
             }
-            // byName
+            // 查找自动注入的属性-byName
             if (ifAutowired && "byName".equals(autowired)) {
                 Field[] fields = classObject.getDeclaredFields();
                 for (int i = 0; i < fields.length; i++) {

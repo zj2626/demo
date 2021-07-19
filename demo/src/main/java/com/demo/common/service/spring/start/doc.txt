@@ -5,7 +5,7 @@ IOC容器: 负责三个东西
         3.Bean的获取
         4.依赖注入:自动完成依赖Bean的检测和注入
         5.自动生成Bean: 通过Bean的定义生成Bean
-    2.定义Bean [BeanDefiniton]
+    2.定义Bean [BeanDefinition]
         1.Bean属性定义
             1.id
             2.name
@@ -21,7 +21,7 @@ IOC容器: 负责三个东西
     3.Bean加载/解析[BeanDefinitionReader]
         1.加载XML文件流
         2.转化为Document
-        3.Document Element解析/注册为BeanDefiniton [DocumentLoader/BeanDefinitionRegistry]
+        3.Document Element解析/注册为BeanDefinition [DocumentLoader/BeanDefinitionRegistry]
             1.解析
             2.注册
 
