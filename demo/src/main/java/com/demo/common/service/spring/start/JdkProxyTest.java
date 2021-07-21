@@ -1,5 +1,7 @@
-package com.demo.common.service.spring.start.bean;
+package com.demo.common.service.spring.start;
 
+import com.demo.common.service.spring.start.bean.BeanInterface;
+import com.demo.common.service.spring.start.bean.MyBean;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package com.demo.common.service.spring.start;
 
 import com.demo.common.service.spring.start.bean.MyBean;
-import com.demo.common.service.spring.start.bean.MyBeanDao;
+import com.demo.common.service.spring.start.bean.MyBeanService;
 import org.junit.Test;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -38,8 +38,8 @@ public class BeanFactoryTest {
         System.out.println(myBean);
 
         // 存储 单例 (其属性MyBean并没有注入该对象)
-        factory.registerSingleton("myBeanDao", new MyBeanDao());
-        System.out.println(factory.getBean("myBeanDao"));
+        factory.registerSingleton("myBeanService", new MyBeanService());
+        System.out.println(factory.getBean("myBeanService"));
     }
 
     /**
@@ -56,10 +56,10 @@ public class BeanFactoryTest {
         System.out.println(myBean);
 
         // 创建该bean时会把依赖的MyBean注入到这个bean,如果找不到 就会报错
-        MyBeanDao myBeanDao = (MyBeanDao) factory.createBean(MyBeanDao.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-        factory.registerSingleton("myBeanDao", myBeanDao);
+        MyBeanService myBeanService = (MyBeanService) factory.createBean(MyBeanService.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
+        factory.registerSingleton("myBeanService", myBeanService);
 
-        System.out.println("myBeanDao" + myBeanDao);
+        System.out.println("myBeanService" + myBeanService);
     }
 
 }

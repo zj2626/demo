@@ -1,6 +1,6 @@
 package com.demo.common.service.spring.start;
 
-import com.demo.common.service.spring.start.bean.MyBeanDao;
+import com.demo.common.service.spring.start.bean.MyBeanService;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,12 +20,12 @@ public class ApplicationContextTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:framework/spring.xml");
         
         applicationContext.start();
-        MyBeanDao myBeanDao = (MyBeanDao) applicationContext.getBean("myBeanDao");
+        MyBeanService myBeanService = (MyBeanService) applicationContext.getBean("myBeanService");
         
         ExecutorService service = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 10; i++) {
             service.submit(() -> {
-                myBeanDao.exec();
+                myBeanService.exec();
             });
         }
         

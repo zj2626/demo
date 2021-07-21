@@ -5,5 +5,5 @@
        default-autowire="byName" ><!--default-lazy-init="true"-->
 
     <bean id="myBean" class="com.demo.common.service.spring.start.bean.MyBean"/>
-    <bean id="myBeanDao" class="com.demo.common.service.spring.start.bean.MyBeanDao"/>
+    <bean id="myBeanService" class="com.demo.common.service.spring.start.bean.MyBeanService"/>
 </beans>

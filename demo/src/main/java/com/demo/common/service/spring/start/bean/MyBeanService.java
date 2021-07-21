@@ -1,14 +1,14 @@
 package com.demo.common.service.spring.start.bean;
 
-public class MyBeanDao {
+public class MyBeanService {
     private MyBean myBean;
     private int id;
     private String name;
 
     private Long time;
 
-    public MyBeanDao() {
-        System.out.println(MyBeanDao.class.getSimpleName());
+    public MyBeanService() {
+        System.out.println(MyBeanService.class.getSimpleName());
     }
 
     public MyBean getMyBean() {
@@ -37,7 +37,7 @@ public class MyBeanDao {
 
     @Override
     public String toString() {
-        return "MyBeanDao{" +
+        return "MyBeanService{" +
                 "myBean=" + myBean +
                 ", id=" + id +
                 ", name='" + name + '\'' +

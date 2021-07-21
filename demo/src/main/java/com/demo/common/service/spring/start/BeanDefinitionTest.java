@@ -1,5 +1,6 @@
 package com.demo.common.service.spring.start;
 
+import com.demo.common.service.spring.start.bean.MyBeanService;
 import org.junit.Test;
 import org.springframework.beans.factory.support.BeanDefinitionReader;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -36,8 +37,8 @@ public class BeanDefinitionTest {
         BeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(factory);
         beanDefinitionReader.loadBeanDefinitions("classpath:framework/spring.xml");
 
-//        MyBeanDao fDao = (MyBeanDao) factory.getBean("myBeanDao");
-//        System.out.println(fDao);
+        MyBeanService fDao = (MyBeanService) factory.getBean("myBeanService");
+        System.out.println(fDao);
 
     }
 }
