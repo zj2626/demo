@@ -1,4 +1,4 @@
-package com.demo.common.service.beancopy;
+package com.demo.common.service.copy;
 
 import java.util.Date;
 

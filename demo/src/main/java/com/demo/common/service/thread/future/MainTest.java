@@ -1,5 +1,9 @@
-package com.demo.common.service.future;
+package com.demo.common.service.thread.future;
 
+import com.demo.common.service.thread.future.impl.CallableDemo;
+import com.demo.common.service.thread.future.impl.FutureTaskDemo;
+import com.demo.common.service.thread.future.impl.RunnableDemo;
+import com.demo.common.service.thread.future.impl.RunnableFutureDemo;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

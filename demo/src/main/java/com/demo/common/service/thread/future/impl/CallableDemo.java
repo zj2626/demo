@@ -1,4 +1,4 @@
-package com.demo.common.service.future;
+package com.demo.common.service.thread.future.impl;
 
 import java.util.concurrent.Callable;
 

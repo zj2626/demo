@@ -1,15 +1,16 @@
-package com.demo.common.service.beancopy;
+package com.demo.common.service.copy;
+
 
 import java.util.Date;
 
-public class DemoC {
+public class DemoA {
     private String name;
-    private int age;
-    private Integer age2;
-    private double money;
-    private Double moneyF;
-    private Date uDate;
-    private Date sDate;
+    private Integer age;
+    private int age2;
+    private Double money;
+    private float moneyF;
+    private java.util.Date uDate;
+    private java.sql.Date sDate;
 
     public String getName() {
         return name;
@@ -19,27 +20,27 @@ public class DemoC {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public Integer getAge2() {
+    public int getAge2() {
         return age2;
     }
 
-    public void setAge2(Integer age2) {
+    public void setAge2(int age2) {
         this.age2 = age2;
     }
 
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
@@ -51,19 +52,19 @@ public class DemoC {
         this.uDate = uDate;
     }
 
-    public Date getsDate() {
+    public java.sql.Date getsDate() {
         return sDate;
     }
 
-    public void setsDate(Date sDate) {
+    public void setsDate(java.sql.Date sDate) {
         this.sDate = sDate;
     }
 
-    public Double getMoneyF() {
+    public float getMoneyF() {
         return moneyF;
     }
 
-    public void setMoneyF(Double moneyF) {
+    public void setMoneyF(float moneyF) {
         this.moneyF = moneyF;
     }
 }
